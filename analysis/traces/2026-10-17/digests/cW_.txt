@@ -1,0 +1,10 @@
+== methods (count name) ==
+ 229376 "m":"ZX"
+    186 "m":"ZY"
+      6 "m":"ZZ"
+      6 "m":"ZV"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+ 114688 ZX 0
+     93 ZY 0
+== strings ==

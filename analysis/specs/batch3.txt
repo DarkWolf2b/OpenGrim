@@ -1,0 +1,18 @@
+dZ	Fast Place
+da	Sound ESP
+db	Jump Circle
+dc	Hit Particles
+dd	Block ESP
+de	Hand Chams
+df	Aspect Ratio
+dg	Pearl Prediction
+dh	Ambience
+di	2D ESP
+dj	Hole ESP
+dk	XRay
+dl	Outlines
+dm	Friend Indicator
+dn	Firework Spots
+do	Arrows
+dp	Logout Spots
+dq	Storage ESP

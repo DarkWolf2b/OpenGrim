@@ -1,0 +1,113 @@
+id	parity	status	gaps
+fg	60	partial	[N] aIS input select, aIT predicate, aIU getter, aIV/aIW element layout
+fc	68	partial	[U] Hover semantics, per-slot loop shape, fa shared-buffer contract; [N] aHO body
+eD	75	partial	[N] awt/awu bodies; eD vs eE shared-region attribution
+eT	66	partial	[N] aDu/aDv/aDw bodies, plan/attack-point calls, stopGliding role; [U] default Click Mode
+dR	76	ported	[N] apk/apj/app/apq/apr bodies; [U] per-item predicate assignment, enum phase meanings
+fm	55	partial	[N] aKp/aKq/aKA/aKC/aKD/aKw bodies (trajectory sim/aim/throw stand-in)
+fM	74	partial	[N] aVp/aVq bodies; [U] multi-mode fallback order
+fa	45	partial	[N] all 53 handler bodies; [U] state transition table and plan builders
+fj	62	partial	[N] aJA/aJB/aJC/aJD/aJE bodies; [U] aJE scoring, regex pattern, suffix zVHFr
+fT	82	ported	[N] aXG/aXr/aXq/aXp bodies, aXy/aXz/aXA normalizers; [U] gN/gR event semantics
+fy	60	partial	[N] aRJ/aRK bodies; [U] refill trigger, interaction mechanism, Normal/Legit, Totem Slot unwired
+fE	80	partial	[N] aSN body, aSO slot-picker; [G] default radio index; [U] cu radio-vs-toggle semantics
+fD	85	partial	[N] aSH body; [G] default radio index, Slots defaults; [U] aSI picker, cu semantics
+ei	70	partial	[U] face-sampling grid N1/N2, cHY/cHU validation, silent-aim, asG formula; [N] asJ/asE/asF
+dW	75	partial	[N] aql(gA) input grab; [U] kr spoof panel, Render Hand, camera math, latch roles
+dF	70	partial	[N] ald/alf bodies + five item predicates; [U] predicate mapping, slot-cache, trigger
+eI	65	partial	[N] axZ/axX/axY, aya/ayb steps; [U] ol controller, hit timing, Return Delay randomization
+ey	90	partial	[N] ava/avb/avc/ave/avf bodies; [U] queue assignment, cancel key, pulse cadence, flush
+dZ	85	partial	[N] arc/aqZ/ara bodies; [U] RangedWeaponItem case, setMissTime, place check, jc.WnbNG
+eZ	75	partial	[N] aFL/aFN bodies, aFO/aFP steps, aFQ/aFR predicates; [G] prediction formulas; [U] jj.bCL/bBt, Cetgu
+eN	80	ported	[N] aBc/aBb bodies (breach/wind-burst sequences); [U] Smart strategy, slot pick
+fV	78	ported	[N] aaj body (qu builder + fW/fY/fZ sweep); [U] file scope, qt enum, flags; [V] cy caps
+fG	78	ported	[N] aTi..aTm phase bodies, aTh bridge; [S] aTg input event; [U] key identity per mode
+eS	82	ported	[N] change_armor/ol path, aCQ/aCU/aCR/aCS; [U] aCX/aCY probes, UKQaD, ordering
+dU	85	ported	[U] apK bobber-id semantics; [N] splash/reel/recast scheduling; [U] attackBlock pool role
+eC	88	ported	[U] Keep Sprint math, Ignore consumers/predicates, packet spoofs; [N] awb/awc bodies
+ft	85	ported	[N] aPU loop, aPY/aPZ, aPV, aQf, aPW/aPX/aQc/aQe; [U] slider mappings, player scope
+fb	80	ported	[S] aHd trigger no counterpart; [N] fb$sM/sN plans + aHj/aHk/aHl/aHm; [U] geometry
+eK	85	ported	[V] Prediction Ticks suffix; [N] azv/ayB/ayx/ayy placement math; [U] azE/azF/azG, eL names
+eG	82	ported	[N] awU/awV/awW lunge mechanics; [U] axk condition, yLAeQ/UGYqg/xDsLg roles, SOwbe
+dA	70	partial	[N] all firework math (aim/overshoot/cooldown); [G] target acquisition, cooldown ticks, use
+eW	65	partial	[U] ghost-crystal prediction + interactAt submission; [U] dimension gate, CPS scheduler; [N] aEA
+fI	75	partial	[G] key poll, projectile classification, Invisible polarity; [U] threat criteria; [N] aUD/aUB bodies
+eQ	70	partial	[U] eP/oW/oY orchestrator, pe solve, Armor Swap, aCf/aCg; [G] target/rotation/climb; [N] dive math
+eB	70	partial	[G] velocity composition, anti-kick dip, packet rewrite; [U] .aZS flag, avv/avy; [N] avr/avs/avu/avt
+dY	60	partial	[U] enforcement point unrecovered (module inert); [G] cF widget persistence
+eb	75	partial	[U] Items cK multiselect absent, Storage Title cap; [G] QUICK_MOVE transfer; [N] aro body
+er	65	partial	[G] velocity multiplier, Matrix branch, yaw push; [U] collision loop, gw booleans; [N] motion math
+fs	60	partial	[N] aPg/aPp/aPn bodies; [G] displacement math; [U] latch roles, aPk/aPq/aPr split, trigger
+eH	78	partial	[U] armor-swap/restore choreography (ol, rB, axt/axu/axs/axv); [U] dash impulse; [N] axz/axL/axM/axN/axw
+ef	78	partial	[U] swap choreography (asd..asi, hGtSw, ol/oJ), Silent packet path; [N] arX/arY bodies
+eo	65	partial	[U] per-mode algorithms (Grim/Matrix/NCP, atS, slot resync); [G] classification; [N] atu/atv
+fv	80	partial	[U] aQE durability, aQF scoring, armorIndex table, guards; [N] aQA/aQG/aQH/aQI/aQJ/aQK
+dO	60	partial	[U] setting names/defaults, save/restore split, aoF/aoG, aoD/aoE, workers; [N] aou/aov/aot/aos/aow
+eP	80	partial	[U] 0xf325 VM bodies, oW/qP pipeline, aBF coordinator, pe score; [G] type map; [N] aBC/aBI/aBJ/aBK/aBO
+dJ	72	partial	[U] clickSlot sequences, amT scaling, BundleItem; [G] wheel/drag; [N] amy/amz/amx/amA/amB/amF/amL
+eJ	68	partial	[U] trap-shape offsets, azo score, predicates, eL base; [N] ayq/ayB/ayC/ayy bodies
+fN	68	partial	[U] dynamic preset children, Custom URL fetch/replace; [N] aVx/aVw/aVy/aVz/aVA bodies
+dy	88	ported	[U] render treatment, self-glow mechanism, dh.afl panic paths; [N] none
+fu	58	ported	[N] all mode arithmetic (aQp params, spoofed packets, profile selection); [U] class_2813 role
+eX	52	ported	[U] When/Diagonal semantics, phase-machine approximation, use-event entries not mirrored
+fB	55	ported	[N] decision arithmetic (Single/Stun/Spam, roll, switch-back); [U] aSm/aSj/aSk unassignable
+dE	80	ported	[U] exact pacing/cursor math; [U] string constants (default message/placeholder)
+fn	55	ported	[U] Click Pattern ct group omitted; [N]/[U] click-timing, profiles, jitter, Simulate Exhaust
+fx	58	ported	[N]/[U] health-trigger math, SWAP click, timers, Legit/Normal, aRy; [S] Block Input no hook
+eV	52	ported	[N]/[U] all crystal math, MuaJV, th/ti split, five predicates; settings registered but unread
+dC	85	ported	[U] transform order/frame + Scale application; [U] rotation-axis composition
+dm	92	ported	[U] jk.jEkxo RGBA placeholder; [U] blend mode approx; [S] friend set uses FriendsManager
+df	75	ported	[S] projection/framebuffer hook missing (module code 1:1)
+dx	100	ported	[U] consumer mixins live in bootstrap layer, absent; accessors never called
+cS	92	ported	[G] ky segment count + gradient constants; [U] head-model transform; [N] jo.bEt/lT.ciQ
+fo	62	partial	[N] aLl/aLm/aLn + 7 native predicates, per-check mapping; [U] name patterns, sound formula
+du	95	ported	[U] panic-switch loop break (dh.afl) absent; [U] jg$tJ.OCdZM preset contents
+dr	92	ported	[G] rs$we.dyK/dyJ sprite ids + effect order; [U] gi injection point, cancel interplay
+fl	64	partial	[N] aJP/aJO, aJU/aJW/aJX/aJY bodies; [U] health formula, splash-vs-drink, use call
+dk	60	partial	[N]/[U] five render-cancel handlers native-injected; .aZS(false) descriptor flag
+fp	60	partial	[N] aLG/aLJ/aLK/aLQ/aLR/aLO/aLH/aLI bodies; [U] queue split, expiry, ghost render, aZS
+dn	85	ported	[S] no hu/hp add-remove event (polling); [G] fade-in omitted; [G] marker boxes vs icon
+da	85	ported	[G] fade-in rate; [U] sound-name regex; [G] marker boxes vs HUD card; [S] SoundInstanceListener
+fX	85	ported	[G] key bus absent (GLFW poll), Edit Theme -> ClickGui; [S] Style not consumed; [U] aZQ vs 344
+fK	98	ported	[U] original consumer call sites in native layer (out of scope)
+et	92	ported	[G] four yaw constants DES-decrypted; [U] gS collision event publisher
+dg	78	ported	[G] native trajectory simulator; [U] time-left format; [G] fade-in; [G] HUD card -> world box
+fH	50	ported	[N] all behavior native VM (rotation, aUp/aUq/CBxhI); [G] Fov/render nothing; [U] defaults
+cV	96	ported	[U] private kS pipeline state (depth/culling) no equivalent; null frustum renders
+ds	93	ported	[U] cF preset scope + item-list widget unexpressible; [U] kH builder; frustum fallback
+dd	85	ported	[U] rl scanner contract, scan shape + program id; [G] 32-block cap; [U] render layer
+cY	70	partial	[N] on helper native; [G] guessed state machine; [U] two tick handlers -> one; [U] visual marker
+do	92	ported	[G] fade duration 400 ms; [U] GUI-offset literals (offset 0); [U] render-layer name -> fill
+cQ	60	partial	[N] YG profile registry (iq/im) native, curve params; [G] YI/YF flags; [U] hc/gm events absent
+fJ	93	ported	[U] lMLXr unit string; [S] cA range -> single slider; [S] redraw not run while disabled
+dl	76	ported	[S] drawing consumer absent (post-process + geometry); [U] two theme color defaults -> white
+dc	86	ported	[G] billboard substitute for textured sprites + glow pass; [U] ZRQxW inferred 1000
+dG	68	ported	[S] four render-cancel handlers no event counterpart; [U] hl vs he/gr pass mapping
+cT	95	ported	[U] private pipelines kR.NElVn/vTohM substituted; [S] AFTER_ENTITIES phase; [U] light const
+di	50	partial	[U] profile registry + drawing dispatch unrebuilt; [U] screen projection; [G] nametag gate
+cR	88	ported	[U] mo textures + glow substituted; [G] three constants; [U] easing linear; [S] disconnect
+cU	93	ported	[G] jk.bDo DES constants (360-step wave); [U] frustum fallback, color default; [N] kp consts
+fr	60	partial	[N] native core (selection/attack/crit/aim/hit-delay); [N] render handlers; [U] dbt gate, aAa
+dp	80	ported	[U] mT quantum 50 ms; [N] model hologram -> box; [U] HUD labels, ahs/ahw/ahr, message
+dw	94	ported	[G] kz segment/alpha + light values; [G] sprite/download approx; [U] cF widget; [N] panic
+fw	88	partial	[N] aQY/aQX/aQZ/aRa/aRd native core; [G] steal mapping, sample count, suffix; [U] NrVzh
+db	93	ported	[G] animation duration 400 ms; [G] sprites/download/layer; [U] disconnect world-null approx
+fF	86	ported	[N] aST decision body VM-resident; [U] range transform, visibility bodies; cF/cz no widget
+dQ	74	partial	[U] Custom URL audio unimplemented; [G] needle, presets, gain; [U] volume math, debounce
+cP	97	ported	[S] custom pipelines -> RenderLayers; [G] theme colors hardcoded white; [S] event phase
+cW	93	ported	[G] theme colors, icon glyph; [S] rounded corners, fonts, projection, sync scan, ZU clear
+cZ	89	ported	[G] four DES longs undecryptable (100 ms/divisor 2); [U] capture/composite, suffix, colors
+fq	90	ported	[U] native hitbox renderer draw semantics; [U] qP.ddn attack, ou.kxNyl; [G] cz widget
+dz	93	ported	[U] jk.bDn variation constants (360/0/0); textures/batchers; [U] Ignore Walls, linear ease
+dv	80	partial	[N] four shader passes kj.bPr..bPu + queue; [N] ro.diF presets; [U] aiJ pass-id
+de	80	ported	[N] ki.bPi/kj.bPr..bPu shader passes; [N] acv hand re-render; [U] OTglH, ro.diF presets
+dh	85	ported	[U] five preset times, particle cap/bounds, fade, billboard pass, fog pipeline, category
+cX	90	ported	[U] script slot appliers aar/aav (aliases absent); [G] copy-inventory base 36; [S] jh.bCg
+dM	45	partial	[N] market engine (nO/nR/nP/nM/nB..nE); [U] config store, API, notifications, editor
+dI	94	partial	[N] ja.byI native-VM method; [G] 50 ms/tick, event plumbing, cK Blocks, render pipeline
+ee	95	ported	[U] gR event identity; [G] refresh cadence while disabled; [N] jd.bAm + qG/qE pipeline; [U] qC
+dj	96	ported	[S] kR.oXKXV + kN/kH -> RenderLayers; [S] tick timing; [S] null frustum; [G] ct option flag
+dt	94	ported	[U] armor slot order; [G] ji divisors/format, numeral glyphs; [S] fonts, rects, nameplate
+fS	92	ported	[N] qu.cmARD gate inert; [U] jd.dCIsP trigger, ru.djG/djF stand-ins; [N] mO computed
+ff	90	partial	[U] kx indicator + toggle (native class key); [S] cA two-handle ranges, mT inline, hw$tw pre-attack; [U] aZS(false)
+dq	95	ported	[G] irQyF throttle (250 ms labeled); [S] cK item-set->group, chunk scan, batcher draws, theme->white; [N] balhj thread factory

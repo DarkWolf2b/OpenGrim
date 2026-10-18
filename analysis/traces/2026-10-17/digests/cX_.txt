@@ -1,0 +1,16 @@
+== methods (count name) ==
+      9 "m":"aaJ"
+      9 "m":"aaI"
+      6 "m":"aat"
+      6 "m":"aaH"
+      4 "m":"aaB"
+      2 "m":"aak"
+      2 "m":"aaj"
+      2 "m":"aaA"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+      3 aaI 9999
+      3 aaH 9999
+== strings ==
+{"e":"str","c":"sixtwo/cX","m":"aaI","v":"g"}
+{"e":"str","c":"sixtwo/cX","m":"aaJ","v":"g"}

@@ -1,0 +1,17 @@
+== methods (count name) ==
+ 229796 "m":"afl"
+     32 "m":"aes"
+      3 "m":"afw"
+      3 "m":"afv"
+      2 "m":"afu"
+      2 "m":"aet"
+      2 "m":"aer"
+      2 "m":"aeq"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+      1 afv 23000
+      1 afu 23000
+      1 aet 23000
+== strings ==
+{"e":"str","c":"sixtwo/dh","m":"afv","v":"c"}
+{"e":"str","c":"sixtwo/dh","m":"afw","v":"c"}

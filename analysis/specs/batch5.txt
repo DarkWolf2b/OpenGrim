@@ -1,0 +1,18 @@
+eJ	Auto Trap
+eK	Auto Web
+eM	Double Tap
+eN	Mace Swap
+eO	Auto Pearl Catch
+eP	Mace Aura
+eQ	Mace Elytra Target
+eR	Wind Hop
+eS	Auto Stun Slam
+eT	Shield Drain
+eU	Air Anchor
+eV	Auto Crystal
+eW	Auto Hit Crystal
+eX	Anchor Macro
+eY	Crystal Optimizer
+eZ	Auto Double Hand
+ea	No Break Delay
+eb	Chest Stealer

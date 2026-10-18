@@ -1,0 +1,20 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.entity.Entity
+ */
+package sixtwo;
+
+import net.minecraft.entity.Entity;
+import sixtwo.lC;
+import sixtwo.lc;
+import sixtwo.px;
+
+public interface pE
+extends px {
+    public float thickness(lC var1, lc var2, Entity var3, boolean var4);
+
+    public void drawBar(lC var1, lc var2, lc var3, Entity var4, boolean var5);
+}
+

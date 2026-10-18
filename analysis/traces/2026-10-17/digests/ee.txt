@@ -1,0 +1,10 @@
+== methods (count name) ==
+     92 "m":"arS"
+      2 "m":"arL"
+      2 "m":"arK"
+      2 "m":"arJ"
+      2 "m":"aaj"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+     46 arS 0
+== strings ==

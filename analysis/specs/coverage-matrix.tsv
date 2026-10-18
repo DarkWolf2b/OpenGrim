@@ -1,0 +1,163 @@
+class_id	module	natives_declared	natives_bound	missing
+cP	Trajectories	0	0	0
+cQ	Swing Animations	0	0	0
+cR	Particles	0	0	0
+cS	China Hat	0	0	0
+cT	Pop Chams	0	0	0
+cU	Trails	0	0	0
+cV	Skeleton ESP	0	0	0
+cW	Trap ESP	0	0	0
+cX	Fake Player	0	0	0
+cY	Shield Status	0	0	0
+cZ	Soul Effects	0	0	0
+dA	Elytra Target	25	25	0
+dB	Full Bright	4	4	0
+dC	View Model	11	11	0
+dD	Item Frame Blocker	6	6	0
+dE	Spammer	26	26	0
+dF	Lever Replace	15	15	0
+dG	Anti Trap	0	0	0
+dH	No Sign Screen	3	3	0
+dI	Nuker	0	0	0
+dJ	Mouse Tweaks	31	31	0
+dK	Auto Lever Replace	18	18	0
+dL	No Entity Clip	6	6	0
+dM	Auto Market	0	0	0
+dN	Slot Lock	6	6	0
+dO	Hotbar Restorer	27	27	0
+dP	Block Piercer	9	9	0
+dQ	Hit Sounds	12	12	0
+dR	Click Action	21	21	0
+dS	Hand No Clip	7	7	0
+dT	Multi Task	3	3	0
+dU	Auto Fish	21	21	0
+dV	Custom FOV	10	10	0
+dW	Freecam	38	38	0
+dX	No Miss Delay	3	3	0
+dY	Anti Invisible	0	0	0
+dZ	Fast Place	11	11	0
+da	Sound ESP	0	0	0
+db	Jump Circle	0	0	0
+dc	Hit Particles	0	0	0
+dd	Block ESP	0	0	0
+de	Hand Chams	0	0	0
+df	Aspect Ratio	0	0	0
+dg	Pearl Prediction	0	0	0
+dh	Ambience	0	0	0
+di	2D ESP	0	0	0
+dj	Hole ESP	0	0	0
+dk	XRay	0	0	0
+dl	Outlines	0	0	0
+dm	Friend Indicator	0	0	0
+dn	Firework Spots	0	0	0
+do	Arrows	0	0	0
+dp	Logout Spots	0	0	0
+dq	Storage ESP	0	0	0
+dr	Health Indicators	0	0	0
+ds	Entity ESP	0	0	0
+dt	Nametags	0	0	0
+du	Tracers	0	0	0
+dv	Chams	0	0	0
+dw	Circle ESP	0	0	0
+dx	Anti Blind	0	0	0
+dy	Glow	0	0	0
+dz	Target ESP	0	0	0
+eA	Strafe	6	6	0
+eB	Flight	39	39	0
+eC	Sprint	20	20	0
+eD	Fast Bridge	7	7	0
+eE	Parkour	6	6	0
+eF	Spear Reach	17	17	0
+eG	Spear Lunge	26	26	0
+eH	Spear Dash	33	33	0
+eI	Spear Double Tap	21	21	0
+eJ	Auto Trap	58	58	0
+eK	Auto Web	28	28	0
+eM	Double Tap	4	4	0
+eN	Mace Swap	20	20	0
+eO	Auto Pearl Catch	9	9	0
+eP	Mace Aura	31	31	0
+eQ	Mace Elytra Target	30	30	0
+eR	Wind Hop	10	10	0
+eS	Auto Stun Slam	35	35	0
+eT	Shield Drain	9	9	0
+eU	Air Anchor	14	14	0
+eV	Auto Crystal	38	38	0
+eW	Auto Hit Crystal	15	15	0
+eX	Anchor Macro	46	46	0
+eY	Crystal Optimizer	8	8	0
+eZ	Auto Double Hand	17	17	0
+ea	No Break Delay	7	7	0
+eb	Chest Stealer	12	12	0
+ec	Ghost Hand	3	3	0
+ed	Custom Camera Distance	9	9	0
+ee	Cape	0	0	0
+ef	Elytra Swapper	24	24	0
+eg	No Swing	6	6	0
+eh	Auto Exp	7	7	0
+ei	Scaffold	12	12	0
+ej	Air Stuck	5	5	0
+ek	Inventory Move	9	9	0
+el	Water Speed	8	8	0
+em	High Jump	8	8	0
+en	Anti Ghost	7	7	0
+eo	No Slow	30	30	0
+ep	Super Firework	5	5	0
+eq	Null Movement	1	1	0
+er	Speed	15	15	0
+es	No Push	7	7	0
+et	Anti Web	0	0	0
+eu	Trident Boost	9	9	0
+ev	Collision Long Jump	4	4	0
+ew	No Jump Delay	3	3	0
+ex	Safe Walk	5	5	0
+ey	Blink	14	14	0
+ez	No Fall	3	3	0
+fA	Potion Refill	7	7	0
+fB	Auto Shield Break	18	18	0
+fC	Velocity	12	12	0
+fD	Uncharge Block	7	7	0
+fE	No Miss	7	7	0
+fF	Trigger Bot	13	13	0
+fG	W-Tap	18	18	0
+fH	Aim Assist	59	59	0
+fI	Auto Logout	13	13	0
+fJ	Target Margin	0	0	0
+fK	Reach	0	0	0
+fL	Auto Tool	12	12	0
+fM	Auto MLG	8	8	0
+fN	Skin Protect	40	40	0
+fO	Discord Activity	9	9	0
+fP	Anti-Cheat Detector	21	21	0
+fQ	No Protocol Disconnect	1	1	0
+fR	Client Sounds	9	9	0
+fS	Name Protect	0	0	0
+fT	Resource Pack Bypass	29	29	0
+fU	Middle Click Friend	7	7	0
+fV	Self Destruct	6	6	0
+fW	Transactions	4	4	0
+fX	Interface	0	0	0
+fa	Auto X-Bow	53	53	0
+fb	Cart Assist	42	42	0
+fc	Cart Refill	7	7	0
+fd	Auto Dripstone	17	17	0
+ff	Fake Lag	0	0	0
+fg	Target Lock	14	14	0
+fh	Attribute Swap	8	8	0
+fi	Shield Block	14	14	0
+fj	Projectile Aim Bot	15	15	0
+fl	Auto Potion	28	28	0
+fm	Pearl Chaser	24	24	0
+fn	Auto Clicker	27	27	0
+fo	Anti Bot	21	21	0
+fp	Backtrack	50	50	0
+fq	Hitbox	0	0	0
+fr	Kill Aura	89	89	0
+fs	Knockback Displacement	46	46	0
+ft	Auto GApple	19	19	0
+fu	Criticals	18	18	0
+fv	Auto Armor	25	25	0
+fw	Auto Drain	12	12	0
+fx	Auto Totem	28	28	0
+fy	Totem Refill	11	11	0
+fz	Auto Jump Reset	9	9	0

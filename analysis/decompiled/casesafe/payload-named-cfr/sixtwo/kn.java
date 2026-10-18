@@ -1,0 +1,388 @@
+/*
+ * Decompiled with CFR 0.152.
+ * 
+ * Could not load the following classes:
+ *  com.mojang.blaze3d.pipeline.RenderPipeline
+ *  com.mojang.blaze3d.systems.RenderPass
+ *  com.mojang.blaze3d.vertex.VertexFormat$DrawMode
+ *  mixin.accessors.LevelRendererAccessor
+ *  net.minecraft.client.gl.Framebuffer
+ *  net.minecraft.client.render.BufferBuilder
+ *  net.minecraft.client.render.VertexFormats
+ *  net.minecraft.client.render.command.OrderedRenderCommandQueue
+ *  net.minecraft.client.render.entity.state.EntityRenderState
+ *  net.minecraft.client.render.state.WorldRenderState
+ *  net.minecraft.client.util.BufferAllocator
+ *  net.minecraft.client.util.math.MatrixStack
+ *  net.minecraft.entity.Entity
+ *  net.minecraft.util.math.Vec3d
+ */
+package sixtwo;
+
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.systems.RenderPass;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import java.lang.invoke.MethodHandles;
+import java.util.function.Consumer;
+import mixin.accessors.LevelRendererAccessor;
+import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
+import net.minecraft.client.render.entity.state.EntityRenderState;
+import net.minecraft.client.render.state.WorldRenderState;
+import net.minecraft.client.util.BufferAllocator;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.Vec3d;
+import sixtwo.gb;
+import sixtwo.iS;
+import sixtwo.jC;
+import sixtwo.kn$uh;
+import sixtwo.ko;
+import sixtwo.lF;
+import sixtwo.lI;
+import sixtwo.rD;
+import sixtwo.rm;
+
+public class kn {
+    public static boolean YNOIY;
+    private static int pzGvS;
+    private static final OrderedRenderCommandQueue Ejyed;
+    private static jC nAplu;
+    private static String[] UvnjA;
+    private static final long JOztZ;
+    private static final /* synthetic */ byte[] $mango$6dc686caab50ed59;
+
+    /*
+     * Unable to fully structure code
+     */
+    public static void bQq(RenderPipeline var0, Framebuffer var1_1, Consumer<RenderPass> var2_2) {
+        block38: {
+            var3_3 = kn.JOztZ ^ 127839791378549L;
+            var6_4 = new BufferAllocator(VertexFormats.POSITION_TEXTURE.getVertexSize() * 4);
+            var5_5 = kn.bQy();
+            try {
+                block37: {
+                    block35: {
+                        block34: {
+                            block32: {
+                                block33: {
+                                    block31: {
+                                        block29: {
+                                            block30: {
+                                                var7_6 = new BufferBuilder(var6_4, VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+                                                var8_8 = rm.dip();
+                                                cfr_temp_0 = var8_8.x - 0.0f;
+                                                v0 = cfr_temp_0 == 0.0f ? 0 : (cfr_temp_0 > 0.0f ? 1 : -1);
+                                                if (var5_5 == null) break block29;
+                                                try {
+                                                    block40: {
+                                                        if (v0 <= 0) break block30;
+                                                        break block40;
+                                                        catch (Throwable v1) {
+                                                            throw kn.bQz(v1);
+                                                        }
+                                                    }
+                                                    v2 = var8_8.x;
+                                                    break block31;
+                                                }
+                                                catch (Throwable v3) {
+                                                    throw kn.bQz(v3);
+                                                }
+                                            }
+                                            v0 = var1_1.textureWidth;
+                                        }
+                                        v2 = v0;
+                                    }
+                                    var9_10 = v2;
+                                    cfr_temp_1 = var8_8.y - 0.0f;
+                                    v4 = cfr_temp_1 == 0.0f ? 0 : (cfr_temp_1 > 0.0f ? 1 : -1);
+                                    if (var5_5 == null) break block32;
+                                    try {
+                                        block41: {
+                                            if (v4 <= 0) break block33;
+                                            break block41;
+                                            catch (Throwable v5) {
+                                                throw kn.bQz(v5);
+                                            }
+                                        }
+                                        v6 = var8_8.y;
+                                        break block34;
+                                    }
+                                    catch (Throwable v7) {
+                                        throw kn.bQz(v7);
+                                    }
+                                }
+                                v4 = var1_1.textureHeight;
+                            }
+                            v6 = v4;
+                        }
+                        var10_11 = v6;
+                        var7_6.vertex(0.0f, 0.0f, 0.0f).texture(0.0f, 1.0f);
+                        var7_6.vertex(0.0f, var10_11, 0.0f).texture(0.0f, 0.0f);
+                        var7_6.vertex(var9_10, var10_11, 0.0f).texture(1.0f, 0.0f);
+                        var7_6.vertex(var9_10, 0.0f, 0.0f).texture(1.0f, 1.0f);
+                        var11_12 = var7_6.endNullable();
+                        try {
+                            block36: {
+                                v8 = var11_12;
+                                if (var5_5 == null) break block35;
+                                try {
+                                    block42: {
+                                        if (v8 == null) break block36;
+                                        break block42;
+                                        catch (Throwable v9) {
+                                            throw kn.bQz(v9);
+                                        }
+                                    }
+                                    lF.cfJ(var1_1, var0, var11_12, var2_2);
+                                }
+                                catch (Throwable v10) {
+                                    throw kn.bQz(v10);
+                                }
+                            }
+                            v8 = var11_12;
+                        }
+                        catch (Throwable var12_13) {
+                            block39: {
+                                try {
+                                    v11 = var11_12;
+                                    if (var5_5 != null) {
+                                        if (v11 == null) break block39;
+                                    }
+                                    ** GOTO lbl83
+                                }
+                                catch (Throwable v12) {
+                                    throw kn.bQz(v12);
+                                }
+                                try {
+                                    v11 = var11_12;
+lbl83:
+                                    // 2 sources
+
+                                    v11.close();
+                                }
+                                catch (Throwable var13_14) {
+                                    var12_13.addSuppressed(var13_14);
+                                }
+                            }
+                            throw var12_13;
+                        }
+                    }
+                    try {
+                        if (var5_5 == null) break block37;
+                        if (v8 == null) break block38;
+                    }
+                    catch (Throwable v13) {
+                        throw kn.bQz(v13);
+                    }
+                    v8 = var11_12;
+                }
+                v8.close();
+            }
+            finally {
+                var6_4.close();
+            }
+        }
+        try {
+            if (var5_5 == null) {
+                iS.bwK("TzJsIb");
+            }
+        }
+        catch (Throwable v14) {
+            throw kn.bQz(v14);
+        }
+    }
+
+    public static boolean bQp() {
+        boolean bl2;
+        block2: {
+            block3: {
+                long l2 = JOztZ ^ 0x5F99FD518E3CL;
+                String[] stringArray = kn.bQy();
+                try {
+                    bl2 = pzGvS;
+                    if (stringArray == null) break block2;
+                    if (bl2 <= false) break block3;
+                }
+                catch (MatchException matchException) {
+                    throw kn.bQz(matchException);
+                }
+                bl2 = true;
+                break block2;
+            }
+            bl2 = false;
+        }
+        return bl2;
+    }
+
+    static void bQu(Entity entity, float f2, MatrixStack matrixStack) {
+        WorldRenderState worldRenderState = ((LevelRendererAccessor)rD.dlmvG.worldRenderer).getLevelRenderState();
+        try {
+            EntityRenderState entityRenderState = rD.dlmvG.getEntityRenderDispatcher().getAndUpdateRenderState(entity, f2);
+            Vec3d vec3d = worldRenderState.cameraRenderState.pos;
+            rD.dlmvG.getEntityRenderDispatcher().render(entityRenderState, worldRenderState.cameraRenderState, entityRenderState.x - vec3d.x, entityRenderState.y - vec3d.y, entityRenderState.z - vec3d.z, matrixStack, Ejyed);
+        }
+        catch (Throwable throwable) {
+            // empty catch block
+        }
+    }
+
+    public static void bQv() {
+        kn.bQw().bGY();
+    }
+
+    public static String[] bQy() {
+        return UvnjA;
+    }
+
+    /*
+     * Unable to fully structure code
+     */
+    public static void bQr(RenderPipeline var0, Framebuffer var1_1, Consumer<RenderPass> var2_2) {
+        block24: {
+            var3_3 = kn.JOztZ ^ 62590962326875L;
+            var6_4 = new BufferAllocator(VertexFormats.POSITION.getVertexSize() * 4);
+            var5_5 = kn.bQy();
+            try {
+                block23: {
+                    block21: {
+                        var7_6 = new BufferBuilder(var6_4, VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+                        var7_6.vertex(-1.0f, -1.0f, 0.0f);
+                        var7_6.vertex(1.0f, -1.0f, 0.0f);
+                        var7_6.vertex(1.0f, 1.0f, 0.0f);
+                        var7_6.vertex(-1.0f, 1.0f, 0.0f);
+                        var8_8 = var7_6.endNullable();
+                        try {
+                            block22: {
+                                v0 = var8_8;
+                                if (var5_5 == null) break block21;
+                                try {
+                                    block26: {
+                                        if (v0 == null) break block22;
+                                        break block26;
+                                        catch (Throwable v1) {
+                                            throw kn.bQz(v1);
+                                        }
+                                    }
+                                    lF.cfJ(var1_1, var0, var8_8, var2_2);
+                                }
+                                catch (Throwable v2) {
+                                    throw kn.bQz(v2);
+                                }
+                            }
+                            v0 = var8_8;
+                        }
+                        catch (Throwable var9_10) {
+                            block25: {
+                                try {
+                                    v3 = var8_8;
+                                    if (var5_5 != null) {
+                                        if (v3 == null) break block25;
+                                    }
+                                    ** GOTO lbl42
+                                }
+                                catch (Throwable v4) {
+                                    throw kn.bQz(v4);
+                                }
+                                try {
+                                    v3 = var8_8;
+lbl42:
+                                    // 2 sources
+
+                                    v3.close();
+                                }
+                                catch (Throwable var10_11) {
+                                    var9_10.addSuppressed(var10_11);
+                                }
+                            }
+                            throw var9_10;
+                        }
+                    }
+                    try {
+                        if (var5_5 == null) break block23;
+                        if (v0 == null) break block24;
+                    }
+                    catch (Throwable v5) {
+                        throw kn.bQz(v5);
+                    }
+                    v0 = var8_8;
+                }
+                v0.close();
+            }
+            finally {
+                var6_4.close();
+            }
+        }
+        try {
+            if (iS.bwL() == null) {
+                kn.bQx(new String[4]);
+            }
+        }
+        catch (Throwable v6) {
+            throw kn.bQz(v6);
+        }
+    }
+
+    private static Throwable bQz(Throwable throwable) {
+        return throwable;
+    }
+
+    public static void bQo(Runnable runnable) {
+        ++pzGvS;
+        try {
+            runnable.run();
+        }
+        finally {
+            --pzGvS;
+        }
+    }
+
+    public static void bQs(Entity entity, float f2, MatrixStack matrixStack) {
+        lF.cfA(kn.bQt(entity, f2, matrixStack));
+    }
+
+    public static void bQx(String[] stringArray) {
+        UvnjA = stringArray;
+    }
+
+    private static jC bQw() {
+        jC jC2;
+        block4: {
+            block5: {
+                long l2 = JOztZ ^ 0x44D269E7688BL;
+                String[] stringArray = kn.bQy();
+                try {
+                    try {
+                        jC2 = nAplu;
+                        if (stringArray == null) break block4;
+                        if (jC2 != null) break block5;
+                    }
+                    catch (MatchException matchException) {
+                        throw kn.bQz(matchException);
+                    }
+                    nAplu = new jC();
+                }
+                catch (MatchException matchException) {
+                    throw kn.bQz(matchException);
+                }
+            }
+            jC2 = nAplu;
+        }
+        return jC2;
+    }
+
+    static {
+        JOztZ = gb.aYR(-731789322928536930L, -5995118959463714035L, MethodHandles.lookup().lookupClass()).a(167346395562571L);
+        YNOIY = false;
+        pzGvS = 0;
+        kn.bQx(new String[3]);
+        Ejyed = new kn$uh();
+    }
+
+    public static lI bQt(Entity entity, float f2, MatrixStack matrixStack) {
+        return new ko(entity, f2, matrixStack);
+    }
+}
+

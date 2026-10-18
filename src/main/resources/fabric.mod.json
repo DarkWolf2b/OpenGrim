@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "opengrim",
+	"version": "${version}",
+	"name": "OpenGrim",
+	"description": "Clean-room, GPL-3.0 open-source rebuild of the Grim 4.4 Fabric 1.21.11 utility client.",
+	"authors": [
+		"OpenGrim contributors"
+	],
+	"contact": {},
+	"license": "GPL-3.0-or-later",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"dev.opengrim.OpenGrimClient"
+		]
+	},
+	"mixins": [
+		"opengrim.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.0",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

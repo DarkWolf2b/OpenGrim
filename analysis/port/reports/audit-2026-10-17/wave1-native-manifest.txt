@@ -1,0 +1,59 @@
+batch-01.md:13: **zero matches** — no [N] body could be observed at runtime.
+batch-01.md:46: - [N] `_95f35cd333be09af769faf93936605a8()V` (class-init + 9 continuation blocks; no
+batch-01.md:67: - [N] `_e4e61cf1cd02b1b2e46e5f297e1a41ef()V` (the class's only native; clinit) —
+batch-01.md:84: - [N] `alC(Lsixtwo/gJ;)V` [18de4c9a0] — VM-virtualized → needs runtime trace; the close
+batch-01.md:103: - [N] `avk(Lsixtwo/gL$tj;)V` [18cd02f60] — VM-virtualized → needs runtime trace; spoof
+batch-01.md:123: - [N] `aqT(Lsixtwo/gH$th;)V` [18d82e2c0] — VM-virtualized → needs runtime trace; the written
+batch-01.md:142: - [N] `aaj()V` [18e0006c0] + `YO()V` [18e005f20] — VM-virtualized → needs runtime trace; the
+batch-01.md:160: - [N] `apI(Lsixtwo/gH$th;)V` [18da3dea0] — VM-virtualized → needs runtime trace; target
+batch-01.md:180: - [N] `aXZ(Lsixtwo/gL$tk;)V` [18a73dad0] — VM-virtualized → needs runtime trace; latency math,
+batch-01.md:198: - [N] `auR(Lsixtwo/hq;)V` [18ce21500] + `aaj()V` [18ce1e230] — VM-virtualized → needs
+batch-01.md:216: pre-motion, ew.md:21) and the [N] method name.
+batch-01.md:221: - [N] `auT(Lsixtwo/gH$th;)V` [18ce0eee0] — VM-virtualized → needs runtime trace; the written
+batch-01.md:240: override (`true`, fQ.java:19) + javadoc honesty (stand-in labeled, [N] named)
+batch-01.md:244: VM-resident [N]; heuristic labeled discretionary)
+batch-02.md:11: `analysis/specs/handlers/{el,eA}.md`). [N] items are excluded from the
+batch-02.md:82: - [N] `aAY(Lsixtwo/hw$tv;)V` (attack listener) and `aAZ(Lsixtwo/gH$th;)V`
+batch-02.md:87: - [N] `eP.aBU()`/`LuzRg` shared int[] config semantics (no eM rows in
+batch-02.md:114: - [N] `atb(Lsixtwo/gH$th;)V`, `atc()V`, `atd()V` — VM-virtualized → needs
+batch-02.md:143: - [N] `asP(Lsixtwo/gM;)V`, `asQ(Lsixtwo/hv;)V`, `asR(Lsixtwo/hc;)V` —
+batch-02.md:173: - [N] `arz(Lsixtwo/gH$th;)V` (whole behavior) — VM-virtualized → needs runtime
+batch-02.md:201: - [N] `aaj()V` (enable override) and `atp()V` (private helper) —
+batch-02.md:224: - [N] `atX()Lsixtwo/cC;` (getter body) and `atY(IJ)I` (VM engine entry; 36
+batch-02.md:252: - [N] `avm(Lsixtwo/gH$th;)V` (whole behavior) — VM-virtualized → needs runtime
+batch-02.md:276: - [N] `aWj()V` (activity build/publish worker) and `aaj()V`/`YO()V` overrides —
+batch-02.md:279: - [N] HTTP transport layer: `ry` POSTs the `qn` DTO to a remote endpoint whose
+batch-02.md:312: - [N] `aon(Lsixtwo/gz;)V` (the only behavior entry) — key-input handler,
+batch-02.md:345: - [N] `aXP(Lsixtwo/gy;)V` (the whole behavior) — VM-virtualized → needs runtime
+batch-03.md:63: - [N] No behavior handler exists in the class — the safe-walk patch lives in the
+batch-03.md:85: - [N] `aaj()V` / `YO()V` bodies VM-virtualized (trace: only aqg/aqh/aqi/aqj
+batch-03.md:111: - [N] `asT(Lsixtwo/gH$th;)V`, `asU(Lsixtwo/gB;)V`, `asV()Z`,
+batch-03.md:131: - [N] `ari(Lsixtwo/gH$th;)V` body VM-virtualized (trace: only the ark/arl/arm
+batch-03.md:153: - [N] `asy(Lsixtwo/gH$th;)V` VM-virtualized (trace: only asA/asB/asC/asD)
+batch-03.md:175: - [N] No behavior handler in eg — swing cancellation is a DLL patch outside the
+batch-03.md:196: - [N] `anq(Lsixtwo/hh;)V` VM-virtualized (trace: only ans/ant/anu entered)
+batch-03.md:218: - [N] `aFE(Lsixtwo/gL$tj;)V`, `aFF()Z`, `aFG()D`,
+batch-03.md:243: - [N] `aJm(Lsixtwo/gM;)V`, `aJn(Lsixtwo/gH$th;)V`, `aJq()Z`, `aJr(ItemStack)Z`,
+batch-03.md:269: - [N] `aaj()V` VM-virtualized (trace: only arE/arF/arG/arH) → needs runtime
+batch-04.md:25: execution. All other [N] items below are unexecuted in the boot/HUD coverage.
+batch-04.md:39: - [N] `aWt(gL$tk)` packet body, `aWr(gN)` chat body, `aWt` skin-asset probe (`AssetInfo$TextureAssetInfo.ofVanilla`, `PlayerSkinType` SLIM/WIDE), `aWp`/`aWq`/`aWv` analysis sub-steps, `aWw()String` report builder, `aWx(String)` delivery, `aWv` verdict latch, `aWy(List,Integer)Z` — corpus `casesafe/handlers-stitched/sixtwo_fP_.c`; VM-virtualized → needs runtime trace.
+batch-04.md:54: - [N] `aJg(hw$tv)` attack-swap body and `aJf(gH$th)` return-swap body (corpus sixtwo_fh.c) — VM-virtualized → needs runtime trace; which component probe selects the "attribute" item stays native.
+batch-04.md:69: - [N] `awz()Z` — the module's entire behavior query (corpus sixtwo_eE.c, handler `[18cafbc00]`) — VM-virtualized → needs runtime trace; exact offset/expand vectors unrecovered (eE_.md §Unrecovered 1).
+batch-04.md:86: - [N] `aoR(gO$tm)`/`aoS(gO$tn)` tick bodies and `aoT() : Hand` selector (corpus sixtwo_dP.c) — VM-virtualized → needs runtime trace; the virtualized raycast/rebuild math is approximated by the use-key edge + block raycast (recorded in the javadoc).
+batch-04.md:102: - [N] `aDC(gH$th)` placement body, `aDI(BlockHitResult,I) → Packet` factory (`PlayerInteractBlockC2SPacket(Hand, BlockHitResult, sequence)`, class_2885), state getters `aDD/aDE/aDF/aDG/aDH` (corpus sixtwo_eU_.c) — VM-virtualized → needs runtime trace.
+batch-04.md:117: - [N] `aCF(gA)` input arm, `aCG(gv)` secondary trigger, `aCH(gH$th)` tick body, `aCI(ItemStack)Z` predicate (corpus sixtwo_eR_.c) — VM-virtualized → needs runtime trace; the wind-charge identity rests on the registry description only (eR.md §Blockers).
+batch-04.md:132: - [N] `aup(hd)` block-push body and `auq(hq)` entity-push body (corpus sixtwo_es.c) — VM-virtualized → needs runtime trace; whether cancellation is unconditional or gated (pistons, slime, riptide…) is only known at contract level (es.md §Unrecovered 1).
+batch-04.md:149: - [N] `aHU(gv)` tick body, `aHV(gH$th)` marker, plan builders/geometry `aHW/aHX/aHY/aHZ/aIa/aIc/aIb` (corpus sixtwo_fd.c, 17 handlers) — VM-virtualized → needs runtime trace.
+batch-04.md:166: - [N] getter trampolines `aWH/aWI/aWJ/aWK` are VM-virtualized (corpus sixtwo_fR.c) but contract-pinned to field reads — ported as accessors; no behavior bodies exist in this class.
+batch-04.md:182: - [N] `auJ(gD)` boost body (corpus sixtwo_eu.c, handler `[0x18ce32b20]`) — VM-virtualized → needs runtime trace.
+batch-05.md:21: logs no values (enter/exit only). All behavior remains [N] VM-virtualized.
+batch-05.md:59: - [N] `aRT(Lsixtwo/gL$tk;)V` (S2C packet handler, image 18b087870), `aRU(Lsixtwo/hc;)V`
+batch-05.md:99: - [N] `akB(Lsixtwo/gO$tm;)V` (the module's only behavior entry, image 18df69e10) —
+batch-05.md:130: - [N] `ana(Lsixtwo/gv;)V` (tick, 18dd51400), `anc(Lsixtwo/gV;)V` (block change,
+batch-05.md:164: - [N] `apC(Lsixtwo/hm;)V` (the entire behavior, 18da56430), `apD()Z` (private
+batch-05.md:195: - [N] `aVf(Lsixtwo/gH$th;)V` (tick, 18ac20330), `aVg(Lnet/minecraft/class_2680;)V`
+batch-05.md:223: - [N] `aSw(Lsixtwo/gL$tk;)V` (packet handler, 18af2bc60), `aSx(DDI)D` (per-axis
+batch-05.md:264: - [N] `ati(Lsixtwo/hs;)V` (jump-velocity event, 18d1a6f20), `atj(Lsixtwo/gH$th;)V`
+batch-05.md:292: - [N] `aSa(Lsixtwo/gH$th;)V` (the entire behavior, 18b02a580) — VM-virtualized →
+batch-05.md:319: - [N] `aBt(Lsixtwo/gA;)V` (mouse/activation, 18c06d720), `aBu(Lsixtwo/gv;)V`
+batch-05.md:352: - [N] `awH(Lsixtwo/hw$tv;)V` (attack, 18c981be0), `awF(Lsixtwo/gY;)V` (reach,

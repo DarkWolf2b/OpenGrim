@@ -1,0 +1,163 @@
+class_id	module	spec_file	impl_cites_spec	impl_file	status
+cP	Trajectories	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Trajectories.java	NOT_CITED
+cQ	Swing Animations	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/SwingAnimations.java	NOT_CITED
+cR	Particles	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Particles.java	NOT_CITED
+cS	China Hat	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/ChinaHat.java	NOT_CITED
+cT	Pop Chams	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/PopChams.java	NOT_CITED
+cU	Trails	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Trails.java	NOT_CITED
+cV	Skeleton ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/SkeletonEsp.java	NOT_CITED
+cW	Trap ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/TrapEsp.java	NOT_CITED
+cX	Fake Player	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/FakePlayer.java	NOT_CITED
+cY	Shield Status	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/ShieldStatus.java	NOT_CITED
+cZ	Soul Effects	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/SoulEffects.java	NOT_CITED
+dA	Elytra Target	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/ElytraTarget.java	NOT_CITED
+dB	Full Bright	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/FullBright.java	NOT_CITED
+dC	View Model	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/ViewModel.java	NOT_CITED
+dD	Item Frame Blocker	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/ItemFrameBlocker.java	NOT_CITED
+dE	Spammer	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/Spammer.java	NOT_CITED
+dF	Lever Replace	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/LeverReplace.java	NOT_CITED
+dG	Anti Trap	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/AntiTrap.java	NOT_CITED
+dH	No Sign Screen	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/NoSignScreen.java	NOT_CITED
+dI	Nuker	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/Nuker.java	NOT_CITED
+dJ	Mouse Tweaks	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/MouseTweaks.java	NOT_CITED
+dK	Auto Lever Replace	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AutoLeverReplace.java	NOT_CITED
+dL	No Entity Clip	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/NoEntityClip.java	NOT_CITED
+dM	Auto Market	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AutoMarket.java	NOT_CITED
+dN	Slot Lock	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/SlotLock.java	NOT_CITED
+dO	Hotbar Restorer	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/HotbarRestorer.java	NOT_CITED
+dP	Block Piercer	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/BlockPiercer.java	NOT_CITED
+dQ	Hit Sounds	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/HitSounds.java	NOT_CITED
+dR	Click Action	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/ClickAction.java	NOT_CITED
+dS	Hand No Clip	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/HandNoClip.java	NOT_CITED
+dT	Multi Task	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/MultiTask.java	NOT_CITED
+dU	Auto Fish	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AutoFish.java	NOT_CITED
+dV	Custom FOV	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/CustomFov.java	NOT_CITED
+dW	Freecam	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Freecam.java	NOT_CITED
+dX	No Miss Delay	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/NoMissDelay.java	NOT_CITED
+dY	Anti Invisible	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/AntiInvisible.java	NOT_CITED
+dZ	Fast Place	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/FastPlace.java	NOT_CITED
+da	Sound ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/SoundEsp.java	NOT_CITED
+db	Jump Circle	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/JumpCircle.java	NOT_CITED
+dc	Hit Particles	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/HitParticles.java	NOT_CITED
+dd	Block ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/BlockEsp.java	NOT_CITED
+de	Hand Chams	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/HandChams.java	NOT_CITED
+df	Aspect Ratio	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/AspectRatio.java	NOT_CITED
+dg	Pearl Prediction	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/PearlPrediction.java	NOT_CITED
+dh	Ambience	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/Ambience.java	NOT_CITED
+di	2D ESP	yes	-		NO_IMPL_FOUND
+dj	Hole ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/HoleEsp.java	NOT_CITED
+dk	XRay	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/XRay.java	NOT_CITED
+dl	Outlines	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Outlines.java	NOT_CITED
+dm	Friend Indicator	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/FriendIndicator.java	NOT_CITED
+dn	Firework Spots	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/FireworkSpots.java	NOT_CITED
+do	Arrows	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Arrows.java	NOT_CITED
+dp	Logout Spots	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/LogoutSpots.java	NOT_CITED
+dq	Storage ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/StorageEsp.java	NOT_CITED
+dr	Health Indicators	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/HealthIndicators.java	NOT_CITED
+ds	Entity ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/EntityEsp.java	NOT_CITED
+dt	Nametags	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Nametags.java	NOT_CITED
+du	Tracers	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Tracers.java	NOT_CITED
+dv	Chams	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Chams.java	NOT_CITED
+dw	Circle ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/CircleEsp.java	NOT_CITED
+dx	Anti Blind	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/AntiBlind.java	NOT_CITED
+dy	Glow	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Glow.java	NOT_CITED
+dz	Target ESP	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/TargetEsp.java	NOT_CITED
+eA	Strafe	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Strafe.java	NOT_CITED
+eB	Flight	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Flight.java	NOT_CITED
+eC	Sprint	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Sprint.java	NOT_CITED
+eD	Fast Bridge	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/FastBridge.java	NOT_CITED
+eE	Parkour	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Parkour.java	NOT_CITED
+eF	Spear Reach	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/SpearReach.java	NOT_CITED
+eG	Spear Lunge	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/SpearLunge.java	NOT_CITED
+eH	Spear Dash	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/SpearDash.java	NOT_CITED
+eI	Spear Double Tap	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/SpearDoubleTap.java	NOT_CITED
+eJ	Auto Trap	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AutoTrap.java	NOT_CITED
+eK	Auto Web	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AutoWeb.java	NOT_CITED
+eM	Double Tap	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/DoubleTap.java	NOT_CITED
+eN	Mace Swap	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/MaceSwap.java	NOT_CITED
+eO	Auto Pearl Catch	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/AutoPearlCatch.java	NOT_CITED
+eP	Mace Aura	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/MaceAura.java	NOT_CITED
+eQ	Mace Elytra Target	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/MaceElytraTarget.java	NOT_CITED
+eR	Wind Hop	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/WindHop.java	NOT_CITED
+eS	Auto Stun Slam	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoStunSlam.java	NOT_CITED
+eT	Shield Drain	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/ShieldDrain.java	NOT_CITED
+eU	Air Anchor	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AirAnchor.java	NOT_CITED
+eV	Auto Crystal	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoCrystal.java	NOT_CITED
+eW	Auto Hit Crystal	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoHitCrystal.java	NOT_CITED
+eX	Anchor Macro	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AnchorMacro.java	NOT_CITED
+eY	Crystal Optimizer	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/CrystalOptimizer.java	NOT_CITED
+eZ	Auto Double Hand	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoDoubleHand.java	NOT_CITED
+ea	No Break Delay	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/NoBreakDelay.java	NOT_CITED
+eb	Chest Stealer	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/ChestStealer.java	NOT_CITED
+ec	Ghost Hand	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/GhostHand.java	NOT_CITED
+ed	Custom Camera Distance	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/CustomCameraDistance.java	NOT_CITED
+ee	Cape	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Cape.java	NOT_CITED
+ef	Elytra Swapper	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/ElytraSwapper.java	NOT_CITED
+eg	No Swing	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/NoSwing.java	NOT_CITED
+eh	Auto Exp	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AutoExp.java	NOT_CITED
+ei	Scaffold	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Scaffold.java	NOT_CITED
+ej	Air Stuck	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/AirStuck.java	NOT_CITED
+ek	Inventory Move	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/InventoryMove.java	NOT_CITED
+el	Water Speed	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/WaterSpeed.java	NOT_CITED
+em	High Jump	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/HighJump.java	NOT_CITED
+en	Anti Ghost	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AntiGhost.java	NOT_CITED
+eo	No Slow	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/NoSlow.java	NOT_CITED
+ep	Super Firework	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/SuperFirework.java	NOT_CITED
+eq	Null Movement	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/NullMovement.java	NOT_CITED
+er	Speed	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Speed.java	NOT_CITED
+es	No Push	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/NoPush.java	NOT_CITED
+et	Anti Web	yes	yes	/workspace/src/main/java/dev/opengrim/modules/movement/AntiWeb.java	OK
+eu	Trident Boost	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/TridentBoost.java	NOT_CITED
+ev	Collision Long Jump	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/CollisionLongJump.java	NOT_CITED
+ew	No Jump Delay	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/NoJumpDelay.java	NOT_CITED
+ex	Safe Walk	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/SafeWalk.java	NOT_CITED
+ey	Blink	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/Blink.java	NOT_CITED
+ez	No Fall	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/NoFall.java	NOT_CITED
+fA	Potion Refill	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/PotionRefill.java	NOT_CITED
+fB	Auto Shield Break	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoShieldBreak.java	NOT_CITED
+fC	Velocity	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/Velocity.java	NOT_CITED
+fD	Uncharge Block	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/UnchargeBlock.java	NOT_CITED
+fE	No Miss	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/NoMiss.java	NOT_CITED
+fF	Trigger Bot	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/TriggerBot.java	NOT_CITED
+fG	W-Tap	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/WTap.java	NOT_CITED
+fH	Aim Assist	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AimAssist.java	NOT_CITED
+fI	Auto Logout	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoLogout.java	NOT_CITED
+fJ	Target Margin	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/TargetMargin.java	NOT_CITED
+fK	Reach	yes	yes	/workspace/src/main/java/dev/opengrim/modules/combat/Reach.java	OK
+fL	Auto Tool	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoTool.java	NOT_CITED
+fM	Auto MLG	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AutoMlg.java	NOT_CITED
+fN	Skin Protect	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/SkinProtect.java	NOT_CITED
+fO	Discord Activity	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/DiscordActivity.java	NOT_CITED
+fP	Anti-Cheat Detector	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AntiCheatDetector.java	NOT_CITED
+fQ	No Protocol Disconnect	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/NoProtocolDisconnect.java	NOT_CITED
+fR	Client Sounds	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/ClientSounds.java	NOT_CITED
+fS	Name Protect	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/NameProtect.java	NOT_CITED
+fT	Resource Pack Bypass	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/ResourcePackBypass.java	NOT_CITED
+fU	Middle Click Friend	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/MiddleClickFriend.java	NOT_CITED
+fV	Self Destruct	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/SelfDestruct.java	NOT_CITED
+fW	Transactions	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/Transactions.java	NOT_CITED
+fX	Interface	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/Interface.java	NOT_CITED
+fa	Auto X-Bow	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoXBow.java	NOT_CITED
+fb	Cart Assist	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/CartAssist.java	NOT_CITED
+fc	Cart Refill	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/CartRefill.java	NOT_CITED
+fd	Auto Dripstone	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AutoDripstone.java	NOT_CITED
+ff	Fake Lag	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/FakeLag.java	NOT_CITED
+fg	Target Lock	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/TargetLock.java	NOT_CITED
+fh	Attribute Swap	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AttributeSwap.java	NOT_CITED
+fi	Shield Block	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/ShieldBlock.java	NOT_CITED
+fj	Projectile Aim Bot	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/ProjectileAimBot.java	NOT_CITED
+fl	Auto Potion	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoPotion.java	NOT_CITED
+fm	Pearl Chaser	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/PearlChaser.java	NOT_CITED
+fn	Auto Clicker	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AutoClicker.java	NOT_CITED
+fo	Anti Bot	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AntiBot.java	NOT_CITED
+fp	Backtrack	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/Backtrack.java	NOT_CITED
+fq	Hitbox	yes	no	/workspace/src/main/java/dev/opengrim/modules/render/Hitbox.java	NOT_CITED
+fr	Kill Aura	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/KillAura.java	NOT_CITED
+fs	Knockback Displacement	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/KnockbackDisplacement.java	NOT_CITED
+ft	Auto GApple	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AutoGApple.java	NOT_CITED
+fu	Criticals	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/Criticals.java	NOT_CITED
+fv	Auto Armor	yes	no	/workspace/src/main/java/dev/opengrim/modules/utility/AutoArmor.java	NOT_CITED
+fw	Auto Drain	yes	no	/workspace/src/main/java/dev/opengrim/modules/world/AutoDrain.java	NOT_CITED
+fx	Auto Totem	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/AutoTotem.java	NOT_CITED
+fy	Totem Refill	yes	no	/workspace/src/main/java/dev/opengrim/modules/combat/TotemRefill.java	NOT_CITED
+fz	Auto Jump Reset	yes	no	/workspace/src/main/java/dev/opengrim/modules/movement/AutoJumpReset.java	NOT_CITED

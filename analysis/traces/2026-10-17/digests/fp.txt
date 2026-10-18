@@ -1,0 +1,15 @@
+== methods (count name) ==
+     74 "m":"aLS"
+     74 "m":"aLP"
+     72 "m":"aLN"
+     72 "m":"aLL"
+     70 "m":"aMu"
+      4 "m":"aLJ"
+      4 "m":"aLG"
+      2 "m":"aaj"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+     37 aLS 0
+     36 aLL 0
+     35 aMu 1
+== strings ==

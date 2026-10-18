@@ -1,0 +1,17 @@
+== methods (count name) ==
+    188 "m":"ahz"
+      6 "m":"aht"
+      3 "m":"ahM"
+      3 "m":"ahL"
+      2 "m":"ahy"
+      2 "m":"ahx"
+      2 "m":"ahK"
+      2 "m":"aaj"
+== numeric exits (count method value) ==
+     93 ahz 0
+      1 ahz 1
+      1 ahL 20
+      1 ahK 20
+== strings ==
+{"e":"str","c":"sixtwo/dp","m":"ahL","v":"c"}
+{"e":"str","c":"sixtwo/dp","m":"ahM","v":"c"}

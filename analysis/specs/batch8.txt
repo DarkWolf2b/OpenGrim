@@ -1,0 +1,18 @@
+fM	Auto MLG
+fN	Skin Protect
+fO	Discord Activity
+fP	Anti-Cheat Detector
+fQ	No Protocol Disconnect
+fR	Client Sounds
+fS	Name Protect
+fT	Resource Pack Bypass
+fU	Middle Click Friend
+fV	Self Destruct
+fW	Transactions
+fX	Interface
+fa	Auto X-Bow
+fb	Cart Assist
+fc	Cart Refill
+fd	Auto Dripstone
+ff	Fake Lag
+fg	Target Lock

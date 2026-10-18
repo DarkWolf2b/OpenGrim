@@ -1,0 +1,76 @@
+{
+ "runtime_base": 123144895528960,
+ "image_base": 6442450944,
+ "sections": {
+  ".text": {
+   "vaddr": "0x1000",
+   "vsize": 87951,
+   "rawsize": 88064,
+   "changed_pages": 0,
+   "total_pages": 22
+  },
+  ".rdata": {
+   "vaddr": "0x17000",
+   "vsize": 50358804,
+   "rawsize": 50359296,
+   "changed_pages": 9480,
+   "total_pages": 12295
+  },
+  ".data": {
+   "vaddr": "0x301e000",
+   "vsize": 4796852,
+   "rawsize": 4790272,
+   "changed_pages": 648,
+   "total_pages": 1170
+  },
+  ".pdata": {
+   "vaddr": "0x34b2000",
+   "vsize": 302544,
+   "rawsize": 302592,
+   "changed_pages": 0,
+   "total_pages": 74
+  },
+  ".fptable": {
+   "vaddr": "0x34fc000",
+   "vsize": 256,
+   "rawsize": 512,
+   "changed_pages": 0,
+   "total_pages": 1
+  },
+  ".tls": {
+   "vaddr": "0x34fd000",
+   "vsize": 9,
+   "rawsize": 512,
+   "changed_pages": 0,
+   "total_pages": 1
+  },
+  "_RDATA": {
+   "vaddr": "0x34fe000",
+   "vsize": 500,
+   "rawsize": 512,
+   "changed_pages": 0,
+   "total_pages": 1
+  },
+  "llvmmsvc": {
+   "vaddr": "0x34ff000",
+   "vsize": 230308692,
+   "rawsize": 230308864,
+   "changed_pages": 0,
+   "total_pages": 56228
+  },
+  ".rsrc": {
+   "vaddr": "0x110a3000",
+   "vsize": 472,
+   "rawsize": 512,
+   "changed_pages": 0,
+   "total_pages": 1
+  },
+  ".reloc": {
+   "vaddr": "0x110a4000",
+   "vsize": 7104812,
+   "rawsize": 7105024,
+   "changed_pages": 0,
+   "total_pages": 1735
+  }
+ }
+}

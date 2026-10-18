@@ -1,0 +1,18 @@
+cP	Trajectories
+cQ	Swing Animations
+cR	Particles
+cS	China Hat
+cT	Pop Chams
+cU	Trails
+cV	Skeleton ESP
+cW	Trap ESP
+cX	Fake Player
+cY	Shield Status
+cZ	Soul Effects
+dA	Elytra Target
+dB	Full Bright
+dC	View Model
+dD	Item Frame Blocker
+dE	Spammer
+dF	Lever Replace
+dG	Anti Trap

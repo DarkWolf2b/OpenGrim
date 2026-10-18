@@ -1,0 +1,18 @@
+== methods (count name) ==
+  17412 "m":"aXy"
+   8706 "m":"aXz"
+   8706 "m":"aXx"
+   8706 "m":"aXw"
+   8706 "m":"aXv"
+   8706 "m":"aXu"
+   8706 "m":"aXs"
+   8706 "m":"aXA"
+      2 "m":"aaj"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+   4353 aXx 0
+   4353 aXw 0
+   4353 aXv 0
+   4353 aXu 0
+   4353 aXA 0
+== strings ==

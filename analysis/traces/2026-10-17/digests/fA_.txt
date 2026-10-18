@@ -1,0 +1,4 @@
+== methods (count name) ==
+      4 "m":"aSa"
+== numeric exits (count method value) ==
+== strings ==

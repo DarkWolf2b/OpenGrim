@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "offline_client_bootstrap",
+  "version": "1.0.0",
+  "name": "Offline Client Bootstrap",
+  "environment": "client",
+  "entrypoints": {
+    "preLaunch": ["offline.bootstrap.OfflinePreLaunch"],
+    "client": ["offline.bootstrap.OfflineClientInit"]
+  },
+  "mixins": ["offline.accessors.mixins.json"],
+  "jars": [
+    { "file": "META-INF/jars/protected-payload.jar" }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "1.21.11",
+    "java": ">=21"
+  }
+}

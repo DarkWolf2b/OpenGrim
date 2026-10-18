@@ -1,0 +1,10 @@
+== methods (count name) ==
+     42 "m":"aEp"
+     28 "m":"aEq"
+      6 "m":"aDS"
+      6 "m":"aDP"
+      6 "m":"aDO"
+== numeric exits (count method value) ==
+     21 aEp 1
+     14 aEq 0
+== strings ==

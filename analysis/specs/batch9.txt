@@ -1,0 +1,18 @@
+fh	Attribute Swap
+fi	Shield Block
+fj	Projectile Aim Bot
+fl	Auto Potion
+fm	Pearl Chaser
+fn	Auto Clicker
+fo	Anti Bot
+fp	Backtrack
+fq	Hitbox
+fr	Kill Aura
+fs	Knockback Displacement
+ft	Auto GApple
+fu	Criticals
+fv	Auto Armor
+fw	Auto Drain
+fx	Auto Totem
+fy	Totem Refill
+fz	Auto Jump Reset

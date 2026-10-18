@@ -1,0 +1,12 @@
+== methods (count name) ==
+    144 "m":"aOQ"
+     12 "m":"aNB"
+      6 "m":"aNx"
+      6 "m":"aNu"
+      6 "m":"aNs"
+      6 "m":"aNr"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+      6 aNB 0
+      3 aNx 6
+== strings ==

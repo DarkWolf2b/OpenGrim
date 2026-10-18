@@ -1,0 +1,81 @@
+package sixtwo;
+
+import java.lang.invoke.MethodHandles;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import net.minecraft.util.math.Direction;
+
+// $VF: synthetic class
+class oC$vl {
+   static final int[] GISLY;
+
+   static {
+      long var7 = gb.aYR(-2369264819587817466L, 4973604831681239759L, MethodHandles.lookup().lookupClass()).a(132984123586490L) ^ 44933619408611L;
+      Cipher var2;
+      Cipher var10000 = var2 = Cipher.getInstance("DES/CBC/NoPadding");
+      SecretKeyFactory var10002 = SecretKeyFactory.getInstance("DES");
+      byte[] var10003 = new byte[]{(byte)(var7 >>> 56), 0, 0, 0, 0, 0, 0, 0};
+
+      for (int var3 = 1; var3 < 8; var3++) {
+         var10003[var3] = (byte)(var7 << var3 * 8 >>> 56);
+      }
+
+      var10000.init(2, var10002.generateSecret(new DESKeySpec(var10003)), new IvParameterSpec(new byte[8]));
+      long var4 = 6155715163057831440L;
+      byte[] var6 = var2.doFinal(
+         new byte[]{
+            (byte)(var4 >>> 56),
+            (byte)(var4 >>> 48),
+            (byte)(var4 >>> 40),
+            (byte)(var4 >>> 32),
+            (byte)(var4 >>> 24),
+            (byte)(var4 >>> 16),
+            (byte)(var4 >>> 8),
+            (byte)var4
+         }
+      );
+      long var16 = (var6[0] & 255L) << 56
+         | (var6[1] & 255L) << 48
+         | (var6[2] & 255L) << 40
+         | (var6[3] & 255L) << 32
+         | (var6[4] & 255L) << 24
+         | (var6[5] & 255L) << 16
+         | (var6[6] & 255L) << 8
+         | var6[7] & 255L;
+      byte var10001 = -1;
+      long var0 = var16;
+      GISLY = new int[Direction.values().length];
+
+      try {
+         GISLY[Direction.UP.ordinal()] = 1;
+      } catch (NoSuchFieldError var15) {
+      }
+
+      try {
+         GISLY[Direction.DOWN.ordinal()] = 2;
+      } catch (NoSuchFieldError var14) {
+      }
+
+      try {
+         GISLY[Direction.EAST.ordinal()] = 3;
+      } catch (NoSuchFieldError var13) {
+      }
+
+      try {
+         GISLY[Direction.WEST.ordinal()] = 4;
+      } catch (NoSuchFieldError var12) {
+      }
+
+      try {
+         GISLY[Direction.NORTH.ordinal()] = 5;
+      } catch (NoSuchFieldError var11) {
+      }
+
+      try {
+         GISLY[Direction.SOUTH.ordinal()] = (int)var0;
+      } catch (NoSuchFieldError var10) {
+      }
+   }
+}

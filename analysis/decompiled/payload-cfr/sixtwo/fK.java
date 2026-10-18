@@ -1,0 +1,418 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package sixtwo;
+
+import java.lang.invoke.CallSite;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.invoke.MutableCallSite;
+import java.security.Key;
+import java.util.HashMap;
+import java.util.Map;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.IvParameterSpec;
+import sixtwo.cC;
+import sixtwo.fg;
+import sixtwo.gb;
+import sixtwo.gf;
+import sixtwo.gg;
+import sixtwo.gh;
+import sixtwo.mr;
+import sixtwo.rD;
+
+public class fK
+extends gg {
+    private final cC IRxGK;
+    private final cC hDYSX;
+    private static final long YOIFW;
+    private static final String[] ZSzib;
+    private static final String[] ZYcLJ;
+    private static final Map NbiLf;
+    private static final long[] MBsFK;
+    private static final Integer[] JSHgz;
+    private static final Map aROsM;
+    private static final /* synthetic */ byte[] $mango$6dc686caab50ed59;
+
+    public fK() {
+        long l = YOIFW ^ 0x49076E028A03L;
+        super(gf.aZL((int)fK.aVe("r", (int)8144, (long)(0x6AEE95A42EACCD38L ^ l)), false, gh.xwjCw));
+        int[] nArray = new int[fK.aVe("r", (int)21746, (long)(0x3227499F75AB8608L ^ l))];
+        nArray[0] = (int)fK.aVe("r", (int)11924, (long)(0x58BCCEFA5F0E7C66L ^ l));
+        nArray[1] = (int)fK.aVe("r", (int)30514, (long)(0x560A25A6C28925DFL ^ l));
+        nArray[2] = (int)fK.aVe("r", (int)23737, (long)(0xE0CAC2387F78E5DL ^ l));
+        nArray[3] = (int)fK.aVe("r", (int)3440, (long)(0x8AA02B27D3DDF8EL ^ l));
+        nArray[4] = (int)fK.aVe("r", (int)23182, (long)(0x5ECD170C49CA0872L ^ l));
+        nArray[5] = (int)fK.aVe("r", (int)27196, (long)(0x478E4CA66014B8DEL ^ l));
+        nArray[fK.aVe("r", (int)23550, (long)(0x432C4A7BFCA8909L ^ l))] = (int)fK.aVe("r", (int)25022, (long)(0x531CE50BA893B372L ^ l));
+        nArray[fK.aVe("r", (int)20443, (long)(0x3B04AA8E49329D24L ^ l))] = (int)fK.aVe("r", (int)32551, (long)(0x3628057B1DC12DC6L ^ l));
+        nArray[fK.aVe("r", (int)25507, (long)(0x1696A01FD7A33152L ^ l))] = (int)fK.aVe("r", (int)8769, (long)(0x2CD996EC8F35F0B9L ^ l));
+        nArray[fK.aVe("r", (int)1870, (long)(0x1B8122CCC98255A7L ^ l))] = (int)fK.aVe("r", (int)16797, (long)(0x1D50B9503D0937DL ^ l));
+        nArray[fK.aVe("r", (int)6302, (long)(0x36C68D14C61C4A65L ^ l))] = (int)fK.aVe("r", (int)7010, (long)(0x3437C72EEAC3C9AAL ^ l));
+        nArray[fK.aVe("r", (int)23705, (long)(0x6053C60C71E90E6FL ^ l))] = (int)fK.aVe("r", (int)19151, (long)(0x62A63F44B4141825L ^ l));
+        this.IRxGK = new cC(this, mr.clS(nArray)).Vy(0.01).Vw(3.0).Vx(6.0).VA(3.0).Vz((String)((Object)fK.aVb("k", (int)18297, (long)(0x16EFD97D19E47737L ^ l))));
+        int[] nArray2 = new int[fK.aVe("r", (int)27114, (long)(0x178956E45A82BB23L ^ l))];
+        nArray2[0] = (int)fK.aVe("r", (int)13410, (long)(0x595F72F48A9BE68CL ^ l));
+        nArray2[1] = (int)fK.aVe("r", (int)11539, (long)(0x441A157AB0BA7FF8L ^ l));
+        nArray2[2] = (int)fK.aVe("r", (int)4593, (long)(0x61036C261DCA4305L ^ l));
+        nArray2[3] = (int)fK.aVe("r", (int)6776, (long)(0x40ED0F24AD0C88BL ^ l));
+        nArray2[4] = (int)fK.aVe("r", (int)10031, (long)(0x6EEE8A83605C75CCL ^ l));
+        nArray2[5] = (int)fK.aVe("r", (int)18623, (long)(0x56354DBD527C9A53L ^ l));
+        nArray2[fK.aVe("r", (int)21176, (long)(0x4D626C55C16C8077L ^ l))] = (int)fK.aVe("r", (int)17651, (long)(0x358C277EC0579606L ^ l));
+        nArray2[fK.aVe("r", (int)15831, (long)(0x4E63CCF633B76F27L ^ l))] = (int)fK.aVe("r", (int)21346, (long)(0x483304DFDA3F81ACL ^ l));
+        nArray2[fK.aVe("r", (int)17404, (long)(0x39BCC9A13A4E1119L ^ l))] = (int)fK.aVe("r", (int)24454, (long)(0x755C45F05C538D4BL ^ l));
+        nArray2[fK.aVe("r", (int)11490, (long)(0x333C1E2D2F17FE0DL ^ l))] = (int)fK.aVe("r", (int)11539, (long)(0x441A157AB0BA7FF8L ^ l));
+        nArray2[fK.aVe("r", (int)26102, (long)(0x5791ED5DAFC2B711L ^ l))] = (int)fK.aVe("r", (int)15595, (long)(0x4BB36CB846D2EE16L ^ l));
+        nArray2[fK.aVe("r", (int)18450, (long)(0x7C02063AA53D9AF4L ^ l))] = (int)fK.aVe("r", (int)16532, (long)(0x7E42D7DBD27E126DL ^ l));
+        this.hDYSX = new cC(this, mr.clS(nArray2)).Vy(0.01).Vw(4.5).Vx(6.0).VA(4.5).Vz((String)((Object)fK.aVb("k", (int)15816, (long)(0x7163C6AC8AA88D87L ^ l))));
+    }
+
+    /*
+     * Unable to fully structure code
+     */
+    static {
+        block14: {
+            block13: {
+                block12: {
+                    fK.YOIFW = gb.aYR(-6406436463589819404L, 8493228117774850738L, MethodHandles.lookup().lookupClass()).a(260733083845978L);
+                    fK.NbiLf = new HashMap<K, V>(13);
+                    var11 = fK.YOIFW ^ 65665911042212L;
+                    var13_1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+                    v0 = SecretKeyFactory.getInstance("DES");
+                    v1 = new byte[8];
+                    v2 = v1;
+                    v1[0] = (byte)(var11 >>> 56);
+                    for (var14_2 = 1; var14_2 < 8; ++var14_2) {
+                        v2 = v2;
+                        v2[var14_2] = (byte)(var11 << var14_2 * 8 >>> 56);
+                    }
+                    var13_1.init(2, (Key)v0.generateSecret(new DESKeySpec(v2)), new IvParameterSpec(new byte[8]));
+                    var20_3 = new String[2];
+                    var18_4 = 0;
+                    var17_5 = "\u00db\u00ca]\u00d5\u00c9\u008cl\u0006\"\u008d%],\u009d\u00fe|\u00105\u00fb&\u00c5\u0091I0.\u00b6\u001e)/\u00b0\u00a0 \u00f7";
+                    var19_6 = "\u00db\u00ca]\u00d5\u00c9\u008cl\u0006\"\u008d%],\u009d\u00fe|\u00105\u00fb&\u00c5\u0091I0.\u00b6\u001e)/\u00b0\u00a0 \u00f7".length();
+                    var16_7 = 16;
+                    var15_8 = -1;
+lbl20:
+                    // 2 sources
+
+                    while (true) {
+                        continue;
+                        break;
+                    }
+lbl22:
+                    // 1 sources
+
+                    while (true) {
+                        var20_3[var18_4++] = fK.aUY(var21_9).intern();
+                        if ((var15_8 += var16_7) < var19_6) {
+                            var16_7 = var17_5.charAt(var15_8);
+                            ** continue;
+                        }
+                        break block12;
+                        break;
+                    }
+                    v3 = ++var15_8;
+                    var21_9 = var13_1.doFinal(var17_5.substring(v3, v3 + var16_7).getBytes("ISO-8859-1"));
+                    ** while (true)
+                }
+                fK.ZSzib = var20_3;
+                fK.ZYcLJ = new String[2];
+                fK.aROsM = new HashMap<K, V>(13);
+                var0_10 = Cipher.getInstance("DES/CBC/NoPadding");
+                v4 = SecretKeyFactory.getInstance("DES");
+                v5 = new byte[8];
+                v6 = v5;
+                v5[0] = (byte)(var11 >>> 56);
+                for (var1_11 = 1; var1_11 < 8; ++var1_11) {
+                    v6 = v6;
+                    v6[var1_11] = (byte)(var11 << var1_11 * 8 >>> 56);
+                }
+                var0_10.init(2, (Key)v4.generateSecret(new DESKeySpec(v6)), new IvParameterSpec(new byte[8]));
+                var6_12 = new long[38];
+                var3_13 = 0;
+                var4_14 = "\u00acG)\u00dd\u001a\u00e3\u009d\u00eb\u000f\u00ff\u00d0\u00f7\b\u0089\u0084b\u00c7\u0005\u00a3\u0005b\u007f\u009b\u009eb\u00a4.\u00cb`\u00b9\u00d0#\u001b(\u0001\u00e3\u001b\u00a9#C\u00ef\u00a83\u00cfCy\u00eb\u00a6\u00a1\u00e5i\u0005\f\u00ca]\u00da\u00bb\u00bcXv\u009d\u00ae\u00a5K\u0018\u00c7\u007f\u009aI\u00b6\u00d5\u00cd\u0084\u0085#&H\u00ba9mz\u0096\u00ce\u0089\tIDr\u00ed\u00ea\u00f1Ch\u00a6X\u008fcB\u0001\u001e\u0080\u00d2\u00e4\u001c\u00fdQ&\u00af\u0000\u00f9fB\u00a6:\u00a0\u00d59\u00d2\u00b1\u00e8\u0080\u000e*\u0016f\u0006t\u00c8\u00b7mk6v\u00d3\u00d3pX\u00c2j\u0016H\u00e8\u0080\u00a0\u00ce\u00dd\u00f3@\u0099E\u00a4\u009a6\u00b4\u00f6\u00b8\u0012\t\n\u0086h\u001d \u001d\u0016\u00a9Hp\n\u00bd\u00dd\u00fd(3\u00ee\u0088\u009bO\u00c8\u00a8\u00c7\u0090\u00a5We\u00a8\u0099\u009f\u00f5\u009cg\u0083\u00ed\u00b5\u00dbN\u00e0\u00f4}\u001a?\u009a\u0089&\u00aaqrT\u00d7\u0018d\u00ed\u009f\u001e\u00db\u00fe\u0080\u00ad-\u008d\u0080\u00efH\u00fb9\u0013\u00b9k\u0083\u0005\u00edA\u00fe5d\u00f7\u00c0\u00c4\u00c0\u00eb\u00cc{e\u00a9\u0006\u00f9\u000by-]Q*\u00cf\u00d1\u00c9\u00de\u008d\u0091\u0016\u00f6\u001ez\u001c\u001b\u00d9\u00efG\u00bf>wPt\u0013\u00b7\u00aaa~6\u00f1\u00c8\u008d\u009a [\u0086\u00de\u0093\u00a7";
+                var5_15 = "\u00acG)\u00dd\u001a\u00e3\u009d\u00eb\u000f\u00ff\u00d0\u00f7\b\u0089\u0084b\u00c7\u0005\u00a3\u0005b\u007f\u009b\u009eb\u00a4.\u00cb`\u00b9\u00d0#\u001b(\u0001\u00e3\u001b\u00a9#C\u00ef\u00a83\u00cfCy\u00eb\u00a6\u00a1\u00e5i\u0005\f\u00ca]\u00da\u00bb\u00bcXv\u009d\u00ae\u00a5K\u0018\u00c7\u007f\u009aI\u00b6\u00d5\u00cd\u0084\u0085#&H\u00ba9mz\u0096\u00ce\u0089\tIDr\u00ed\u00ea\u00f1Ch\u00a6X\u008fcB\u0001\u001e\u0080\u00d2\u00e4\u001c\u00fdQ&\u00af\u0000\u00f9fB\u00a6:\u00a0\u00d59\u00d2\u00b1\u00e8\u0080\u000e*\u0016f\u0006t\u00c8\u00b7mk6v\u00d3\u00d3pX\u00c2j\u0016H\u00e8\u0080\u00a0\u00ce\u00dd\u00f3@\u0099E\u00a4\u009a6\u00b4\u00f6\u00b8\u0012\t\n\u0086h\u001d \u001d\u0016\u00a9Hp\n\u00bd\u00dd\u00fd(3\u00ee\u0088\u009bO\u00c8\u00a8\u00c7\u0090\u00a5We\u00a8\u0099\u009f\u00f5\u009cg\u0083\u00ed\u00b5\u00dbN\u00e0\u00f4}\u001a?\u009a\u0089&\u00aaqrT\u00d7\u0018d\u00ed\u009f\u001e\u00db\u00fe\u0080\u00ad-\u008d\u0080\u00efH\u00fb9\u0013\u00b9k\u0083\u0005\u00edA\u00fe5d\u00f7\u00c0\u00c4\u00c0\u00eb\u00cc{e\u00a9\u0006\u00f9\u000by-]Q*\u00cf\u00d1\u00c9\u00de\u008d\u0091\u0016\u00f6\u001ez\u001c\u001b\u00d9\u00efG\u00bf>wPt\u0013\u00b7\u00aaa~6\u00f1\u00c8\u008d\u009a [\u0086\u00de\u0093\u00a7".length();
+                var2_16 = 0;
+                while (true) {
+                    var7_17 = var4_14.substring(var2_16, var2_16 += 8).getBytes("ISO-8859-1");
+                    v7 = var6_12;
+                    v8 = var3_13++;
+                    v9 = ((long)var7_17[0] & 255L) << 56 | ((long)var7_17[1] & 255L) << 48 | ((long)var7_17[2] & 255L) << 40 | ((long)var7_17[3] & 255L) << 32 | ((long)var7_17[4] & 255L) << 24 | ((long)var7_17[5] & 255L) << 16 | ((long)var7_17[6] & 255L) << 8 | (long)var7_17[7] & 255L;
+                    v10 = -1;
+                    break block13;
+                    break;
+                }
+lbl58:
+                // 1 sources
+
+                while (true) {
+                    v7[v8] = v11;
+                    if (var2_16 < var5_15) ** continue;
+                    var4_14 = "\u0003{i\u000e\u00ae\u00b0\u0096\u00de\u00fb\u00e3\u0082\u0000Og\u00e9\u0097";
+                    var5_15 = "\u0003{i\u000e\u00ae\u00b0\u0096\u00de\u00fb\u00e3\u0082\u0000Og\u00e9\u0097".length();
+                    var2_16 = 0;
+                    while (true) {
+                        var7_17 = var4_14.substring(var2_16, var2_16 += 8).getBytes("ISO-8859-1");
+                        v7 = var6_12;
+                        v8 = var3_13++;
+                        v9 = ((long)var7_17[0] & 255L) << 56 | ((long)var7_17[1] & 255L) << 48 | ((long)var7_17[2] & 255L) << 40 | ((long)var7_17[3] & 255L) << 32 | ((long)var7_17[4] & 255L) << 24 | ((long)var7_17[5] & 255L) << 16 | ((long)var7_17[6] & 255L) << 8 | (long)var7_17[7] & 255L;
+                        v10 = 0;
+                        break block13;
+                        break;
+                    }
+                    break;
+                }
+lbl71:
+                // 1 sources
+
+                while (true) {
+                    v7[v8] = v11;
+                    if (var2_16 < var5_15) ** continue;
+                    break block14;
+                    break;
+                }
+            }
+            var8_18 = v9;
+            var10_19 = var0_10.doFinal(new byte[]{(byte)(var8_18 >>> 56), (byte)(var8_18 >>> 48), (byte)(var8_18 >>> 40), (byte)(var8_18 >>> 32), (byte)(var8_18 >>> 24), (byte)(var8_18 >>> 16), (byte)(var8_18 >>> 8), (byte)var8_18});
+            v11 = ((long)var10_19[0] & 255L) << 56 | ((long)var10_19[1] & 255L) << 48 | ((long)var10_19[2] & 255L) << 40 | ((long)var10_19[3] & 255L) << 32 | ((long)var10_19[4] & 255L) << 24 | ((long)var10_19[5] & 255L) << 16 | ((long)var10_19[6] & 255L) << 8 | (long)var10_19[7] & 255L;
+            switch (v10) {
+                default: {
+                    ** continue;
+                }
+                ** case 0:
+lbl84:
+                // 1 sources
+
+                ** continue;
+            }
+        }
+        fK.MBsFK = var6_12;
+        fK.JSHgz = new Integer[38];
+    }
+
+    public double aUW() {
+        fK fK2;
+        block6: {
+            block7: {
+                double d;
+                block9: {
+                    block8: {
+                        long l = YOIFW ^ 0x6C6CE7DD850DL;
+                        int[] nArray = fg.aIW();
+                        try {
+                            try {
+                                try {
+                                    fK2 = this;
+                                    if (nArray != null) break block6;
+                                    if (fK2.RliRe) break block7;
+                                }
+                                catch (MatchException matchException) {
+                                    throw fK.aUX(matchException);
+                                }
+                                if (!rD.dlmvG.field_1761.method_2920().method_8386()) break block8;
+                            }
+                            catch (MatchException matchException) {
+                                throw fK.aUX(matchException);
+                            }
+                            d = 5.0;
+                            break block9;
+                        }
+                        catch (MatchException matchException) {
+                            throw fK.aUX(matchException);
+                        }
+                    }
+                    d = 4.5;
+                }
+                return d;
+            }
+            fK2 = this;
+        }
+        return fK2.hDYSX.VI();
+    }
+
+    public double aUV() {
+        fK fK2;
+        block4: {
+            block5: {
+                long l = YOIFW ^ 0x3F40E058FD6L;
+                int[] nArray = fg.aIW();
+                try {
+                    try {
+                        fK2 = this;
+                        if (nArray != null) break block4;
+                        if (fK2.RliRe) break block5;
+                    }
+                    catch (MatchException matchException) {
+                        throw fK.aUX(matchException);
+                    }
+                    return 3.0;
+                }
+                catch (MatchException matchException) {
+                    throw fK.aUX(matchException);
+                }
+            }
+            fK2 = this;
+        }
+        return fK2.IRxGK.VI();
+    }
+
+    private static String aUY(byte[] byArray) {
+        int n = 0;
+        int n2 = byArray.length;
+        char[] cArray = new char[n2];
+        for (int i = 0; i < n2; ++i) {
+            char c;
+            int n3 = 0xFF & byArray[i];
+            if (n3 < 192) {
+                cArray[n++] = (char)n3;
+                continue;
+            }
+            if (n3 < 224) {
+                c = (char)((char)(n3 & 0x1F) << 6);
+                n3 = byArray[++i];
+                c = (char)(c | (char)(n3 & 0x3F));
+                cArray[n++] = c;
+                continue;
+            }
+            if (i >= n2 - 2) continue;
+            c = (char)((char)(n3 & 0xF) << 12);
+            n3 = byArray[++i];
+            c = (char)(c | (char)(n3 & 0x3F) << 6);
+            n3 = byArray[++i];
+            c = (char)(c | (char)(n3 & 0x3F));
+            cArray[n++] = c;
+        }
+        return new String(cArray, 0, n);
+    }
+
+    private static int aVc(int n, long l) {
+        int n2 = n ^ (int)(l & 0x7FFFL) ^ 0x4EEA;
+        if (JSHgz[n2] == null) {
+            byte[] byArray;
+            byte[] byArray2 = new byte[]{(byte)(l >>> 56), (byte)(l >>> 48), (byte)(l >>> 40), (byte)(l >>> 32), (byte)(l >>> 24), (byte)(l >>> 16), (byte)(l >>> 8), (byte)l};
+            long l2 = MBsFK[n2];
+            byte[] byArray3 = new byte[]{(byte)(l2 >>> 56), (byte)(l2 >>> 48), (byte)(l2 >>> 40), (byte)(l2 >>> 32), (byte)(l2 >>> 24), (byte)(l2 >>> 16), (byte)(l2 >>> 8), (byte)l2};
+            Long l3 = Thread.currentThread().threadId();
+            Object[] objectArray = (Object[])aROsM.get(l3);
+            try {
+                if (objectArray == null) {
+                    objectArray = new Object[]{Cipher.getInstance("DES/CBC/NoPadding"), SecretKeyFactory.getInstance("DES"), new IvParameterSpec(new byte[8])};
+                    aROsM.put(l3, objectArray);
+                }
+                DESKeySpec dESKeySpec = new DESKeySpec(byArray2);
+                SecretKey secretKey = ((SecretKeyFactory)objectArray[1]).generateSecret(dESKeySpec);
+                Cipher cipher = (Cipher)objectArray[0];
+                cipher.init(2, (Key)secretKey, (IvParameterSpec)objectArray[2]);
+                byArray = cipher.doFinal(byArray3);
+            }
+            catch (Exception exception) {
+                throw new RuntimeException("sixtwo/fK", exception);
+            }
+            int n3 = (byArray[4] & 0xFF) << 24 | (byArray[5] & 0xFF) << 16 | (byArray[6] & 0xFF) << 8 | byArray[7] & 0xFF;
+            fK.JSHgz[n2] = n3;
+        }
+        return JSHgz[n2];
+    }
+
+    private static int aVd(MethodHandles.Lookup lookup, MutableCallSite mutableCallSite, String string, Object[] objectArray) {
+        int n = (Integer)objectArray[0];
+        long l = (Long)objectArray[1];
+        int n2 = fK.aVc(n, l);
+        MethodHandle methodHandle = MethodHandles.constant(Integer.TYPE, n2);
+        mutableCallSite.setTarget(MethodHandles.dropArguments(methodHandle, 0, new Class[]{Integer.TYPE, Long.TYPE}));
+        return n2;
+    }
+
+    private static CallSite aVe(MethodHandles.Lookup lookup, String string, MethodType methodType) {
+        MutableCallSite mutableCallSite = new MutableCallSite(methodType);
+        try {
+            mutableCallSite.setTarget(MethodHandles.explicitCastArguments(MethodHandles.insertArguments(cfr_ldc_0().asCollector(Object[].class, methodType.parameterCount()), 0, lookup, mutableCallSite, string), methodType));
+        }
+        catch (Exception exception) {
+            throw new RuntimeException("sixtwo/fK" + " : " + string + " : " + methodType.toString(), exception);
+        }
+        return mutableCallSite;
+    }
+
+    private static MatchException aUX(MatchException matchException) {
+        return matchException;
+    }
+
+    private static Object aVa(MethodHandles.Lookup lookup, MutableCallSite mutableCallSite, String string, Object[] objectArray) {
+        int n = (Integer)objectArray[0];
+        long l = (Long)objectArray[1];
+        String string2 = fK.aUZ(n, l);
+        MethodHandle methodHandle = MethodHandles.constant(String.class, string2);
+        mutableCallSite.setTarget(MethodHandles.dropArguments(methodHandle, 0, new Class[]{Integer.TYPE, Long.TYPE}));
+        return string2;
+    }
+
+    private static CallSite aVb(MethodHandles.Lookup lookup, String string, MethodType methodType) {
+        MutableCallSite mutableCallSite = new MutableCallSite(methodType);
+        try {
+            mutableCallSite.setTarget(MethodHandles.explicitCastArguments(MethodHandles.insertArguments(cfr_ldc_1().asCollector(Object[].class, methodType.parameterCount()), 0, lookup, mutableCallSite, string), methodType));
+        }
+        catch (Exception exception) {
+            throw new RuntimeException("sixtwo/fK" + " : " + string + " : " + methodType.toString(), exception);
+        }
+        return mutableCallSite;
+    }
+
+    private static String aUZ(int n, long l) {
+        int n2 = n ^ (int)(l & 0x7FFFL) ^ 0x2C48;
+        if (ZYcLJ[n2] == null) {
+            Object[] objectArray;
+            try {
+                Long l2 = Thread.currentThread().threadId();
+                objectArray = (Object[])NbiLf.get(l2);
+                if (objectArray == null) {
+                    objectArray = new Object[]{Cipher.getInstance("DES/CBC/PKCS5Padding"), SecretKeyFactory.getInstance("DES"), new IvParameterSpec(new byte[8])};
+                    NbiLf.put(l2, objectArray);
+                }
+            }
+            catch (Exception exception) {
+                throw new RuntimeException("sixtwo/fK", exception);
+            }
+            byte[] byArray = new byte[8];
+            byArray[0] = (byte)(l >>> 56);
+            for (int i = 1; i < 8; ++i) {
+                byArray[i] = (byte)(l << i * 8 >>> 56);
+            }
+            DESKeySpec dESKeySpec = new DESKeySpec(byArray);
+            SecretKey secretKey = ((SecretKeyFactory)objectArray[1]).generateSecret(dESKeySpec);
+            ((Cipher)objectArray[0]).init(2, (Key)secretKey, (IvParameterSpec)objectArray[2]);
+            byte[] byArray2 = ZSzib[n2].getBytes("ISO-8859-1");
+            fK.ZYcLJ[n2] = fK.aUY(((Cipher)objectArray[0]).doFinal(byArray2));
+        }
+        return ZYcLJ[n2];
+    }
+
+    /*
+     * Works around MethodHandle LDC.
+     */
+    static MethodHandle cfr_ldc_0() {
+        try {
+            return MethodHandles.lookup().findStatic(fK.class, "aVd", MethodType.fromMethodDescriptorString("(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/invoke/MutableCallSite;Ljava/lang/String;[Ljava/lang/Object;)I", null));
+        }
+        catch (NoSuchMethodException | IllegalAccessException except) {
+            throw new IllegalArgumentException(except);
+        }
+    }
+
+    /*
+     * Works around MethodHandle LDC.
+     */
+    static MethodHandle cfr_ldc_1() {
+        try {
+            return MethodHandles.lookup().findStatic(fK.class, "aVa", MethodType.fromMethodDescriptorString("(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/invoke/MutableCallSite;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;", null));
+        }
+        catch (NoSuchMethodException | IllegalAccessException except) {
+            throw new IllegalArgumentException(except);
+        }
+    }
+}

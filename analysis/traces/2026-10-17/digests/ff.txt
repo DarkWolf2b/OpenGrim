@@ -1,0 +1,7 @@
+== methods (count name) ==
+      4 "m":"aIl"
+      2 "m":"aaj"
+      2 "m":"aIp"
+      2 "m":"YO"
+== numeric exits (count method value) ==
+== strings ==

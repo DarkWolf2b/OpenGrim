@@ -1,0 +1,4288 @@
+// ===== STITCHED CORPUS: sixtwo.om =====
+// handlers: 20  continuation blocks: 196  unresolved table targets: 0
+// tables not in tables.json: ['0x1a718', '0x84c788', '0x84ca18', '0x84ca28', '0x84ca38', '0x84ca48', '0x84ca58', '0x84ca68', '0x84ca78', '0x84ca88', '0x84ca98', '0x84caa8', '0x84cab8', '0x84cac8', '0x84caf8', '0x84cb08', '0x84cb18', '0x84cb28', '0x84cb38', '0x84cb48']
+
+// ===== Lsixtwo/om; _32bf260dcec5a5bb486129418a0658a0 ()V (handler @ image 18645bc50, runtime 6fffee06bc50) =====
+
+void FUN_18645bc50(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x226,0xd)
+      /* POOL[0x226,0xd]: ang/String; | < */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x00018645bcb5 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846fb0 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cEZ (Lsixtwo/gH$th;)V (handler @ image 186453f20, runtime 6fffee063f20) =====
+
+void FUN_186453f20(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x1ed40,0x4c3)
+      /* POOL[0x1ed40,0x4c3]: R | xWPJD | cEX | cEY | Ldpym | cEW | vGRlb | sixtwo/om | xDPVR | cEV | NtKMw | Lsixtwo/mt; | sixtwo/mt | cme | cFr | TFQuF | cmd | wTBTb | lrxKy | Ljava/lang/Integer; | cmb | method_12442 | sixtwo/mt$uN | MLVTd | cEL | ()Lsixtwo/mw; | cmD | cEM | net/minecraft/class_2735 | (IILsixtwo/gg;Ljava/lang/Object;)V | cmc | (Lsixtwo/mt$uN;)V | cFh | (Lsixtwo/ok;)V | cFi | comp_3325 | cEK | vkRAe | fSPsR | UxnsR | cEJ | cEI | (IZZLsixtwo/mw;Lsixtwo/gg;)V | newCachedThreadPool | ()Ljava/util/concurrent/ExecutorService; | (IJ)V | field_23723 | cEH | sixtwo/on$vh$wl | BxFbi | DPVEv | sixtwo/on | cFK | cFL */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x000186453fea did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_1808445d0 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFa (Lsixtwo/gN;)V (handler @ image 18645a4d0, runtime 6fffee06a4d0) =====
+
+void FUN_18645a4d0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645a4f2 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846580 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFb (Lsixtwo/gL$tj;)V (handler @ image 18645c2a0, runtime 6fffee06c2a0) =====
+
+void FUN_18645c2a0(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x1ed40,0x4c3)
+      /* POOL[0x1ed40,0x4c3]: R | xWPJD | cEX | cEY | Ldpym | cEW | vGRlb | sixtwo/om | xDPVR | cEV | NtKMw | Lsixtwo/mt; | sixtwo/mt | cme | cFr | TFQuF | cmd | wTBTb | lrxKy | Ljava/lang/Integer; | cmb | method_12442 | sixtwo/mt$uN | MLVTd | cEL | ()Lsixtwo/mw; | cmD | cEM | net/minecraft/class_2735 | (IILsixtwo/gg;Ljava/lang/Object;)V | cmc | (Lsixtwo/mt$uN;)V | cFh | (Lsixtwo/ok;)V | cFi | comp_3325 | cEK | vkRAe | fSPsR | UxnsR | cEJ | cEI | (IZZLsixtwo/mw;Lsixtwo/gg;)V | newCachedThreadPool | ()Ljava/util/concurrent/ExecutorService; | (IJ)V | field_23723 | cEH | sixtwo/on$vh$wl | BxFbi | DPVEv | sixtwo/on | cFK | cFL */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x00018645c364 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180847210 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFc (Lsixtwo/gL$tk;)V (handler @ image 1864604c0, runtime 6fffee0704c0) =====
+
+void FUN_1864604c0(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x1ed40,0x4c3)
+      /* POOL[0x1ed40,0x4c3]: R | xWPJD | cEX | cEY | Ldpym | cEW | vGRlb | sixtwo/om | xDPVR | cEV | NtKMw | Lsixtwo/mt; | sixtwo/mt | cme | cFr | TFQuF | cmd | wTBTb | lrxKy | Ljava/lang/Integer; | cmb | method_12442 | sixtwo/mt$uN | MLVTd | cEL | ()Lsixtwo/mw; | cmD | cEM | net/minecraft/class_2735 | (IILsixtwo/gg;Ljava/lang/Object;)V | cmc | (Lsixtwo/mt$uN;)V | cFh | (Lsixtwo/ok;)V | cFi | comp_3325 | cEK | vkRAe | fSPsR | UxnsR | cEJ | cEI | (IZZLsixtwo/mw;Lsixtwo/gg;)V | newCachedThreadPool | ()Ljava/util/concurrent/ExecutorService; | (IJ)V | field_23723 | cEH | sixtwo/on$vh$wl | BxFbi | DPVEv | sixtwo/on | cFK | cFL */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x000186460584 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180848510 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFd (Lsixtwo/ok;Lsixtwo/gg;)Z (handler @ image 186464160, runtime 6fffee074160) =====
+
+void FUN_186464160(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x1ed40,0x4c3)
+      /* POOL[0x1ed40,0x4c3]: R | xWPJD | cEX | cEY | Ldpym | cEW | vGRlb | sixtwo/om | xDPVR | cEV | NtKMw | Lsixtwo/mt; | sixtwo/mt | cme | cFr | TFQuF | cmd | wTBTb | lrxKy | Ljava/lang/Integer; | cmb | method_12442 | sixtwo/mt$uN | MLVTd | cEL | ()Lsixtwo/mw; | cmD | cEM | net/minecraft/class_2735 | (IILsixtwo/gg;Ljava/lang/Object;)V | cmc | (Lsixtwo/mt$uN;)V | cFh | (Lsixtwo/ok;)V | cFi | comp_3325 | cEK | vkRAe | fSPsR | UxnsR | cEJ | cEI | (IZZLsixtwo/mw;Lsixtwo/gg;)V | newCachedThreadPool | ()Ljava/util/concurrent/ExecutorService; | (IJ)V | field_23723 | cEH | sixtwo/on$vh$wl | BxFbi | DPVEv | sixtwo/on | cFK | cFL */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x000186464235 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180849710 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFe ()I (handler @ image 18646bf20, runtime 6fffee07bf20) =====
+
+void FUN_18646bf20(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x1ed40,0x4c3)
+      /* POOL[0x1ed40,0x4c3]: R | xWPJD | cEX | cEY | Ldpym | cEW | vGRlb | sixtwo/om | xDPVR | cEV | NtKMw | Lsixtwo/mt; | sixtwo/mt | cme | cFr | TFQuF | cmd | wTBTb | lrxKy | Ljava/lang/Integer; | cmb | method_12442 | sixtwo/mt$uN | MLVTd | cEL | ()Lsixtwo/mw; | cmD | cEM | net/minecraft/class_2735 | (IILsixtwo/gg;Ljava/lang/Object;)V | cmc | (Lsixtwo/mt$uN;)V | cFh | (Lsixtwo/ok;)V | cFi | comp_3325 | cEK | vkRAe | fSPsR | UxnsR | cEJ | cEI | (IZZLsixtwo/mw;Lsixtwo/gg;)V | newCachedThreadPool | ()Ljava/util/concurrent/ExecutorService; | (IJ)V | field_23723 | cEH | sixtwo/on$vh$wl | BxFbi | DPVEv | sixtwo/on | cFK | cFL */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x00018646bfe1 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18084bf70 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFf ()Z (handler @ image 18646ff70, runtime 6fffee07ff70) =====
+
+void FUN_18646ff70(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018646ff92 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18084d2b0 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFg ()V (handler @ image 186470400, runtime 6fffee080400) =====
+
+void FUN_186470400(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x000186470420 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18084d4a0 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFh (Lsixtwo/ok;)V (handler @ image 186470760, runtime 6fffee080760) =====
+
+void FUN_186470760(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0x1ed40,0x4c3)
+      /* POOL[0x1ed40,0x4c3]: R | xWPJD | cEX | cEY | Ldpym | cEW | vGRlb | sixtwo/om | xDPVR | cEV | NtKMw | Lsixtwo/mt; | sixtwo/mt | cme | cFr | TFQuF | cmd | wTBTb | lrxKy | Ljava/lang/Integer; | cmb | method_12442 | sixtwo/mt$uN | MLVTd | cEL | ()Lsixtwo/mw; | cmD | cEM | net/minecraft/class_2735 | (IILsixtwo/gg;Ljava/lang/Object;)V | cmc | (Lsixtwo/mt$uN;)V | cFh | (Lsixtwo/ok;)V | cFi | comp_3325 | cEK | vkRAe | fSPsR | UxnsR | cEJ | cEI | (IZZLsixtwo/mw;Lsixtwo/gg;)V | newCachedThreadPool | ()Ljava/util/concurrent/ExecutorService; | (IJ)V | field_23723 | cEH | sixtwo/on$vh$wl | BxFbi | DPVEv | sixtwo/on | cFK | cFL */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x000186470824 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18084d610 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFi ()V (handler @ image 1864767c0, runtime 6fffee0867c0) =====
+
+void FUN_1864767c0(longlong *param_1)
+
+{
+  char cVar1;
+  
+  BLOB_DECRYPTOR(image-addr,resolved-ptr,len)(param_1,*plRam000000018301ee50 + 0xb1,5)
+      /* POOL[0xb1,0x5]: Tlzw */;
+  cVar1 = JNI->ExceptionCheck(param_1);
+                    /* WARNING: Jumptable at 0x00018647680c did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18084f3d0 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFj ()Lsixtwo/mt; (handler @ image 18645abc0, runtime 6fffee06abc0) =====
+
+void FUN_18645abc0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645abe0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846870 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFk ()Z (handler @ image 18645adc0, runtime 6fffee06adc0) =====
+
+void FUN_18645adc0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645ade0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846950 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFl ()Z (handler @ image 18645afc0, runtime 6fffee06afc0) =====
+
+void FUN_18645afc0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645afe0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846a30 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFm ()I (handler @ image 18645b1c0, runtime 6fffee06b1c0) =====
+
+void FUN_18645b1c0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645b1e0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846b10 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFn ()I (handler @ image 18645b3c0, runtime 6fffee06b3c0) =====
+
+void FUN_18645b3c0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645b3e0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846bf0 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFo ()Ljava/lang/Integer; (handler @ image 18645b5c0, runtime 6fffee06b5c0) =====
+
+void FUN_18645b5c0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645b5e0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846cd0 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFp ()I (handler @ image 18645b7c0, runtime 6fffee06b7c0) =====
+
+void FUN_18645b7c0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645b7e0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846db0 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFq ()Lsixtwo/mT; (handler @ image 18645b9c0, runtime 6fffee06b9c0) =====
+
+void FUN_18645b9c0(undefined8 param_1,longlong param_2)
+
+{
+                    /* WARNING: Jumptable at 0x00018645b9e0 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_180846e90 + (ulonglong)(param_2 == 0) * 8))();
+  return;
+}
+
+
+
+
+// ===== Lsixtwo/om; cFr (Ljava/lang/MatchException;)Ljava/lang/MatchException; (handler @ image 18645bbc0, runtime 6fffee06bbc0) =====
+
+undefined8 FUN_18645bbc0(undefined8 param_1,undefined8 param_2,undefined8 param_3)
+
+{
+  return param_3;
+}
+
+
+
+
+// ===== CONTINUATION BLOCKS =====
+// ----- block @ rva 0x6453fed -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186453fed(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_180845b08)();
+  return;
+}
+
+
+// ----- block @ rva 0x6454065 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186454065(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetStaticLongField /*0x4b8*/))();
+  (*_DAT_180845778)();
+  return;
+}
+
+
+// ----- block @ rva 0x645707f -----
+
+void FUN_18645707f(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x6457438 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186457438(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6458b8d -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186458b8d(void)
+
+{
+  undefined4 uStack0000000000000048;
+  
+  uStack0000000000000048 = 1;
+  FUN_190dd72e0();
+  (*_DAT_1808457a8)();
+  return;
+}
+
+
+// ----- block @ rva 0x6458fe5 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186458fe5(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->IsInstanceOf /*0x100*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645988a -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645988a(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6459f06 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186459f06(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180844ff8)();
+  return;
+}
+
+
+// ----- block @ rva 0x6459f4f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186459f4f(void)
+
+{
+  FUN_190ddfc90();
+  (*_DAT_180844a18)();
+  return;
+}
+
+
+// ----- block @ rva 0x645a0dd -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645a0dd(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ExceptionOccurred /*0x78*/))();
+  FUN_190dd72e0();
+  (*_DAT_180845d08)();
+  return;
+}
+
+
+// ----- block @ rva 0x645a143 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645a143(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ExceptionOccurred /*0x78*/))();
+  FUN_190dd72e0();
+  (*_DAT_180845658)();
+  return;
+}
+
+
+// ----- block @ rva 0x645a311 -----
+
+void FUN_18645a311(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645a4f5 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645a4f5(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645a568 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645a568(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846608)();
+  return;
+}
+
+
+// ----- block @ rva 0x645a6c0 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645a6c0(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645a6e4 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645a6e4(void)
+
+{
+  longlong unaff_RBX;
+  
+  switch(unaff_RBX == 0) {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645a6fa -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645a6fa(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645a74c -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645a74c(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_1841196f0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645a880 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645a880(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645a969 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645a969(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846758)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ab03 -----
+
+void FUN_18645ab03(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645ab0d -----
+
+void FUN_18645ab0d(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645abe3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645abe3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ac41 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645ac41(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ac56 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ac56(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_1808468c8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ac7e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645ac7e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ac9f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ac9f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_1808468f8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645acf6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645acf6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetObjectField /*0x2f8*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_1808468e8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ad1d -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ad1d(void)
+
+{
+  (*_DAT_180846898)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ad2e -----
+
+void FUN_18645ad2e(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645ad36 -----
+
+void FUN_18645ad36(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ade3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ade3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ae56 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ae56(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846978)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ae7e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645ae7e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ae9f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ae9f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846968)();
+  return;
+}
+
+
+// ----- block @ rva 0x645aed2 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645aed2(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645aef6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645aef6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetBooleanField /*0x300*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846988)();
+  return;
+}
+
+
+// ----- block @ rva 0x645af1c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645af1c(void)
+
+{
+  (*_DAT_1808469c8)(0);
+  return;
+}
+
+
+// ----- block @ rva 0x645af2c -----
+
+void FUN_18645af2c(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645af34 -----
+
+void FUN_18645af34(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645afe3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645afe3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b01c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b01c(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846ac8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b056 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b056(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846a88)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b07e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b07e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b09f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b09f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846aa8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b0d2 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b0d2(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b0f6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b0f6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetBooleanField /*0x300*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846a68)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b11c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b11c(void)
+
+{
+  (*_DAT_180846ab8)(0);
+  return;
+}
+
+
+// ----- block @ rva 0x645b12c -----
+
+void FUN_18645b12c(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645b134 -----
+
+void FUN_18645b134(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b1e3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b1e3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b21c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b21c(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846b78)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b241 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b241(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b256 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b256(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846b68)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b27e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b27e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b29f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b29f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846ba8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b2f6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b2f6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(*unaff_RSI + 800))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846b88)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b31c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b31c(void)
+
+{
+  (*_DAT_180846b98)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b32c -----
+
+void FUN_18645b32c(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645b334 -----
+
+void FUN_18645b334(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b3e3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b3e3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b41c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b41c(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846c78)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b456 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b456(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846c48)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b47e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b47e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b49f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b49f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846c68)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b4d2 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b4d2(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b4f6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b4f6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(*unaff_RSI + 800))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846c18)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b51c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b51c(void)
+
+{
+  (*_DAT_180846c08)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b52c -----
+
+void FUN_18645b52c(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645b534 -----
+
+void FUN_18645b534(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b5e3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b5e3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b61c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b61c(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846cf8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b641 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b641(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b656 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b656(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846d58)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b69f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b69f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846ce8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b6d2 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b6d2(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b6f6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b6f6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetObjectField /*0x2f8*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846d18)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b71d -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b71d(void)
+
+{
+  (*_DAT_180846d68)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b72e -----
+
+void FUN_18645b72e(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645b736 -----
+
+void FUN_18645b736(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b7e3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b7e3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b841 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b841(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b856 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b856(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846dc8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b87e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b87e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b89f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b89f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846e18)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b8d2 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645b8d2(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645b91c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b91c(void)
+
+{
+  (*_DAT_180846de8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b92c -----
+
+void FUN_18645b92c(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645b934 -----
+
+void FUN_18645b934(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645b9e3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645b9e3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ba41 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645ba41(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ba56 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ba56(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180846ec8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645ba7e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645ba7e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645ba9f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645ba9f(void)
+
+{
+  FUN_190dd9df0();
+  (*_DAT_180846f28)();
+  return;
+}
+
+
+// ----- block @ rva 0x645baf6 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645baf6(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetObjectField /*0x2f8*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180846ed8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645bb1d -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645bb1d(void)
+
+{
+  (*_DAT_180846f08)();
+  return;
+}
+
+
+// ----- block @ rva 0x645bb2e -----
+
+void FUN_18645bb2e(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645bb36 -----
+
+void FUN_18645bb36(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645bcb8 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645bcb8(void)
+
+{
+  FUN_190de3220();
+  (*_DAT_180847158)();
+  return;
+}
+
+
+// ----- block @ rva 0x645bd8c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645bd8c(void)
+
+{
+  FUN_190ddfc90();
+  (*_DAT_180847168)();
+  return;
+}
+
+
+// ----- block @ rva 0x645bde3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645bde3(void)
+
+{
+  longlong unaff_RDI;
+  
+  switch(unaff_RDI == 0) {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645c013 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645c013(void)
+
+{
+  longlong in_stack_00000040;
+  
+  switch(in_stack_00000040 == 0) {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645c02e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645c02e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645c080 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645c080(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->CallLongMethodA /*0x1b0*/))();
+  (*_DAT_180847128)();
+  return;
+}
+
+
+// ----- block @ rva 0x645c0e8 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645c0e8(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645c1a0 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645c1a0(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180847138)();
+  return;
+}
+
+
+// ----- block @ rva 0x645c1b2 -----
+
+void FUN_18645c1b2(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645c1ba -----
+
+void FUN_18645c1ba(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x645c367 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645c367(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_1808476d8)();
+  return;
+}
+
+
+// ----- block @ rva 0x645f04f -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645f04f(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645f089 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645f089(void)
+
+{
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180847678)();
+  return;
+}
+
+
+// ----- block @ rva 0x645f106 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645f106(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180847698)();
+  return;
+}
+
+
+// ----- block @ rva 0x645f204 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645f204(undefined8 param_1,undefined8 param_2)
+
+{
+  undefined8 uStack0000000000000030;
+  
+  uStack0000000000000030 = param_2;
+  FUN_190dd72e0();
+  (*_DAT_180847488)();
+  return;
+}
+
+
+// ----- block @ rva 0x645f886 -----
+
+void FUN_18645f886(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x645fb79 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645fb79(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645fd9d -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18645fd9d(void)
+
+{
+  longlong in_stack_00000030;
+  
+  switch(in_stack_00000030 == 0) {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x645fe6f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18645fe6f(void)
+
+{
+  (*_DAT_1808478f8)();
+  return;
+}
+
+
+// ----- block @ rva 0x64600dd -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_1864600dd(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ExceptionOccurred /*0x78*/))();
+  FUN_190dd72e0();
+  (*_DAT_180847a28)();
+  return;
+}
+
+
+// ----- block @ rva 0x6460356 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186460356(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6460395 -----
+
+void FUN_186460395(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x6460587 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186460587(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_180848598)();
+  return;
+}
+
+
+// ----- block @ rva 0x6462c86 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186462c86(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6462d24 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186462d24(void)
+
+{
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180848808)();
+  return;
+}
+
+
+// ----- block @ rva 0x6462da1 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186462da1(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_180848da8)();
+  return;
+}
+
+
+// ----- block @ rva 0x6462e1d -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186462e1d(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x64631de -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_1864631de(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->IsInstanceOf /*0x100*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6463459 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186463459(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->CallStaticObjectMethodA /*0x3a0*/))();
+  (*_DAT_180848678)();
+  return;
+}
+
+
+// ----- block @ rva 0x6463524 -----
+
+void FUN_186463524(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x6463b4a -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186463b4a(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->IsInstanceOf /*0x100*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6463c6f -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186463c6f(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6464036 -----
+
+void FUN_186464036(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x6464238 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186464238(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_180849768)();
+  return;
+}
+
+
+// ----- block @ rva 0x646426b -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646426b(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6468991 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186468991(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6468eeb -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186468eeb(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->IsInstanceOf /*0x100*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x64693ec -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_1864693ec(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6469611 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186469611(void)
+
+{
+  (*_DAT_1808499d8)();
+  return;
+}
+
+
+// ----- block @ rva 0x646a184 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646a184(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646b199 -----
+
+void FUN_18646b199(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x646bd82 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646bd82(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->CallVoidMethodA /*0x1f8*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_180849748)();
+  return;
+}
+
+
+// ----- block @ rva 0x646bda6 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646bda6(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646bdc3 -----
+
+void FUN_18646bdc3(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x646bfe4 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646bfe4(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_18084c048)();
+  return;
+}
+
+
+// ----- block @ rva 0x646c0cc -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646c0cc(undefined8 param_1,ulonglong param_2)
+
+{
+  undefined1 auVar1 [16];
+  char cVar2;
+  longlong in_RAX;
+  longlong lVar3;
+  ulonglong uVar4;
+  ulonglong uVar5;
+  longlong *unaff_RSI;
+  ulonglong uVar6;
+  ulonglong uVar7;
+  ulonglong uVar8;
+  ulonglong uVar9;
+  ulonglong uVar10;
+  uint uVar11;
+  uint uVar21;
+  undefined1 auVar12 [16];
+  undefined1 auVar13 [16];
+  undefined1 auVar14 [16];
+  undefined1 auVar15 [16];
+  undefined1 auVar16 [16];
+  undefined1 auVar17 [16];
+  undefined1 auVar18 [16];
+  undefined1 auVar19 [16];
+  undefined1 auVar20 [16];
+  uint uVar24;
+  uint uVar25;
+  ulonglong uVar26;
+  undefined1 auVar22 [16];
+  undefined1 auVar23 [16];
+  undefined1 auVar27 [16];
+  undefined1 auVar28 [16];
+  undefined1 auVar29 [16];
+  undefined1 auVar30 [16];
+  undefined1 auVar31 [16];
+  uint uVar32;
+  undefined1 auVar33 [16];
+  undefined1 auVar34 [16];
+  undefined1 auVar35 [16];
+  undefined1 auVar36 [16];
+  undefined1 auVar37 [16];
+  undefined1 auVar38 [16];
+  uint uVar39;
+  uint uVar42;
+  undefined1 auVar40 [16];
+  undefined1 auVar41 [16];
+  uint uVar43;
+  ulonglong uVar46;
+  undefined1 auVar44 [16];
+  ulonglong uVar47;
+  undefined1 auVar45 [16];
+  undefined1 auVar48 [16];
+  ulonglong uVar49;
+  ulonglong uVar50;
+  undefined1 auVar51 [16];
+  undefined1 auVar52 [16];
+  undefined4 uStack0000000000000060;
+  uint uStack0000000000000064;
+  uint uStack0000000000000080;
+  ulonglong in_stack_00000098;
+  
+  uVar5 = _DAT_18084bf28;
+  uVar4 = _DAT_18084bf20;
+  uVar7 = (0x1f18ea6c98972bbd - in_RAX) *
+          ((param_2 ^ _DAT_18084bf20 ^ 0x84222325) + ((_DAT_18084bf20 ^ 0x84222325) & param_2) * 2);
+  uVar7 = (uVar7 | _DAT_1831335f8) + (uVar7 & _DAT_1831335f8);
+  uVar7 = uVar7 * 0x2000 ^ uVar7;
+  uVar7 = uVar7 >> 7 ^ uVar7;
+  uVar7 = uVar7 << 0x11 ^ uVar7;
+  _DAT_183133490 =
+       func_0x00018646fee0((_DAT_18084bf20 ^ 0x1f18ea6c1cb50898 | uVar7) +
+                           (uVar7 & (_DAT_18084bf20 ^ 0x1f18ea6c1cb50898)));
+  uVar7 = _DAT_183133490 - (_DAT_183133490 >> 1 & 0x5555555555555555);
+  uVar7 = (uVar7 & 0x3333333333333333) + (uVar7 >> 2 & 0x3333333333333333);
+  uVar7 = ((uVar7 >> 4) + uVar7 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38 ^ _DAT_183133490;
+  uVar9 = uVar4 | 0x1f18ea6c98972bbd;
+  _DAT_1831335b8 = (_DAT_1831335b8 ^ uVar7) + uVar9 ^ 0xea9a7120c5007d9c;
+  _DAT_183133620 = (_DAT_183133620 * -0x5e4278a56198b54f ^ _DAT_1831335b8) + uVar7;
+  _DAT_183133518 = _DAT_183133620 ^ _DAT_1831335b8;
+  auVar13._8_8_ = _UNK_18084c788;
+  auVar13._0_8_ = uVar5 ^ 0x84222325;
+  auVar12 = pshufb(auVar13 ^ _DAT_18084c790,_DAT_1800170c0);
+  uVar6 = auVar12._8_8_ + auVar12._0_8_;
+  uVar7 = uVar6 + _DAT_1831336a8;
+  if (auVar12._4_4_ < 0) {
+    uVar7 = _DAT_183133358 ^ uVar6;
+  }
+  _DAT_183133538 = uVar9;
+  _DAT_1831335b8 = func_0x00018646fee0(SUB161(auVar13 ^ _DAT_18084c790,5) ^ uVar7);
+  uVar7 = uVar5 ^ 0x6745f9768022cc0b;
+  _DAT_183133528 = (_DAT_183133528 ^ ~_DAT_1831335b8 & uVar5) + uVar7 ^ 0xb3d7f1bad5bee171;
+  _DAT_183133580 =
+       (_DAT_183133580 * 0x25c36a2dc800dc0f ^ _DAT_183133528) + (~_DAT_1831335b8 & uVar5);
+  _DAT_1831336b0 = _DAT_183133580 ^ _DAT_183133528;
+  lVar3 = uVar4 * uVar4;
+  uVar6 = lVar3 * 0x251fc8fddf5f1d92;
+  uVar4 = ((_DAT_183133580 ^ 0x84222325) + (ulonglong)((uint)_DAT_183133580 & 0x84222325) * 2) *
+          (uVar6 - _DAT_183133310);
+  uVar4 = (uVar4 | _DAT_183133538) + (uVar4 & _DAT_183133538);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  _DAT_1831336f0 = uVar7;
+  _DAT_183133680 =
+       func_0x00018646fee0((uVar6 ^ 0x84222325 | uVar4) + (uVar4 & (uVar6 ^ 0x84222325)));
+  _DAT_183133510 = lVar3 * -0x251fc8fddf5f1d92;
+  _DAT_183133670 =
+       (_DAT_183133670 ^ _DAT_183133680 * 0x5e69be76e0a62cd) + lVar3 * -0x251fc8fddf5f1d92 ^
+       0x20ddf0a4ca98815c;
+  _DAT_1831334a8 =
+       (_DAT_1831334a8 * 0x547be9e62ebd6a7d ^ _DAT_183133670) + _DAT_183133680 * 0x5e69be76e0a62cd;
+  _DAT_183133530 = _DAT_1831334a8 ^ _DAT_183133670;
+  uVar4 = (_DAT_1831335f8 ^ 0x6b11c56f5f77) + _DAT_183133558 + 0x6b11c56f5f77;
+  uVar26 = (uVar6 ^ _DAT_183133558) + uVar6 + _DAT_1831335f8;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ _DAT_1831335f8 ^ 0x6b11c56f5f77;
+  uVar26 = (uVar26 * 0x2000 | uVar26 >> 0x33) ^ uVar6 ^ _DAT_183133558;
+  _DAT_1831335f0 =
+       func_0x00018646fee0((uVar26 << 0x1d | uVar26 >> 0x23) - (uVar6 + _DAT_1831335f8) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (_DAT_183133558 + 0x6b11c56f5f77));
+  auVar48._8_4_ = (int)uVar6;
+  auVar48._0_8_ = uVar6;
+  auVar48._12_4_ = (int)(uVar6 >> 0x20);
+  uVar21 = SUB164(auVar48 & _DAT_18084c7a0,0);
+  uVar10 = SUB168(auVar48 & _DAT_18084c7a0,0);
+  uVar11 = SUB164(_DAT_18084c7a0 ^ auVar48,0);
+  uVar26 = SUB168(_DAT_18084c7a0 ^ auVar48,0);
+  uVar4 = _DAT_1831335f0 * 0x6e4d0e018de9a0ef;
+  _DAT_183133618 =
+       (ulonglong)_DAT_18084c7f0 * (ulonglong)uVar11 +
+       ((ulonglong)_DAT_18084c800 * (ulonglong)uVar11 + (uVar26 >> 0x20) * (ulonglong)_DAT_18084c7f0
+       << 0x20) +
+       (ulonglong)_DAT_18084c7d0 * (ulonglong)uVar21 +
+       ((ulonglong)_DAT_18084c7e0 * (ulonglong)uVar21 + (uVar10 >> 0x20) * (ulonglong)_DAT_18084c7d0
+       << 0x20) +
+       (ulonglong)_DAT_18084c7b0 * (uVar6 & 0xffffffff) +
+       ((ulonglong)_DAT_18084c7c0 * (uVar6 & 0xffffffff) +
+        (uVar6 >> 0x20) * (ulonglong)_DAT_18084c7b0 << 0x20) +
+       (-((ulonglong)uVar11 * (ulonglong)_DAT_18084c870 +
+         ((ulonglong)_DAT_18084c880 * (ulonglong)uVar11 +
+          (uVar26 >> 0x20) * (ulonglong)_DAT_18084c870 << 0x20)) -
+       ((ulonglong)uVar21 * (ulonglong)_DAT_18084c850 +
+        ((ulonglong)_DAT_18084c860 * (ulonglong)uVar21 +
+         (uVar10 >> 0x20) * (ulonglong)_DAT_18084c850 << 0x20) +
+       (uVar6 & 0xffffffff) * (ulonglong)_DAT_18084c830 +
+       ((ulonglong)_DAT_18084c840 * (uVar6 & 0xffffffff) +
+        (uVar6 >> 0x20) * (ulonglong)_DAT_18084c830 << 0x20))) + 0x4ebe59792575de7a;
+  _DAT_1831334e8 = _DAT_183133368 ^ uVar4 ^ _DAT_183133618;
+  _DAT_1831336d8 = (_DAT_1831336d8 ^ uVar4) + _DAT_183133618 ^ 0xa82a362bec5e0c2b;
+  _DAT_183133420 = (_DAT_183133420 * -0x6707102ae323b105 ^ _DAT_1831336d8) + uVar4;
+  _DAT_183133580 = _DAT_183133420 ^ _DAT_1831336d8;
+  uVar26 = _DAT_183133618 + lVar3 * -0x251fc8fddf5f1d92;
+  uVar10 = uVar5 * uVar5 * -0x6560622f91598cc0;
+  auVar12._8_8_ = uVar10;
+  auVar12._0_8_ = uVar26 ^ 0x84222325;
+  auVar13 = pshufb(auVar12 ^ _DAT_18084c890,_DAT_1800170c0);
+  uVar6 = auVar13._8_8_ + auVar13._0_8_;
+  uVar4 = uVar6 + _DAT_1831333f8;
+  if (auVar13._4_4_ < 0) {
+    uVar4 = _DAT_183133680 ^ uVar6;
+  }
+  _DAT_183133688 = func_0x00018646fee0(SUB161(auVar12 ^ _DAT_18084c890,5) ^ uVar4);
+  uVar4 = _DAT_183133688 ^ uVar26;
+  uVar24 = (uint)(uVar26 >> 0x20);
+  auVar33._8_4_ = (int)uVar26;
+  auVar33._0_8_ = uVar26;
+  auVar33._12_4_ = uVar24;
+  uVar32 = (uint)(uVar10 >> 0x20);
+  auVar27._8_4_ = (int)uVar10;
+  auVar27._0_8_ = uVar10;
+  auVar27._12_4_ = uVar32;
+  auVar13 = auVar33 ^ auVar27;
+  uVar25 = SUB164(auVar33 & auVar27,0);
+  uVar47 = SUB168(auVar33 & auVar27,0);
+  uVar21 = SUB164(auVar33 | auVar27,0);
+  uVar46 = SUB168(auVar33 | auVar27,0);
+  uVar11 = auVar13._0_4_;
+  uVar6 = uVar10 ^ _DAT_18001a710;
+  uStack0000000000000080 = auVar13._4_4_;
+  lVar3 = _DAT_18084bf20 * uVar5;
+  uVar8 = lVar3 * -0x3b872b40e3e957c1;
+  auVar51._8_8_ = uVar8;
+  auVar51._0_8_ = _DAT_18001b640;
+  auVar12 = pshufb(auVar51 ^ _DAT_18084ca00,_DAT_1800170c0);
+  _DAT_183133458 =
+       (((uVar6 & 0xffffffff) * (ulonglong)_DAT_18084c8e0 +
+         ((ulonglong)_DAT_18084c950 * (uVar6 & 0xffffffff) +
+          (uVar6 >> 0x20) * (ulonglong)_DAT_18084c8e0 << 0x20) +
+        (ulonglong)_DAT_18084c930 * (ulonglong)uVar11 +
+        ((ulonglong)_DAT_18084c940 * (ulonglong)uVar11 +
+         (auVar13._0_8_ >> 0x20) * (ulonglong)_DAT_18084c930 << 0x20) +
+        (ulonglong)_DAT_18084c910 * (ulonglong)uVar21 +
+        ((ulonglong)_DAT_18084c920 * (ulonglong)uVar21 +
+         (uVar46 >> 0x20) * (ulonglong)_DAT_18084c910 << 0x20) +
+        (ulonglong)_DAT_18084c8f0 * (ulonglong)uVar25 +
+        ((ulonglong)_DAT_18084c900 * (ulonglong)uVar25 +
+         (uVar47 >> 0x20) * (ulonglong)_DAT_18084c8f0 << 0x20) +
+        (ulonglong)_DAT_18084c8c0 * (uVar10 & 0xffffffff) +
+        ((ulonglong)_DAT_18084c8d0 * (uVar10 & 0xffffffff) +
+         (ulonglong)uVar32 * (ulonglong)_DAT_18084c8c0 << 0x20) +
+        (ulonglong)_DAT_18084c8a0 * (uVar26 & 0xffffffff) +
+        ((ulonglong)_DAT_18084c8b0 * (uVar26 & 0xffffffff) +
+         (ulonglong)uVar24 * (ulonglong)_DAT_18084c8a0 << 0x20)) -
+       ((ulonglong)uVar11 * (_DAT_18084c9e0 & 0xffffffff) +
+        ((ulonglong)_DAT_18084c9f0 * (ulonglong)uVar11 +
+         (ulonglong)uStack0000000000000080 * (_DAT_18084c9e0 & 0xffffffff) << 0x20) +
+        (ulonglong)uVar21 * (ulonglong)_DAT_18084c9c0 +
+        ((ulonglong)_DAT_18084c9d0 * (ulonglong)uVar21 +
+         (uVar46 >> 0x20) * (ulonglong)_DAT_18084c9c0 << 0x20) +
+       (ulonglong)uVar25 * (ulonglong)_DAT_18084c9a0 +
+       ((ulonglong)_DAT_18084c9b0 * (ulonglong)uVar25 + (uVar47 >> 0x20) * (ulonglong)_DAT_18084c9a0
+       << 0x20) +
+       (uVar10 & 0xffffffff) * (ulonglong)_DAT_18084c990 +
+       ((ulonglong)uVar32 * (ulonglong)_DAT_18084c990 +
+        (ulonglong)_DAT_18084c980 * (uVar10 & 0xffffffff) << 0x20) +
+       (uVar26 & 0xffffffff) * (ulonglong)_DAT_18084c990 +
+       ((ulonglong)uVar24 * (ulonglong)_DAT_18084c990 +
+        (uVar26 & 0xffffffff) * (ulonglong)_DAT_18084c980 << 0x20))) + 0x5b430f7247248bb5;
+  _DAT_183133600 = _DAT_183133388 ^ uVar4 ^ _DAT_183133458;
+  _DAT_183133430 = (_DAT_183133430 ^ uVar4) + _DAT_183133458 ^ 0x5596ec59d282efa7;
+  _DAT_1831334b8 = (_DAT_1831334b8 * 0x4768ad1726014dd ^ _DAT_183133430) + uVar4;
+  _DAT_1831336c0 = _DAT_1831334b8 ^ _DAT_183133430;
+  uVar5 = _DAT_183133458 + uVar5 * uVar5 * 0x6560622f91598cc0;
+  uVar6 = auVar12._8_8_ + auVar12._0_8_;
+  uVar4 = uVar6 + _DAT_1831335a8;
+  if (auVar12._4_4_ < 0) {
+    uVar4 = _DAT_1831334b0 ^ uVar6;
+  }
+  _DAT_183133440 = func_0x00018646fee0(uVar4 ^ 0xa1);
+  uVar4 = _DAT_183133440 - (_DAT_183133440 >> 1 & 0x5555555555555555);
+  uVar4 = (uVar4 & 0x3333333333333333) + (uVar4 >> 2 & 0x3333333333333333);
+  uVar4 = (((uVar4 >> 4) + uVar4 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38) << 4 ^
+          _DAT_183133440;
+  uVar26 = lVar3 * 0x3b872b40e3e957c1;
+  _DAT_1831336d8 = (_DAT_1831336d8 ^ uVar4) + lVar3 * 0x3b872b40e3e957c1 ^ 0x8b3c9aff189b6166;
+  _DAT_183133430 = (_DAT_183133430 * -0x4ad30af4e56c9143 ^ _DAT_1831336d8) + uVar4;
+  _DAT_183133690 = _DAT_183133430 ^ _DAT_1831336d8;
+  uVar6 = uVar5 ^ 0x84222325;
+  uVar4 = ((_DAT_183133398 ^ uVar6) + (uVar6 & _DAT_183133398) * 2) * (uVar8 - _DAT_1831333c8);
+  uVar4 = (uVar4 | _DAT_183133698) + (uVar4 & _DAT_183133698);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  _DAT_183133668 = uVar26;
+  _DAT_183133628 = func_0x00018646fee0((uVar6 ^ uVar8 | uVar4) + (uVar4 & (uVar6 ^ uVar8)));
+  uVar4 = uVar5 * uVar8 ^ _DAT_183133628 ^ uVar5;
+  uVar11 = (uint)(uVar5 >> 0x20);
+  auVar14._8_4_ = (int)uVar5;
+  auVar14._0_8_ = uVar5;
+  auVar14._12_4_ = uVar11;
+  uVar24 = (uint)(uVar8 >> 0x20);
+  auVar28._8_4_ = (int)uVar8;
+  auVar28._0_8_ = uVar8;
+  auVar28._12_4_ = uVar24;
+  uVar10 = auVar14._8_8_ >> 0x20;
+  auVar12 = auVar14 & auVar28;
+  auVar13 = auVar14 | auVar28;
+  auVar48 = auVar14 ^ auVar28;
+  uVar6 = auVar28._8_8_ >> 0x20;
+  uVar32 = auVar12._0_4_;
+  uVar47 = auVar12._8_8_;
+  uVar21 = auVar13._0_4_;
+  uVar25 = auVar13._8_4_;
+  uVar46 = auVar13._8_8_ >> 0x20;
+  auVar15._8_4_ = 0xffffffff;
+  auVar15._0_8_ = 0xffffffffffffffff;
+  auVar15._12_4_ = 0xffffffff;
+  auVar51 = auVar28 ^ auVar15;
+  auVar15 = auVar14 ^ auVar15;
+  auVar40._0_8_ =
+       (((ulonglong)auVar51._0_4_ * (ulonglong)_DAT_18084ca50 +
+         ((_DAT_18084cac0 & 0xffffffff) * (ulonglong)auVar51._0_4_ +
+          (auVar51._0_8_ >> 0x20) * (ulonglong)_DAT_18084ca50 << 0x20) +
+        (ulonglong)auVar48._0_4_ * (ulonglong)_DAT_18084caa0 +
+        ((_DAT_18084cab0 & 0xffffffff) * (ulonglong)auVar48._0_4_ +
+         (auVar48._0_8_ >> 0x20) * (ulonglong)_DAT_18084caa0 << 0x20) +
+        (_DAT_18084ca80 & 0xffffffff) * (ulonglong)uVar21 +
+        ((_DAT_18084ca90 & 0xffffffff) * (ulonglong)uVar21 +
+         (auVar13._0_8_ >> 0x20) * (_DAT_18084ca80 & 0xffffffff) << 0x20) +
+        (_DAT_18084ca60 & 0xffffffff) * (ulonglong)uVar32 +
+        ((_DAT_18084ca70 & 0xffffffff) * (ulonglong)uVar32 +
+         (auVar12._0_8_ >> 0x20) * (_DAT_18084ca60 & 0xffffffff) << 0x20) +
+        (_DAT_18084ca30 & 0xffffffff) * (uVar8 & 0xffffffff) +
+        ((_DAT_18084ca40 & 0xffffffff) * (uVar8 & 0xffffffff) +
+         (ulonglong)uVar24 * (_DAT_18084ca30 & 0xffffffff) << 0x20) +
+        (_DAT_18084ca10 & 0xffffffff) * (uVar5 & 0xffffffff) +
+        ((_DAT_18084ca20 & 0xffffffff) * (uVar5 & 0xffffffff) +
+         (ulonglong)uVar11 * (_DAT_18084ca10 & 0xffffffff) << 0x20)) -
+       ((ulonglong)auVar15._0_4_ * (_DAT_18084cb30 & 0xffffffff) +
+        ((_DAT_18084cb60 & 0xffffffff) * (ulonglong)auVar15._0_4_ +
+         (auVar15._0_8_ >> 0x20) * (_DAT_18084cb30 & 0xffffffff) << 0x20) +
+       (ulonglong)uVar21 * (ulonglong)_DAT_18084cb50 +
+       ((auVar13._0_8_ >> 0x20) * (ulonglong)_DAT_18084cb50 +
+        (_DAT_18084cb40 & 0xffffffff) * (ulonglong)uVar21 << 0x20) +
+       (ulonglong)uVar32 * (ulonglong)_DAT_18084cb50 +
+       ((auVar12._0_8_ >> 0x20) * (ulonglong)_DAT_18084cb50 +
+        (ulonglong)uVar32 * (_DAT_18084cb40 & 0xffffffff) << 0x20) +
+       (uVar8 & 0xffffffff) * (ulonglong)_DAT_18084cb10 +
+       ((_DAT_18084cb20 & 0xffffffff) * (uVar8 & 0xffffffff) +
+        (ulonglong)uVar24 * (ulonglong)_DAT_18084cb10 << 0x20) +
+       (uVar5 & 0xffffffff) * (ulonglong)_DAT_18084caf0 +
+       ((_DAT_18084cb00 & 0xffffffff) * (uVar5 & 0xffffffff) +
+        (ulonglong)uVar11 * (ulonglong)_DAT_18084caf0 << 0x20))) + _DAT_18084cb70;
+  auVar40._8_8_ =
+       (((auVar51._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084ca58 +
+         ((_UNK_18084cac8 & 0xffffffff) * (ulonglong)auVar51._8_4_ +
+          (auVar51._8_8_ >> 0x20) * (ulonglong)_UNK_18084ca58 << 0x20) +
+        (auVar48._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084caa8 +
+        ((_UNK_18084cab8 & 0xffffffff) * (ulonglong)auVar48._8_4_ +
+         (auVar48._8_8_ >> 0x20) * (ulonglong)_UNK_18084caa8 << 0x20) +
+        (_UNK_18084ca88 & 0xffffffff) * (ulonglong)uVar25 +
+        ((_UNK_18084ca98 & 0xffffffff) * (ulonglong)uVar25 + uVar46 * (_UNK_18084ca88 & 0xffffffff)
+        << 0x20) +
+        (_UNK_18084ca68 & 0xffffffff) * (ulonglong)auVar12._8_4_ +
+        ((_UNK_18084ca78 & 0xffffffff) * (ulonglong)auVar12._8_4_ +
+         (uVar47 >> 0x20) * (_UNK_18084ca68 & 0xffffffff) << 0x20) +
+        (_UNK_18084ca38 & 0xffffffff) * (uVar8 & 0xffffffff) +
+        ((_UNK_18084ca48 & 0xffffffff) * (uVar8 & 0xffffffff) +
+         uVar6 * (_UNK_18084ca38 & 0xffffffff) << 0x20) +
+        (_UNK_18084ca18 & 0xffffffff) * (uVar5 & 0xffffffff) +
+        ((_UNK_18084ca28 & 0xffffffff) * (uVar5 & 0xffffffff) +
+         uVar10 * (_UNK_18084ca18 & 0xffffffff) << 0x20)) -
+       ((auVar15._8_8_ & 0xffffffff) * (_UNK_18084cb38 & 0xffffffff) +
+        ((_UNK_18084cb68 & 0xffffffff) * (ulonglong)auVar15._8_4_ +
+         (auVar15._8_8_ >> 0x20) * (_UNK_18084cb38 & 0xffffffff) << 0x20) +
+       (auVar13._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084cb58 +
+       (uVar46 * _UNK_18084cb58 + (_UNK_18084cb48 & 0xffffffff) * (ulonglong)uVar25 << 0x20) +
+       (uVar47 & 0xffffffff) * (ulonglong)_UNK_18084cb58 +
+       ((uVar47 >> 0x20) * (ulonglong)_UNK_18084cb58 +
+        (uVar47 & 0xffffffff) * (_UNK_18084cb48 & 0xffffffff) << 0x20) +
+       (auVar28._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084cb18 +
+       ((_UNK_18084cb28 & 0xffffffff) * (uVar8 & 0xffffffff) + uVar6 * _UNK_18084cb18 << 0x20) +
+       (auVar14._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084caf8 +
+       ((_UNK_18084cb08 & 0xffffffff) * (uVar5 & 0xffffffff) + uVar10 * _UNK_18084caf8 << 0x20))) +
+       _UNK_18084cb78;
+  auVar44._8_8_ = 0;
+  auVar44._0_8_ = uVar26;
+  auVar16._8_8_ = uVar26;
+  auVar16._0_8_ = auVar40._0_8_ ^ 0x84222325;
+  auVar13 = pshufb(auVar16 ^ _DAT_18084cb80,_DAT_1800170c0);
+  uVar5 = uVar4 - (uVar4 >> 1 & 0x5555555555555555);
+  uVar5 = (uVar5 & 0x3333333333333333) + (uVar5 >> 2 & 0x3333333333333333);
+  uVar4 = (((uVar5 >> 4) + uVar5 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38) << 7 ^ uVar4;
+  _DAT_183133340 = _DAT_1831336f8 ^ uVar4 ^ auVar40._0_8_;
+  _DAT_183133638 = (_DAT_183133638 ^ uVar4) + auVar40._0_8_ ^ 0x6e6f1b46ab888174;
+  _DAT_1831335f8 = (_DAT_1831335f8 * -0x9a8cccd2f973b17 ^ _DAT_183133638) + uVar4;
+  _DAT_1831335b0 = _DAT_1831335f8 ^ _DAT_183133638;
+  uVar5 = auVar13._8_8_ + auVar13._0_8_;
+  uVar4 = uVar5 + _DAT_183133300;
+  if (auVar13._4_4_ < 0) {
+    uVar4 = _DAT_183133428 ^ uVar5;
+  }
+  _DAT_1831334e0 = auVar40._0_8_;
+  _DAT_183133588 = func_0x00018646fee0(SUB161(auVar16 ^ _DAT_18084cb80,5) ^ uVar4);
+  uVar4 = _DAT_183133588 ^ uVar26;
+  uVar25 = (uint)(auVar40._0_8_ >> 0x20);
+  auVar34._8_4_ = (int)auVar40._0_8_;
+  auVar34._0_8_ = auVar40._0_8_;
+  auVar34._12_4_ = uVar25;
+  uVar39 = (uint)(uVar26 >> 0x20);
+  auVar22._8_4_ = (int)uVar26;
+  auVar22._0_8_ = uVar26;
+  auVar22._12_4_ = uVar39;
+  uVar21 = SUB164(auVar34 & auVar22,0);
+  uVar5 = SUB168(auVar34 & auVar22,0);
+  uVar42 = SUB164(auVar34 | auVar22,0);
+  uVar11 = SUB164(auVar34 ^ auVar22,0);
+  uVar6 = SUB168(auVar34 ^ auVar22,0);
+  auVar52._8_4_ = 0xffffffff;
+  auVar52._0_8_ = 0xffffffffffffffff;
+  auVar52._12_4_ = 0xffffffff;
+  uVar32 = SUB164(auVar44 ^ auVar52,0);
+  uVar24 = SUB164(auVar40 ^ auVar52,0);
+  uVar5 = (((ulonglong)uVar32 * (ulonglong)_DAT_18084cbd0 +
+            ((ulonglong)_DAT_18084cc40 * (ulonglong)uVar32 +
+             (SUB168(auVar44 ^ auVar52,0) >> 0x20) * (ulonglong)_DAT_18084cbd0 << 0x20) +
+           (ulonglong)_DAT_18084cc20 * (ulonglong)uVar11 +
+           ((ulonglong)_DAT_18084cc30 * (ulonglong)uVar11 +
+            (uVar6 >> 0x20) * (ulonglong)_DAT_18084cc20 << 0x20) +
+           (ulonglong)uVar42 * (ulonglong)_DAT_18084cc00 +
+           ((ulonglong)_DAT_18084cc10 * (ulonglong)uVar42 +
+            (SUB168(auVar34 | auVar22,0) >> 0x20) * (ulonglong)_DAT_18084cc00 << 0x20) +
+           (ulonglong)_DAT_18084cbe0 * (ulonglong)uVar21 +
+           ((ulonglong)_DAT_18084cbf0 * (ulonglong)uVar21 +
+            (uVar5 >> 0x20) * (ulonglong)_DAT_18084cbe0 << 0x20) +
+           (ulonglong)_DAT_18084cbb0 * (uVar26 & 0xffffffff) +
+           ((ulonglong)_DAT_18084cbc0 * (uVar26 & 0xffffffff) +
+            (ulonglong)uVar39 * (ulonglong)_DAT_18084cbb0 << 0x20) +
+           (ulonglong)_DAT_18084cb90 * (auVar40._0_8_ & 0xffffffff) +
+           ((ulonglong)_DAT_18084cba0 * (auVar40._0_8_ & 0xffffffff) +
+            (ulonglong)uVar25 * (ulonglong)_DAT_18084cb90 << 0x20)) -
+          ((ulonglong)uVar24 * (_DAT_18084ccb0 & 0xffffffff) +
+           ((ulonglong)_DAT_18084cd00 * (ulonglong)uVar24 +
+            (SUB168(auVar40 ^ auVar52,0) >> 0x20) * (_DAT_18084ccb0 & 0xffffffff) << 0x20) +
+           (ulonglong)uVar11 * (ulonglong)_DAT_18084cce0 +
+           ((ulonglong)_DAT_18084ccf0 * (ulonglong)uVar11 +
+            (uVar6 >> 0x20) * (ulonglong)_DAT_18084cce0 << 0x20) +
+          (ulonglong)uVar21 * (ulonglong)_DAT_18084ccc0 +
+          ((ulonglong)_DAT_18084ccd0 * (ulonglong)uVar21 +
+           (uVar5 >> 0x20) * (ulonglong)_DAT_18084ccc0 << 0x20) +
+          (uVar26 & 0xffffffff) * (ulonglong)_DAT_18084cc90 +
+          ((ulonglong)_DAT_18084cca0 * (uVar26 & 0xffffffff) +
+           (ulonglong)uVar39 * (ulonglong)_DAT_18084cc90 << 0x20) +
+          (auVar40._0_8_ & 0xffffffff) * (ulonglong)_DAT_18084cc70 +
+          ((ulonglong)_DAT_18084cc80 * (auVar40._0_8_ & 0xffffffff) +
+           (ulonglong)uVar25 * (ulonglong)_DAT_18084cc70 << 0x20))) + 0xbd1293695c2f9668;
+  _DAT_1831335c8 = _DAT_183133468 ^ uVar4 ^ uVar5;
+  _DAT_1831335e0 = (_DAT_1831335e0 ^ uVar4) + uVar5 ^ 0x684bf0ea283885c0;
+  _DAT_183133620 = (_DAT_183133620 * -0x5dae0115df0c105b ^ _DAT_1831335e0) + uVar4;
+  _DAT_1831335b0 = _DAT_183133620 ^ _DAT_1831335e0;
+  uVar26 = uVar9 ^ 0x84222325;
+  uVar4 = ((_DAT_183133578 ^ uVar26) + (uVar26 & _DAT_183133578) * 2) * (uVar7 - _DAT_183133330);
+  uVar4 = (uVar4 | _DAT_1831333a0) + (uVar4 & _DAT_1831333a0);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  _DAT_183133368 = uVar5;
+  _DAT_183133620 = func_0x00018646fee0((uVar26 ^ uVar7 | uVar4) + (uVar4 & (uVar26 ^ uVar7)));
+  uVar11 = (uint)(uVar9 >> 0x20);
+  auVar23._8_4_ = (int)uVar9;
+  auVar23._0_8_ = uVar9;
+  auVar23._12_4_ = uVar11;
+  uVar21 = (uint)(uVar7 >> 0x20);
+  auVar35._8_4_ = (int)uVar7;
+  auVar35._0_8_ = uVar7;
+  auVar35._12_4_ = uVar21;
+  uVar25 = SUB164(auVar23 & auVar35,0);
+  uVar4 = SUB168(auVar23 & auVar35,0);
+  uVar24 = SUB164(auVar23 | auVar35,0);
+  uVar6 = SUB168(auVar23 | auVar35,0);
+  uVar39 = SUB164(auVar23 ^ auVar35,0);
+  auVar1._8_8_ = _UNK_18001a718;
+  auVar1._0_8_ = _DAT_18001a710;
+  uVar32 = SUB164(auVar23 ^ auVar1,0);
+  auVar29._8_8_ = uVar7;
+  auVar29._0_8_ = uVar26;
+  auVar13 = pshufb(auVar29 ^ _DAT_18084ce30,_DAT_1800170c0);
+  uVar10 = (((ulonglong)uVar39 * (ulonglong)_DAT_18084cd70 +
+             ((_DAT_18084cd80 & 0xffffffff) * (ulonglong)uVar39 +
+              (SUB168(auVar23 ^ auVar35,0) >> 0x20) * (ulonglong)_DAT_18084cd70 << 0x20) +
+             (_DAT_18084cd50 & 0xffffffff) * (ulonglong)uVar24 +
+             ((_DAT_18084cd60 & 0xffffffff) * (ulonglong)uVar24 +
+              (uVar6 >> 0x20) * (_DAT_18084cd50 & 0xffffffff) << 0x20) +
+            (_DAT_18084cd30 & 0xffffffff) * (ulonglong)uVar25 +
+            ((_DAT_18084cd40 & 0xffffffff) * (ulonglong)uVar25 +
+             (uVar4 >> 0x20) * (_DAT_18084cd30 & 0xffffffff) << 0x20) +
+            (_DAT_18084cd20 & 0xffffffff) * (uVar7 & 0xffffffff) +
+            ((ulonglong)uVar21 * (_DAT_18084cd20 & 0xffffffff) +
+             (_DAT_18084cd10 & 0xffffffff) * (uVar7 & 0xffffffff) << 0x20) +
+            (uVar9 & 0xffffffff) * (_DAT_18084cd20 & 0xffffffff) +
+            ((ulonglong)uVar11 * (_DAT_18084cd20 & 0xffffffff) +
+             (uVar9 & 0xffffffff) * (_DAT_18084cd10 & 0xffffffff) << 0x20)) -
+           ((ulonglong)uVar32 * (_DAT_18084cdf0 & 0xffffffff) +
+            ((_DAT_18084ce20 & 0xffffffff) * (ulonglong)uVar32 +
+             (SUB168(auVar23 ^ auVar1,0) >> 0x20) * (_DAT_18084cdf0 & 0xffffffff) << 0x20) +
+           (ulonglong)uVar24 * (ulonglong)_DAT_18084ce10 +
+           ((uVar6 >> 0x20) * (ulonglong)_DAT_18084ce10 +
+            (_DAT_18084ce00 & 0xffffffff) * (ulonglong)uVar24 << 0x20) +
+           (ulonglong)uVar25 * (ulonglong)_DAT_18084ce10 +
+           ((uVar4 >> 0x20) * (ulonglong)_DAT_18084ce10 +
+            (ulonglong)uVar25 * (_DAT_18084ce00 & 0xffffffff) << 0x20) +
+           (uVar7 & 0xffffffff) * (ulonglong)_DAT_18084cdd0 +
+           ((_DAT_18084cde0 & 0xffffffff) * (uVar7 & 0xffffffff) +
+            (ulonglong)uVar21 * (ulonglong)_DAT_18084cdd0 << 0x20) +
+           (uVar9 & 0xffffffff) * (ulonglong)_DAT_18084cdb0 +
+           ((_DAT_18084cdc0 & 0xffffffff) * (uVar9 & 0xffffffff) +
+            (ulonglong)uVar11 * (ulonglong)_DAT_18084cdb0 << 0x20))) - _DAT_18084cdf0;
+  uVar4 = _DAT_183133620 << 0x13 | _DAT_183133620 >> 0x2d;
+  _DAT_1831336c0 = _DAT_183133550 ^ uVar4 ^ uVar10;
+  _DAT_1831333e8 = (_DAT_1831333e8 ^ uVar4) + uVar10 ^ 0x8ffea378d95c6992;
+  _DAT_183133360 = (_DAT_183133360 * 0x16b0ba59d13af70b ^ _DAT_1831333e8) + uVar4;
+  _DAT_1831335d0 = _DAT_183133360 ^ _DAT_1831333e8;
+  _DAT_183133598 = _DAT_1831336a0 ^ uVar10;
+  uVar6 = auVar13._8_8_ + auVar13._0_8_;
+  uVar4 = uVar6 + _DAT_183133448;
+  if (auVar13._4_4_ < 0) {
+    uVar4 = _DAT_183133568 ^ uVar6;
+  }
+  _DAT_1831334d8 = uVar10;
+  _DAT_183133338 = func_0x00018646fee0(SUB161(auVar29 ^ _DAT_18084ce30,5) ^ uVar4);
+  uVar4 = ((uVar9 | uVar7) ^ _DAT_183133338) & 0x7fffffffffffffff;
+  uVar8 = uVar9 ^ uVar7;
+  _DAT_183133478 = (_DAT_183133478 ^ uVar4) + uVar8 ^ 0x30bfe6517a9e996b;
+  _DAT_183133388 = (_DAT_183133388 * 0x15716894c85e5e0b ^ _DAT_183133478) + uVar4;
+  _DAT_183133628 = _DAT_183133388 ^ _DAT_183133478;
+  uVar4 = (uVar26 ^ _DAT_1831334f0) + uVar26 + _DAT_183133388;
+  uVar6 = (uVar7 ^ _DAT_183133388) + _DAT_1831334f0 + uVar7;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uVar26 ^ _DAT_1831334f0;
+  uVar6 = (uVar6 * 0x2000 | uVar6 >> 0x33) ^ uVar7 ^ _DAT_183133388;
+  _DAT_183133488 = uVar8;
+  _DAT_183133300 =
+       func_0x00018646fee0((uVar6 << 0x1d | uVar6 >> 0x23) - (_DAT_1831334f0 + uVar7) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (uVar26 + _DAT_183133388));
+  uVar4 = (_DAT_183133300 >> 0xd) * 0x2bd324d286f56000 >> 8;
+  uVar7 = uVar7 & uVar9;
+  _DAT_183133670 = (_DAT_183133670 ^ uVar4) + uVar7 ^ 0x8c610a7e77e9e06a;
+  _DAT_1831336a8 = (_DAT_1831336a8 * 0xa8740ffe4abae5 ^ _DAT_183133670) + uVar4;
+  _DAT_1831336e8 = _DAT_1831336a8 ^ _DAT_183133670;
+  uVar4 = uVar7 * 2;
+  uVar9 = uVar8 ^ 0x84222325;
+  uVar6 = ((_DAT_183133420 ^ uVar9) + (uVar9 & _DAT_183133420) * 2) * (uVar4 - _DAT_1831336a8);
+  uVar6 = (uVar6 | _DAT_1831334c0) + (uVar6 & _DAT_1831334c0);
+  uVar6 = uVar6 * 0x2000 ^ uVar6;
+  uVar6 = uVar6 >> 7 ^ uVar6;
+  uVar6 = uVar6 << 0x11 ^ uVar6;
+  _DAT_1831333f0 = uVar7;
+  _DAT_1831333e8 = func_0x00018646fee0((uVar9 ^ uVar4 | uVar6) + (uVar6 & (uVar9 ^ uVar4)));
+  uVar6 = uVar4 * uVar8 ^ _DAT_1831333e8;
+  uVar4 = uVar6 >> 1 | uVar6;
+  uVar4 = uVar4 >> 2 | uVar4;
+  uVar4 = uVar4 >> 4 | uVar4;
+  uVar4 = uVar4 >> 8 | uVar4;
+  uVar4 = uVar4 >> 0x10 | uVar4;
+  uVar4 = uVar4 >> 0x20 | uVar4;
+  uVar4 = uVar4 - (uVar4 >> 1 & 0x5555555555555555);
+  uVar9 = (uVar4 & 0x3333333333333333) + (uVar4 >> 2 & 0x3333333333333333);
+  uVar11 = (uint)(uVar8 >> 0x20);
+  auVar36._8_4_ = (int)uVar8;
+  auVar36._0_8_ = uVar8;
+  auVar36._12_4_ = uVar11;
+  auVar30._8_4_ = (int)uVar7;
+  auVar30._0_8_ = uVar7;
+  auVar30._12_4_ = (int)(uVar7 >> 0x20);
+  uVar7 = uVar7 * 2;
+  uVar4 = auVar30._8_8_ * 2;
+  auVar41._8_8_ = uVar4;
+  auVar41._0_8_ = uVar7;
+  auVar12 = auVar36 & auVar41;
+  auVar13 = auVar36 | auVar41;
+  auVar41 = auVar36 ^ auVar41;
+  uVar26 = auVar36._8_8_;
+  uVar47 = (auVar30._8_8_ & 0x7fffffffffffffff) >> 0x1f;
+  uVar43 = (uint)(uVar7 >> 0x20);
+  uVar25 = auVar12._0_4_;
+  uVar32 = auVar12._8_4_;
+  uVar49 = auVar12._8_8_ >> 0x20;
+  uVar21 = auVar13._0_4_;
+  uVar24 = auVar13._8_4_;
+  uVar50 = auVar13._8_8_ >> 0x20;
+  uVar39 = auVar41._0_4_;
+  uVar42 = auVar41._8_4_;
+  uVar46 = auVar41._8_8_ >> 0x20;
+  auVar45._0_8_ =
+       ((_DAT_18084cea0 & 0xffffffff) * (ulonglong)uVar39 +
+        ((_DAT_18084ceb0 & 0xffffffff) * (ulonglong)uVar39 +
+         (auVar41._0_8_ >> 0x20) * (_DAT_18084cea0 & 0xffffffff) << 0x20) +
+        (_DAT_18084ce80 & 0xffffffff) * (ulonglong)uVar21 +
+        ((_DAT_18084ce90 & 0xffffffff) * (ulonglong)uVar21 +
+         (auVar13._0_8_ >> 0x20) * (_DAT_18084ce80 & 0xffffffff) << 0x20) +
+       (_DAT_18084ce60 & 0xffffffff) * (ulonglong)uVar25 +
+       ((_DAT_18084ce70 & 0xffffffff) * (ulonglong)uVar25 +
+        (auVar12._0_8_ >> 0x20) * (_DAT_18084ce60 & 0xffffffff) << 0x20) +
+       (_DAT_18084ce50 & 0xffffffff) * (uVar7 & 0xffffffff) +
+       ((ulonglong)uVar43 * (_DAT_18084ce50 & 0xffffffff) +
+        (_DAT_18084ce40 & 0xffffffff) * (uVar7 & 0xffffffff) << 0x20) +
+       (uVar8 & 0xffffffff) * (_DAT_18084ce50 & 0xffffffff) +
+       ((ulonglong)uVar11 * (_DAT_18084ce50 & 0xffffffff) +
+        (uVar8 & 0xffffffff) * (_DAT_18084ce40 & 0xffffffff) << 0x20)) -
+       ((ulonglong)uVar39 * (ulonglong)_DAT_18084cf40 +
+        ((_DAT_18084cf50 & 0xffffffff) * (ulonglong)uVar39 +
+         (auVar41._0_8_ >> 0x20) * (ulonglong)_DAT_18084cf40 << 0x20) +
+        (ulonglong)uVar21 * (ulonglong)_DAT_18084cf20 +
+        ((_DAT_18084cf30 & 0xffffffff) * (ulonglong)uVar21 +
+         (auVar13._0_8_ >> 0x20) * (ulonglong)_DAT_18084cf20 << 0x20) +
+       (ulonglong)uVar25 * (ulonglong)_DAT_18084cf00 +
+       ((_DAT_18084cf10 & 0xffffffff) * (ulonglong)uVar25 +
+        (auVar12._0_8_ >> 0x20) * (ulonglong)_DAT_18084cf00 << 0x20) +
+       (uVar7 & 0xffffffff) * (ulonglong)_DAT_18084cef0 +
+       ((ulonglong)uVar43 * (ulonglong)_DAT_18084cef0 +
+        (_DAT_18084cee0 & 0xffffffff) * (uVar7 & 0xffffffff) << 0x20) +
+       (uVar8 & 0xffffffff) * (ulonglong)_DAT_18084cef0 +
+       ((ulonglong)uVar11 * (ulonglong)_DAT_18084cef0 +
+        (uVar8 & 0xffffffff) * (_DAT_18084cee0 & 0xffffffff) << 0x20));
+  auVar45._8_8_ =
+       ((_UNK_18084cea8 & 0xffffffff) * (ulonglong)uVar42 +
+        ((_UNK_18084ceb8 & 0xffffffff) * (ulonglong)uVar42 + uVar46 * (_UNK_18084cea8 & 0xffffffff)
+        << 0x20) +
+        (_UNK_18084ce88 & 0xffffffff) * (ulonglong)uVar24 +
+        ((_UNK_18084ce98 & 0xffffffff) * (ulonglong)uVar24 + uVar50 * (_UNK_18084ce88 & 0xffffffff)
+        << 0x20) +
+       (_UNK_18084ce68 & 0xffffffff) * (ulonglong)uVar32 +
+       ((_UNK_18084ce78 & 0xffffffff) * (ulonglong)uVar32 + uVar49 * (_UNK_18084ce68 & 0xffffffff)
+       << 0x20) +
+       (_UNK_18084ce58 & 0xffffffff) * (uVar4 & 0xffffffff) +
+       (uVar47 * (_UNK_18084ce58 & 0xffffffff) +
+        (_UNK_18084ce48 & 0xffffffff) * (uVar4 & 0xffffffff) << 0x20) +
+       (uVar26 & 0xffffffff) * (_UNK_18084ce58 & 0xffffffff) +
+       ((uVar26 >> 0x20) * (_UNK_18084ce58 & 0xffffffff) +
+        (uVar26 & 0xffffffff) * (_UNK_18084ce48 & 0xffffffff) << 0x20)) -
+       ((auVar41._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084cf48 +
+        ((_UNK_18084cf58 & 0xffffffff) * (ulonglong)uVar42 + uVar46 * _UNK_18084cf48 << 0x20) +
+        (auVar13._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084cf28 +
+        ((_UNK_18084cf38 & 0xffffffff) * (ulonglong)uVar24 + uVar50 * _UNK_18084cf28 << 0x20) +
+       (auVar12._8_8_ & 0xffffffff) * (ulonglong)_UNK_18084cf08 +
+       ((_UNK_18084cf18 & 0xffffffff) * (ulonglong)uVar32 + uVar49 * _UNK_18084cf08 << 0x20) +
+       (uVar4 & 0xffffffff) * (ulonglong)_UNK_18084cef8 +
+       (uVar47 * _UNK_18084cef8 + (_UNK_18084cee8 & 0xffffffff) * (uVar4 & 0xffffffff) << 0x20) +
+       (uVar26 & 0xffffffff) * (ulonglong)_UNK_18084cef8 +
+       ((uVar26 >> 0x20) * (ulonglong)_UNK_18084cef8 +
+        (uVar26 & 0xffffffff) * (_UNK_18084cee8 & 0xffffffff) << 0x20));
+  auVar17._8_8_ = auVar45._0_8_;
+  auVar17._0_8_ = uVar10 ^ 0x84222325;
+  auVar13 = pshufb(auVar17 ^ _DAT_18084cf60,_DAT_1800170c0);
+  uVar4 = (0x40 - (((uVar9 >> 4) + uVar9 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38) ^ uVar6)
+          & 0x7fffffffffffffff;
+  _DAT_1831334b0 = _DAT_183133520 ^ uVar4 ^ auVar45._0_8_;
+  _DAT_183133310 = (_DAT_183133310 ^ uVar4) + auVar45._0_8_ ^ 0x20e75c752c870147;
+  _DAT_183133568 = (_DAT_183133568 * -0x5945b7cbd7671dd7 ^ _DAT_183133310) + uVar4;
+  _DAT_183133670 = _DAT_183133568 ^ _DAT_183133310;
+  uVar7 = auVar13._8_8_ + auVar13._0_8_;
+  uVar4 = uVar7 + _DAT_183133410;
+  if (auVar13._4_4_ < 0) {
+    uVar4 = _DAT_183133350 ^ uVar7;
+  }
+  _DAT_183133690 = auVar45._0_8_;
+  _DAT_1831336d8 = func_0x00018646fee0(SUB161(auVar17 ^ _DAT_18084cf60,5) ^ uVar4);
+  uStack0000000000000060 = (undefined4)uVar10;
+  uStack0000000000000064 = (uint)(uVar10 >> 0x20);
+  auVar37._8_4_ = uStack0000000000000060;
+  auVar37._0_8_ = uVar10;
+  auVar37._12_4_ = uStack0000000000000064;
+  uVar24 = (uint)(auVar45._0_8_ >> 0x20);
+  auVar31._8_4_ = (int)auVar45._0_8_;
+  auVar31._0_8_ = auVar45._0_8_;
+  auVar31._12_4_ = uVar24;
+  auVar18._8_4_ = 0xffffffff;
+  auVar18._0_8_ = 0xffffffffffffffff;
+  auVar18._12_4_ = 0xffffffff;
+  auVar13 = auVar37 ^ auVar18;
+  uVar21 = SUB164(auVar37 & auVar31,0);
+  uVar7 = SUB168(auVar37 & auVar31,0);
+  uVar11 = SUB164(auVar37 ^ auVar31,0);
+  uVar4 = SUB168(auVar37 ^ auVar31,0);
+  uVar32 = auVar13._0_4_;
+  uVar25 = SUB164(auVar45 ^ auVar18,0);
+  uStack0000000000000080 = auVar13._4_4_;
+  _DAT_183133328 =
+       (((ulonglong)uVar25 * (ulonglong)_DAT_18084d010 +
+         ((ulonglong)_DAT_18084d020 * (ulonglong)uVar25 +
+          (SUB168(auVar45 ^ auVar18,0) >> 0x20) * (ulonglong)_DAT_18084d010 << 0x20) +
+        (ulonglong)_DAT_18084cff0 * (ulonglong)uVar32 +
+        ((ulonglong)_DAT_18084d000 * (ulonglong)uVar32 +
+         (auVar13._0_8_ >> 0x20) * (ulonglong)_DAT_18084cff0 << 0x20) +
+        (ulonglong)_DAT_18084cfd0 * (ulonglong)uVar11 +
+        ((ulonglong)_DAT_18084cfe0 * (ulonglong)uVar11 + (uVar4 >> 0x20) * (ulonglong)_DAT_18084cfd0
+        << 0x20) +
+        (ulonglong)_DAT_18084cfb0 * (ulonglong)uVar21 +
+        ((ulonglong)_DAT_18084cfc0 * (ulonglong)uVar21 + (uVar7 >> 0x20) * (ulonglong)_DAT_18084cfb0
+        << 0x20) +
+        (ulonglong)_DAT_18084cf90 * (auVar45._0_8_ & 0xffffffff) +
+        ((ulonglong)_DAT_18084cfa0 * (auVar45._0_8_ & 0xffffffff) +
+         (ulonglong)uVar24 * (ulonglong)_DAT_18084cf90 << 0x20) +
+        (ulonglong)_DAT_18084cf70 * (uVar10 & 0xffffffff) +
+        ((ulonglong)_DAT_18084cf80 * (uVar10 & 0xffffffff) +
+         (ulonglong)uStack0000000000000064 * (ulonglong)_DAT_18084cf70 << 0x20)) -
+       ((ulonglong)uVar32 * (ulonglong)_DAT_18084d090 +
+        ((ulonglong)_DAT_18084d0e0 * (ulonglong)uVar32 +
+         (ulonglong)uStack0000000000000080 * (ulonglong)_DAT_18084d090 << 0x20) +
+        (ulonglong)uVar11 * (ulonglong)_DAT_18084d0c0 +
+        ((ulonglong)_DAT_18084d0d0 * (ulonglong)uVar11 + (uVar4 >> 0x20) * (ulonglong)_DAT_18084d0c0
+        << 0x20) +
+       (ulonglong)uVar21 * (ulonglong)_DAT_18084d0a0 +
+       ((ulonglong)_DAT_18084d0b0 * (ulonglong)uVar21 + (uVar7 >> 0x20) * (ulonglong)_DAT_18084d0a0
+       << 0x20) +
+       (auVar45._0_8_ & 0xffffffff) * (ulonglong)_DAT_18084d070 +
+       ((ulonglong)_DAT_18084d080 * (auVar45._0_8_ & 0xffffffff) +
+        (ulonglong)uVar24 * (ulonglong)_DAT_18084d070 << 0x20) +
+       (uVar10 & 0xffffffff) * (ulonglong)_DAT_18084d050 +
+       ((ulonglong)_DAT_18084d060 * (uVar10 & 0xffffffff) +
+        (ulonglong)uStack0000000000000064 * (ulonglong)_DAT_18084d050 << 0x20))) +
+       0xaf0178b65bbe0629;
+  uVar5 = _DAT_183133328 + uVar5;
+  auVar19._8_8_ = 0;
+  auVar19._0_8_ = uVar5 ^ 0x84222325;
+  auVar13 = pshufb(auVar19 ^ _DAT_18084d0f0,_DAT_1800170c0);
+  uVar4 = _DAT_1831336d8 - (_DAT_1831336d8 >> 1 & 0x5555555555555555);
+  uVar4 = (uVar4 & 0x3333333333333333) + (uVar4 >> 2 & 0x3333333333333333);
+  uVar4 = (((uVar4 >> 4) + uVar4 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38) << 3 ^
+          _DAT_1831336d8;
+  _DAT_183133480 = _DAT_183133328 ^ uVar4;
+  _DAT_183133398 = (_DAT_183133398 ^ uVar4) + _DAT_183133328 ^ 0x47a67931e5d5ff17;
+  _DAT_183133380 = (_DAT_183133380 * 0x41600669160ae4c7 ^ _DAT_183133398) + uVar4;
+  _DAT_183133338 = _DAT_183133380 ^ _DAT_183133398;
+  uVar7 = auVar13._8_8_ + auVar13._0_8_;
+  uVar4 = uVar7 + _DAT_183133418;
+  if (auVar13._4_4_ < 0) {
+    uVar4 = _DAT_183133580 ^ uVar7;
+  }
+  _DAT_183133488 = func_0x00018646fee0(SUB161(auVar19 ^ _DAT_18084d0f0,5) ^ uVar4);
+  uVar11 = (uint)(uVar5 >> 0x20);
+  uVar7 = ((ulonglong)_DAT_18084d120 * (uVar5 & 0xffffffff) +
+           ((ulonglong)_DAT_18084d130 * (uVar5 & 0xffffffff) +
+            (ulonglong)uVar11 * (ulonglong)_DAT_18084d120 << 0x20) +
+          (ulonglong)_DAT_18084d100 * (uVar5 & 0xffffffff) +
+          ((ulonglong)_DAT_18084d110 * (uVar5 & 0xffffffff) +
+           (ulonglong)uVar11 * (ulonglong)_DAT_18084d100 << 0x20)) -
+          ((uVar5 & 0xffffffff) * (ulonglong)_DAT_18084d180 +
+           ((ulonglong)_DAT_18084d190 * (uVar5 & 0xffffffff) +
+            (ulonglong)uVar11 * (ulonglong)_DAT_18084d180 << 0x20) +
+          (ulonglong)_DAT_18084d160 * (uVar5 & 0xffffffff) +
+          ((ulonglong)_DAT_18084d170 * (uVar5 & 0xffffffff) +
+           (ulonglong)uVar11 * (ulonglong)_DAT_18084d160 << 0x20) +
+          (ulonglong)_DAT_18084d140 * (uVar5 & 0xffffffff) +
+          ((ulonglong)_DAT_18084d150 * (uVar5 & 0xffffffff) +
+           (ulonglong)uVar11 * (ulonglong)_DAT_18084d140 << 0x20));
+  _DAT_183133430 = _DAT_183133480 ^ _DAT_183133488 ^ uVar7;
+  _DAT_183133420 = (_DAT_183133420 ^ _DAT_183133488) + uVar7 ^ 0x44d5dbcea1b0ed5a;
+  _DAT_1831335b8 = (_DAT_1831335b8 * 0x7fcef2c1e0695aa9 ^ _DAT_183133420) + _DAT_183133488;
+  _DAT_1831336a0 = _DAT_1831335b8 ^ _DAT_183133420;
+  uVar4 = uVar7 ^ 0x84222325 ^ _DAT_183133598;
+  lVar3 = (uVar7 ^ 0x84222325) + _DAT_183133538;
+  uVar5 = uVar4 + lVar3;
+  uVar4 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uVar4;
+  uVar5 = ((_DAT_183133538 + _DAT_183133598) * 0x2000 | _DAT_183133538 + _DAT_183133598 >> 0x33) ^
+          _DAT_183133538;
+  _DAT_1831335d8 = uVar7;
+  _DAT_183133460 =
+       func_0x00018646fee0((uVar5 << 0x1d | uVar5 >> 0x23) - _DAT_183133598 ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - lVar3);
+  uVar21 = (uint)(uVar7 >> 0x20);
+  auVar38._8_4_ = (int)uVar7;
+  auVar38._0_8_ = uVar7;
+  auVar38._12_4_ = uVar21;
+  auVar20._8_4_ = 0xffffffff;
+  auVar20._0_8_ = 0xffffffffffffffff;
+  auVar20._12_4_ = 0xffffffff;
+  uVar11 = SUB164(auVar20 ^ auVar38,0);
+  uVar5 = SUB168(auVar20 ^ auVar38,0);
+  uVar4 = (_DAT_183133460 ^ uVar7) & 0x3ffffffff;
+  uVar6 = (((ulonglong)_DAT_18084d1e0 * (ulonglong)uVar11 +
+            ((ulonglong)_DAT_18084d1f0 * (ulonglong)uVar11 +
+             (uVar5 >> 0x20) * (ulonglong)_DAT_18084d1e0 << 0x20) +
+           (ulonglong)_DAT_18084d1c0 * (uVar7 & 0xffffffff) +
+           ((ulonglong)_DAT_18084d1d0 * (uVar7 & 0xffffffff) +
+            (ulonglong)uVar21 * (ulonglong)_DAT_18084d1c0 << 0x20) +
+           (ulonglong)_DAT_18084d1a0 * (uVar7 & 0xffffffff) +
+           ((ulonglong)_DAT_18084d1b0 * (uVar7 & 0xffffffff) +
+            (ulonglong)uVar21 * (ulonglong)_DAT_18084d1a0 << 0x20)) -
+          ((ulonglong)uVar11 * (ulonglong)_DAT_18084d240 +
+           ((ulonglong)_DAT_18084d250 * (ulonglong)uVar11 +
+            (uVar5 >> 0x20) * (ulonglong)_DAT_18084d240 << 0x20) +
+          (uVar7 & 0xffffffff) * (ulonglong)_DAT_18084d220 +
+          ((ulonglong)_DAT_18084d230 * (uVar7 & 0xffffffff) +
+           (ulonglong)uVar21 * (ulonglong)_DAT_18084d220 << 0x20) +
+          (ulonglong)_DAT_18084d200 * (uVar7 & 0xffffffff) +
+          ((ulonglong)_DAT_18084d210 * (uVar7 & 0xffffffff) +
+           (ulonglong)uVar21 * (ulonglong)_DAT_18084d200 << 0x20))) + _DAT_18084d260;
+  _DAT_1831333c0 = _DAT_183133628 ^ uVar4 ^ uVar6;
+  _DAT_1831335a0 = (_DAT_1831335a0 ^ uVar4) + uVar6 ^ 0xc230d5043a0f976e;
+  _DAT_183133428 = (_DAT_183133428 * -0x4f85006c04d90d6b ^ _DAT_1831335a0) + uVar4;
+  _DAT_183133470 = _DAT_183133428 ^ _DAT_1831335a0;
+  uVar4 = in_stack_00000098 ^ 0x84222325 ^ _DAT_183133678;
+  lVar3 = (in_stack_00000098 ^ 0x84222325) + _DAT_1831333b8;
+  uVar5 = uVar4 + lVar3;
+  uVar7 = (uVar6 ^ _DAT_1831333b8) + _DAT_183133678 + uVar6;
+  uVar4 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uVar4;
+  uVar5 = (uVar7 * 0x2000 | uVar7 >> 0x33) ^ uVar6 ^ _DAT_1831333b8;
+  _DAT_183133480 = uVar6;
+  _DAT_183133398 =
+       func_0x00018646fee0((uVar5 << 0x1d | uVar5 >> 0x23) - (_DAT_183133678 + uVar6) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - lVar3);
+  uVar4 = in_stack_00000098 ^ uVar6 ^ _DAT_183133398;
+  _DAT_183133538 = in_stack_00000098 ^ uVar6;
+  _DAT_1831333b8 = (_DAT_1831333b8 ^ uVar4) + _DAT_183133538 ^ 0xb759ffc0f4779959;
+  _DAT_183133350 = (_DAT_183133350 * -0x2c12301437ab8685 ^ _DAT_1831333b8) + uVar4;
+  _DAT_183133550 = _DAT_183133350 ^ _DAT_1831333b8;
+  FUN_190dd72e0(_DAT_183133398,*_DAT_18301ee50 + 0xb409,500);
+  cVar2 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar2 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646ec17 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646ec17(void)
+
+{
+  longlong unaff_RDI;
+  
+  switch(unaff_RDI == 0) {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646f4c4 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646f4c4(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646f4e8 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646f4e8(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetObjectField /*0x2f8*/))();
+  (*_DAT_18084c648)();
+  return;
+}
+
+
+// ----- block @ rva 0x646f550 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646f550(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646f8e4 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646f8e4(void)
+
+{
+  (*_DAT_18084c738)();
+  return;
+}
+
+
+// ----- block @ rva 0x646f91e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18646f91e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->IsInstanceOf /*0x100*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x646fc57 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646fc57(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->Throw /*0x68*/))();
+  (*_DAT_18084c068)();
+  return;
+}
+
+
+// ----- block @ rva 0x646fc68 -----
+
+void FUN_18646fc68(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x646fe44 -----
+
+void FUN_18646fe44(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x646ff95 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18646ff95(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6470008 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470008(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_18084d3d8)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470084 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186470084(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6470204 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470204(void)
+
+{
+  int unaff_EDI;
+  longlong lStack0000000000000038;
+  
+  lStack0000000000000038 = (longlong)unaff_EDI;
+  FUN_190dd72e0();
+  (*_DAT_18084d378)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470255 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470255(void)
+
+{
+  FUN_190ddfc90();
+  (*_DAT_18084d328)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470288 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186470288(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x64702fb -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_1864702fb(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (*_DAT_18084d458)();
+  return;
+}
+
+
+// ----- block @ rva 0x647033a -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18647033a(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x647035b -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18647035b(void)
+
+{
+  (*_DAT_18084d458)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470366 -----
+
+void FUN_186470366(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x6470370 -----
+
+void FUN_186470370(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470423 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470423(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x647045c -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18647045c(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_18084d558)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470496 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470496(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_18084d578)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470536 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470536(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetObjectField /*0x2f8*/))();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_18084d5b8)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470572 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470572(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_18084d528)();
+  return;
+}
+
+
+// ----- block @ rva 0x64705ee -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_1864705ee(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6470612 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186470612(void)
+
+{
+  longlong unaff_RDI;
+  
+  switch(unaff_RDI == 0) {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6470661 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470661(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (*_DAT_18084d5a8)();
+  return;
+}
+
+
+// ----- block @ rva 0x647069a -----
+
+void FUN_18647069a(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x64706a2 -----
+
+void FUN_1864706a2(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x6470827 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186470827(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_18084de88)();
+  return;
+}
+
+
+// ----- block @ rva 0x64749e3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_1864749e3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6474eb3 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186474eb3(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x647573e -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_18647573e(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  FUN_184194800();
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x64759e7 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_1864759e7(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6475bc4 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186475bc4(void)
+
+{
+  (*_DAT_18084e328)();
+  return;
+}
+
+
+// ----- block @ rva 0x6475c90 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186475c90(void)
+
+{
+  (*_DAT_18084e328)();
+  return;
+}
+
+
+// ----- block @ rva 0x6476317 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186476317(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (*_DAT_18084e1a8)();
+  return;
+}
+
+
+// ----- block @ rva 0x6476341 -----
+
+void FUN_186476341(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x64765af -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_1864765af(void)
+
+{
+  char in_AL;
+  
+  switch(in_AL == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6476698 -----
+
+void FUN_186476698(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+
+
+// ----- block @ rva 0x647680f -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18647680f(void)
+
+{
+  FUN_190ddce00();
+  (*_DAT_18084f698)();
+  return;
+}
+
+
+// ----- block @ rva 0x64768db -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_1864768db(void)
+
+{
+  longlong *unaff_RSI;
+  
+  FUN_190dd72e0();
+  (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  (*_DAT_18084f618)();
+  return;
+}
+
+
+// ----- block @ rva 0x6476937 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186476937(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6476958 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186476958(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_18084f678)();
+  return;
+}
+
+
+// ----- block @ rva 0x6476a15 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186476a15(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6476afa -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186476afa(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->GetStaticObjectField /*0x488*/))();
+  (*_DAT_18084f748)();
+  return;
+}
+
+
+// ----- block @ rva 0x6476b3a -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186476b3a(void)
+
+{
+  FUN_190dd72e0();
+  (*_DAT_18084f668)();
+  return;
+}
+
+
+// ----- block @ rva 0x6476d53 -----
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void FUN_186476d53(void)
+
+{
+  char cVar1;
+  longlong *unaff_RSI;
+  
+  cVar1 = (**(code **)(unaff_RSI + JNI->ExceptionCheck /*0x720*/))();
+  switch(cVar1 == '\0') {
+  case false:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  case true:
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+}
+
+
+// ----- block @ rva 0x6477077 -----
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_186477077(void)
+
+{
+  longlong *unaff_RSI;
+  
+  (**(code **)(unaff_RSI + JNI->ThrowNew /*0x70*/))();
+  (*_DAT_18084f6a8)();
+  return;
+}
+
+
+// ----- block @ rva 0x64770ad -----
+
+void FUN_1864770ad(void)
+
+{
+  return;
+}
+
+
+// ----- block @ rva 0x64770b7 -----
+
+void FUN_1864770b7(void)
+
+{
+  code *pcVar1;
+  
+  pcVar1 = (code *)swi(3);
+  (*pcVar1)();
+  return;
+}
+

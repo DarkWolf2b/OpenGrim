@@ -1,0 +1,18 @@
+ec	Ghost Hand
+ed	Custom Camera Distance
+ee	Cape
+ef	Elytra Swapper
+eg	No Swing
+eh	Auto Exp
+ei	Scaffold
+ej	Air Stuck
+ek	Inventory Move
+el	Water Speed
+em	High Jump
+en	Anti Ghost
+eo	No Slow
+ep	Super Firework
+eq	Null Movement
+er	Speed
+es	No Push
+et	Anti Web

@@ -1,0 +1,18 @@
+eu	Trident Boost
+ev	Collision Long Jump
+ew	No Jump Delay
+ex	Safe Walk
+ey	Blink
+ez	No Fall
+fA	Potion Refill
+fB	Auto Shield Break
+fC	Velocity
+fD	Uncharge Block
+fE	No Miss
+fF	Trigger Bot
+fG	W-Tap
+fH	Aim Assist
+fI	Auto Logout
+fJ	Target Margin
+fK	Reach
+fL	Auto Tool

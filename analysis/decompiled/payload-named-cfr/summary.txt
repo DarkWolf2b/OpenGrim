@@ -1,0 +1,2415 @@
+Summary for /tmp/payload-named.jar
+Decompiled with CFR 0.152
+
+
+c
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+e
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+R
+----------------------------
+
+<init>(byte[] long byte[] java.lang.ClassLoader )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+
+
+i
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.og$vf$wk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kE$um
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.g
+----------------------------
+
+bc(sixtwo.f )
+  Loose catch block
+bd(sixtwo.h )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [13[WHILELOOP]], but top level block is 6[TRYBLOCK]
+aL(sixtwo.lC )
+  Loose catch block
+
+
+sixtwo.X
+----------------------------
+
+bV(sixtwo.lC )
+  Unable to fully structure code
+
+
+sixtwo.R
+----------------------------
+
+iy(boolean )
+  Unable to fully structure code
+
+
+sixtwo.Q
+----------------------------
+
+bV(sixtwo.lC )
+  Unable to fully structure code
+
+
+sixtwo.jS$ud
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jR$uc
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dg$sx
+----------------------------
+
+doo(sixtwo.lC boolean )
+  Unable to fully structure code
+
+
+sixtwo.cZ$su
+----------------------------
+
+<init>(net.minecraft.entity.LivingEntity int float long sixtwo.mG float )
+  Unable to fully structure code
+
+
+sixtwo.lr$uz
+----------------------------
+
+dvq(int java.lang.String )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+Init
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kD$ul
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.qx
+----------------------------
+
+cZf()
+  Unable to fully structure code
+
+
+sixtwo.kC$uk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.qy
+----------------------------
+
+cZl()
+  Unable to fully structure code
+
+
+sixtwo.pm
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+measure(sixtwo.lC sixtwo.lc net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+drawBox(sixtwo.lC sixtwo.lc sixtwo.lc net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+
+
+sixtwo.pl
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.pq
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+measure(sixtwo.lC sixtwo.lc net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+drawBox(sixtwo.lC sixtwo.lc sixtwo.lc net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+
+
+sixtwo.pk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cNC(net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+
+
+sixtwo.po
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cOu(sixtwo.lC net.minecraft.entity.Entity boolean float float float float )
+  Unable to fully structure code
+
+
+sixtwo.qO
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+dcI()
+  Loose catch block
+dcJ(media.IMediaSession )
+  Unable to fully structure code
+dcK()
+  Loose catch block
+
+
+sixtwo.py
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cQr(sixtwo.lC sixtwo.lc net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+
+
+sixtwo.pv
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.pw
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.rr
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.pu
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+drawFrame(sixtwo.lC sixtwo.lc net.minecraft.entity.Entity boolean )
+  Unable to fully structure code
+
+
+sixtwo.rm
+----------------------------
+
+dii(org.joml.Matrix4f com.mojang.blaze3d.systems.ProjectionType )
+  Unable to fully structure code
+
+
+sixtwo.rp
+----------------------------
+
+readInstant(com.google.gson.JsonObject java.lang.String )
+  Loose catch block
+readIntArray(com.google.gson.JsonObject java.lang.String )
+  Unable to fully structure code
+
+
+sixtwo.jm$tS
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.rs
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jm$tP
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.fX
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ps
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.et
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ru
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.fS
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aWS(net.minecraft.text.Text net.minecraft.client.font.TextRenderer org.apache.commons.lang3.mutable.MutableInt )
+  Unable to fully structure code
+  Could not resolve type clashes
+aWQ(java.lang.String )
+  Could not resolve type clashes
+  Unable to fully structure code
+aXf(java.util.List java.lang.StringBuilder java.lang.StringBuilder net.minecraft.text.Style java.lang.String )
+  Unable to fully structure code
+
+
+sixtwo.fK
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.fJ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ee
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.du
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aiD(sixtwo.go$sX )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [12[TRYBLOCK]], but top level block is 23[SWITCH]
+
+
+sixtwo.dv
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dr
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ds
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aig(sixtwo.go$sX )
+  Loose catch block
+
+
+sixtwo.dt
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aim(sixtwo.gk )
+  Could not resolve type clashes
+  Unable to fully structure code
+
+
+sixtwo.dp
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.do
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+ahh(sixtwo.gH$th )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.dy
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dq
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+ahQ(sixtwo.go$sX )
+  Loose catch block
+
+
+sixtwo.dx
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dz
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+ajE(net.minecraft.client.util.math.MatrixStack float )
+  Unable to fully structure code
+  Could not resolve type clashes
+ajB(sixtwo.go$sX )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [4[TRYBLOCK]], but top level block is 9[SWITCH]
+ajF(net.minecraft.client.util.math.MatrixStack float )
+  Loose catch block
+ajG(net.minecraft.client.util.math.MatrixStack float )
+  Loose catch block
+ajH(net.minecraft.client.util.math.MatrixStack float )
+  Loose catch block
+
+
+sixtwo.dw
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aiT(sixtwo.gH$th )
+  Unable to fully structure code
+aiU(sixtwo.go$sX )
+  Unable to fully structure code
+
+
+sixtwo.df
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dd
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+acj(sixtwo.go$sX )
+  Loose catch block
+
+
+sixtwo.dc
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+abZ(sixtwo.go$sX )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 7[SWITCH]
+abY(sixtwo.gH$th )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 7[SWITCH]
+
+
+sixtwo.da
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dn
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dm
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+agU(sixtwo.go$sX )
+  Loose catch block
+
+
+sixtwo.db
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+abG()
+  Unable to fully structure code
+abE(sixtwo.go$sX )
+  Loose catch block
+
+
+sixtwo.de
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dl
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+agx(sixtwo.gn )
+  Unable to fully structure code
+
+
+sixtwo.dg
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aei(sixtwo.go$sX )
+  Could not resolve type clashes
+  Unable to fully structure code
+aeh(sixtwo.hp )
+  Unable to fully structure code
+
+
+sixtwo.di
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dj
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+age(net.minecraft.client.util.math.MatrixStack net.minecraft.util.math.Vec3d java.util.List<sixtwo.dj$sB> )
+  Unable to fully structure code
+agl(sixtwo.dj$sD )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+agd(net.minecraft.client.util.math.MatrixStack sixtwo.dj$sE net.minecraft.util.math.Vec3d float )
+  Unable to fully structure code
+agc(java.util.List<net.minecraft.util.math.BlockPos> )
+  Unable to fully structure code
+afX(sixtwo.dj$sE )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [8[TRYBLOCK]], but top level block is 20[SWITCH]
+
+
+sixtwo.dh
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aet()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+aeq(sixtwo.gH$th )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Extractable last case doesn't follow previous, and can't clone.
+aer(sixtwo.go$sX )
+  Could not resolve type clashes
+  Unable to fully structure code
+
+
+sixtwo.fq
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ff
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aIm(sixtwo.gL$tj )
+  Unable to fully structure code
+aIl(sixtwo.gL$tk )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 12[SWITCH]
+
+
+sixtwo.fw
+----------------------------
+
+aRb()
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.as
+----------------------------
+
+bV(sixtwo.lC )
+  Unable to fully structure code
+
+
+sixtwo.bR
+----------------------------
+
+MG(sixtwo.lC sixtwo.ii )
+  Unable to fully structure code
+
+
+sixtwo.bQ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bP
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bO
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bM
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bY
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bZ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+OG(sixtwo.lC )
+  Unable to fully structure code
+
+
+sixtwo.bN
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.az
+----------------------------
+
+sz(sixtwo.f )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 8[SWITCH]
+sC(sixtwo.h )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 5[SWITCH]
+
+
+sixtwo.bX
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bD
+----------------------------
+
+LL(sixtwo.lC float float float float float )
+  Unable to fully structure code
+
+
+sixtwo.bU
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+NV(sixtwo.lC )
+  Unable to fully structure code
+
+
+sixtwo.bJ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ah
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bL
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+MZ(sixtwo.lC media.IMediaSession media.MediaInfo sixtwo.mG float float float float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 5[SWITCH]
+
+
+sixtwo.bG
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bK
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bI
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bF
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bE
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+LX(sixtwo.lC )
+  Unable to fully structure code
+
+
+sixtwo.aC
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+tP(sixtwo.lC float sixtwo.al )
+  Unable to fully structure code
+
+
+sixtwo.aB
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.aA
+----------------------------
+
+tG(float float )
+  Unable to fully structure code
+
+
+sixtwo.aI
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.aJ
+----------------------------
+
+<init>()
+  Could not resolve type clashes
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+wj(sixtwo.bg )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+wl(sixtwo.aE )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 5[SWITCH]
+
+
+sixtwo.aW
+----------------------------
+
+<init>(float int[] sixtwo.iM )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Extractable last case doesn't follow previous, and can't clone.
+
+
+sixtwo.cq
+----------------------------
+
+Rk(sixtwo.gk )
+  Unable to fully structure code
+
+
+sixtwo.cr
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cp
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cn
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+NV(sixtwo.lC )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.aD
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+ut(java.lang.String )
+  Unable to fully structure code
+vb(sixtwo.aj sixtwo.iO )
+  Unable to fully structure code
+
+
+sixtwo.dY
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cx
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cw
+----------------------------
+
+TA()
+  Unable to fully structure code
+
+
+sixtwo.cd
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ce
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cc
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+Pz(sixtwo.lC sixtwo.mG media.IMediaSession )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+
+
+sixtwo.ca
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+LX(sixtwo.lC )
+  Could not resolve type clashes
+  Unable to fully structure code
+OQ()
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.dM
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cj
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ch
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+NV(sixtwo.lC )
+  Unable to fully structure code
+  Could not resolve type clashes
+LX(sixtwo.lC )
+  Could not resolve type clashes
+  Unable to fully structure code
+
+
+sixtwo.cb
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+Pk(float )
+  Unable to fully structure code
+
+
+sixtwo.dI
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+alK()
+  Unable to fully structure code
+  Could not resolve type clashes
+alH(sixtwo.gA )
+  Unable to fully structure code
+alF(sixtwo.gH$th )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.cf
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ci
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+NV(sixtwo.lC )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 12[SWITCH]
+LX(sixtwo.lC )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 6[SWITCH]
+
+
+sixtwo.cU
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dG
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cg
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+NV(sixtwo.lC )
+  Unable to fully structure code
+  Could not resolve type clashes
+LX(sixtwo.lC )
+  Could not resolve type clashes
+  Unable to fully structure code
+
+
+sixtwo.cT
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+Zl(net.minecraft.client.util.math.MatrixStack net.minecraft.client.network.AbstractClientPlayerEntity net.minecraft.client.render.entity.model.PlayerEntityModel net.minecraft.util.Identifier float float )
+  Unable to fully structure code
+
+
+sixtwo.cS
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cQ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cP
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+Yr(sixtwo.go$sX )
+  Unable to fully structure code
+Ys(net.minecraft.client.util.math.MatrixStack net.minecraft.item.Item float float )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.cO
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cR
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+YT(net.minecraft.client.util.math.MatrixStack float sixtwo.mG sixtwo.mo )
+  Loose catch block
+YS(sixtwo.go$sX )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 2[SWITCH]
+
+
+sixtwo.bz
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+KA()
+  Unable to fully structure code
+  Could not resolve type clashes
+close()
+  Unable to fully structure code
+KD(sixtwo.nf )
+  Unable to fully structure code
+  Could not resolve type clashes
+Kp(sixtwo.lC sixtwo.ii float )
+  Unable to fully structure code
+  Could not resolve type clashes
+Ko()
+  Unable to fully structure code
+
+
+sixtwo.cY
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.cW
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+ZV(sixtwo.gH$th )
+  Unable to fully structure code
+
+
+sixtwo.cV
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+ZK(sixtwo.go$sX )
+  Unable to fully structure code
+
+
+sixtwo.cB
+----------------------------
+
+Vj(java.lang.Runnable boolean )
+  Loose catch block
+Vl(boolean )
+  Unable to fully structure code
+
+
+sixtwo.cA
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+SS(com.google.gson.JsonElement )
+  Unable to fully structure code
+
+
+sixtwo.cX
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+aar(java.lang.String net.minecraft.item.ItemStack )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [4[TRYBLOCK]], but top level block is 32[SWITCH]
+aaw(java.lang.String )
+  Loose catch block
+
+
+sixtwo.cL
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bl
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.bg
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+dk(double double sixtwo.mA )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Extractable last case doesn't follow previous, and can't clone.
+
+
+sixtwo.cH
+----------------------------
+
+SS(com.google.gson.JsonElement )
+  Loose catch block
+
+
+sixtwo.bj
+----------------------------
+
+<init>(sixtwo.iO )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+bV(sixtwo.lC )
+  Unable to fully structure code
+DW(sixtwo.iM int[] )
+  Unable to fully structure code
+  Could not resolve type clashes
+DT(java.lang.Boolean )
+  Unable to fully structure code
+
+
+sixtwo.cF
+----------------------------
+
+VS(sixtwo.jg$tJ )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+SS(com.google.gson.JsonElement )
+  Unable to fully structure code
+
+
+sixtwo.cZ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+abi(float float float float float float )
+  Unable to fully structure code
+abg(net.minecraft.client.model.ModelPart org.joml.Matrix4f java.util.List<float[]> )
+  Unable to fully structure code
+abf(net.minecraft.entity.LivingEntity )
+  Loose catch block
+abd(net.minecraft.client.gl.Framebuffer net.minecraft.client.util.math.MatrixStack float )
+  Unable to fully structure code
+
+
+sixtwo.cG
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.oE
+----------------------------
+
+cIr(net.minecraft.util.math.BlockPos net.minecraft.util.math.Direction )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+cIq(net.minecraft.util.math.BlockPos net.minecraft.util.math.Direction int )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 7[SWITCH]
+
+
+sixtwo.nd
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.oD
+----------------------------
+
+cIm(int )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+
+
+sixtwo.nf
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ng
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+matches(net.minecraft.item.ItemStack )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.mo
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.oC
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cIc(net.minecraft.util.math.Vec3d net.minecraft.util.math.BlockPos net.minecraft.util.math.Direction )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 13[SWITCH]
+cIb(net.minecraft.util.math.BlockPos net.minecraft.util.math.Direction net.minecraft.util.math.Vec3d )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
+
+
+sixtwo.ne
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mm
+----------------------------
+
+clp()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Extractable last case doesn't follow previous, and can't clone.
+
+
+sixtwo.mk
+----------------------------
+
+ckM(int net.minecraft.entity.player.PlayerEntity sixtwo.mv java.util.function.Function<net.minecraft.client.network.ClientPlayerEntity, java.lang.Boolean> )
+  Unable to fully structure code
+
+
+sixtwo.mu
+----------------------------
+
+cmi(java.util.function.UnaryOperator<java.util.List<T>> )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [6[DOLOOP]], but top level block is 2[TRYBLOCK]
+cmm(java.util.function.Predicate java.util.List )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.mr
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lz
+----------------------------
+
+shouldApply(net.minecraft.block.enums.CameraSubmersionType net.minecraft.entity.Entity )
+  Loose catch block
+isColorSource()
+  Loose catch block
+
+
+sixtwo.mZ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ly
+----------------------------
+
+ccl(long )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Extractable last case doesn't follow previous, and can't clone.
+
+
+sixtwo.nc
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mp
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.me
+----------------------------
+
+cjZ(sixtwo.mh )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.md
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mX
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mY
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+crP(int )
+  Unable to fully structure code
+
+
+sixtwo.lm
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bZy(java.lang.String sixtwo.mG )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [18[CASE]], but top level block is 10[TRYBLOCK]
+
+
+sixtwo.ll
+----------------------------
+
+<init>(sixtwo.li$uv float float )
+  Unable to fully structure code
+
+
+sixtwo.lk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bZd(sixtwo.lj char float int org.joml.Matrix4f float float float )
+  Unable to fully structure code
+
+
+sixtwo.ln
+----------------------------
+
+bZO(sixtwo.lj org.joml.Matrix4f float float boolean float float float float java.util.function.Consumer<net.minecraft.client.render.BufferBuilder> )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lw
+----------------------------
+
+cbG()
+  Unable to fully structure code
+cbw()
+  Unable to fully structure code
+  Could not resolve type clashes
+cbC()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [66[DOLOOP]], but top level block is 26[TRYBLOCK]
+cbH(int )
+  Unable to fully structure code
+  Could not resolve type clashes
+cbI()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 12[SWITCH]
+cbz(java.io.BufferedInputStream )
+  Unable to fully structure code
+cbA(java.io.InputStream )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+cbB(java.lang.String )
+  Unable to fully structure code
+
+
+sixtwo.lh
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mU
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ls
+----------------------------
+
+caM()
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lj
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bYx(int[] int int float )
+  Unable to fully structure code
+bYz(int[] float )
+  Unable to fully structure code
+  Could not resolve type clashes
+bYH(java.lang.String float )
+  Unable to fully structure code
+bYI(int[] float )
+  Unable to fully structure code
+bYy(java.lang.String float )
+  Unable to fully structure code
+  Could not resolve type clashes
+bYt(org.joml.Matrix4f net.minecraft.client.render.VertexConsumer int[] float float float float float float int )
+  Unable to fully structure code
+bYw(java.lang.String int int float )
+  Unable to fully structure code
+
+
+sixtwo.ph
+----------------------------
+
+cNl(int )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+
+
+sixtwo.pf
+----------------------------
+
+cNj(java.util.List<net.minecraft.util.math.Vec3d> int double double double double double double sixtwo.pf$vt )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [4[CASE]], but top level block is 0[TRYBLOCK]
+
+
+sixtwo.pe
+----------------------------
+
+cMZ(net.minecraft.entity.Entity sixtwo.ov net.minecraft.util.math.Vec3d sixtwo.ph float float boolean )
+  Unable to fully structure code
+  Could not resolve type clashes
+cNb(net.minecraft.util.math.Vec3d net.minecraft.util.math.Vec3d sixtwo.ov sixtwo.ph net.minecraft.util.math.Box )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+
+
+sixtwo.qC
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.pB
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.of
+----------------------------
+
+cCF(sixtwo.ct )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+
+
+sixtwo.pD
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cSe(sixtwo.lC sixtwo.lc float float )
+  Unable to fully structure code
+
+
+sixtwo.jZ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bNK(sixtwo.jR )
+  Unable to fully structure code
+
+
+sixtwo.pA
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jX
+----------------------------
+
+bNz(sixtwo.jO )
+  Unable to fully structure code
+
+
+sixtwo.jY
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bND(sixtwo.jQ )
+  Unable to fully structure code
+
+
+sixtwo.jW
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bNp(sixtwo.jO )
+  Unable to fully structure code
+bNo(sixtwo.jO )
+  Unable to fully structure code
+
+
+sixtwo.oR
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cKo(net.minecraft.item.ItemStack net.minecraft.component.type.ItemEnchantmentsComponent )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [14[TRYBLOCK]], but top level block is 15[SWITCH]
+
+
+sixtwo.jd
+----------------------------
+
+bAl()
+  Unable to fully structure code
+bAo(net.minecraft.client.network.SequencedPacketCreator )
+  Unable to fully structure code
+
+
+sixtwo.jU
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bMX(sixtwo.jO )
+  Unable to fully structure code
+
+
+sixtwo.jV
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bNg(sixtwo.jP )
+  Unable to fully structure code
+
+
+sixtwo.kB
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bSy(int )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+bSx(net.minecraft.client.util.math.MatrixStack net.minecraft.entity.Entity sixtwo.mG float int )
+  Unable to fully structure code
+
+
+sixtwo.jc
+----------------------------
+
+bzz(java.lang.String )
+  Unable to fully structure code
+bzB(net.minecraft.item.Item )
+  Unable to fully structure code
+  Could not resolve type clashes
+bzA(net.minecraft.item.Item )
+  Unable to fully structure code
+  Could not resolve type clashes
+bzD(net.minecraft.item.Item )
+  Unable to fully structure code
+bzv(net.minecraft.entity.Entity float net.minecraft.entity.damage.DamageSource )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+bzc(net.minecraft.item.ItemStack )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 3[SWITCH]
+
+
+sixtwo.if
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jG
+----------------------------
+
+bHN()
+  Unable to fully structure code
+
+
+sixtwo.ie
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jF
+----------------------------
+
+bHC()
+  Unable to fully structure code
+
+
+sixtwo.ig
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jb
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jT
+----------------------------
+
+bMM(sixtwo.jO )
+  Unable to fully structure code
+
+
+sixtwo.jN
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bJp()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+
+
+sixtwo.id
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.iX
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bxO(double )
+  Unable to fully structure code
+  Could not resolve type clashes
+bxR(sixtwo.mF )
+  Unable to fully structure code
+bxP(boolean )
+  Unable to fully structure code
+
+
+sixtwo.iW
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bxs(net.minecraft.client.util.math.MatrixStack net.minecraft.util.math.Box sixtwo.mG sixtwo.mG boolean )
+  Unable to fully structure code
+bxt(net.minecraft.client.util.math.MatrixStack java.lang.Iterable<net.minecraft.util.math.Vec3d> sixtwo.mG )
+  Unable to fully structure code
+
+
+sixtwo.jB
+----------------------------
+
+bGR(sixtwo.jC java.lang.Runnable )
+  Unable to fully structure code
+
+
+sixtwo.iN
+----------------------------
+
+btJ(java.lang.String )
+  Loose catch block
+
+
+sixtwo.ky
+----------------------------
+
+bSd(net.minecraft.client.util.math.MatrixStack net.minecraft.client.network.AbstractClientPlayerEntity sixtwo.mG int )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.kx
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mG
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cnV(int int int float[] )
+  Unable to fully structure code
+cnS(float float float )
+  Unable to fully structure code
+cnU(float float float )
+  Unable to fully structure code
+com()
+  Unable to fully structure code
+
+
+sixtwo.lf
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.le
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kz
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bSi(net.minecraft.client.util.math.MatrixStack net.minecraft.entity.Entity int float float )
+  Unable to fully structure code
+bSh(net.minecraft.util.math.Vec3d net.minecraft.client.util.math.MatrixStack float int net.minecraft.client.texture.AbstractTexture )
+  Unable to fully structure code
+
+
+sixtwo.iO
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lM
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kl
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kj
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bPv(java.lang.Runnable com.mojang.blaze3d.pipeline.RenderPipeline java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Loose catch block
+
+
+sixtwo.mA
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lH
+----------------------------
+
+cgp()
+  Loose catch block
+
+
+sixtwo.kg
+----------------------------
+
+execute()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+
+
+sixtwo.mV
+----------------------------
+
+crl(sixtwo.mV$uT )
+  Recovered potentially malformed switches.  Disable with '--allowmalformedswitch false'
+  Loose catch block
+cqL(int float float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
+cqH(float float float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 8[SWITCH]
+cqO()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [3[TRYBLOCK]], but top level block is 7[SWITCH]
+crh(int float float float float sixtwo.mV$uT )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+cqV(int float float )
+  Unable to fully structure code
+cqZ(int float float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [15[CASE]], but top level block is 5[TRYBLOCK]
+cra(int float float float )
+  Unable to fully structure code
+cqN()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [3[TRYBLOCK]], but top level block is 7[SWITCH]
+cqM(int float float float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
+crk(sixtwo.mV$uS )
+  Unable to fully structure code
+cro(sixtwo.mV$uS )
+  Unable to fully structure code
+crr(int float float float float sixtwo.mV$uT boolean )
+  Unable to fully structure code
+crn(sixtwo.mV$uT )
+  Recovered potentially malformed switches.  Disable with '--allowmalformedswitch false'
+  Loose catch block
+crj(sixtwo.mV$uT )
+  Recovered potentially malformed switches.  Disable with '--allowmalformedswitch false'
+  Loose catch block
+cqW(int float float float )
+  Unable to fully structure code
+cqY(int float float float )
+  Unable to fully structure code
+cqI(sixtwo.mV$uT )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 4[SWITCH]
+cqX(int float float )
+  Unable to fully structure code
+cri(int float float float float float sixtwo.mV$uS )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 4[SWITCH]
+cqG(float float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 6[SWITCH]
+cqJ(sixtwo.mV$uS )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [2[TRYBLOCK]], but top level block is 4[SWITCH]
+crs(int float float float float float sixtwo.mV$uS boolean )
+  Unable to fully structure code
+  Could not resolve type clashes
+<clinit>()
+  Unable to fully structure code
+crm(sixtwo.mV$uS )
+  Unable to fully structure code
+
+
+sixtwo.ki
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bPk(java.lang.Runnable sixtwo.mG sixtwo.mG int int float float float float float float boolean )
+  Loose catch block
+
+
+sixtwo.kk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bPH()
+  Unable to fully structure code
+
+
+sixtwo.kp
+----------------------------
+
+bQB(net.minecraft.client.util.math.MatrixStack java.util.List<net.minecraft.util.math.Vec3d> int int int boolean float java.util.function.BiFunction<java.lang.Integer, java.lang.Integer, sixtwo.mG> )
+  Unable to fully structure code
+bQA(net.minecraft.client.util.math.MatrixStack java.util.List<net.minecraft.util.math.Vec3d> int int int float java.util.function.BiFunction<java.lang.Integer, java.lang.Integer, sixtwo.mG> )
+  Unable to fully structure code
+
+
+sixtwo.lQ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lP
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cha(java.lang.Runnable )
+  Loose catch block
+chc(com.sun.jna.platform.win32.WinDef$HWND )
+  Loose catch block
+
+
+sixtwo.kn
+----------------------------
+
+bQq(com.mojang.blaze3d.pipeline.RenderPipeline net.minecraft.client.gl.Framebuffer java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Unable to fully structure code
+bQr(com.mojang.blaze3d.pipeline.RenderPipeline net.minecraft.client.gl.Framebuffer java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Unable to fully structure code
+
+
+sixtwo.kt
+----------------------------
+
+bQQ(net.minecraft.client.util.math.MatrixStack float net.minecraft.client.network.AbstractClientPlayerEntity )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [11[TRYBLOCK]], but top level block is 15[SWITCH]
+bRm(net.minecraft.entity.player.PlayerSkinType )
+  Unable to fully structure code
+bRg(net.minecraft.client.util.math.MatrixStack float sixtwo.ks net.minecraft.util.Identifier net.minecraft.util.Identifier )
+  Unable to fully structure code
+bRq(net.minecraft.client.render.entity.state.PlayerEntityRenderState sixtwo.ks )
+  Unable to fully structure code
+bRi(net.minecraft.client.util.math.MatrixStack net.minecraft.client.model.Model net.minecraft.client.model.Model net.minecraft.util.Identifier int int )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Started 2 blocks at once
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kr
+----------------------------
+
+bQP()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 2[SWITCH]
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lF
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+cfO(sixtwo.lB com.mojang.blaze3d.pipeline.RenderPipeline net.minecraft.client.render.BuiltBuffer int java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Unable to fully structure code
+cga(sixtwo.lB )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+cfT(sixtwo.lB com.mojang.blaze3d.pipeline.RenderPipeline net.minecraft.client.render.BuiltBuffer java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Unable to fully structure code
+cfJ(net.minecraft.client.gl.Framebuffer com.mojang.blaze3d.pipeline.RenderPipeline net.minecraft.client.render.BuiltBuffer java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Unable to fully structure code
+cfU(net.minecraft.client.gl.Framebuffer sixtwo.lB com.mojang.blaze3d.pipeline.RenderPipeline net.minecraft.client.render.BuiltBuffer java.util.function.Consumer<com.mojang.blaze3d.systems.RenderPass> )
+  Unable to fully structure code
+
+
+sixtwo.ke
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.ju
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bFZ(net.minecraft.client.render.item.KeyedItemRenderState )
+  Unable to fully structure code
+
+
+sixtwo.lO
+----------------------------
+
+<init>()
+  Unable to fully structure code
+  Could not resolve type clashes
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.lR
+----------------------------
+
+generateMipmaps(com.mojang.blaze3d.textures.GpuTexture )
+  Loose catch block
+<clinit>()
+  Unable to fully structure code
+setUniform(int org.joml.Matrix4f )
+  Unable to fully structure code
+setUniform(int float[] )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [6[CASE]], but top level block is 4[TRYBLOCK]
+copyTextureToTexture(com.mojang.blaze3d.textures.GpuTexture com.mojang.blaze3d.textures.GpuTexture int int int int int int int )
+  Unable to fully structure code
+  Could not resolve type clashes
+createShader(byte[] sixtwo.lS )
+  Unable to fully structure code
+  Could not resolve type clashes
+ciz(sixtwo.lS )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+
+
+sixtwo.ka
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bNR(sixtwo.jS )
+  Unable to fully structure code
+
+
+sixtwo.lE
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kL
+----------------------------
+
+flush()
+  Unable to fully structure code
+endBatch()
+  Unable to fully structure code
+
+
+sixtwo.lC
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jl
+----------------------------
+
+bDO(net.minecraft.util.math.BlockPos boolean )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+bDS(net.minecraft.block.BlockState )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+
+
+sixtwo.kJ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bUf()
+  Unable to fully structure code
+
+
+sixtwo.kM
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bUG()
+  Unable to fully structure code
+
+
+sixtwo.jk
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+bDw(char float )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [0[TRYBLOCK]], but top level block is 1[SWITCH]
+bDx(int )
+  Unable to fully structure code
+  Could not resolve type clashes
+
+
+sixtwo.kI
+----------------------------
+
+bTT()
+  Unable to fully structure code
+bTU()
+  Unable to fully structure code
+
+
+sixtwo.kK
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+flush()
+  Unable to fully structure code
+endBatch()
+  Unable to fully structure code
+
+
+sixtwo.kU
+----------------------------
+
+bWc(sixtwo.kS )
+  Unable to fully structure code
+bWh(com.mojang.blaze3d.pipeline.RenderPipeline )
+  Unable to fully structure code
+
+
+sixtwo.js
+----------------------------
+
+bFB()
+  Unable to fully structure code
+
+
+sixtwo.kS
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jg
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jf
+----------------------------
+
+bAQ(int[] float sixtwo.lq )
+  Unable to fully structure code
+  Could not resolve type clashes
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jp
+----------------------------
+
+bFk()
+  Unable to fully structure code
+bFj()
+  Unable to fully structure code
+
+
+sixtwo.kN
+----------------------------
+
+bUT()
+  Unable to fully structure code
+bUU()
+  Unable to fully structure code
+
+
+sixtwo.jQ$ub
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kH$up
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mV$va
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mV$uU
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mV$uW
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mV$uX
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.mV$uZ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jP$ua
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kG$uo
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kO
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jo
+----------------------------
+
+bEw()
+  Unable to fully structure code
+bEz()
+  Unable to fully structure code
+bEV()
+  Unable to fully structure code
+bEx()
+  Unable to fully structure code
+bEy(sixtwo.jn java.lang.Runnable )
+  Unable to fully structure code
+bEW()
+  Unable to fully structure code
+bEY(sixtwo.jp )
+  Unable to fully structure code
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kR
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.rj$vT
+----------------------------
+
+dga(float float float float )
+  Unable to fully structure code
+
+
+sixtwo.rj$vS
+----------------------------
+
+dga(float float float float )
+  Unable to fully structure code
+
+
+sixtwo.rj$vR
+----------------------------
+
+dga(float float float float )
+  Unable to fully structure code
+
+
+sixtwo.rj$wa
+----------------------------
+
+dga(float float float float )
+  Unable to fully structure code
+
+
+sixtwo.rj$wc
+----------------------------
+
+dga(float float float float )
+  Unable to fully structure code
+
+
+sixtwo.rj$wb
+----------------------------
+
+dga(float float float float )
+  Unable to fully structure code
+
+
+sixtwo.dj$sD
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dj$sE
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.f$rF
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.dj$sC
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.kF$un
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.jO$tZ
+----------------------------
+
+<clinit>()
+  Unable to fully structure code
+
+
+sixtwo.oT$vo
+----------------------------
+
+<clinit>()
+  Unable to fully structure code

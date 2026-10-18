@@ -1,0 +1,30 @@
+# --- Reverse-engineering environment (rebuildable; NOT part of the published tree) ---
+win/
+binaries/
+ghidra_*/
+*.zip
+
+# --- RE toolchain downloads (reproducible from maven/github) ---
+analysis/tools/libs/
+analysis/tools/tr-meta.xml
+analysis/tools/decryptor/*.class
+
+# --- Runtime trace bulk data (small trace artifacts stay trackable) ---
+analysis/traces/**/raw/
+analysis/traces/**/by-class-casesafe/
+
+# --- Local scratch / generated junk ---
+analysis/tmp/
+*.tar.xz
+
+# --- Build outputs ---
+build/
+.gradle/
+*.log
+hs_err_pid*.log
+javac.*.args
+logs/
+recover/
+
+# --- Native dumps published as external assets (over the 100 MiB forge limit) ---
+analysis/ghidra/dumps/*.dll

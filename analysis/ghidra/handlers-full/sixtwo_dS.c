@@ -1,0 +1,595 @@
+// ===== Lsixtwo/dS; _3323b79ccdee7f922ab8849d424294e5 ()V (handler @ image 18da71250, runtime 6ffff5681250) =====
+
+void FUN_18da71250(longlong *param_1)
+
+{
+  char cVar1;
+  
+  FUN_190dd72e0(param_1,*plRam000000018301ee50 + 0x226,0xd);
+  cVar1 = (**(code **)(*param_1 + 0x720))(param_1);
+                    /* WARNING: Jumptable at 0x00018da71338 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_182320788 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+// ===== Lsixtwo/dS; apC (Lsixtwo/hm;)V (handler @ image 18da56430, runtime 6ffff5666430) =====
+
+void FUN_18da56430(longlong *param_1)
+
+{
+  char cVar1;
+  
+  FUN_190dd72e0(param_1,*plRam000000018301ee50 + 0xb64b,0x1f8);
+  cVar1 = (**(code **)(*param_1 + 0x720))(param_1);
+                    /* WARNING: Jumptable at 0x00018da564f4 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_182319840 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+// ===== Lsixtwo/dS; apD ()Z (handler @ image 18da5afa0, runtime 6ffff566afa0) =====
+
+void FUN_18da5afa0(longlong *param_1)
+
+{
+  char cVar1;
+  
+  FUN_190dd72e0(param_1,*plRam000000018301ee50 + 0xb64b,0x1f8);
+  cVar1 = (**(code **)(*param_1 + 0x720))(param_1);
+                    /* WARNING: Jumptable at 0x00018da5b06a did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18231afa0 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+// ===== Lsixtwo/dS; apE (Ljava/lang/MatchException;)Ljava/lang/MatchException; (handler @ image 18da61ba0, runtime 6ffff5671ba0) =====
+
+undefined8 FUN_18da61ba0(undefined8 param_1,undefined8 param_2,undefined8 param_3)
+
+{
+  return param_3;
+}
+
+
+
+// ===== Lsixtwo/dS; apF (IJ)I (handler @ image 18da61c30, runtime 6ffff5671c30) =====
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void FUN_18da61c30(longlong *param_1,undefined8 param_2,uint param_3,ulonglong param_4)
+
+{
+  char cVar1;
+  uint uVar2;
+  longlong lVar3;
+  ulonglong uVar4;
+  ulonglong uVar5;
+  
+  uVar4 = (~uRam0000000183375458 + 0x897ff49332833019) *
+          ((uRam00000001833754c0 ^ 0xea0d46285c4ce0e9) +
+          (uRam00000001833754c0 & 0x6a0d46285c4ce0e9) * 2);
+  uVar4 = (uVar4 | uRam00000001833754d8) + (uVar4 & uRam00000001833754d8);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam00000001833754a8 =
+       func_0x00018da6d4a0((uVar4 | 0x6372b2bb6ecfd0f1) + (uVar4 & 0x6372b2bb6ecfd0f1));
+  uRam0000000183375340 =
+       (uRam0000000183375340 ^ ~uRam00000001833754a8 & 0xea0d4628d86ec3cc) + 0xeb7ff6bbfaeff3dc ^
+       0x4b3d116ff388d7e;
+  uRam00000001833754e0 =
+       (uRam00000001833754e0 * 0x2c32afb65d412021 ^ uRam0000000183375340) +
+       (~uRam00000001833754a8 & 0xea0d4628d86ec3cc);
+  uRam00000001833753b0 = uRam00000001833754e0 ^ uRam0000000183375340;
+  uRam0000000183375300 = 0xeb7ff6bbfaeff3dc;
+  uVar4 = (~uRam00000001833753e0 + 0xc2e8e2c1adfce22c) *
+          ((uRam00000001833754f0 ^ 0xeb9de622ec8d6192) +
+          (uRam00000001833754f0 & 0x6b9de622ec8d6192) * 2);
+  uVar4 = (uVar4 | uRam00000001833753a8) + (uVar4 & uRam00000001833753a8);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam00000001833753e8 =
+       func_0x00018da6d4a0((uVar4 | 0x297504e3417183b9) + (uVar4 & 0x297504e3417183b9));
+  uRam0000000183375478 =
+       (uRam0000000183375478 ^ uRam0000000183375440) + 0x297504e3c553a09c ^ 0xb15f311a025d4870;
+  uRam0000000183375358 =
+       (uRam0000000183375358 * -0x397c71d0b5d018bf ^ uRam0000000183375478) + uRam0000000183375440;
+  uRam00000001833753b8 = uRam0000000183375358 ^ uRam0000000183375478;
+  uRam0000000183375490 = 0x297504e3c553a09c;
+  uRam0000000183375338 = func_0x00018da6d4a0(uRam0000000183375438 + 0x29c744472da011a7 ^ 0xb5);
+  uRam0000000183375428 =
+       (uRam0000000183375428 ^ uRam0000000183375338) + 0x273b5f09b4ef9b30 ^ 0x57baa4628cfa4a15;
+  uRam00000001833754c0 =
+       (uRam00000001833754c0 * 0x451888a4ed9311f3 ^ uRam0000000183375428) + uRam0000000183375338;
+  uRam00000001833753b0 = uRam00000001833754c0 ^ uRam0000000183375428;
+  uRam0000000183375488 = 0x273b5f09b4ef9b30;
+  uRam0000000183375410 = func_0x00018da6d4a0(uRam0000000183375350 + 0xb5d83bc0f9a01247 ^ 0x26);
+  uRam0000000183375358 = uRam00000001833754b8 ^ uRam0000000183375410 ^ 0xd8c4a0f64b10e4cf;
+  uRam0000000183375478 =
+       (uRam0000000183375478 ^ uRam0000000183375410) + 0xd8c4a0f64b10e4cf ^ 0x739f2532cc894ca0;
+  uRam00000001833754a0 =
+       (uRam00000001833754a0 * -0xb0e22430d73e327 ^ uRam0000000183375478) + uRam0000000183375410;
+  uRam0000000183375480 = uRam00000001833754a0 ^ uRam0000000183375478;
+  uRam00000001833754c0 = 0xd8c4a0f64b10e4cf;
+  uVar4 = (~uRam00000001833754d0 + 0x273b5f09b4ef9b31) *
+          ((uRam00000001833753a0 ^ 0xd8c4a0f6cf32c7ea) +
+          (uRam00000001833753a0 & 0x58c4a0f6cf32c7ea) * 2);
+  uVar4 = (uVar4 | uRam0000000183375300) + (uVar4 & uRam0000000183375300);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam0000000183375380 =
+       func_0x00018da6d4a0((uVar4 | 0xffffffff7bdd5cda) + (uVar4 & 0xffffffff7bdd5cda));
+  uVar4 = ~uRam0000000183375380;
+  uRam0000000183375468 = uRam0000000183375358 ^ uVar4 ^ 0x7fff;
+  uRam00000001833754c0 = (uRam00000001833754c0 ^ uVar4) + 0x7fff ^ 0xe5f4455ac102ba41;
+  uRam0000000183375330 = (uRam0000000183375330 * -0x7caf6ade40260783 ^ uRam00000001833754c0) + uVar4
+  ;
+  uRam0000000183375438 = uRam0000000183375330 ^ uRam00000001833754c0;
+  uRam0000000183375410 = 0x7fff;
+  uRam0000000183375490 = func_0x00018da6d4a0(uRam0000000183375370 + 0xb76e31204452e83d ^ 0x8f);
+  uRam00000001833753f0 =
+       (uRam00000001833753f0 ^ uRam0000000183375490 ^ 0xc2d1b3c8a4d9bd69) + 0x3d2e4c375b264297 ^
+       0x67233263feeb9797;
+  uRam0000000183375360 =
+       (uRam0000000183375360 * 0x56b5c5fbf1816b83 ^ uRam00000001833753f0) +
+       (uRam0000000183375490 ^ 0xc2d1b3c8a4d9bd69);
+  uRam00000001833753d8 = uRam0000000183375360 ^ uRam00000001833753f0;
+  uRam0000000183375370 = 0x3d2e4c375b264297;
+  uVar4 = (~uRam00000001833754a0 + 0xc2d1b3c8a4d9bd6a) *
+          ((uRam0000000183375470 ^ 0x84225cda) +
+          (ulonglong)((uint)uRam0000000183375470 & 0x84225cda) * 2);
+  uVar4 = (uVar4 | uRam0000000183375318) + (uVar4 & uRam0000000183375318);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam0000000183375438 =
+       func_0x00018da6d4a0((uVar4 | 0xc2d1b3c820fbe1b3) + (uVar4 & 0xc2d1b3c820fbe1b3));
+  uVar4 = (uRam0000000183375438 ^ 0x17129ea439dac280) & 0xffffffffffffffc0;
+  uRam0000000183375308 = uRam0000000183375440 ^ uVar4 ^ 0xc2d1b3c8a4da3d68;
+  uRam00000001833753c8 = (uRam00000001833753c8 ^ uVar4) + 0xc2d1b3c8a4da3d68 ^ 0xbcb1450420d08141;
+  uRam00000001833754f0 = (uRam00000001833754f0 * 0x3a59acb8fe74ad51 ^ uRam00000001833753c8) + uVar4;
+  uRam00000001833753b0 = uRam00000001833754f0 ^ uRam00000001833753c8;
+  uRam0000000183375380 = -0x3d2e4c375b25c298;
+  uVar4 = (uRam0000000183375440 ^ _UNK_18231eff0) + uRam00000001833753a0 + 0xc2d1b3c820f81e4d;
+  uVar5 = (uRam00000001833753a0 ^ _UNK_18231eff8) + uRam0000000183375440 + 0x3d2e4c375b264297;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375440 ^ _UNK_18231eff0;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam00000001833753a0 ^ _UNK_18231eff8;
+  uRam0000000183375400 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) -
+                           (uRam0000000183375440 + 0x3d2e4c375b264297) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) -
+                           (uRam00000001833753a0 + 0xc2d1b3c820f81e4d));
+  uVar4 = ~uRam0000000183375400 & 0xc2d1b3c8a4da3d68;
+  uRam0000000183375440 = uRam00000001833753b0 ^ uVar4 ^ 0x7fff;
+  uRam0000000183375368 = (uRam0000000183375368 ^ uVar4) + 0x7fff ^ 0x3132f06729ef0fe4;
+  uRam00000001833754f8 = (uRam00000001833754f8 * -0x643950c9fce5e6f5 ^ uRam0000000183375368) + uVar4
+  ;
+  uRam0000000183375300 = uRam00000001833754f8 ^ uRam0000000183375368;
+  uRam0000000183375330 = 0x7fff;
+  uVar4 = (~uRam0000000183375300 + 0x75a51998d50cd875) *
+          ((uRam00000001833754c0 ^ 0x84222325) +
+          (ulonglong)((uint)uRam00000001833754c0 & 0x84222325) * 2);
+  uVar4 = (uVar4 | uRam0000000183375490) + (uVar4 & uRam0000000183375490);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  lVar3 = func_0x00018da6d4a0((uVar4 | 0x75a51998512efb51) + (uVar4 & 0x75a51998512efb51));
+  uVar5 = lVar3 * -0x7ab6af6aaab3e187;
+  uVar4 = uVar5 - (uVar5 >> 1 & 0x5555555555555555);
+  uVar4 = (uVar4 & 0x3333333333333333) + (uVar4 >> 2 & 0x3333333333333333);
+  uVar5 = (((uVar4 >> 4) + uVar4 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38) << 6 ^ uVar5;
+  uRam0000000183375420 = (uRam0000000183375420 ^ uVar5) + 0x8a5ae6672af3278c ^ 0xfb93543c6a657a5e;
+  uRam00000001833753a0 = (uRam00000001833753a0 * 0x1b3ea081f3e7c649 ^ uRam0000000183375420) + uVar5;
+  uRam0000000183375410 = uRam00000001833753a0 ^ uRam0000000183375420;
+  uRam0000000183375480 = 0x8a5ae6672af3278c;
+  uVar4 = (uRam0000000183375438 ^ _UNK_18231f000) + uRam0000000183375470 + 0x84225cda;
+  uVar5 = (uRam0000000183375470 ^ _UNK_18231f008) + uRam0000000183375438 + 0x75a51998d50cd874;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375438 ^ _UNK_18231f000;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam0000000183375470 ^ _UNK_18231f008;
+  lVar3 = func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) -
+                              (uRam0000000183375438 + 0x75a51998d50cd874) ^
+                              (uVar4 << 0x1d | uVar4 >> 0x23) - (uRam0000000183375470 + 0x84225cda))
+  ;
+  uRam00000001833754a0 = (ulonglong)(~(uint)lVar3 & 0x7fff) * -0x550b68d551b6d41f;
+  uRam0000000183375478 = uRam0000000183375408 ^ uRam00000001833754a0 ^ 0x75a51998d50d5873;
+  uRam0000000183375348 =
+       (uRam0000000183375348 ^ uRam00000001833754a0) + 0x75a51998d50d5873 ^ 0xe31b9481af00f34;
+  uRam00000001833754a0 = (lVar3 * -0x253c1aa6eefc1fe5 ^ uRam0000000183375348) + uRam00000001833754a0
+  ;
+  uRam0000000183375300 = uRam00000001833754a0 ^ uRam0000000183375348;
+  uRam0000000183375310 = 0x75a51998d50d5873;
+  uRam0000000183375338 = func_0x00018da6d4a0(uRam0000000183375330 + 0x8f5c97092a1a2b92 ^ 0x8d);
+  uVar4 = uRam0000000183375338 & 0x3ffffffff;
+  uRam0000000183375378 = uRam0000000183375358 ^ uVar4 ^ 0x7fff;
+  uRam0000000183375390 = (uRam0000000183375390 ^ uVar4) + 0x7fff ^ 0xb38b18785bc8f3fe;
+  uRam0000000183375490 = (uRam0000000183375490 * 0x61161078127ac741 ^ uRam0000000183375390) + uVar4;
+  uRam00000001833753e8 = uRam0000000183375490 ^ uRam0000000183375390;
+  uRam00000001833753d8 = 0x7fff;
+  uVar4 = (uRam0000000183375368 ^ _UNK_18231f010) + uRam00000001833753f8 + 0xeb7ff6bb7ecdd0f9;
+  uVar5 = (uRam00000001833753f8 ^ _UNK_18231f018) + uRam0000000183375368 + 0x297504e3c553a09c;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375368 ^ _UNK_18231f010;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam00000001833753f8 ^ _UNK_18231f018;
+  uRam0000000183375400 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) -
+                           (uRam0000000183375368 + 0x297504e3c553a09c) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) -
+                           (uRam00000001833753f8 + 0xeb7ff6bb7ecdd0f9));
+  uRam0000000183375458 =
+       (uRam0000000183375458 ^ ~uRam0000000183375400 & 0xeb7ff6bbfaeff3dc) + 0xc20af2583fbc5340 ^
+       0x629f7b3776b1145b;
+  uRam00000001833754d8 =
+       (uRam00000001833754d8 * -0x8d594e65a27c263 ^ uRam0000000183375458) +
+       (~uRam0000000183375400 & 0xeb7ff6bbfaeff3dc);
+  uRam00000001833754d0 = uRam00000001833754d8 ^ uRam0000000183375458;
+  uRam00000001833753f8 = 0xc20af2583fbc5340;
+  uRam00000001833754b0 = func_0x00018da6d4a0(uRam0000000183375408 ^ 0x37b005b69cb27de2);
+  uVar4 = uRam00000001833754b0 << 0x27 | uRam00000001833754b0 >> 0x19;
+  uRam0000000183375438 = (uRam0000000183375438 ^ uVar4) + 0x297504a3c043a09c ^ 0x47f92c0e4bc4c85a;
+  uRam0000000183375340 = (uRam0000000183375340 * -0x45345b84735c3f41 ^ uRam0000000183375438) + uVar4
+  ;
+  uRam0000000183375328 = uRam0000000183375340 ^ uRam0000000183375438;
+  uRam00000001833754e0 = 0x297504a3c043a09c;
+  uRam0000000183375450 = func_0x00018da6d4a0(uRam0000000183375410 ^ 0xf930a0154416e766);
+  uVar4 = uRam0000000183375450 ^ 0xc20af2583fbc5340;
+  uRam00000001833753a0 = uRam00000001833753c8 ^ uVar4 ^ 0x14f4fb9fc0439478;
+  uRam0000000183375410 = (uRam0000000183375410 ^ uVar4) + 0x14f4fb9fc0439478 ^ 0x814ffd565a1ba8d0;
+  uRam0000000183375430 = (uRam0000000183375430 * 0x1b181b876b626723 ^ uRam0000000183375410) + uVar4;
+  uRam0000000183375390 = uRam0000000183375430 ^ uRam0000000183375410;
+  uRam0000000183375300 = 0x14f4fb9fc0439478;
+  uVar4 = (~uRam00000001833754b8 + 0x14f4fb9fc0439479) *
+          ((uRam0000000183375360 ^ 0x14f4fb9f4461b75d) +
+          (uRam0000000183375360 & 0x14f4fb9f4461b75d) * 2);
+  uVar4 = (uVar4 | uRam0000000183375358) + (uVar4 & uRam0000000183375358);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam0000000183375320 =
+       func_0x00018da6d4a0((uVar4 | 0x84222325) + (ulonglong)((uint)uVar4 & 0x84222325));
+  uRam00000001833754c0 = (uRam0000000183375320 & 0x3fffffffff) * 0x800;
+  uRam0000000183375328 = uRam0000000183375328 ^ uRam00000001833754c0 ^ 0xac64f502f212b8a9;
+  uRam00000001833754c0 =
+       ((uRam0000000183375320 & 0x3fffffffff) * -0x7ec8834bc34c3800 ^ uRam0000000183375328) +
+       uRam00000001833754c0;
+  uRam0000000183375358 = uRam00000001833754c0 ^ uRam0000000183375328;
+  uRam0000000183375410 = 0;
+  uVar4 = func_0x00018da6d4a0(uRam0000000183375370 ^ 0xffd4008335ffe102);
+  uVar4 = (ulonglong)((uint)uVar4 ^ 0x7fff) << 0x28 | uVar4 >> 0x18;
+  uRam0000000183375318 = uRam00000001833754c8 ^ uVar4 ^ 0x7fff;
+  uRam0000000183375480 = (uRam0000000183375480 ^ uVar4) + 0x7fff ^ 0x14dab8639c88eb53;
+  uRam0000000183375358 = (uRam0000000183375358 * -0xbd0b10325fc3077 ^ uRam0000000183375480) + uVar4;
+  uRam0000000183375308 = uRam0000000183375358 ^ uRam0000000183375480;
+  uRam00000001833753b0 = 0x7fff;
+  uVar4 = (uRam0000000183375458 ^ _UNK_18231f020) + uRam00000001833754c0 + 0xeb7ff6bb7ecdd0f9;
+  uVar5 = (uRam00000001833754c0 ^ _UNK_18231f028) + (uRam0000000183375458 - 1);
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375458 ^ _UNK_18231f020;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam00000001833754c0 ^ _UNK_18231f028;
+  uRam0000000183375350 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - (uRam0000000183375458 - 1) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) -
+                           (uRam00000001833754c0 + 0xeb7ff6bb7ecdd0f9));
+  uRam00000001833754c8 =
+       (uRam00000001833754c8 ^ uRam0000000183375350) + 0x1480094405100c23 ^ 0x7fed1ec9f6145267;
+  uRam00000001833754a0 =
+       (uRam00000001833754a0 * 0x2b920df842d297d3 ^ uRam00000001833754c8) + uRam0000000183375350;
+  uRam0000000183375440 = uRam00000001833754a0 ^ uRam00000001833754c8;
+  uRam00000001833754e8 = 0x1480094405100c23;
+  uRam0000000183375410 = func_0x00018da6d4a0(uRam0000000183375310 + 0x833494daa522d41c ^ 0x11);
+  uVar4 = (uRam0000000183375410 ^ 0x1480094405100c23) * 0x1cee237522489199;
+  uVar5 = uVar4 - (uVar4 >> 1 & 0x5555555555555555);
+  uVar5 = (uVar5 & 0x3333333333333333) + (uVar5 >> 2 & 0x3333333333333333);
+  uVar4 = (((uVar5 >> 4) + uVar5 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38) << 3 ^ uVar4;
+  uRam0000000183375318 = uRam0000000183375318 ^ uVar4 ^ 0xd676706d08be4f99;
+  uRam0000000183375330 = (uRam0000000183375330 * 0x4c8f27139eeac6dd ^ uRam0000000183375318) + uVar4;
+  uRam00000001833754a8 = uRam0000000183375330 ^ uRam0000000183375318;
+  uRam0000000183375428 = 0;
+  uRam0000000183375378 = func_0x00018da6d4a0(uRam0000000183375408 ^ 0x43ff83b9ffe1e8);
+  uVar4 = uRam0000000183375378 << 0x16 | uRam0000000183375378 >> 0x2a;
+  uRam0000000183375440 = uRam0000000183375498 ^ uVar4 ^ 0x7fff;
+  uRam0000000183375308 = (uRam0000000183375308 ^ uVar4) + 0x7fff ^ 0x19f6d721c0bae215;
+  uRam00000001833753e0 = (uRam00000001833753e0 * 0x5ee56d4b48a9e4bf ^ uRam0000000183375308) + uVar4;
+  uRam0000000183375438 = uRam00000001833753e0 ^ uRam0000000183375308;
+  uRam0000000183375488 = 0x7fff;
+  uVar4 = (_UNK_18231f030 ^ 0x7fff) + uRam0000000183375368 + 0xea0d46285c4ce0e9;
+  uVar5 = (uRam0000000183375368 ^ _UNK_18231f038) + 0xea0d4628d86f43cb;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ _UNK_18231f030 ^ 0x7fff;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam0000000183375368 ^ _UNK_18231f038;
+  uRam00000001833753f8 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) + 0x15f2b9d72790bc35 ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) -
+                           (uRam0000000183375368 + 0xea0d46285c4ce0e9));
+  uRam0000000183375410 =
+       uRam0000000183375410 ^ uRam00000001833753f8 ^ 0x556e9c3dc17ea95c ^ 0x66ff700ff068d8;
+  uRam00000001833754a8 =
+       (uRam00000001833754a8 * -0x1ba3fef87c72f0cb ^ uRam0000000183375410) +
+       (uRam00000001833753f8 ^ 0x556e9c3dc17ea95c);
+  uRam0000000183375360 = uRam00000001833754a8 ^ uRam0000000183375410;
+  uRam00000001833754d0 = 0;
+  uVar4 = (uRam0000000183375340 ^ 0x84225cda) + uRam00000001833753d0 + 0x84225cda;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375340 ^ 0x84225cda;
+  uVar5 = ((uRam00000001833753d0 + uRam0000000183375340) * 0x2000 |
+          uRam00000001833753d0 + uRam0000000183375340 >> 0x33) ^ uRam00000001833753d0;
+  uRam00000001833753c8 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - uRam0000000183375340 ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (uRam00000001833753d0 + 0x84225cda));
+  uVar4 = uRam00000001833753c8 & 0xfffffffffffffff8;
+  uRam0000000183375320 = uRam0000000183375410 ^ uVar4 ^ 0x7fff;
+  uRam00000001833753d0 = (uRam00000001833753d0 ^ uVar4) + 0x7fff ^ 0x1307742a9c38006a;
+  uRam0000000183375470 = (uRam0000000183375470 * 0x406bc62c54e7872d ^ uRam00000001833753d0) + uVar4;
+  uRam0000000183375458 = uRam0000000183375470 ^ uRam00000001833753d0;
+  uRam0000000183375440 = 0x7fff;
+  uVar4 = (~uRam0000000183375480 + 0x8000) *
+          ((param_4 ^ 0x84222325 ^ uRam00000001833753b8) +
+          ((param_4 ^ 0x84222325) & uRam00000001833753b8) * 2);
+  uVar4 = (uVar4 | uRam00000001833753c0) + (uVar4 & uRam00000001833753c0);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam0000000183375438 =
+       func_0x00018da6d4a0((param_4 ^ 0x84225cda | uVar4) + (uVar4 & (param_4 ^ 0x84225cda)));
+  uVar4 = ~((param_4 | 0x7fff) ^ uRam0000000183375438) & param_4 & 0x7fffffffffff;
+  uVar2 = (uint)param_4 & 0x7fff;
+  uRam00000001833754f0 = (ulonglong)uVar2;
+  uRam0000000183375348 = (uRam0000000183375348 ^ uVar4) + uRam00000001833754f0 ^ 0x39db689353c176e6;
+  uRam00000001833753f8 = (uRam00000001833753f8 * 0xe6eb6095141220d ^ uRam0000000183375348) + uVar4;
+  uRam0000000183375360 = uRam00000001833753f8 ^ uRam0000000183375348;
+  uRam0000000183375450 = func_0x00018da6d4a0(uRam0000000183375410 ^ 0x35006a7c00068a);
+  uRam00000001833753c0 =
+       (uRam00000001833753c0 ^ uRam00000001833754d0) + 0xebfbfef7 ^ 0x32dfb5ef3d501e44;
+  uRam0000000183375388 =
+       (uRam0000000183375388 * 0x4187ce80cdc4c9bd ^ uRam00000001833753c0) + uRam00000001833754d0;
+  uRam0000000183375378 = uRam0000000183375388 ^ uRam00000001833753c0;
+  uRam0000000183375330 = 0xebfbfef7;
+  uRam00000001833753b8 = func_0x00018da6d4a0(uRam0000000183375350 ^ 0xffa20044abff664e);
+  uRam0000000183375310 =
+       (uRam0000000183375488 ^ uRam00000001833753b8 & 0x7fffffffffffffff) + 0xdbbbddf9 ^
+       0xad17baa68d416838;
+  uRam0000000183375488 =
+       (uRam0000000183375488 * 0x37ab1cc5265975bd ^ uRam0000000183375310) +
+       (uRam00000001833753b8 & 0x7fffffffffffffff);
+  uRam0000000183375310 = uRam0000000183375488 ^ uRam0000000183375310;
+  uRam0000000183375390 = 0xdbbbddf9;
+  uVar4 = (uRam0000000183375408 ^ _UNK_18231f040) + uRam0000000183375300 + 0x84222325;
+  uVar5 = (uRam0000000183375300 ^ _UNK_18231f048) + uRam0000000183375408 + 0xfdd88e84;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375408 ^ _UNK_18231f040;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam0000000183375300 ^ _UNK_18231f048;
+  uRam0000000183375480 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - (uRam0000000183375408 + 0xfdd88e84) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (uRam0000000183375300 + 0x84222325));
+  uRam0000000183375450 =
+       (uRam0000000183375450 ^ uRam0000000183375400) - 0xfdd88e84 ^ 0xcaa500f520060abb;
+  uRam0000000183375380 =
+       (uRam0000000183375380 * -0x29e013f8483a2bd9 ^ uRam0000000183375450) + uRam0000000183375400;
+  uRam0000000183375330 = uRam0000000183375380 ^ uRam0000000183375450;
+  uRam0000000183375448 = 0x227717c;
+  uRam00000001833754b0 = func_0x00018da6d4a0(uRam0000000183375490 + 0xff4700090d0085ff ^ 0xdb);
+  uVar4 = ((uRam00000001833754b0 << 0x33 | uRam00000001833754b0 >> 0xd) ^ 0xfdd88e84) &
+          0xfffffffffffff;
+  uRam00000001833754b8 = uRam0000000183375370 ^ uVar4 ^ 0xfdd90130;
+  uRam00000001833754f8 = (uRam00000001833754f8 ^ uVar4) + 0xfdd90130 ^ 0x45f10a99c405b072;
+  uRam0000000183375358 = (uRam0000000183375358 * 0x6497435f8db84f85 ^ uRam00000001833754f8) + uVar4;
+  uRam0000000183375458 = uRam0000000183375358 ^ uRam00000001833754f8;
+  uRam0000000183375438 = 0xfdd90130;
+  uRam0000000183375360 = func_0x00018da6d4a0(uRam0000000183375370 ^ uVar4 ^ 0xffccffc7ab26527b);
+  uVar4 = uRam0000000183375360 ^ 0x222ce99b12bc270;
+  uRam0000000183375438 = uRam00000001833754b8 ^ uVar4 ^ 0x1000072ac;
+  uRam0000000183375440 = (uRam0000000183375440 ^ uVar4) + 0x1000072ac ^ 0x65d08483c4080cb4;
+  uRam0000000183375348 = (uRam0000000183375348 * -0x3b5f96167ba938d9 ^ uRam0000000183375440) + uVar4
+  ;
+  uRam0000000183375300 = uRam0000000183375348 ^ uRam0000000183375440;
+  uRam0000000183375358 = 0x72ac;
+  uVar4 = (uRam00000001833753d8 ^ _UNK_18231f050) + uRam00000001833753b8 + 0x84222325;
+  uVar5 = (uRam00000001833753b8 ^ _UNK_18231f058) + uRam00000001833753d8 + 0x3303b3;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam00000001833753d8 ^ _UNK_18231f050;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam00000001833753b8 ^ _UNK_18231f058;
+  uRam0000000183375478 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - (uRam00000001833753d8 + 0x3303b3) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (uRam00000001833753b8 + 0x84222325));
+  uVar4 = uRam0000000183375478 << 0x2b | uRam0000000183375478 >> 0x15;
+  uRam0000000183375300 = (uRam0000000183375300 ^ uVar4) - 0x3303b3 ^ 0xf934ea24a9716a21;
+  uRam0000000183375410 = (uRam0000000183375410 * -0xfa4de5413cdf45 ^ uRam0000000183375300) + uVar4;
+  uRam00000001833753b8 = uRam0000000183375410 ^ uRam0000000183375300;
+  uRam0000000183375428 = 0xffccfc4d;
+  uRam0000000183375400 = func_0x00018da6d4a0(uRam00000001833753b0 ^ 0x2e008429fff03d);
+  uVar4 = (uRam0000000183375400 ^ 0x3373b0) & 0xfffffffffffffff0 ^ 0x72ac;
+  uRam0000000183375408 = uRam0000000183375428 ^ uVar4 ^ 0x33765f;
+  uRam0000000183375480 = (uRam0000000183375480 ^ uVar4) + 0x33765f ^ 0xb18414fbfcbcf25c;
+  uRam0000000183375380 = (uRam0000000183375380 * 0x73e445911704b93b ^ uRam0000000183375480) + uVar4;
+  uRam0000000183375378 = uRam0000000183375380 ^ uRam0000000183375480;
+  uRam0000000183375438 = 0x33765f;
+  uVar4 = (~uRam00000001833754d0 + 0x8d6b4ad0) *
+          ((uRam0000000183375368 ^ 0x84225189) +
+          (ulonglong)((uint)uRam0000000183375368 & 0x84225189) * 2);
+  uVar4 = (uVar4 | uRam0000000183375318) + (uVar4 & uRam0000000183375318);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam00000001833753b0 =
+       func_0x00018da6d4a0((uVar4 | 0x9491b46) + (ulonglong)((uint)uVar4 & 0x9491b46));
+  uVar4 = uRam00000001833753b0 << 0x22 | uRam00000001833753b0 >> 0x1e;
+  uRam0000000183375308 = uRam00000001833753c8 ^ uVar4 ^ 0x8d6bbd7b;
+  uRam0000000183375428 = (uRam0000000183375428 ^ uVar4) + 0x8d6bbd7b ^ 0xc087db8e48ee1d4f;
+  uRam0000000183375448 = (uRam0000000183375448 * -0xff42545bc555d19 ^ uRam0000000183375428) + uVar4;
+  uRam00000001833754f8 = uRam0000000183375448 ^ uRam0000000183375428;
+  uRam0000000183375358 = 0x8d6bbd7b;
+  uRam00000001833754c8 = func_0x00018da6d4a0(uRam0000000183375318 ^ 0xffe5001b1aff3ae4);
+  uVar4 = uRam00000001833754c8 ^ 0x7294b531;
+  uVar5 = uVar4 >> 1 | uVar4;
+  uVar5 = uVar5 >> 2 | uVar5;
+  uVar5 = uVar5 >> 4 | uVar5;
+  uVar5 = uVar5 >> 8 | uVar5;
+  uVar5 = uVar5 >> 0x10 | uVar5;
+  uVar5 = uVar5 >> 0x20 | uVar5;
+  uVar5 = uVar5 - (uVar5 >> 1 & 0x5555555555555555);
+  uVar5 = (uVar5 & 0x3333333333333333) + (uVar5 >> 2 & 0x3333333333333333);
+  uVar4 = (0x40 - (((uVar5 >> 4) + uVar5 & 0xf0f0f0f0f0f0f0f) * 0x101010101010101 >> 0x38)) * 8 ^
+          uVar4;
+  uRam0000000183375398 = uRam0000000183375460 ^ uVar4 ^ 0x1000072ac;
+  uRam0000000183375460 = (uRam0000000183375460 ^ uVar4) + 0x1000072ac ^ 0x622db7bff6ced852;
+  uRam0000000183375338 = (uRam0000000183375338 * 0xf8ba4a2e88dfd21 ^ uRam0000000183375460) + uVar4;
+  uRam0000000183375420 = uRam0000000183375338 ^ uRam0000000183375460;
+  uRam0000000183375368 = 0x72ac;
+  uVar4 = (uRam00000001833754e8 ^ _UNK_18231f060) + uRam0000000183375490 + 0x6fd9ddd2;
+  uVar5 = (uRam0000000183375490 ^ _UNK_18231f068) + uRam00000001833754e8 + 0xdbbbddf9;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam00000001833754e8 ^ _UNK_18231f060;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam0000000183375490 ^ _UNK_18231f068;
+  uRam00000001833754f8 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - (uRam00000001833754e8 + 0xdbbbddf9) ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (uRam0000000183375490 + 0x6fd9ddd2));
+  uRam0000000183375480 =
+       (uRam0000000183375480 ^ uRam00000001833754f8 ^ 0x20402206) + 0x3040230e ^ 0x3f33efb5645c9507;
+  uRam0000000183375448 =
+       (uRam0000000183375448 * 0x64814bcd7ae2c81d ^ uRam0000000183375480) +
+       (uRam00000001833754f8 ^ 0x20402206);
+  uRam0000000183375460 = uRam0000000183375448 ^ uRam0000000183375480;
+  uRam00000001833753e0 = 0x3040230e;
+  uRam00000001833754f8 = func_0x00018da6d4a0(uRam00000001833753b0 ^ 0x73d7005dc1);
+  uVar4 = (uRam00000001833754f8 ^ 0xfbfbffff) & 0xfffffffffff ^ 0xdbbbddf9;
+  uVar4 = uVar4 << 0x3d | uVar4 >> 3;
+  uRam0000000183375358 = (uRam0000000183375358 ^ uVar4) + 0xcbbbdcf1 ^ 0x1efda888599bf94c;
+  uRam0000000183375498 = (uRam0000000183375498 * -0x5df89f356551e30d ^ uRam0000000183375358) + uVar4
+  ;
+  uRam0000000183375328 = uRam0000000183375498 ^ uRam0000000183375358;
+  uRam0000000183375468 = 0xcbbbdcf1;
+  uVar4 = (~uRam0000000183375350 + 0x9777b9e3) *
+          ((uRam0000000183375320 ^ 0xb462002b) +
+          (ulonglong)((uint)uRam0000000183375320 & 0xb462002b) * 2);
+  uVar4 = (uVar4 | uRam00000001833753e8) + (uVar4 & uRam00000001833753e8);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam00000001833753a8 =
+       func_0x00018da6d4a0((uVar4 | 0x2315b9c9) + (ulonglong)((uint)uVar4 & 0x2315b9c9));
+  uVar4 = uRam00000001833753d8 ^ 0x3040230e;
+  uRam00000001833753e8 = uRam0000000183375430 ^ uVar4 ^ 0xc7b7dcf0;
+  uRam0000000183375398 = (uRam0000000183375398 ^ uVar4) + 0xc7b7dcf0 ^ 0x5e72b42f225be3bf;
+  uRam00000001833753c8 = (uRam00000001833753c8 * 0x70840e3e9321a29b ^ uRam0000000183375398) + uVar4;
+  uRam0000000183375430 = uRam00000001833753c8 ^ uRam0000000183375398;
+  uRam00000001833753b8 = 0xc7b7dcf0;
+  uRam00000001833754b8 = func_0x00018da6d4a0(uRam0000000183375370 ^ 0x1f008423001d73);
+  uRam00000001833753f0 = uRam00000001833754b8 ^ 0x9bcf5d8a7a7abdf0;
+  uRam00000001833754e0 = uRam00000001833754e0 ^ uRam00000001833753f0 ^ 0x59b1f0a62328d473;
+  uRam0000000183375338 =
+       (uRam0000000183375338 * -0x45c3f4471fc6f18d ^ uRam00000001833754e0) + uRam00000001833753f0;
+  uRam0000000183375498 = uRam0000000183375338 ^ uRam00000001833754e0;
+  uRam00000001833753c8 = 0;
+  uVar4 = (uRam0000000183375460 ^ _UNK_18231f070) + uRam0000000183375400 + 0x6fd9ddd2;
+  uVar5 = (uRam0000000183375400 ^ _UNK_18231f078) + uRam0000000183375460 + 0xffffffff;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375460 ^ _UNK_18231f070;
+  uVar5 = (uVar5 * 0x2000 | uVar5 >> 0x33) ^ uRam0000000183375400 ^ _UNK_18231f078;
+  lVar3 = func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - (uRam0000000183375460 + 0xffffffff)
+                              ^ (uVar4 << 0x1d | uVar4 >> 0x23) -
+                                (uRam0000000183375400 + 0x6fd9ddd2));
+  uRam00000001833754e8 = (ulonglong)((uint)lVar3 & 0xebfbfef7);
+  uRam00000001833753f0 =
+       (uRam00000001833753f0 ^ uRam00000001833754e8) + 0x14040108 ^ 0xfcb5e0e410c8daf6;
+  uRam00000001833754e8 = (lVar3 * -0x171517c1b2d22a31 ^ uRam00000001833753f0) + uRam00000001833754e8
+  ;
+  uRam00000001833753a0 = uRam00000001833754e8 ^ uRam00000001833753f0;
+  uRam0000000183375488 = 0x14040108;
+  uVar4 = (~uRam00000001833754f8 + 0x14040109) *
+          ((uRam0000000183375338 ^ 0x6fd9ddd2) +
+          (ulonglong)((uint)uRam0000000183375338 & 0x6fd9ddd2) * 2);
+  uVar4 = (uVar4 | uRam0000000183375418) + (uVar4 & uRam0000000183375418);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam0000000183375338 =
+       func_0x00018da6d4a0((uVar4 | 0x7bdddcda) + (ulonglong)((uint)uVar4 & 0x7bdddcda));
+  uRam00000001833754b0 =
+       uRam00000001833754b0 ^ uRam0000000183375338 & 0x1ffffffff8000 ^ 0x4c73be4b857ce59;
+  uRam0000000183375320 =
+       (uRam0000000183375320 * -0x7748321c2b020dab ^ uRam00000001833754b0) +
+       (uRam0000000183375338 & 0x1ffffffff8000);
+  uRam0000000183375380 = uRam0000000183375320 ^ uRam00000001833754b0;
+  uRam0000000183375330 = 0;
+  uVar4 = (uRam0000000183375430 ^ 0x84225189) + uRam00000001833754a8 + 0x84225189;
+  uVar4 = (uVar4 * 0x2000 | uVar4 >> 0x33) ^ uRam0000000183375430 ^ 0x84225189;
+  uVar5 = ((uRam00000001833754a8 + uRam0000000183375430) * 0x2000 |
+          uRam00000001833754a8 + uRam0000000183375430 >> 0x33) ^ uRam00000001833754a8;
+  uRam0000000183375480 =
+       func_0x00018da6d4a0((uVar5 << 0x1d | uVar5 >> 0x23) - uRam0000000183375430 ^
+                           (uVar4 << 0x1d | uVar4 >> 0x23) - (uRam00000001833754a8 + 0x84225189));
+  uVar4 = (uRam0000000183375480 << 0xc | uRam0000000183375480 >> 0x34) << 0x30 |
+          (uRam0000000183375480 & 0xfffffffffffff) >> 4;
+  uRam0000000183375330 = uRam0000000183375360 ^ uVar4 ^ 0x72ac;
+  uRam00000001833753c8 = (uRam00000001833753c8 ^ uVar4) + 0x72ac ^ 0xf035c3034fc8d411;
+  uRam00000001833754e8 = (uRam00000001833754e8 * 0x603997c0da89f809 ^ uRam00000001833753c8) + uVar4;
+  uRam00000001833753c8 = uRam00000001833754e8 ^ uRam00000001833753c8;
+  uRam0000000183375468 = 0x72ac;
+  uRam0000000183375450 = func_0x00018da6d4a0(uRam0000000183375450 + 0xffdcff7c1b001dff ^ 0xdb);
+  uVar4 = (uRam0000000183375450 ^ 0x68d0cc77) & 0x7fffffffffffffff;
+  uRam00000001833754f8 = uRam00000001833754f8 ^ uVar4 ^ 0x3bc4542249e8d05a;
+  uRam0000000183375308 = (uRam0000000183375308 * -0x179ba96af7088457 ^ uRam00000001833754f8) + uVar4
+  ;
+  uRam00000001833754f0 = uRam0000000183375308 ^ uRam00000001833754f8;
+  uRam00000001833753f8 = 0;
+  uVar5 = (ulonglong)(uVar2 ^ param_3);
+  uVar4 = (~uRam0000000183375380 + 0x72ad) *
+          ((uVar5 ^ 0x84222325 ^ uRam00000001833753a8) +
+          (ulonglong)((uint)uRam00000001833753a8 & (uint)(uVar5 ^ 0x84222325)) * 2);
+  uVar4 = (uVar4 | uRam00000001833753c8) + (uVar4 & uRam00000001833753c8);
+  uVar4 = uVar4 * 0x2000 ^ uVar4;
+  uVar4 = uVar4 >> 7 ^ uVar4;
+  uVar4 = uVar4 << 0x11 ^ uVar4;
+  uRam0000000183375488 =
+       func_0x00018da6d4a0((uVar5 ^ 0x84225189 | uVar4) +
+                           (ulonglong)((uint)(uVar5 ^ 0x84225189) & (uint)uVar4));
+  uRam0000000183375458 = uVar5 ^ 0x72ac;
+  uRam0000000183375360 =
+       (uRam0000000183375360 ^ uRam0000000183375420 & 0x7fffffffffffffff) + uRam0000000183375458 ^
+       0x6c56347ba767a822;
+  uRam00000001833753b0 =
+       (uRam00000001833753b0 * 0x5e106af232604427 ^ uRam0000000183375360) +
+       (uRam0000000183375420 & 0x7fffffffffffffff);
+  uRam0000000183375350 = uRam00000001833753b0 ^ uRam0000000183375360;
+  FUN_190dd72e0(param_1,*plRam000000018301ee50 + 0xb64b,0x1f8);
+  cVar1 = (**(code **)(*param_1 + 0x720))(param_1);
+                    /* WARNING: Jumptable at 0x00018da64147 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18231d190 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+
+// ===== Lsixtwo/dS; apG (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/invoke/MutableCallSite;Ljava/lang/String;[Ljava/lang/Object;)I (handler @ image 18da6d530, runtime 6ffff567d530) =====
+
+void FUN_18da6d530(void)
+
+{
+  longlong in_stack_00000030;
+  
+                    /* WARNING: Jumptable at 0x00018da6d57b did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18231f1b0 + (ulonglong)(in_stack_00000030 == 0) * 8))();
+  return;
+}
+
+
+
+// ===== Lsixtwo/dS; apH (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite; (handler @ image 18da6e540, runtime 6ffff567e540) =====
+
+void FUN_18da6e540(longlong *param_1)
+
+{
+  char cVar1;
+  
+  FUN_190dd72e0(param_1,*plRam000000018301ee50 + 0x857,0x26);
+  cVar1 = (**(code **)(*param_1 + 0x720))(param_1);
+                    /* WARNING: Jumptable at 0x00018da6e5c9 did not pass sanity check. */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(&UNK_18231f770 + (ulonglong)(cVar1 == '\0') * 8))();
+  return;
+}
+
+
+

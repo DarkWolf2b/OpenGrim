@@ -1,0 +1,163 @@
+class_id	fqcn	name	description	key	bind
+cP	sixtwo.cP	Trajectories	Renders trajectories of items	key=87	bind=-999
+cQ	sixtwo.cQ	Swing Animations	Changes look of swing animation	key=94	bind=-999
+cR	sixtwo.cR	Particles	Renders particles in the world	key=125	bind=-999
+cS	sixtwo.cS	China Hat	Renders china hat on your head	key=122	bind=-999
+cT	sixtwo.cT	Pop Chams	Highlights player totem pops	key=129	bind=-999
+cU	sixtwo.cU	Trails	Renders trails behind players	key=124	bind=-999
+cV	sixtwo.cV	Skeleton ESP	Renders skeleton on player models	key=126	bind=-999
+cW	sixtwo.cW	Trap ESP	Detects potential trap locations	key=140	bind=-999
+cX	sixtwo.cX	Fake Player	Spawns fake player	key=72	bind=-999
+cY	sixtwo.cY	Shield Status	Shows shield status represented by color	key=159	bind=-999
+cZ	sixtwo.cZ	Soul Effects	Spawns souls after killing an entity	key=162	bind=-999
+dA	sixtwo.dA	Elytra Target	Automatically uses firework for target	key=59	bind=82
+dB	sixtwo.dB	Full Bright	Changes gamma value	key=71	bind=-999
+dC	sixtwo.dC	View Model	Changes player View Model	key=95	bind=-999
+dD	sixtwo.dD	Item Frame Blocker	Blocks putting items to an item frame	key=70	bind=-999
+dE	sixtwo.dE	Spammer	Spams specified messages in chat	key=146	bind=-999
+dF	sixtwo.dF	Lever Replace	Automatically replaces levers and buttons	key=112	bind=-999
+dG	sixtwo.dG	Anti Trap	Cancels rendering of specific entities	key=61	bind=-999
+dH	sixtwo.dH	No Sign Screen	Disables editing signs	key=138	bind=-999
+dI	sixtwo.dI	Nuker	Automatically mines blocks	key=58	bind=-999
+dJ	sixtwo.dJ	Mouse Tweaks	Enhances inventory management	key=157	bind=-999
+dK	sixtwo.dK	Auto Lever Replace	Automatically destroys levers	key=130	bind=-999
+dL	sixtwo.dL	No Entity Clip	Ignores entity hitboxes	key=56	bind=-999
+dM	sixtwo.dM	Auto Market	Automatically buys and sells items on market	key=26	bind=-999
+dN	sixtwo.dN	Slot Lock	Disables item drop from selected slots	key=64	bind=-999
+dO	sixtwo.dO	Hotbar Restorer	Restores hotbar to saved state	key=141	bind=-999
+dP	sixtwo.dP	Block Piercer	Allows to place blocks through entities	key=143	bind=-999
+dQ	sixtwo.dQ	Hit Sounds	Plays sound after hit	key=63	bind=-999
+dR	sixtwo.dR	Click Action	Uses item on click	key=60	bind=-999
+dS	sixtwo.dS	Hand No Clip	Allows to attack through blocks	key=55	bind=-999
+dT	sixtwo.dT	Multi Task	Allows to use two items at same time	key=65	bind=-999
+dU	sixtwo.dU	Auto Fish	Automatically fishes for you	key=66	bind=-999
+dV	sixtwo.dV	Custom FOV	Allows to set custom fov	key=53	bind=-999
+dW	sixtwo.dW	Freecam	Detaches camera allowing free movement	key=76	bind=71
+dX	sixtwo.dX	No Miss Delay	Removes delay after miss	key=69	bind=-999
+dY	sixtwo.dY	Anti Invisible	Makes invisible entites visible	key=54	bind=-999
+dZ	sixtwo.dZ	Fast Place	Removes right click delay	key=62	bind=-999
+da	sixtwo.da	Sound ESP	Highlights sounds	key=85	bind=-999
+db	sixtwo.db	Jump Circle	Draws circle when you jump	key=89	bind=-999
+dc	sixtwo.dc	Hit Particles	Renders particles on hit	key=90	bind=-999
+dd	sixtwo.dd	Block ESP	Highlights selected blocks	key=82	bind=-999
+de	sixtwo.de	Hand Chams	Customizes hand rendering with custom colors and transparency	key=132	bind=-999
+df	sixtwo.df	Aspect Ratio	Changes game aspect ratio	key=92	bind=-999
+dg	sixtwo.dg	Pearl Prediction	Renders thrown pearl trajectory	key=93	bind=-999
+dh	sixtwo.dh	Ambience	Changes the world ambience	key=123	bind=-999
+di	sixtwo.di	2D ESP	Allows you to see targets through walls	key=158	bind=-999
+dj	sixtwo.dj	Hole ESP	Highlights safe holes	key=147	bind=-999
+dk	sixtwo.dk	XRay	Allows to see ores through walls	key=96	bind=-999
+dl	sixtwo.dl	Outlines	Renders outlines around entities	key=131	bind=-999
+dm	sixtwo.dm	Friend Indicator	Visually marks friends	key=137	bind=-999
+dn	sixtwo.dn	Firework Spots	Renders used fireworks	key=98	bind=-999
+do	sixtwo.do	Arrows	Draws arrows to entities	key=88	bind=-999
+dp	sixtwo.dp	Logout Spots	Renders boxes at where player logged out	key=99	bind=-999
+dq	sixtwo.dq	Storage ESP	Draws box around storage blocks	key=81	bind=-999
+dr	sixtwo.dr	Health Indicators	Displays other players health above their head	key=91	bind=-999
+ds	sixtwo.ds	Entity ESP	Draws box around entities	key=80	bind=-999
+dt	sixtwo.dt	Nametags	Displays information about player	key=97	bind=-999
+du	sixtwo.du	Tracers	Draws lines to entities	key=79	bind=-999
+dv	sixtwo.dv	Chams	Renders entities through walls	key=101	bind=-999
+dw	sixtwo.dw	Circle ESP	Draws circle around entities	key=84	bind=-999
+dx	sixtwo.dx	Anti Blind	Allows to disable screen effects	key=100	bind=-999
+dy	sixtwo.dy	Glow	Adds glowing effect to entities	key=86	bind=-999
+dz	sixtwo.dz	Target ESP	Marks the active target	key=83	bind=-999
+eA	sixtwo.eA	Strafe	Makes player strafe	key=35	bind=-999
+eB	sixtwo.eB	Flight	Allows to fly	key=44	bind=-999
+eC	sixtwo.eC	Sprint	Automatically sprints	key=34	bind=-999
+eD	sixtwo.eD	Fast Bridge	Automatically sneaks on block edge	key=50	bind=-999
+eE	sixtwo.eE	Parkour	Automatically jumps at edges of blocks	key=52	bind=-999
+eF	sixtwo.eF	Spear Reach	Increases reach by attribute swapping with spear	key=128	bind=-999
+eG	sixtwo.eG	Spear Lunge	Automatically lunges with spear	key=148	bind=-999
+eH	sixtwo.eH	Spear Dash	Automatically dashes in given direction with spear	key=149	bind=-999
+eI	sixtwo.eI	Spear Double Tap	Performs spear and mace double tap	key=150	bind=-999
+eJ	sixtwo.eJ	Auto Trap	Automatically traps enemy	key=11	bind=-999
+eK	sixtwo.eK	Auto Web	Automatically places webs at enemies	key=10	bind=-999
+eM	sixtwo.eM	Double Tap	Performs Aerial D-Tap automatically	key=121	bind=-999
+eN	sixtwo.eN	Mace Swap	Automatically performs breach and windburst swap	key=115	bind=-999
+eO	sixtwo.eO	Auto Pearl Catch	Catches pearl with wind charge in the air	key=118	bind=-999
+eP	sixtwo.eP	Mace Aura	Automatically attacks with Mace	key=120	bind=-999
+eQ	sixtwo.eQ	Mace Elytra Target	Follows target using firework and hits it with mace	key=152	bind=-999
+eR	sixtwo.eR	Wind Hop	Throws a wind charge beneath you	key=119	bind=-999
+eS	sixtwo.eS	Auto Stun Slam	Breaks opponent's shield and proceed to slam with mace	key=117	bind=-999
+eT	sixtwo.eT	Shield Drain	Spams attacks at enemy shield to break it	key=156	bind=-999
+eU	sixtwo.eU	Air Anchor	Allows to place anchor in air	key=114	bind=-999
+eV	sixtwo.eV	Auto Crystal	Automatically places and breaks crystals	key=28	bind=-999
+eW	sixtwo.eW	Auto Hit Crystal	Automatically pops crystals	key=29	bind=-999
+eX	sixtwo.eX	Anchor Macro	Automatically charges and explodes an anchor	key=27	bind=-999
+eY	sixtwo.eY	Crystal Optimizer	Optimizes exploding crystals	key=33	bind=-999
+eZ	sixtwo.eZ	Auto Double Hand	Automatically does double hand	key=30	bind=-999
+ea	sixtwo.ea	No Break Delay	Removes destroy delay	key=57	bind=-999
+eb	sixtwo.eb	Chest Stealer	Automatically steals loot from the chest	key=68	bind=-999
+ec	sixtwo.ec	Ghost Hand	Allows to open containers through walls	key=75	bind=-999
+ed	sixtwo.ed	Custom Camera Distance	Changes camera distance from player	key=74	bind=-999
+ee	sixtwo.ee	Cape	Allows to set custom cape	key=73	bind=-999
+ef	sixtwo.ef	Elytra Swapper	Swaps chestplate with elytra	key=67	bind=-999
+eg	sixtwo.eg	No Swing	Cancels swinging	key=77	bind=-999
+eh	sixtwo.eh	Auto Exp	Throws exp bottles faster	key=25	bind=74
+ei	sixtwo.ei	Scaffold	Automatically bridges for you	key=38	bind=-999
+ej	sixtwo.ej	Air Stuck	Freezes all movement	key=43	bind=86
+ek	sixtwo.ek	Inventory Move	Allows to move inside screens	key=47	bind=-999
+el	sixtwo.el	Water Speed	Increases speed while swimming	key=134	bind=-999
+em	sixtwo.em	High Jump	Allows player to jump higher	key=167	bind=-999
+en	sixtwo.en	Anti Ghost	Fixes ghost blocks	key=46	bind=-999
+eo	sixtwo.eo	No Slow	Allows to move faster when using items	key=39	bind=-999
+ep	sixtwo.ep	Super Firework	Increases speed after firework use	key=113	bind=-999
+eq	sixtwo.eq	Null Movement	Prevents movement blocking	key=41	bind=-999
+er	sixtwo.er	Speed	Increases your speed	key=133	bind=-999
+es	sixtwo.es	No Push	Prevents pushing out of blocks	key=37	bind=-999
+et	sixtwo.et	Anti Web	Allows to move faster in webs	key=42	bind=-999
+eu	sixtwo.eu	Trident Boost	Allows to use trident outside water or rain	key=40	bind=-999
+ev	sixtwo.ev	Collision Long Jump	Jumps when colliding with boat	key=48	bind=-999
+ew	sixtwo.ew	No Jump Delay	Removes jump delay	key=49	bind=-999
+ex	sixtwo.ex	Safe Walk	Stops you from walking off blocks	key=51	bind=-999
+ey	sixtwo.ey	Blink	Cancels sending motion packets	key=45	bind=-999
+ez	sixtwo.ez	No Fall	Attempts to prevent you from taking fall damage	key=36	bind=-999
+fA	sixtwo.fA	Potion Refill	Automatically refills potions	key=7	bind=-999
+fB	sixtwo.fB	Auto Shield Break	Automatically breaks shield	key=3	bind=-999
+fC	sixtwo.fC	Velocity	Changes player knockback	key=24	bind=-999
+fD	sixtwo.fD	Uncharge Block	Prevents attacking when not passing the threshold	key=19	bind=-999
+fE	sixtwo.fE	No Miss	Cancels attack if misses	key=17	bind=-999
+fF	sixtwo.fF	Trigger Bot	Automatically hits entity when in range	key=1	bind=-999
+fG	sixtwo.fG	W-Tap	Automatically performs W-Tap	key=13	bind=-999
+fH	sixtwo.fH	Aim Assist	Automatically aims at entity	key=8	bind=-999
+fI	sixtwo.fI	Auto Logout	Logouts you from server when player is in distance	key=2	bind=-999
+fJ	sixtwo.fJ	Target Margin	Invisible version of hitboxes	key=6	bind=-999
+fK	sixtwo.fK	Reach	Extends player's reach	key=20	bind=-999
+fL	sixtwo.fL	Auto Tool	Automatically swaps to best tool when mining	key=22	bind=-999
+fM	sixtwo.fM	Auto MLG	Places block underneath to avoid fall damage	key=21	bind=-999
+fN	sixtwo.fN	Skin Protect	Hides real player skin	key=142	bind=-999
+fO	sixtwo.fO	Discord Activity	Changes your in game activity	key=104	bind=-999
+fP	sixtwo.fP	Anti-Cheat Detector	Analyzes packets to detect Anti-Cheat	key=108	bind=-999
+fQ	sixtwo.fQ	No Protocol Disconnect	Prevents disconnections caused by invalid server packets	key=160	bind=-999
+fR	sixtwo.fR	Client Sounds	Manages sounds of client	key=103	bind=-999
+fS	sixtwo.fS	Name Protect	Hides real player name	key=106	bind=-999
+fT	sixtwo.fT	Resource Pack Bypass	Allows to bypass required server texture pack	key=78	bind=-999
+fU	sixtwo.fU	Middle Click Friend	Adds friend when you click scroll on him	key=107	bind=-999
+fV	sixtwo.fV	Self Destruct	Self destructs the client	key=105	bind=-999
+fW	sixtwo.fW	Transactions	Reads the transactions the server sends you	key=109	bind=-999
+fX	sixtwo.fX	Interface	Allows to change interface settings	key=102	bind=344
+fa	sixtwo.fa	Auto X-Bow	Automatically performs crossbow cart	key=164	bind=-999
+fb	sixtwo.fb	Cart Assist	Automatically performs insta cart	key=163	bind=-999
+fc	sixtwo.fc	Cart Refill	Automatically refills TNT minecarts	key=165	bind=-999
+fd	sixtwo.fd	Auto Dripstone	Automatically places dripstone and opens trapdoor	key=15	bind=-999
+ff	sixtwo.ff	Fake Lag	Creates lagging effect	key=18	bind=82
+fg	sixtwo.fg	Target Lock	Allows to lock on a single target	key=136	bind=-999
+fh	sixtwo.fh	Attribute Swap	Automatically performs attribute swap	key=139	bind=-999
+fi	sixtwo.fi	Shield Block	Automatically switches to shield when right clicked	key=155	bind=-999
+fj	sixtwo.fj	Projectile Aim Bot	Automatically aims at targets	key=111	bind=-999
+fl	sixtwo.fl	Auto Potion	Automatically uses potions	key=127	bind=-999
+fm	sixtwo.fm	Pearl Chaser	Automatically throws pearls after players	key=145	bind=-999
+fn	sixtwo.fn	Auto Clicker	Clicks automatically when holding attack key	key=161	bind=-999
+fo	sixtwo.fo	Anti Bot	Distincts real players from bots	key=12	bind=-999
+fp	sixtwo.fp	Backtrack	Delays incoming packets to gain advantage	key=9	bind=-999
+fq	sixtwo.fq	Hitbox	Visible version of hitboxes	key=4	bind=-999
+fr	sixtwo.fr	Kill Aura	Automatically attacks entities	key=5	bind=82
+fs	sixtwo.fs	Knockback Displacement	Allows to knockback target in custom direction	key=151	bind=-999
+ft	sixtwo.ft	Auto GApple	Automatically eats golden apples	key=144	bind=-999
+fu	sixtwo.fu	Criticals	Makes it easier to crit	key=135	bind=-999
+fv	sixtwo.fv	Auto Armor	Automatically replaces armor	key=16	bind=-999
+fw	sixtwo.fw	Auto Drain	Automatically pickups liquid from cobweb	key=14	bind=-999
+fx	sixtwo.fx	Auto Totem	Manages totem in your off hand	key=31	bind=-999
+fy	sixtwo.fy	Totem Refill	Automatically refills totems	key=32	bind=-999
+fz	sixtwo.fz	Auto Jump Reset	Reduces knockback by jumping when getting hurt	key=23	bind=-999

@@ -1,0 +1,18 @@
+dH	No Sign Screen
+dI	Nuker
+dJ	Mouse Tweaks
+dK	Auto Lever Replace
+dL	No Entity Clip
+dM	Auto Market
+dN	Slot Lock
+dO	Hotbar Restorer
+dP	Block Piercer
+dQ	Hit Sounds
+dR	Click Action
+dS	Hand No Clip
+dT	Multi Task
+dU	Auto Fish
+dV	Custom FOV
+dW	Freecam
+dX	No Miss Delay
+dY	Anti Invisible

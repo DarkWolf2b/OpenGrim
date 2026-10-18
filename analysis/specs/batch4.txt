@@ -1,0 +1,18 @@
+dr	Health Indicators
+ds	Entity ESP
+dt	Nametags
+du	Tracers
+dv	Chams
+dw	Circle ESP
+dx	Anti Blind
+dy	Glow
+dz	Target ESP
+eA	Strafe
+eB	Flight
+eC	Sprint
+eD	Fast Bridge
+eE	Parkour
+eF	Spear Reach
+eG	Spear Lunge
+eH	Spear Dash
+eI	Spear Double Tap

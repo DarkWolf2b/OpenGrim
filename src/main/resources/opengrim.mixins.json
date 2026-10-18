@@ -1,0 +1,30 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.opengrim.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ClientConnectionMixin",
+		"ClientWorldAccessor",
+		"MouseMixin",
+		"CameraMixin",
+		"CollisionShapeMixin",
+		"HandledScreenAccessor",
+		"LimbAnimatorAccessor",
+		"PushOutOfBlocksMixin",
+		"EntityPushMixin",
+		"EntityTargetingMarginMixin",
+		"InteractionRangeMixin",
+		"LivingEntityAccessor",
+		"ModelPartAccessor",
+		"PlayerListEntryMixin",
+		"ItemRendererMixin",
+		"HeldItemRendererMixin",
+		"ItemInHandRendererAccessor",
+		"SoundManagerMixin"
+	],
+	"mixins": [],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
