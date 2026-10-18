@@ -84,11 +84,13 @@ cd OpenGrim
 
 **外部资源**（未放入 git — 超过代码托管平台的 100 MiB 限制）：完整研究包 `open-grim-publish.tar.zst` 包含三个解密 payload 转储（`jna-decrypted-v2.dll`、`jna-decrypted-sweep.dll`、`jna-decrypted-invoke.dll` — `analysis/ghidra/dumps/` 中仅跟踪其小体积的 `manifest.json` 辅助文件）以及原始加密原生 payload（`binaries/native/jna1.21.11`，可用 `analysis/grim-hashes.txt` 校验）。下载地址：`https://archive.org/details/open-grim-publish`。
 
-## 后续步骤 / 待办工作
+## 后续方向（提升保真度）
 
-- [ ] 在全新机器上验证干净构建，并固定确切工具链版本（JDK 21、Gradle、Fabric）
-- [ ] 缩小保真度差距 — 总体保真度为 78.1%；各模块差距与 14 个原生层分歧模块详见 [`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)
-- [ ] 添加测试与 CI（目前没有）
-- [ ] 在后续移植后重新运行完整保真度审计（方法论见 [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)）
-- [ ] 将外部资源包上传到 archive.org — 条目 ID 必须精确为 `open-grim-publish`，上述链接才能生效
-- [ ] 审查从原客户端恢复的字体图集 / 图标字形的许可问题
+总体保真度为 78.1%（[`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)）。静态分析已经穷尽 — 其余行为都藏在原客户端的原生/VM 层之后，因此接下来的工作是**动态的**：
+
+1. **原生层运行时转储** — 价值最高的下一步。将 `analysis/tools/` 中的 JVMTI harness 与 tracer（沙箱环境见 [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)）挂到运行中的原客户端，转储原生处理器的参数、返回值与状态。将这些转储与 `analysis/ghidra/` 中的处理器映射对照，可以恢复静态反编译无法企及的行为 — 包括 PARITY.md 的 Divergences 部分中逐项列出的 14 个原生分歧模块。
+2. **按模块的运行时追踪** — 扩展 `analysis/traces/`（2026-10-17 的运行），对每个模块做完整捕获，找回静态常量池破解（已恢复 23,147 个字面量）遗漏的常量与流程。
+3. **完成 89 个部分移植模块** — 各模块状态、差距分级与证据见 PARITY.md；移植工作流见 [`.opencode/skills/port-module/SKILL.md`](.opencode/skills/port-module/SKILL.md)。
+4. **1:1 渲染效果** — chams/ChinaHat 风格的着色器目前是近似实现；运行时捕获原版着色器参数即可实现精确移植。
+5. **重新运行保真度审计** — 方法论见 [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)；更新 PARITY.md 各行以及本 README 顶部的总体数值。
+6. **卫生工作** — 在全新机器上验证 `./gradlew build` 干净构建，补齐测试与 CI（目前没有），审查从原客户端恢复的字体图集 / 图标字形的许可。

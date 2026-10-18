@@ -86,11 +86,13 @@ To repozytorium jest **samowystarczalne** — wszystko, co potrzebne do zrozumie
 
 **Zasoby zewnętrzne** (nie w git — ponad limit 100 MiB na forge'ach): pełny pakiet badawczy `open-grim-publish.tar.zst` zawiera trzy zrzuty odszyfrowanego payloadu (`jna-decrypted-v2.dll`, `jna-decrypted-sweep.dll`, `jna-decrypted-invoke.dll` — w `analysis/ghidra/dumps/` są tylko ich małe pliki `manifest.json`) oraz oryginalny zaszyfrowany payload natywny (`binaries/native/jna1.21.11`, weryfikacja: `analysis/grim-hashes.txt`). Pobieranie: `https://archive.org/details/open-grim-publish`.
 
-## Następne kroki / znana praca
+## Gdzie kontynuować (podnoszenie zgodności)
 
-- [ ] Zweryfikować czystą budowę na świeżej maszynie i przypiąć dokładne wersje narzędzi (JDK 21, Gradle, Fabric)
-- [ ] Domknąć luki parity — zagregowana zgodność wynosi 78,1%; luki per moduł i 14 modułów rozbieżnych na poziomie natywnym są wyszczególnione w [`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)
-- [ ] Dodać testy i CI (obecnie brak)
-- [ ] Powtórzyć pełny audyt parity po dalszych portach (metodologia w [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md))
-- [ ] Wgrać pakiet zewnętrzny na archive.org — identyfikator elementu musi być dokładnie `open-grim-publish`, aby powyższy link działał
-- [ ] Sprawdzić licencjonowanie atlasów czcionek / glifów ikon odzyskanych z oryginalnego klienta
+Zagregowana zgodność wynosi 78,1% ([`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)). Analiza statyczna jest wyczerpana — wszystko poniżej kryje się za natywną warstwą/VM oryginału, więc pozostała praca jest **dynamiczna**:
+
+1. **Zrzuty runtime warstwy natywnej** — najcenniejszy kolejny krok. Harness JVMTI i tracer z `analysis/tools/` (sandbox opisany w [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)) można podepnąć pod działający oryginał, żeby zrzucać argumenty, wartości zwrotne i stan handlerów natywnych. Uzgodnienie tych zrzutów z mapami handlerów w `analysis/ghidra/` odzyskuje zachowania niedostępne dla statycznej dekompilacji — w tym 14 modułów rozbieżnych na poziomie natywnym, wyszczególnionych w sekcji Divergences w PARITY.md.
+2. **Ślady runtime per moduł** — rozszerz `analysis/traces/` (przebiegi 2026-10-17) o pełne przechwytywanie per moduł, żeby odzyskać stałe i przepływy pominięte przez statyczne przełamanie puli stałych (odzyskano 23 147 literałów).
+3. **Dokończenie 89 modułów częściowych** — status per moduł, klasyfikacja luk i dowody są w PARITY.md; workflow portowania w [`.opencode/skills/port-module/SKILL.md`](.opencode/skills/port-module/SKILL.md).
+4. **Efekty renderowania 1:1** — shadery typu chams/ChinaHat są przybliżone; przechwycenie parametrów shaderów oryginału w runtime umożliwi port 1:1.
+5. **Powtórny audyt zgodności** — metodologia w [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md); zaktualizuj wiersze PARITY.md i zagregowany wynik na górze tego README.
+6. **Higiena** — zweryfikuj czysty `./gradlew build` na świeżej maszynie, dodaj testy i CI (jeszcze ich nie ma), zweryfikuj licencje atlasów czcionek / glifów ikon odzyskanych z oryginału.

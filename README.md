@@ -86,11 +86,13 @@ This repository is **self-contained** — everything needed to understand and co
 
 **External assets** (not in git — over the 100 MiB forge limit): the full research bundle `open-grim-publish.tar.zst` adds the three decrypted payload dumps (`jna-decrypted-v2.dll`, `jna-decrypted-sweep.dll`, `jna-decrypted-invoke.dll` — only their small `manifest.json` sidecars are tracked in `analysis/ghidra/dumps/`) and the original encrypted native payload (`binaries/native/jna1.21.11`, verify against `analysis/grim-hashes.txt`). Download: `https://archive.org/details/open-grim-publish`.
 
-## Next steps / known work
+## Where to continue (pushing parity higher)
 
-- [ ] Verify a clean build on a fresh machine and pin the exact toolchain (JDK 21, Gradle, Fabric versions)
-- [ ] Close parity gaps — aggregate parity is 78.1%; per-module gaps and the 14 natively-divergent modules are itemized in [`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)
-- [ ] Add tests and CI (none exist yet)
-- [ ] Re-run the full parity audit after further ports (methodology in [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md))
-- [ ] Upload the external bundle to archive.org — item id must be exactly `open-grim-publish` so the link above resolves
-- [ ] Review the licensing of font atlases / icon glyphs recovered from the original client
+Aggregate parity is 78.1% ([`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)). Static analysis is exhausted — everything below it lives behind the original's native/VM layer, so the remaining work is **dynamic**:
+
+1. **Runtime dumps of the native layer** — the highest-value next step. The JVMTI harness and tracer in `analysis/tools/` (sandbox setup in [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)) can be attached to the original at runtime to dump native-handler arguments, returns and state. Reconciling those dumps against the handler maps in `analysis/ghidra/` recovers behavior static decompilation cannot reach — including the 14 natively-divergent modules itemized in PARITY.md's Divergences section.
+2. **Per-module runtime traces** — extend `analysis/traces/` (the 2026-10-17 runs) with full per-module capture to recover constants and flows the static constant-pool break missed (23,147 literals were recovered statically).
+3. **Finish the 89 partial modules** — per-module status, gap classification and evidence are in PARITY.md; the porting workflow is in [`.opencode/skills/port-module/SKILL.md`](.opencode/skills/port-module/SKILL.md).
+4. **1:1 rendering effects** — chams/ChinaHat-style shaders are approximated; runtime capture of the original's shader parameters would enable exact ports.
+5. **Re-run the parity audit** — methodology in [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md); update the PARITY.md rows and the aggregate at the top of this README.
+6. **Hygiene** — verify a clean `./gradlew build` on a fresh machine, add tests and CI (none yet), review licensing of the font atlases / icon glyphs recovered from the original.
