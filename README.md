@@ -4,6 +4,12 @@
 
 A 1:1 reimplementation of the "Grim 4.4" Minecraft utility client for Fabric 1.21.11.
 
+<p align="center">
+  <img src="analysis/artifacts/gui-reference/port/readme-gui-blur-2026-10-21.png" alt="OpenGrim Click GUI with the default Blur background" width="760">
+  <br>
+  <sub>Click GUI — default Blur background</sub>
+</p>
+
 ## Build & run
 
 **Requirements:** JDK 21 (any 21.x), Git. No IDE required.
