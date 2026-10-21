@@ -80,7 +80,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | dv | Chams | 101 | partial | [spec](../../analysis/specs/modules/dv.md) | render/Chams.java (verified 2026-10-17, parity 80%) — full numeric tree decoded: entities(mode), hide_original(true), apply_to_own_player(false), effect mode(glass/water/chrome/liquid_metal), top numerics |
 | eb | Chest Stealer | 68 | partial | [spec](../../analysis/specs/modules/eb.md) | utility/ChestStealer.java (verified 2026-10-17, parity 75%) — While a container screen is open (chest/shulker handler per steal_from), shift-clicks (QUICK_MOVE) container slots into the inventory on a 2-tick cade |
 | cS | China Hat | 122 | ported | [spec](../../analysis/specs/modules/cS.md) | render/ChinaHat.java (verified 2026-10-17, parity 92%) — cS is only present in the Vineflower tree with native Zh bootstrap constants; setting names are not decryptable statically. Structure known: group + 2 |
-| dw | Circle ESP | 84 | ported | [spec](../../analysis/specs/modules/dw.md) | render/CircleEsp.java (verified 2026-10-17, parity 94%) — entities(mode), animated(true), circle_scale Double(0.1,0.5,5,1), speed Double(1,10,40,20), only_for_target(false), circle_texture group (default/cust |
+| dw | Circle ESP | 84 | ported | [spec](../../analysis/specs/modules/dw.md) | render/CircleEsp.java (verified 2026-10-17, parity 94%) — entities(mode), animated(true), circle_scale Double(0.1,0.5,5,1), speed Double(1,10,40,20), only_for_target(false), circle_texture group (default/cust Real circle/circle_glow textures 2026-10-21. |
 | dR | Click Action | 60 | ported | [spec](../../analysis/specs/modules/dR.md) | utility/ClickAction.java (verified 2026-10-17, parity 76%) — Bound keys select the matching hotbar slot (pearl/firework/potion item), use it via interactItem, restore the previous slot after Return Delay (10/0–1 |
 | fR | Client Sounds | 103 | ported | [spec](../../analysis/specs/modules/fR.md) | utility/ClientSounds.java (verified 2026-10-17, trace re-check 2026-10-17, parity 77%; trace: never enabled — load only, accessors untriggered — capture: play a sound) — Sound Type mode (normal/bubble — original was a group with two toggles) and Sound Volume numeric (step 1, 0–100, default 70; suffix unrecovered, "%" a |
 | ev | Collision Long Jump | 48 | partial | [spec](../../analysis/specs/modules/ev.md) | movement/CollisionLongJump.java (verified 2026-10-17, parity 82%; trace-recheck 2026-10-17) — On horizontal collision against a BoatEntity while airborne, applies jump impulse (0.45). |
@@ -116,7 +116,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | fX | Interface | 102 | ported | [spec](../../analysis/specs/modules/fX.md) | utility/Interface.java (verified 2026-10-17, parity 85%) — port of sixtwo.fX: emote_key with F3 debug suppression opening Click GUI, theme style opacity query; details in the Divergences section of PARITY.md |
 | ek | Inventory Move | 47 | partial | [spec](../../analysis/specs/modules/ek.md) | movement/InventoryMove.java (verified 2026-10-17, parity 85%; trace-recheck 2026-10-17: asV contract fixed) - Block Clicks (off; inert - needs a mouse-event hook). While a screen is open, mirrors physical key state (InputUtil.isKeyPressed + InputUtil.fromTrans |
 | dD | Item Frame Blocker | 70 | partial | [spec](../../analysis/specs/modules/dD.md) | utility/ItemFrameBlocker.java (verified 2026-10-17, trace re-check 2026-10-17, parity 84%; trace: never enabled — load only, akB untriggered — capture: right-click an item frame) — Detects crosshair use attempts on item frames while the use key is pressed and warns locally (throttled 1/s) per the All Items / Only Weapons (item se |
-| db | Jump Circle | 89 | ported | [spec](../../analysis/specs/modules/db.md) | render/JumpCircle.java (verified 2026-10-17, parity 93%) — Circle Scale (0.5–5, def 1), Only Self, Circle Texture as radio mode (Default/Glowing/Custom — decrypted group). Computes airborne take-off circles pe |
+| db | Jump Circle | 89 | ported | [spec](../../analysis/specs/modules/db.md) | render/JumpCircle.java (verified 2026-10-17, parity 93%) — Circle Scale (0.5–5, def 1), Only Self, Circle Texture as radio mode (Default/Glowing/Custom — decrypted group). Computes airborne take-off circles pe Real circle/circle_glow textures 2026-10-21. |
 | fr | Kill Aura | 5 | partial | [spec](../../analysis/specs/modules/fr.md) | combat/KillAura.java (verified 2026-10-17, parity 60%) — port of sixtwo.fr: exact setting tree, aNB pause gates (Nuker/AutoWeb/AutoTrap/AutoPotion), silent-aim submit via RotationManager (qL#dbI), target export (aOQ); divergences itemized in the Divergences section of PARITY.md |
 | fs | Knockback Displacement | 151 | partial | [spec](../../analysis/specs/modules/fs.md) | movement/KnockbackDisplacement.java (verified 2026-10-17, parity 60%) — On the tick damage is taken, re-aims the local velocity impulse along dynamic (facing) or fixed angle. Server-side knockback rewrite needs a packet mi |
 | dF | Lever Replace | 112 | partial | [spec](../../analysis/specs/modules/dF.md) | world/LeverReplace.java (verified 2026-10-17, parity 70%) — Finds the nearest lever/button within 4 blocks; mines it via updateBlockBreakingProgress and then places the selected replacement (Cobweb/Obsidian/Hel |
@@ -1351,3 +1351,48 @@ the page grouping structural.
   uses the base borderWidth because the caller's `f7` factor is not exposed.
 - **Remaining:** shadow pipeline/rounded shadow, gradient fills, popup blur/glass,
   texture/loading fill types, remaining primitives.
+
+## Avoidable 1:1 gaps — module audit (2026-10-21)
+
+Scope: modules whose original class is **fully Java** (no behavior natives in the
+class) but the port used a labeled `[G]`/stand-in/approximation for data that is
+recoverable from the repo. These are separate from the native/DES gaps in the
+Divergences log. This is a work queue; parity rows are unchanged until a fix lands.
+
+| Module | Class | Avoidable gap | Recoverable evidence | Priority |
+|---|---|---|---|---|
+| Trap ESP | cW | `[G]` icon glyph (U+EA26), font stack, rounded corners | `icons-4.4` glyph font + `IconGlyph`; `MsdfFont`; `GuiDraw` shape pipeline | P1 |
+| Hit Particles | dc | `[G]` flat billboard and 2× glow substitute for the themed sprites + glow pass | `raster-assets.bin` keys `star`, `snowflake`, `ghosts`, `heart`, `diamond`, `thunder`, `moon`, `cloud`; `bloom_*` shaders | P1 |
+| Swing Animations | cQ | `[G]` per-tick stack comparison instead of the original held-item-change trigger; `YH` filter is Java | `cQ.java` `YF`/`YH`; a held-item-change mixin/event restores the trigger (`YG` profile remains native) | P2 |
+| Chams | dv | Vanilla boxes instead of the four `chams_*` passes | `chams_water/glass/chrome/liquidmetal` shaders imported; render pass still native-queued | P2 |
+| Jump Circle | db | `[G]` procedural circles instead of the recovered textures | `raster-assets.bin` `circle`/`glow`; duration `yqWBV` remains encrypted | P2 |
+| Circle ESP | dw | `[G]` procedural ring and light values | `raster-assets.bin` `circle`/`glow`; `kz.bSr` constants remain native/encrypted | P2 |
+| Fake Lag | ff | `[S]` single-value sliders for the two-handle ranges; pre-attack event used for attack-post | add a range setting and a `hw$tw` attack-post event; `kx` indicator remains native | P2 |
+| Nametags | dt | `[S]` vanilla text/rounded fill instead of the MSDF/shape path | `MsdfFont` + shape pipeline; `ji` divisors/format remain encrypted | P3 |
+| Storage ESP | dq | `[S]` item-set group instead of the recovered item-list widget; theme colors | item-set widget + `GuiTheme`; `irQyF` throttle remains encrypted | P3 |
+| 2D ESP | di | `[U]` profile registry and drawing dispatch not rebuilt | port `pj`/`po` profile registry; large surface | P3 |
+| Nuker | dI | `[G]` 50 ms/tick guess and programmatic `cK` block list | widget + event plumbing; `ja.byI` native and the interval literal encrypted | P3 |
+| Ambience | dh | `[U]` interval/fade stand-ins and preset times | recover the five preset times/fade constants; multiple unknowns | P3 |
+
+### Suggested order
+
+1. Trap ESP icon/font/corners (small, visual).
+2. Hit Particles sprites + glow (medium, visual).
+3. Swing Animations `YF` trigger (small wiring).
+4. Chams shader passes (large).
+5. Jump Circle / Circle ESP textures.
+6. Fake Lag range + event.
+7. Nametags / Storage ESP / 2D ESP / Nuker / Ambience.
+
+No code changes are included in this audit entry. Each fix should update the
+module row Notes and, only if something remains unrecoverable, append a
+Divergences line.
+
+### 2026-10-21 — Jump Circle / Circle ESP sprite fix
+
+`CircleTextures` now loads the recovered `assets/opengrim/textures/circle.png`
+(1024x1024) and `circle_glow.png` (1424x1424), extracted from
+`analysis/decompiled/bootstrap/offline/assets/raster-assets.bin`. The
+procedural ring remains only as a fallback. This closes the sprite half of the
+`db` (Jump Circle) and `dw` (Circle ESP) rows; `db`'s `yqWBV` animation duration
+and `dw`'s `kz.bSr` segment/alpha/light constants remain unrecovered.

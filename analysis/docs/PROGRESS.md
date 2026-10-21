@@ -1085,3 +1085,5 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
 - **Remaining gaps:** `shadow` pipeline and rounded-shadow draw; shape gradient
   fill (FILL_GRADIENT stops/angle), texture fill, loading stripes; popup surfaces
   still use the opaque themed fill; `shadow/annular/checker/bezier` pipelines.
+- 2026-10-21: **Module audit — avoidable 1:1 gaps marked.** Added the "Avoidable 1:1 gaps" work-queue section to PARITY.md covering 12 fully-Java original classes whose ports used labeled stand-ins for recoverable data (Trap Esp, Hit Particles, Swing Animations, Chams, Jump Circle, Circle ESP, Fake Lag, Nametags, Storage ESP, 2D ESP, Nuker, Ambience). Prioritized P1-P3; no module behavior changed in this entry.
+- 2026-10-21: **Circle ESP / Jump Circle textures.** Extracted the recovered `circle` (1024x1024) and `circle_glow` (1424x1424) raster assets from `raster-assets.bin` to `src/main/resources/assets/opengrim/textures/`; `CircleTextures` now loads them, with the procedural ring only as fallback. `compileJava` PASS. Remaining: `db` `yqWBV` duration, `dw` `kz.bSr` constants.

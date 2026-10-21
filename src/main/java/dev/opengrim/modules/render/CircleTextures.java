@@ -22,12 +22,14 @@ import net.minecraft.util.Identifier;
  * "Glowing") — decrypted from the class DES pool (dw class key 27796957615364,
  * db class key 76154492359407; call sites dw.java:614/732 and db.java:624/631).
  *
+ * <p>The original sprite pixels are recovered from
+ * {@code analysis/decompiled/bootstrap/offline/assets/raster-assets.bin}
+ * ({@code circle} 1024x1024, {@code circle_glow} 1424x1424) and shipped under
+ * {@code assets/opengrim/textures/}. The procedural ring below remains only as
+ * a fallback when the resource is missing.
+ *
  * <p>Framework ports (labeled):
  * <ul>
- * <li>The original's sprite pixels live inside the native payload and are not
- * recoverable, so this rebuild generates equivalent ring sprites procedurally
- * under {@code opengrim:circle} / {@code opengrim:circle_glow}
- * (high-probability guess — pixel content unrecovered).</li>
  * <li>{@code jd.bAm(String)} (URL sanity check, native) is approximated by a
  * non-blank {@code http(s)} prefix test (high-probability guess).</li>
  * <li>{@code oe.cCd} returns its texture on the completing thread; this port
@@ -49,6 +51,19 @@ final class CircleTextures {
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client == null) {
 			return id;
+		}
+		// Recovered built-in sprite (raster-assets.bin): use the original pixels.
+		String resource = "assets/opengrim/textures/" + name + ".png";
+		try (InputStream in = CircleTextures.class.getClassLoader().getResourceAsStream(resource)) {
+			if (in != null) {
+				NativeImage image = NativeImage.read(in);
+				client.getTextureManager().registerTexture(id,
+						new NativeImageBackedTexture(() -> "opengrim " + name, image));
+				REGISTERED.add(id);
+				return id;
+			}
+		} catch (Exception ignored) {
+			// fall through to the procedural ring
 		}
 		int size = 64;
 		NativeImage image = new NativeImage(size, size, false);
