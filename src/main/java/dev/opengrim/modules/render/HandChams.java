@@ -12,6 +12,7 @@ import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.Perspective;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * Hand Chams (registry sixtwo.de): "Customizes hand rendering with custom
@@ -232,6 +233,15 @@ public class HandChams extends Module {
 				&& client.options.getPerspective() == Perspective.FIRST_PERSON;
 	}
 
+	/** GameRenderer.renderHand HEAD/ RETURN bridge (acv). */
+	public static boolean beginHandRender(boolean sleeping) {
+		return HandChamsRenderer.begin(sleeping);
+	}
+
+	public static void endHandRender() {
+		HandChamsRenderer.end();
+	}
+
 	/**
 	 * Hand tint (ItemRendererMixin consumer). The original applies per-effect
 	 * shader passes ({@code ki.bPi} Outline branch, kj facades) that have no
@@ -249,7 +259,8 @@ public class HandChams extends Module {
 	 */
 	@Subscribe
 	public void onHandTint(HandTintEvent event) {
-		if (!isHandPassActive()) {
+		if (!isHandPassActive() || HandChamsRenderer.isRendering()
+				|| HandChamsRenderer.available(effect.getValue())) {
 			return;
 		}
 		switch (effect.getValue()) {
@@ -323,4 +334,80 @@ public class HandChams extends Module {
 	public int getSecondColor() {
 		return secondColor.getValue();
 	}
+	/** Builds the recovered {@code kj.bPr/bPs/bPt/bPu} slot order for the active effect. */
+	float[] chamsSlots() {
+		float[] slots = ChamsRenderer.pack((float) GLFW.glfwGetTime());
+		switch (effect.getValue()) {
+			case "glass" -> {
+				ChamsRenderer.put(slots, 1, reflection.getValue().floatValue(),
+						depth.getValue().floatValue(), frost.getValue().floatValue(),
+						dispersion.getValue().floatValue());
+				ChamsRenderer.put(slots, 2, lightAngle.getValue().floatValue(),
+						lightIntensity.getValue().floatValue(), splay.getValue().floatValue(), 0.0f);
+				ChamsRenderer.putColor(slots, 5, tintColor.getValue());
+				ChamsRenderer.putColor(slots, 7, bevelColor.getValue());
+			}
+			case "water" -> {
+				ChamsRenderer.put(slots, 1, flowSpeed.getValue().floatValue(),
+						flowScale.getValue().floatValue(), waterReflection.getValue().floatValue(),
+						waterSpecular.getValue().floatValue());
+				ChamsRenderer.put(slots, 2, waveHeight.getValue().floatValue(),
+						choppiness.getValue().floatValue(), waveFreq.getValue().floatValue(), 0.0f);
+				ChamsRenderer.putColor(slots, 5, waterColor.getValue());
+			}
+			case "chrome" -> {
+				ChamsRenderer.put(slots, 1, chromeSpeed.getValue().floatValue(),
+						chromeRimSharpness.getValue().floatValue(),
+						chromeRimIntensity.getValue().floatValue(), 0.0f);
+				ChamsRenderer.putColor(slots, 5, chromeTint.getValue());
+			}
+			case "liquid_metal" -> {
+				ChamsRenderer.put(slots, 1, scale.getValue().floatValue(),
+						noiseFreqX.getValue().floatValue(), noiseFreqY.getValue().floatValue(),
+						noiseFreqX2.getValue().floatValue());
+				ChamsRenderer.put(slots, 2, noiseFreqY2.getValue().floatValue(),
+						warpIntensityX.getValue().floatValue(),
+						warpIntensityY.getValue().floatValue(), liquidBrightness.getValue().floatValue());
+				ChamsRenderer.put(slots, 3, liquidSpeed.getValue().floatValue(),
+						redShift.getValue().floatValue(), blueShift.getValue().floatValue(),
+						contour.getValue().floatValue());
+				ChamsRenderer.put(slots, 4, softness.getValue().floatValue(), 0.0f, 0.0f, 0.0f);
+				int[] colors = chamsColors();
+				for (int i = 0; i < 4; i++) {
+					ChamsRenderer.putColor(slots, 8 + i, colors[i]);
+				}
+			}
+			default -> {
+			}
+		}
+		ChamsRenderer.putColor(slots, 6, 0xFFFFFFFF);
+		return slots;
+	}
+
+	int[] chamsColors() {
+		return new int[]{colorOne.getValue(), colorTwo.getValue(), colorThree.getValue(),
+				colorFour.getValue()};
+	}
+
+
+	/** Recovered outline composite parameters (de.act -> ki.bPi). */
+	record OutlineParams(int color, int secondColor, int colorMode, int glowQuality,
+			double glowRadius, double animationSpeed, double glowAlpha, double fillAlpha,
+			double saturation, double brightness) {
+	}
+
+	OutlineParams outlineParams() {
+		int mode = switch (colorMode.getValue()) {
+			case "one" -> 1;
+			case "two" -> 2;
+			case "three" -> 3;
+			default -> 0;
+		};
+		return new OutlineParams(color.getValue(), secondColor.getValue(), mode,
+				glowQuality.getValue().intValue(), glowRadius.getValue(),
+				animationSpeed.getValue(), glowAlphaMultiplier.getValue(),
+				fillAlphaMultiplier.getValue(), saturation.getValue(), brightness.getValue());
+	}
+
+
 }

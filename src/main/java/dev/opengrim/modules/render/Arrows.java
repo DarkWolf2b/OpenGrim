@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -56,10 +57,15 @@ import dev.opengrim.util.FriendsManager;
  * duration literal dEIfC is DES-decrypted and not in the dump — [G] labeled
  * guess: 400 ms, the module-level animator's literal (do.java:121).
  *
+ * <p>Visual asset: the original starts a textured batch with `ob.cBv(eLTLf)` and
+ * draws a full-sprite square per entry (`do$sG.doM`, kG.bTw). The recovered
+ * `raster-assets.bin` key `arrow` (256×256) is extracted to
+ * `assets/opengrim/textures/arrow.png` and drawn with `DrawContext.drawTexture`
+ * tinted by the entry colour/fade. `eLTLf` is DES, so the asset identity is
+ * inferred from the name/appearance (labeled [G]).
+ *
  * <p>Gaps: the ahi GUI-offset literals (do.ahq("c", 15311/3999)) are
- * unrecovered — [U], offset left at 0; the render layer name do.eLTLf is
- * unrecovered, so a plain filled quad (DrawContext.fill) stands in for the
- * batcher layer.
+ * unrecovered — [U], offset left at 0.
  */
 public class Arrows extends Module {
 	private static final Identifier HUD_ID = Identifier.of("opengrim", "arrows_hud");
@@ -76,6 +82,8 @@ public class Arrows extends Module {
 
 	private final Set<EntityType<?>> trackedTypes = new HashSet<>();
 	private final List<TrackedArrow> tracked = new ArrayList<>();
+	/** Arrow sprite (raster-assets key {@code arrow}); registered on the client tick. */
+	private Identifier arrowTexture;
 
 	public Arrows() {
 		super("arrows", "Arrows", "Draws arrows to entities", ModuleCategory.VISUALS);
@@ -100,6 +108,9 @@ public class Arrows extends Module {
 	@Override
 	public void onTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
+		if (arrowTexture == null) {
+			arrowTexture = CircleTextures.builtin("arrow");
+		}
 		ClientPlayerEntity player = client.player;
 		if (client.world == null || player == null) {
 			tracked.clear();
@@ -187,8 +198,11 @@ public class Arrows extends Module {
 			float rise = 30.0f - 30.0f * fade;
 			float x = centerX - markerSize / 2.0f;
 			float y = markerY - rise;
-			ctx.fill((int) x, (int) y, (int) (x + markerSize), (int) (y + markerSize),
-					scaleAlpha(argb, fade));
+			if (arrowTexture != null) {
+				// do$sG.doM: kG.bTw(full-sprite square) in the arrow-texture batch.
+				ctx.drawTexture(RenderPipelines.GUI_TEXTURED, arrowTexture, (int) x, (int) y, 0.0f, 0.0f,
+						(int) markerSize, (int) markerSize, 256, 256, scaleAlpha(argb, fade));
+			}
 			ctx.getMatrices().popMatrix();
 			// do$sG.doN: removed and fade == 0.
 			if (arrow.removed && fade == 0.0f) {

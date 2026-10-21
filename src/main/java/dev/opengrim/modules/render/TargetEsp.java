@@ -3,12 +3,16 @@ package dev.opengrim.modules.render;
 import java.util.List;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -53,15 +57,22 @@ import dev.opengrim.settings.ModeSetting;
  * (size threshold 50, reset 100), Crystals bound 360 step 20; Ghosts ring phase 120; colour seeds 10;
  * textures {@code glow} (Circle/Soul/Crystals bloom) and {@code ghosts} (Ghosts).
  *
- * <p>Framework adaptations (visual only): the original emits textured billboards through the
- * native-side {@code kM}/{@code kK} batchers with textures {@code glow}/{@code ghosts} that do not
- * ship with the rebuild; this port keeps the exact geometry, counts, colours and per-frame order and
- * draws them as camera-facing quads via {@link RenderLayers#debugFilledBox()}. The
- * {@code Ignore Walls} render-state switch ({@code kS cHVCf}/{@code MRndq} vs {@code defaultState()})
- * has no equivalent layer in the rebuild, so the setting is carried but does not alter the layer.
- * The animators are 1:1 ports of sixtwo.rk (rk.java:54-134) and sixtwo.rh (rh.java:35-52); the
- * easings are the recovered rj instances {@code kcXTJ} (ease-in-out cubic, rj.java:109-141) and
- * {@code UPXqT} (ease-in-out sine, rj.java:69).
+ * <p>Textured billboards: the original emits its quads through the {@code kM}/{@code kK}
+ * batchers with the recovered {@code glow} (Circle, Soul, Crystals bloom) and
+ * {@code ghosts} (Ghosts) sprites; those assets now ship under
+ * {@code assets/opengrim/textures/particles/} and are bound through
+ * {@link ParticleTextures} + {@link RenderLayers#entityTranslucent}. Circle/Soul/Ghosts use
+ * {@code jI.bIu} (Y(-yaw)·X(pitch)); the Crystals bloom uses {@code jI.bIq}
+ * ({@code Camera#getRotation}); the Crystals core stays on the original untextured
+ * {@code AswNN}/{@code kE.bTf} path. Exact geometry, counts, colours, alpha envelopes and
+ * per-frame order are unchanged.
+ *
+ * <p>The {@code Ignore Walls} render-state switch ({@code kS cHVCf}/{@code MRndq} vs
+ * {@code defaultState()}) has no equivalent layer in the rebuild, so the setting is carried
+ * but does not alter the layer. The animators are 1:1 ports of sixtwo.rk (rk.java:54-134)
+ * and sixtwo.rh (rh.java:35-52); the easings are the recovered rj instances
+ * {@code kcXTJ} (ease-in-out cubic, rj.java:109-141) and {@code UPXqT}
+ * (ease-in-out sine, rj.java:69).
  */
 public class TargetEsp extends Module {
 	/** mG.cnP(255.0f, 71.0f, 71.0f) - dz.java:186 (hurt mix colour). */
@@ -124,6 +135,7 @@ public class TargetEsp extends Module {
 	@Override
 	public void onTick() {
 		bloomAmount.setVisible(bloom.getValue()); // SfkMU.Vf(slRcN::WF), dz.java:188
+		ParticleTextures.preload("glow", "ghosts");
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.world == null || client.player == null) {
 			// @hG ajA(gM), dz.java:366-369 - gM is the ClientWorld.disconnect event
@@ -153,9 +165,13 @@ public class TargetEsp extends Module {
 		}
 		MatrixStack matrices = event.context().matrices();
 		VertexConsumerProvider consumers = event.context().consumers();
-		VertexConsumer quads = consumers.getBuffer(RenderLayers.debugFilledBox());
-		Quaternionf billboard = event.camera().getRotation();
+		Camera camera = event.camera();
 		float delta = client.getRenderTickCounter().getTickProgress(true);
+		Identifier glowTexture = ParticleTextures.get("glow");
+		Identifier ghostsTexture = ParticleTextures.get("ghosts");
+		if (glowTexture == null || ghostsTexture == null) {
+			return;
+		}
 
 		// ajB(go$sX), dz.java:628-650 (javap 2204-2318)
 		target = null; // hGhYF = null
@@ -167,13 +183,23 @@ public class TargetEsp extends Module {
 		if (latched == null) {
 			return;
 		}
-		Vec3d cameraPos = event.camera().getCameraPos();
+		Vec3d cameraPos = camera.getCameraPos();
+		// dz starts one textured batch per mode: glow for Circle/Soul/Crystals, ghosts for
+		// Ghosts; Crystals' core cuboids stay on the untextured batch (AswNN/kE.bTf).
+		// Requesting the buffers in draw order preserves the original core-then-glow order.
 		switch (mode.getValue()) {
-			case "Circle" -> renderCircle(matrices, quads, billboard, cameraPos, delta);
-			case "Soul" -> renderSoul(matrices, quads, billboard, cameraPos, delta);
-			case "Ghosts" -> renderGhosts(matrices, quads, billboard, cameraPos, delta);
-			case "Crystals" -> renderCrystals(matrices, quads, billboard, cameraPos, delta);
-			default -> renderCircle(matrices, quads, billboard, cameraPos, delta);
+			case "Circle" -> renderCircle(matrices, consumers.getBuffer(RenderLayers.entityTranslucent(glowTexture)),
+					camera, cameraPos, delta);
+			case "Soul" -> renderSoul(matrices, consumers.getBuffer(RenderLayers.entityTranslucent(glowTexture)),
+					camera, cameraPos, delta);
+			case "Ghosts" -> renderGhosts(matrices, consumers.getBuffer(RenderLayers.entityTranslucent(ghostsTexture)),
+					camera, cameraPos, delta);
+			case "Crystals" -> renderCrystals(matrices,
+					consumers.getBuffer(RenderLayers.debugFilledBox()),
+					consumers.getBuffer(RenderLayers.entityTranslucent(glowTexture)),
+					camera, cameraPos, delta);
+			default -> renderCircle(matrices, consumers.getBuffer(RenderLayers.entityTranslucent(glowTexture)),
+					camera, cameraPos, delta);
 		}
 	}
 
@@ -229,7 +255,7 @@ public class TargetEsp extends Module {
 	}
 
 	/** Mode 0 "Circle" - ajE, dz.java:387-549. */
-	private void renderCircle(MatrixStack matrices, VertexConsumer quads, Quaternionf billboard, Vec3d cameraPos, float delta) {
+	private void renderCircle(MatrixStack matrices, VertexConsumer quads, Camera camera, Vec3d cameraPos, float delta) {
 		fade.setDuration(CIRCLE_FADE_MS); // IffVm.dhq(700)
 		fade.set(target != null); // IffVm.dhc(hGhYF != null)
 		float fadeValue = fade.get(); // IffVm.dhj()
@@ -261,12 +287,12 @@ public class TargetEsp extends Module {
 			matrices.push();
 			try {
 				matrices.translate(pos.x - cameraPos.x + x, pos.y - cameraPos.y + y, pos.z - cameraPos.z + z);
-				matrices.multiply(billboard); // jI.bIs + jI.bIu
+				applyBillboard(matrices, camera); // jI.bIs + jI.bIu
 				if (bloom.getValue()) {
-					quad(matrices.peek(), quads, -bloomSize / 2.0f, -bloomSize / 2.0f, -coreSize / 2.0f, bloomSize, bloomSize,
+					texturedQuad(matrices.peek(), quads, -bloomSize / 2.0f, -bloomSize / 2.0f, -coreSize / 2.0f, bloomSize, bloomSize,
 							withAlpha(particleColor, particleFade * (bloomAmount.getValue().floatValue() / 100.0f)));
 				}
-				quad(matrices.peek(), quads, -coreSize / 2.0f, -coreSize / 2.0f, -coreSize / 2.0f, coreSize, coreSize,
+				texturedQuad(matrices.peek(), quads, -coreSize / 2.0f, -coreSize / 2.0f, -coreSize / 2.0f, coreSize, coreSize,
 						withAlpha(particleColor, particleFade));
 			} finally {
 				matrices.pop();
@@ -275,7 +301,7 @@ public class TargetEsp extends Module {
 	}
 
 	/** Mode 1 "Soul" - ajF, dz.java:654-846. */
-	private void renderSoul(MatrixStack matrices, VertexConsumer quads, Quaternionf billboard, Vec3d cameraPos, float delta) {
+	private void renderSoul(MatrixStack matrices, VertexConsumer quads, Camera camera, Vec3d cameraPos, float delta) {
 		fade.setDuration(FADE_MS); // IffVm.dhq(300)
 		fade.set(target != null);
 		float fadeValue = fade.get();
@@ -317,12 +343,12 @@ public class TargetEsp extends Module {
 			matrices.push();
 			try {
 				matrices.translate(pos.x - cameraPos.x + x, pos.y - cameraPos.y + y, pos.z - cameraPos.z + z);
-				matrices.multiply(billboard);
+				applyBillboard(matrices, camera); // jI.bIu
 				if (bloom.getValue()) {
-					quad(matrices.peek(), quads, -outer / 2.0f, -outer / 2.0f, -inner / 2.0f, outer, outer,
+					texturedQuad(matrices.peek(), quads, -outer / 2.0f, -outer / 2.0f, -inner / 2.0f, outer, outer,
 							withAlpha(particleColor, particleFade * (bloomAmount.getValue().floatValue() / 100.0f)));
 				}
-				quad(matrices.peek(), quads, -inner / 2.0f, -inner / 2.0f, -inner / 2.0f, inner, inner,
+				texturedQuad(matrices.peek(), quads, -inner / 2.0f, -inner / 2.0f, -inner / 2.0f, inner, inner,
 						withAlpha(particleColor, particleFade));
 			} finally {
 				matrices.pop();
@@ -331,7 +357,7 @@ public class TargetEsp extends Module {
 	}
 
 	/** Mode 2 "Ghosts" - ajG, dz.java:850-1010. */
-	private void renderGhosts(MatrixStack matrices, VertexConsumer quads, Quaternionf billboard, Vec3d cameraPos, float delta) {
+	private void renderGhosts(MatrixStack matrices, VertexConsumer quads, Camera camera, Vec3d cameraPos, float delta) {
 		fade.setDuration(FADE_MS); // IffVm.dhq(300)
 		fade.set(target != null);
 		float fadeValue = fade.get();
@@ -364,13 +390,13 @@ public class TargetEsp extends Module {
 					matrices.translate(pos.x - cameraPos.x + Math.cos(ringAngle) * (double) radius,
 							pos.y - cameraPos.y + 1.0 + bob,
 							pos.z - cameraPos.z + Math.sin(ringAngle) * (double) radius);
-					matrices.multiply(billboard);
+					applyBillboard(matrices, camera); // jI.bIu
 					if (bloom.getValue()) {
 						float bloomSize = size * 2.4f;
-						quad(matrices.peek(), quads, -bloomSize, -bloomSize, -0.001f, bloomSize * 2.0f, bloomSize * 2.0f,
+						texturedQuad(matrices.peek(), quads, -bloomSize, -bloomSize, -0.001f, bloomSize * 2.0f, bloomSize * 2.0f,
 								withAlpha(ringColor, particleFade * (bloomAmount.getValue().floatValue() / 100.0f)));
 					}
-					quad(matrices.peek(), quads, -size, -size, 0.0f, size * 2.0f, size * 2.0f,
+					texturedQuad(matrices.peek(), quads, -size, -size, 0.0f, size * 2.0f, size * 2.0f,
 							withAlpha(ringColor, particleFade));
 				} finally {
 					matrices.pop();
@@ -380,7 +406,7 @@ public class TargetEsp extends Module {
 	}
 
 	/** Mode 3 "Crystals" - ajH, dz.java:1028-1206. */
-	private void renderCrystals(MatrixStack matrices, VertexConsumer quads, Quaternionf billboard, Vec3d cameraPos, float delta) {
+	private void renderCrystals(MatrixStack matrices, VertexConsumer solid, VertexConsumer quads, Camera camera, Vec3d cameraPos, float delta) {
 		fade.setDuration(FADE_MS); // IffVm.dhq(300)
 		fade.set(target != null);
 		float fadeValue = fade.get();
@@ -413,7 +439,7 @@ public class TargetEsp extends Module {
 				Vec3d center = latched.getEntityPos().add(0.0, (double) latched.getHeight() / 2.0, 0.0);
 				Vector3f direction = center.subtract(crystalPos).normalize().toVector3f();
 				matrices.multiply(new Quaternionf().rotationTo(up, direction));
-				quad(matrices.peek(), quads, -size / 2.0f, -size / 2.0f, 0.0f, size, size,
+				quad(matrices.peek(), solid, -size / 2.0f, -size / 2.0f, 0.0f, size, size,
 						withAlpha(crystalColor, particleFade));
 			} finally {
 				matrices.pop();
@@ -436,9 +462,9 @@ public class TargetEsp extends Module {
 			matrices.push();
 			try {
 				matrices.translate(pos.x - cameraPos.x + x, pos.y - cameraPos.y + y, pos.z - cameraPos.z + z);
-				matrices.multiply(billboard); // jI.bIq
+				matrices.multiply(camera.getRotation()); // jI.bIq
 				// alpha = 0.1f * BloomAmount.VB() * IffVm.dhj(), dz.java:1191
-				quad(matrices.peek(), quads, -size / 2.0f, -size / 2.0f, 0.0f, size, size,
+				texturedQuad(matrices.peek(), quads, -size / 2.0f, -size / 2.0f, 0.0f, size, size,
 						withAlpha(crystalColor, 0.1f * bloomAmount.getValue().floatValue() * fade.get()));
 			} finally {
 				matrices.pop();
@@ -486,7 +512,28 @@ public class TargetEsp extends Module {
 		return (a << 24) | (argb & 0xFFFFFF);
 	}
 
-	/** kG.bTv(stack, x, y, z, w, h).dtF(color).dtG() as a camera-facing quad. */
+	/** jI.bIu: Y(-cameraYaw) then X(cameraPitch) - the original's billboard (not Camera#getRotation). */
+	private static void applyBillboard(MatrixStack matrices, Camera camera) {
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-camera.getYaw()));
+		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
+	}
+
+	/** kG.bTv(stack, x, y, z, w, h) on a textured batch: full-sprite UV, V=0 at the top. */
+	private static void texturedQuad(MatrixStack.Entry entry, VertexConsumer vc, float x, float y, float z,
+			float w, float h, int argb) {
+		float x1 = x + w;
+		float y1 = y + h;
+		vc.vertex(entry, x, y, z).color(argb).texture(0.0f, 1.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, x1, y, z).color(argb).texture(1.0f, 1.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, x1, y1, z).color(argb).texture(1.0f, 0.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, x, y1, z).color(argb).texture(0.0f, 0.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+	}
+
+	/** kG.bTv(stack, x, y, z, w, h) on the untextured batch (Crystals core, AswNN/kE.bTf). */
 	private static void quad(MatrixStack.Entry entry, VertexConsumer vc, float x, float y, float z, float w, float h, int argb) {
 		float a = ((argb >>> 24) & 0xFF) / 255.0f;
 		float r = ((argb >> 16) & 0xFF) / 255.0f;

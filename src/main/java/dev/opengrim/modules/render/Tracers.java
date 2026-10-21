@@ -1,7 +1,7 @@
 package dev.opengrim.modules.render;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,8 +13,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Vec3d;
 
 import dev.opengrim.event.Subscribe;
@@ -24,6 +24,7 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
+import dev.opengrim.settings.EntityListSetting;
 import dev.opengrim.settings.ModeSetting;
 import dev.opengrim.util.FriendsManager;
 
@@ -58,10 +59,13 @@ import dev.opengrim.util.FriendsManager;
  * swimming or gliding. Friend lines use {@code Friend Color} when
  * {@code Ignore Friends} is off, and are omitted when {@code Ignore Friends} is on.
  *
- * <p>Framework limitation (labeled): the original's {@code cF} entity-type
- * multi-select has no settings-API equivalent — the selection lives in
+ * <p>The original's {@code cF} entity-type multiselect is now a real
+ * {@link EntityListSetting} + {@code EntityListWidget} (the shared cF port):
+ * universe = OCdZM living types minus ARMOR_STAND plus ITEM/CHEST_MINECART/
+ * TNT_MINECART, selected = {PLAYER}. {@code cF.VX} membership is
+ * {@code !selected.isEmpty() && offered && selected}. The helper API
  * {@link #getEntityTypes()} / {@link #addEntityType(EntityType)} /
- * {@link #removeEntityType(EntityType)} (same approximation as AntiInvisible).
+ * {@link #removeEntityType(EntityType)} is kept for cross-module readers.
  * The panic-switch loop break ({@code dh.afl()}) has no OpenGrim counterpart.
  */
 public class Tracers extends Module {
@@ -72,17 +76,31 @@ public class Tracers extends Module {
 			List.of("head", "chest", "legs", "feet"), "head"));
 	private final BoolSetting ignoreFriends = register(new BoolSetting("ignore_friends", true));
 
-	/** cF selected set (sulLA), default {PLAYER} (cF.java:34-36). */
-	private final Set<EntityType<?>> selected = new HashSet<>(List.of(EntityType.PLAYER));
-	/** cF candidate universe (AcnID): OCdZM living set + VT seed. */
-	private final Set<EntityType<?>> universe = new HashSet<>();
+	/**
+	 * cF {@code AcnID} universe: {@code jg.OCdZM} = every registered entity type
+	 * whose base class is a {@code LivingEntity}, minus ARMOR_STAND
+	 * (jg.bBT), plus the {@code VT} seed ITEM/CHEST_MINECART/TNT_MINECART.
+	 * Selected set starts at {PLAYER} ({@code cF} ctor).
+	 */
+	private final EntityListSetting entities = register(new EntityListSetting("entities",
+			defaultUniverse(), List.of(EntityType.PLAYER)));
 
 	public Tracers() {
 		super("tracers", "Tracers", "Draws lines to entities", ModuleCategory.VISUALS);
-		// cF.VT(EntityType.ITEM, EntityType.CHEST_MINECART, EntityType.TNT_MINECART)
-		universe.add(EntityType.ITEM);
-		universe.add(EntityType.CHEST_MINECART);
-		universe.add(EntityType.TNT_MINECART);
+	}
+
+	private static List<EntityType<?>> defaultUniverse() {
+		LinkedHashSet<EntityType<?>> set = new LinkedHashSet<>();
+		for (EntityType<?> type : Registries.ENTITY_TYPE) {
+			if (LivingEntity.class.isAssignableFrom(type.getBaseClass())) {
+				set.add(type);
+			}
+		}
+		set.remove(EntityType.ARMOR_STAND);
+		set.add(EntityType.ITEM);
+		set.add(EntityType.CHEST_MINECART);
+		set.add(EntityType.TNT_MINECART);
+		return List.copyOf(set);
 	}
 
 	/**
@@ -173,26 +191,20 @@ public class Tracers extends Module {
 	 * selected.
 	 */
 	public boolean matches(Entity entity) {
-		if (entity == null || selected.isEmpty()) {
-			return false;
-		}
-		EntityType<?> type = entity.getType();
-		boolean offered = universe.contains(type)
-				|| (entity instanceof LivingEntity && !(entity instanceof ArmorStandEntity));
-		return offered && selected.contains(type);
+		return entity != null && entities.matches(entity.getType());
 	}
 
 	/** Live selection of the "Entities" list (default PLAYER). */
 	public Set<EntityType<?>> getEntityTypes() {
-		return Collections.unmodifiableSet(selected);
+		return Collections.unmodifiableSet(entities.getTypes());
 	}
 
 	public void addEntityType(EntityType<?> type) {
-		selected.add(type);
+		entities.select(type);
 	}
 
 	public void removeEntityType(EntityType<?> type) {
-		selected.remove(type);
+		entities.deselect(type);
 	}
 
 	public float getLineWidth() {

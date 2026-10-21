@@ -9,9 +9,16 @@ import java.util.Set;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Frustum;
+import net.minecraft.client.render.state.CameraRenderState;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.util.math.Vec3d;
 
+import dev.opengrim.event.Subscribe;
+import dev.opengrim.event.impl.WorldRenderEvent;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.ColorSetting;
@@ -40,16 +47,17 @@ import dev.opengrim.settings.ModeSetting;
  * {@code jJ.bIB} gate (dl.java:457, null-frustum → render, EntityEsp/Trails convention) and a plain
  * {@code world.getEntities()} scan (the previous infinite-box {@code getOtherEntities} filter is gone).
  *
- * <p>Known gap [S]: the original's drawing lives in the {@code ki.bPi}/{@code kn.bQt} Java shell
- * (out of dl's recovered surface, analysis/specs/casesafe/handlers/dl.md §Unrecovered) — this rebuild
- * has no post-process glow consumer, so {@link #getOutlinedEntities()} / {@link #shouldCancelNameplate()} /
- * {@link #isOutliningActive} are exposed for later renderer wiring and the {@code ki.bPi} parameter
- * dispatch is not executed. Module-side code (settings, collection, predicates) is 1:1.
+ * <p>Render path (implemented): {@link #onWorldRender} reproduces {@code agJ} collection and
+ * calls {@link OutlineRenderer}, which runs the shared entity-mask pass
+ * ({@link ChamsRenderer#renderMask}, the {@code kn.bQt}/{@code lH} re-render with the shared
+ * {@code kn.YNOIY} window) and the recovered {@code outlines.glsl} composite
+ * ({@code ki.bPi} -> {@code ki.bPk}, ki.java:206-266). {@link #isOutliningActive} is true exactly
+ * during that batch, so the original nameplate/Health Indicators suppression is live again.
  *
- * <p>The original sets {@code kn.YNOIY} true only inside that unexecuted batch (dl.java:504-531,
- * see {@link #isOutliningActive}), so there is no point in this rebuild at which the flag could
- * provably be true; it stays false and Health Indicators' suppression is inert until an outline
- * batch consumer exists.
+ * <p>Default selection: {@code cF}'s constructor seeds {@code PLAYER} (cF.java:33-36);
+ * {@code VS(OCdZM)} replaces the universe with living-minus-armor-stands and
+ * {@code VT(END_CRYSTAL)} adds the crystal to the universe (cF.java:181-185) — it does not
+ * change the selected set. The earlier END_CRYSTAL default was a misread of {@code VT}.
  */
 public class Outlines extends Module {
 	/**
@@ -59,14 +67,13 @@ public class Outlines extends Module {
 	 * and resets it false in a {@code finally}; {@code ki.bPi} runs that runnable synchronously
 	 * under {@code kn.bQo} (kn.java:332-340) while the entities — and their nameplates — are
 	 * drawn into the outline framebuffer. It is true exactly for that window, nowhere else
-	 * (the module's tick/render collection never touches it). This rebuild has no outline
-	 * framebuffer/post-process consumer, so the window does not exist here and the flag stays
-	 * false; {@link #shouldCancelNameplate()} and the Health Indicators suppression check
-	 * ({@code dr#aib} guard, dr.java:247) remain inert until one is wired.
+	 * (the module's render collection never touches it); with the shared mask renderer
+	 * wired, {@link ChamsRenderer#renderMask} sets it around the outline batch and the Health
+	 * Indicators suppression check ({@code dr#aib} guard, dr.java:247) is live.
 	 */
 	public static volatile boolean isOutliningActive = false;
 
-	private final Set<EntityType<?>> entities = new HashSet<>(List.of(EntityType.END_CRYSTAL));
+	private final Set<EntityType<?>> entities = new HashSet<>(List.of(EntityType.PLAYER));
 	private final ColorSetting color = register(new ColorSetting("color", 0xFFFFFFFF, true));
 	private final ModeSetting colorMode = register(new ModeSetting("color_mode",
 			List.of("Zero", "One", "Two", "Three"), "Zero"));
@@ -87,13 +94,6 @@ public class Outlines extends Module {
 
 	@Override
 	public void onTick() {
-		MinecraftClient client = MinecraftClient.getInstance();
-		ClientPlayerEntity player = client.player;
-		if (client.world == null || player == null || entities.isEmpty()) {
-			outlined.clear();
-			return;
-		}
-
 		// Original callbacks (dl.java:185-230): secondColor -> SQ(2)||SQ(3); animationSpeed,
 		// saturation, brightness -> SQ(1) and SQ(1)||SQ(2)||SQ(3); glowQuality and glowRadius
 		// have NO callbacks and are always visible.
@@ -103,27 +103,61 @@ public class Outlines extends Module {
 		animationSpeed.setVisible(!"Zero".equalsIgnoreCase(mode));
 		saturation.setVisible(isOne);
 		brightness.setVisible(isOne);
+	}
 
-		outlined.clear();
-		// dl.java:426-443 agJ: world.getEntities() → jJ.bIB frustum gate →
-		// skip self → Myqqn.VX entity-type set membership. jJ.bID falls back
-		// to the world renderer's culling frustum when the captured frustum is
-		// null; OpenGrim has no WorldRenderer accessor mixin, so a null
-		// captured frustum renders instead of skipping (EntityEsp/Trails
-		// convention).
+	/**
+	 * {@code agJ(go.sX)} dl.java:425-535: collect visible entities (frustum
+	 * {@code jJ.bIB}, skip self, {@code Myqqn.VX}) and run the recovered
+	 * {@code ki.bPi} mask + {@code outlines.glsl} composite.
+	 */
+	@Subscribe
+	public void onWorldRender(WorldRenderEvent event) {
+		if (event.phase() != WorldRenderEvent.Phase.AFTER_ENTITIES || !isEnabled()) {
+			return;
+		}
+		MinecraftClient client = MinecraftClient.getInstance();
+		ClientPlayerEntity player = client.player;
+		if (client.world == null || player == null) {
+			outlined.clear();
+			return;
+		}
 		Frustum frustum = client.worldRenderer.getCapturedFrustum();
+		outlined.clear();
 		for (Entity entity : client.world.getEntities()) {
 			if (frustum != null && !frustum.isVisible(entity.getBoundingBox())) {
-				continue;
+				continue; // jJ.bIB
 			}
 			if (entity == player) {
 				continue;
 			}
-			if (!entities.contains(entity.getType())) {
-				continue;
+			if (!inUniverse(entity) || !entities.contains(entity.getType())) {
+				continue; // Myqqn.VX
 			}
 			outlined.add(entity);
 		}
+		if (outlined.isEmpty()) {
+			return;
+		}
+		CameraRenderState cameraState = event.context().worldState().cameraRenderState;
+		MatrixStack matrices = event.context().matrices();
+		if (cameraState == null || matrices == null) {
+			return;
+		}
+		OutlineRenderer.draw(outlined, matrices, cameraState, event.camera().getCameraPos(),
+				client.getRenderTickCounter().getTickProgress(true), this);
+	}
+
+	/**
+	 * {@code cF.VT(EntityType.END_CRYSTAL)} adds the crystal to the universe
+	 * ({@code AcnID}); the selected set keeps the {@code cF} constructor's
+	 * {@code PLAYER} seed, so the default outline target is players. The universe
+	 * preset is {@code jg$tJ.OCdZM} (living minus armor stands) plus the crystal.
+	 */
+	private static boolean inUniverse(Entity entity) {
+		if (entity.getType() == EntityType.END_CRYSTAL) {
+			return true;
+		}
+		return entity instanceof LivingEntity && !(entity instanceof ArmorStandEntity);
 	}
 
 	@Override

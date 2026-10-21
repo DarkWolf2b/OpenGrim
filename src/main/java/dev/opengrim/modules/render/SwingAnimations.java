@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.consume.UseAction;
 
+import dev.opengrim.event.Subscribe;
+import dev.opengrim.event.impl.HeldItemChangeEvent;
 import dev.opengrim.mixin.ItemInHandRendererAccessor;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
@@ -25,9 +27,15 @@ import dev.opengrim.module.ModuleCategory;
  *       hand stacks are refreshed — the equip animation is skipped. Ported via
  *       {@link ItemInHandRendererAccessor} (the original's own
  *       {@code mixin.accessors.ItemInHandRendererAccessor}); the original's
- *       trigger is the shell's {@code hc} held-item-change event, which is
- *       posted outside the payload — here a per-tick stack comparison
- *       approximates it ([G]).</li>
+ *       trigger is the shell's blank per-tick {@code hc} event (dispatched at
+ *       {@code ClientPlayerEntity.tick} HEAD,
+ *       analysis/decompiled/bootstrap/mixin/accessors/LocalPlayerEventBridgeMixin.java
+ *       :121-137), whose per-hand predicates {@code in.bkX()/bkY()} are
+ *       native. Here {@link HeldItemChangeEvent} is posted by
+ *       {@code HeldItemRendererMixin} at the head of
+ *       {@code HeldItemRenderer#updateHeldItems} — the vanilla held-item
+ *       change point — and fires exactly once per stack-object change; the
+ *       changed-hand flags stand in for the native predicates ([G]).</li>
  *   <li>YH (cQ.java:316-433): the item filter. Returns {@code true} when the
  *       custom swing transform applies; {@code false} (vanilla) for AIR,
  *       FILLED_MAP, CROSSBOW, BOW, TRIDENT and the DRINK/EAT use actions.
@@ -48,37 +56,25 @@ import dev.opengrim.module.ModuleCategory;
  * (documented framework gap).
  */
 public class SwingAnimations extends Module {
-	private ItemStack lastMainHand = ItemStack.EMPTY;
-	private ItemStack lastOffHand = ItemStack.EMPTY;
-
 	public SwingAnimations() {
 		super("swing_animations", "Swing Animations", "Changes look of swing animation", ModuleCategory.VISUALS);
 	}
 
-	@Override
-	protected void onEnable() {
-		// Baseline the held stacks so enabling does not count as a change.
-		ClientPlayerEntity player = MinecraftClient.getInstance().player;
-		lastMainHand = player != null ? player.getMainHandStack().copy() : ItemStack.EMPTY;
-		lastOffHand = player != null ? player.getOffHandStack().copy() : ItemStack.EMPTY;
-	}
-
-	@Override
-	public void onTick() {
+	/**
+	 * Held-item-change handler for YF (cQ.java:213-301). The trigger event is
+	 * posted once per main/off-hand stack-object change by
+	 * {@code HeldItemRendererMixin} at the head of
+	 * {@code HeldItemRenderer#updateHeldItems}, before vanilla resets the
+	 * equip progress; this replaces the former per-tick stack comparison.
+	 */
+	@Subscribe
+	public void onHeldItemChange(HeldItemChangeEvent event) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
 		if (player == null) {
 			return;
 		}
-		ItemStack mainHand = player.getMainHandStack();
-		ItemStack offHand = player.getOffHandStack();
-		boolean mainChanged = !ItemStack.areEqual(mainHand, lastMainHand);
-		boolean offChanged = !ItemStack.areEqual(offHand, lastOffHand);
-		lastMainHand = mainHand.copy();
-		lastOffHand = offHand.copy();
-		if (mainChanged || offChanged) {
-			instantEquip(client, player, mainChanged, offChanged);
-		}
+		instantEquip(client, player, event.mainHandChanged(), event.offHandChanged());
 	}
 
 	/**
@@ -118,11 +114,5 @@ public class SwingAnimations extends Module {
 		}
 		UseAction action = itemStack.getUseAction();
 		return action != UseAction.DRINK && action != UseAction.EAT;
-	}
-
-	@Override
-	protected void onDisable() {
-		lastMainHand = ItemStack.EMPTY;
-		lastOffHand = ItemStack.EMPTY;
 	}
 }

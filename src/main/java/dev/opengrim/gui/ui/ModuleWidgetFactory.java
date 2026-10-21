@@ -5,16 +5,22 @@ import java.util.List;
 
 import dev.opengrim.gui.ui.widgets.ActionWidget;
 import dev.opengrim.gui.ui.widgets.ContainerWidget;
+import dev.opengrim.gui.ui.widgets.EntityListWidget;
+import dev.opengrim.gui.ui.widgets.ItemListWidget;
 import dev.opengrim.gui.ui.widgets.ModeWidget;
+import dev.opengrim.gui.ui.widgets.RangeSliderWidget;
 import dev.opengrim.gui.ui.widgets.SliderWidget;
 import dev.opengrim.gui.ui.widgets.TextFieldWidget;
 import dev.opengrim.gui.ui.widgets.ToggleWidget;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
+import dev.opengrim.settings.EntityListSetting;
 import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.ItemListSetting;
 import dev.opengrim.settings.ModeSetting;
+import dev.opengrim.settings.RangeSetting;
 import dev.opengrim.settings.Setting;
 import dev.opengrim.settings.StringSetting;
 
@@ -105,6 +111,15 @@ public final class ModuleWidgetFactory {
 					slider.onChange(() -> dbl.setValue((double) slider.value()));
 					out.add(slider.bounds(x, 0.0f, w, SLIDER_H));
 				}
+				case RangeSetting range -> {
+					RangeSliderWidget slider = new RangeSliderWidget(range.getId(), (float) range.getMin(),
+							(float) range.getMax(), range.getStep() <= 0 ? 0.1f : (float) range.getStep(),
+							(float) range.getLow(), (float) range.getHigh(), range.getSuffix(),
+							decimalsFor(range.getStep()));
+					slider.getters(range::getLow, range::getHigh);
+					slider.onChange(() -> range.setHandles((double) slider.low(), (double) slider.high()));
+					out.add(slider.bounds(x, 0.0f, w, SLIDER_H));
+				}
 				case IntSetting intg -> {
 					SliderWidget slider = new SliderWidget(intg.getId(), intg.getMin(), intg.getMax(), 1.0f,
 							intg.getValue(), "", 0);
@@ -137,6 +152,10 @@ public final class ModuleWidgetFactory {
 								return false;
 							}
 						}.bounds(x, 0.0f, w, TOGGLE_H));
+				case ItemListSetting list -> out.add(
+						new ItemListWidget(list).bounds(x, 0.0f, w, TOGGLE_H));
+				case EntityListSetting entities -> out.add(
+						new EntityListWidget(entities).bounds(x, 0.0f, w, TOGGLE_H));
 				case StringSetting str -> {
 					TextFieldWidget field = new TextFieldWidget(str.getValue()).bounds(x, 0.0f, w, TOGGLE_H);
 					field.setText(str.getValue());

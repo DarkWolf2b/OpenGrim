@@ -88,4 +88,4 @@ the owner's direction.
 - REA 6.3.0 MCP + Ghidra 12.1.4 at `binaries/ghidra/ghidra_12.1.4_PUBLIC`
 - Vineflower `~/.local/tools/vineflower-1.11.1.jar`, CFR `~/.local/tools/cfr-0.152.jar`
 - Local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64/bin` (for REA MCP)
-- Archive password for `Grim 4.4 Binary.zip`: `wonderland.ac`
+- Archive credential for `Grim 4.4 Binary.zip`: recovered locally (redacted from the public ledger)

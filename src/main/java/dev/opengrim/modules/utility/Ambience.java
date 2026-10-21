@@ -15,6 +15,7 @@ import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.ModeSetting;
+import dev.opengrim.settings.RangeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
@@ -49,7 +50,8 @@ import net.minecraft.util.math.Vec3d;
  * true; Weather {@code ct pJzyP} Clear/Rain/Thunder/Snow; Fog {@code ct tOEQJ}
  * None/Clear/Override ({@code uxQGU} {@code .SY()} default); Fog Color
  * {@code cG UipTW} = theme accent; Fog Range {@code cA MbiQi}
- * 1/0-256/(64,128) " blocks"; Sync With Sky {@code cJ VkfWt} true.
+ * step 1/0-256/default handles 64,128 " blocks" ({@link RangeSetting});
+ * Sync With Sky {@code cJ VkfWt} true.
  *
  * <p>Behavior: the packet handler cancels rain/thunder game-state changes into
  * the {@code dh$sy} stash and cancels {@code WorldTimeUpdateS2CPacket} while
@@ -66,7 +68,11 @@ import net.minecraft.util.math.Vec3d;
  * false)}.
  *
  * <p>Remaining gaps: [U] five preset times (Morning/Day/Evening/Sunset/Night)
- * - DES longs behind native {@code gb.aYR} keys, not decryptable statically;
+ * - each is an {@code afw}/{@code afv} DES long (dh.java:1112, javap
+ * {@code aet} offsets 96-193) keyed by {@code lbjfT}, which is
+ * {@code gb.aYR(...).a(...)} (native, dh.java static init); the audit note that
+ * "javap can recover the five literals" is wrong - javap exposes the encrypted
+ * blocks only, not the plaintext;
  * Dawn = 23000 is a labeled high-probability reading of trace 2026-10-17
  * ({@code aet} → 23000 with default settings: Presets + Dawn; the run's HUD
  * clock read 18:25-18:47, so the Real Time branch - which would map to
@@ -76,10 +82,11 @@ import net.minecraft.util.math.Vec3d;
  * ({@code dh$sz.IWwlL}) and billboard texture (DES string slot 3717) -
  * {@code aer}'s batch passes have no framework path, so only the gate and the
  * per-particle state machine are ported; the fade countdown uses the interval
- * as a stand-in so expired particles are removed as in {@code afe}. [U] the
- * Fog settings are consumed by the original shell's fog pipeline, which this
- * rebuild does not have; Fog Range is a {@code cA} two-anchor slider (64/128)
- * modelled as its low anchor. [U] the original's category constant is
+ * as a stand-in ({@code dh$sz.IWwlL} is another native-key DES long) so
+ * expired particles are removed as in {@code afe}. [U] the Fog settings are
+ * consumed by the original shell's fog pipeline, which this rebuild does not
+ * have; Fog Range is now the exact {@link RangeSetting} two-handle widget
+ * (64/128) even though the port has no fog consumer. [U] the original's category constant is
  * {@code gh.nOCvV} (same as the render modules) while this file sits in
  * {@code utility} - see the batch report. [N] {@code ro.diF}-style preset
  * tables do not exist here; no native calls are involved in this class.
@@ -101,7 +108,7 @@ public class Ambience extends Module {
 	private final ModeSetting fog = register(new ModeSetting("fog",
 			List.of("none", "clear", "override"), "override"));
 	private final ColorSetting fogColor = register(new ColorSetting("fog_color", 0xFF9747FF, false));
-	private final DoubleSetting fogRange = register(new DoubleSetting("fog_range", 1.0, 0.0, 256.0, 64.0, " blocks"));
+	private final RangeSetting fogRange = register(new RangeSetting("fog_range", 1.0, 0.0, 256.0, 64.0, 128.0, " blocks"));
 	private final BoolSetting syncWithSky = register(new BoolSetting("sync_with_sky", true));
 
 	/** {@code dh$sy.cmcMI} - stashed rain gradient (0.0f initial). */

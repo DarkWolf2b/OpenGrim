@@ -17,6 +17,7 @@ import net.minecraft.block.ButtonBlock;
 import net.minecraft.block.DecoratedPotBlock;
 import net.minecraft.block.LeverBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
@@ -37,7 +38,11 @@ import net.minecraft.world.chunk.WorldChunk;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
-import dev.opengrim.gui.GuiTheme;
+import dev.opengrim.gui.ui.ColorF;
+import dev.opengrim.gui.ui.GuiDraw;
+import dev.opengrim.gui.ui.IconGlyph;
+import dev.opengrim.gui.ui.MsdfFont;
+import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
@@ -77,13 +82,22 @@ import dev.opengrim.settings.GroupSetting;
  *       sequence, one tick fresher.</li>
  *   <li>[S] ZU(gM) (cW.java:620) clears the lists on a rare event that never fired during the
  *       2026-10-17 trace (cW digest: ZV x6, ZU x0); the clear is kept on disable only.</li>
- *   <li>[G] Card colors: the original reads global theme colors (ii#bjb text, ii#bjf accent,
- *       ii#bje background; lC#ccW card background) — mapped to the recovered GuiTheme constants
- *       (TEXT / ACCENT 151,71,255 / BACKDROP 12,12,12 / PANEL_HEADER 24,24,27).</li>
- *   <li>[G] Rounded corners (ld.all(4) / all(0.25)) and the 6 px glyph icon (lf.GHxLj = U+EA26,
- *       a private-use icon-font glyph) are drawn as plain rectangles with the vanilla DrawContext.</li>
- *   <li>[S] Font sizes 5/6/7 are approximated with a Matrix3x2fStack scale of size/9 over the
- *       vanilla TextRenderer.</li>
+ *   <li>{@code ii#bjb()/bjf()/bje()} are the live animated theme channels
+ *       ({@code Theme.get().text()/accent()/background()}), read per frame exactly like the
+ *       original; {@code lC#ccW} is the recovered Blur-style backdrop
+ *       ({@code GuiDraw.blurredBackdrop}, shape SDF corner radius 4, smoothness 5.0) with the
+ *       Solid-branch fallback ({@code background × fX.aYh() × fade}).</li>
+ *   <li>Rounded corners are the recovered {@code shape.glsl} SDF path
+ *       ({@code GuiDraw.fillRounded}); the card radius is {@code ld.all(4.0f)} and the bar
+ *       radius {@code ld.all(0.25f)}. The 6 px icon is the real {@code lf.GHxLj} (U+EA26)
+ *       glyph through the recovered {@code icons-4.4} MSDF sheet
+ *       ({@link IconGlyph#LOCATION}), sized 6.0f as in {@code cem}.</li>
+ *   <li>Font sizes 5/6/7 use the recovered {@code lE.WTzbi} = <b>medium</b> MSDF sheet
+ *       (gui-dump lines 427-431) at those sizes,
+ *       with the {@code lj.bYw} width (+0.25/char) and {@code kJ.bUe} baseline
+ *       ({@code y + 0.7·size}, pen {@code advance + 0.025·size}). Vanilla
+ *       {@link net.minecraft.client.font.TextRenderer} remains the fallback if the sheet does
+ *       not load.</li>
  *   <li>[S] Projection (sixtwo.jI#bIw): the original applies P * modelview * camera-rotation to the
  *       camera-relative position; this port uses P * camera-rotation (RenderSystem modelview is
  *       identity at that point) with GameRenderer#getBasicProjectionMatrix at the base FOV.</li>
@@ -109,17 +123,9 @@ public class TrapEsp extends Module {
 	/** cW.java:1207-1215 bar metrics: barH 2.5, icon size 6. */
 	private static final float BAR_H = 2.5f;
 	private static final float ICON_SIZE = 6.0f;
-	/** Vanilla font height, the scale denominator for the original's 5/6/7 px fonts. */
+	/** Vanilla font height, the scale denominator for the fallback text path. */
 	private static final float FONT_BASE = 9.0f;
 
-	/** [G] ii#bjb() text color — recovered theme text WHITE. */
-	private static final int TITLE_COLOR = GuiTheme.TEXT;
-	/** [G] ii#bjf() accent — recovered theme accent (151,71,255). */
-	private static final int BAR_COLOR = GuiTheme.ACCENT;
-	/** [G] ii#bje() background — recovered theme background (12,12,12). */
-	private static final int BAR_BG_COLOR = GuiTheme.BACKDROP;
-	/** [G] lC#ccW card fill — recovered panel (24,24,27). */
-	private static final int CARD_BG_COLOR = GuiTheme.PANEL_HEADER;
 	/** fX.aYh() background style (0.75 Blur): bar background alpha = (255 - 100*0.75) * 0.7. */
 	private static final float BAR_BG_ALPHA = (255.0f - 100.0f * 0.75f) * 0.7f;
 
@@ -395,6 +401,10 @@ public class TrapEsp extends Module {
 			return;
 		}
 
+		float delta = tickCounter.getTickProgress(true);
+		GuiDraw draw = new GuiDraw(ctx, 0, 0, delta, client.textRenderer);
+		CardText text = new CardText(draw, client.textRenderer);
+		Theme theme = Theme.get();
 		Vec3d playerPos = player.getEntityPos();
 		int screenWidth = ctx.getScaledWindowWidth();
 		int screenHeight = ctx.getScaledWindowHeight();
@@ -428,68 +438,119 @@ public class TrapEsp extends Module {
 			ctx.getMatrices().scale(0.5f + 0.5f * fade, 0.5f + 0.5f * fade);
 			ctx.getMatrices().translate(-anchorX, -anchorY);
 
-			drawCard(ctx, x0, y0, fade);
+			drawCard(draw, x0, y0, fade);
 
-			int titleColor = withAlpha(TITLE_COLOR, 255.0f * fade);
-			int textColor = multiplyAlpha(TITLE_COLOR, 0.5f);
-			int barColor = withAlpha(BAR_COLOR, 220.0f * fade);
-			int barBgColor = multiplyAlpha(withAlpha(BAR_BG_COLOR, BAR_BG_ALPHA), fade);
+			int titleColor = withAlpha(theme.text().argb(), 255.0f * fade);
+			int textColor = multiplyAlpha(theme.text().argb(), 0.5f);
+			int barColor = withAlpha(theme.accent().argb(), 220.0f * fade);
+			int barBgColor = multiplyAlpha(withAlpha(theme.background().argb(), BAR_BG_ALPHA), fade);
 
 			float textX = x0 + PAD_X;
 			float textY = y0 + PAD_Y;
-			drawText(ctx, client, TITLE, textX, textY, 7.0f, titleColor);
-			drawTextRight(ctx, client, distanceText, x0 + CARD_W - PAD_X, textY, 6.0f, textColor);
+			text.draw(TITLE, textX, textY, 7.0f, titleColor);
+			text.drawRight(distanceText, x0 + CARD_W - PAD_X, textY, 6.0f, textColor);
 
 			float labelX = x0 + PAD_X;
 			float barY = textY + 18.0f;
-			drawText(ctx, client, OBJECTS_LABEL, labelX, barY - 7.0f, 5.0f, textColor);
+			text.draw(OBJECTS_LABEL, labelX, barY - 7.0f, 5.0f, textColor);
 
 			float barW = CARD_W - 2.0f * PAD_X;
-			drawTextRight(ctx, client, String.valueOf(cluster.getCount()), labelX + barW, barY - 7.5f, 6.0f, titleColor);
+			text.drawRight(String.valueOf(cluster.getCount()), labelX + barW, barY - 7.5f, 6.0f, titleColor);
 
-			ctx.fill(Math.round(labelX), Math.round(barY), Math.round(labelX + barW), Math.round(barY + BAR_H), barBgColor);
+			// lC#cdg(..., ld.all(0.25f)): rounded bar through the shape SDF.
+			draw.fillRounded(labelX, barY, barW, BAR_H, 0.25f, ColorF.fromArgb(barBgColor));
 			float progress = barW * Math.min((float) cluster.getCount() / (float) minCount, 1.0f);
-			ctx.fill(Math.round(labelX), Math.round(barY), Math.round(labelX + progress), Math.round(barY + BAR_H), barColor);
+			draw.fillRounded(labelX, barY, progress, BAR_H, 0.25f, ColorF.fromArgb(barColor));
 
 			float coordsY = barY + BAR_H + 5.0f;
-			// cem(lf.GHxLj): icon-font glyph U+EA26, approximated by a square.
-			ctx.fill(Math.round(textX), Math.round(coordsY), Math.round(textX + ICON_SIZE), Math.round(coordsY + ICON_SIZE), textColor);
+			// lC#cem(lf.GHxLj, ...): the real U+EA26 icon through the icons-4.4 sheet.
+			draw.icon(MsdfFont.icons(), IconGlyph.LOCATION, textX, coordsY, ICON_SIZE,
+					ColorF.fromArgb(textColor));
 			float coordsTextX = textX + ICON_SIZE + 3.0f;
-			float coordsTextY = coordsY + (ICON_SIZE - client.textRenderer.fontHeight) * 0.5f;
-			String coords = Math.round(player.getX()) + " " + Math.round(player.getY()) + " " + Math.round(player.getZ());
-			drawText(ctx, client, coords, coordsTextX, coordsTextY, 6.0f, textColor);
+			float coordsTextY = coordsY + (lineHeight(6.0f) - ICON_SIZE) * 0.5f;
+			String coords = Math.round(player.getX()) + " " + Math.round(player.getY()) + " "
+					+ Math.round(player.getZ());
+			text.draw(coords, coordsTextX, coordsTextY, 6.0f, textColor);
 
 			ctx.getMatrices().popMatrix();
 		}
 	}
 
-	/** lC#ccW: card background (rounded rect + border in the original). */
-	private static void drawCard(DrawContext ctx, float x0, float y0, float fade) {
-		int bg = multiplyAlpha(CARD_BG_COLOR, fade);
-		int x1 = Math.round(x0 + CARD_W);
-		int y1 = Math.round(y0 + CARD_H);
-		ctx.fill(Math.round(x0), Math.round(y0), x1, y1, bg);
-		int border = multiplyAlpha(GuiTheme.PANEL_BORDER, fade);
-		ctx.fill(Math.round(x0), Math.round(y0), x1, Math.round(y0) + 1, border);
-		ctx.fill(Math.round(x0), y1 - 1, x1, y1, border);
-		ctx.fill(Math.round(x0), Math.round(y0), Math.round(x0) + 1, y1, border);
-		ctx.fill(x1 - 1, Math.round(y0), x1, y1, border);
+	/**
+	 * lC#ccW: the recovered Blur-style backdrop (shape-masked blur) with the Solid
+	 * branch as the fallback ({@code ii2.bjd().cob(fX.aYh() * fade)}).
+	 */
+	private static void drawCard(GuiDraw draw, float x0, float y0, float fade) {
+		if (draw.blurredBackdrop(x0, y0, CARD_W, CARD_H, 4.0f, ColorF.WHITE, 0.0f, fade)) {
+			return;
+		}
+		Theme theme = Theme.get();
+		draw.fillRounded(x0, y0, CARD_W, CARD_H, 4.0f,
+				theme.background().withAlphaScale(theme.backgroundStyle().opacity * fade));
 	}
 
-	/** lC#cez: left-aligned text at the original's px size (vanilla font scaled size/9). */
-	private static void drawText(DrawContext ctx, MinecraftClient client, String text, float x, float y, float size, int color) {
-		float scale = size / FONT_BASE;
-		ctx.getMatrices().pushMatrix();
-		ctx.getMatrices().translate(x, y);
-		ctx.getMatrices().scale(scale, scale);
-		ctx.drawText(client.textRenderer, text, 0, 0, color, false);
-		ctx.getMatrices().popMatrix();
+	/** {@code lq.cat()} = {@code lj.bYG(size)} = 0.7f * size. */
+	private static float lineHeight(float size) {
+		return 0.7f * size;
 	}
 
-	/** lC#ceP: right-aligned text (x is the right edge). */
-	private static void drawTextRight(DrawContext ctx, MinecraftClient client, String text, float rightX, float y, float size, int color) {
-		float width = client.textRenderer.getWidth(text) * (size / FONT_BASE);
-		drawText(ctx, client, text, rightX - width, y, size, color);
+	/**
+	 * The card text surface: recovered {@code lE.WTzbi} = medium MSDF sheet,
+	 * {@code lj.bYw} width (+0.25/char), {@code kJ.bUe} baseline (+0.7·size),
+	 * pen step {@code advance + 0.025·size}. Vanilla text is the fallback only.
+	 */
+	private static final class CardText {
+		private static final float LAYOUT_SPACING = 0.25f;
+		private static final float DRAW_SPACING = 0.025f;
+
+		private final GuiDraw draw;
+		private final TextRenderer vanilla;
+		private final MsdfFont msdf;
+
+		CardText(GuiDraw draw, TextRenderer vanilla) {
+			this.draw = draw;
+			this.vanilla = vanilla;
+			this.msdf = MsdfFont.of(MsdfFont.MEDIUM);
+		}
+
+		float width(String text, float size) {
+			if (text == null || text.isEmpty()) {
+				return 0.0f;
+			}
+			if (msdf == null) {
+				return vanilla.getWidth(text) * (size / FONT_BASE);
+			}
+			float total = 0.0f;
+			for (int i = 0; i < text.length(); i++) {
+				total += msdf.advance(text.charAt(i), size) + LAYOUT_SPACING;
+			}
+			return total;
+		}
+
+		void draw(String text, float x, float topY, float size, int argb) {
+			if (text == null || text.isEmpty()) {
+				return;
+			}
+			ColorF color = ColorF.fromArgb(argb);
+			if (msdf == null) {
+				draw.text(vanilla, text, x, topY, size, color);
+				return;
+			}
+			float glyphTop = topY + lineHeight(size) - msdf.ascent(size);
+			float pen = x;
+			for (int i = 0; i < text.length(); i++) {
+				char codepoint = text.charAt(i);
+				if (msdf.has(codepoint)) {
+					draw.text(msdf, String.valueOf(codepoint), pen, glyphTop, size, color);
+				}
+				pen += msdf.advance(codepoint, size) + DRAW_SPACING * size;
+			}
+		}
+
+		/** lC#ceP: right-aligned using the same {@code bYC} width. */
+		void drawRight(String text, float rightX, float topY, float size, int argb) {
+			draw(text, rightX - width(text, size), topY, size, argb);
+		}
 	}
 
 	/** jI#bIw: camera-relative position -> NDC -> screen pixels; null when behind the camera. */

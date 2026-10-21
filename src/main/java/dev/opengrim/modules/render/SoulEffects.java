@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -24,6 +25,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
@@ -90,11 +92,15 @@ import dev.opengrim.settings.DoubleSetting;
  * <p>Framework wiring: the original's pre-render capture/composite chain
  * ({@code kl.bQa}/{@code bQb}/{@code bQd}, {@code lF.cfH}, the custom
  * {@code kR} pipelines and the {@code jL.uHvyh} uniform) has no rebuild
- * counterpart. high-probability guess: the quads are drawn directly in
- * {@link WorldRenderEvent} AFTER_ENTITIES with {@code RenderLayers.debugFilledBox()}
- * (untextured; same stand-in as Hit Particles) and the glow composite is
- * approximated by a larger halo quad per particle (Hit Particles precedent);
- * the "Behind Walls" pipeline choice therefore collapses to one layer.
+ * counterpart. The quads are drawn in {@link WorldRenderEvent} AFTER_ENTITIES
+ * through {@code RenderLayers.entityTranslucent} with the recovered
+ * {@code glow} sprite (soft radial disc, matching the procedural
+ * {@code soul_particle.glsl} shape); the glow composite is the same sprite at
+ * the Glow Radius/halo size and Glow color. The original's two custom
+ * {@code kR} pipelines (Behind Walls variants) and the {@code kl.bQd}
+ * framebuffer composite are not wired: their uniform/blend mapping is the
+ * audit's unrecovered remainder, and the bloom shaders are screen-space post
+ * effects with no world-render hook.
  *
  * <p>[G] high-probability guess: the four DES longs of {@code cZ$su#dob}
  * (bsm "doi", ids 32204/543) and {@code ml#clj} (bsm "clo", ids 11388/21204)
@@ -126,8 +132,10 @@ public class SoulEffects extends Module {
 	 * [G] Fade-out divisor of sixtwo.cZ$su#dob (bsm "doi", id 543 unrecovered).
 	 */
 	private static final long FADE_OUT_DIVISOR = 2L;
-	/** [G] Glow halo alpha multiplier of the post-process stand-in. */
+	/** [G] Glow halo alpha multiplier of the glow sprite pass. */
 	private static final float GLOW_ALPHA = 0.35f;
+	/** Recovered soft particle sprite; the original soul_particle shader is procedural. */
+	private static final String GLOW_TEXTURE = "glow";
 
 	// cZ.java:133-207 — cG/cJ/cC constructor order kept verbatim.
 	private final ColorSetting primary = register(new ColorSetting("primary", 0xFFFFFFFF));
@@ -224,6 +232,7 @@ public class SoulEffects extends Module {
 		if (!isEnabled()) {
 			return;
 		}
+		ParticleTextures.preload(GLOW_TEXTURE);
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.world == null) {
 			return;
@@ -280,10 +289,14 @@ public class SoulEffects extends Module {
 		Vec3d cameraPos = camera.getCameraPos();
 		MatrixStack matrices = event.context().matrices();
 		VertexConsumerProvider consumers = event.context().consumers();
-		VertexConsumer quads = consumers.getBuffer(RenderLayers.debugFilledBox());
+		Identifier glowTexture = ParticleTextures.get(GLOW_TEXTURE);
+		if (glowTexture == null) {
+			return;
+		}
 		// abd (cZ.java:1398): the original picks kR.bHqVE when Behind Walls is
-		// on, else kR.HUQWl; both are custom pipelines with no rebuild
-		// counterpart, so the stand-in layer above is used for either state.
+		// on, else kR.HUQWl; both bind the soul particle shader. The rebuild uses
+		// the recovered glow sprite through the translucent world layer.
+		VertexConsumer quads = consumers.getBuffer(RenderLayers.entityTranslucent(glowTexture));
 		float tickDelta = client.getRenderTickCounter().getTickProgress(true);
 		float glowScale = glowRadius.getValue().floatValue();
 		int glowArgb = glow.getValue();
@@ -307,8 +320,8 @@ public class SoulEffects extends Module {
 						drawQuad(matrices.peek(), quads, -half, -half, half, half,
 								withAlpha(particle.color, 255.0f * alpha));
 						if (glowScale > 0.0f) {
-							// [G] kl.bQd glow composite stand-in: a larger halo quad in
-							// the Glow color at a fraction of the particle alpha.
+							// [G] kl.bQd glow composite: larger glow-sprite quad in the
+							// Glow color at a fraction of the particle alpha.
 							float glowHalf = half * (1.0f + glowScale * 2.0f);
 							drawQuad(matrices.peek(), quads, -glowHalf, -glowHalf, glowHalf, glowHalf,
 									withAlpha(glowArgb, 255.0f * alpha * GLOW_ALPHA));
@@ -346,10 +359,15 @@ public class SoulEffects extends Module {
 		float r = ((argb >> 16) & 0xFF) / 255.0f;
 		float g = ((argb >> 8) & 0xFF) / 255.0f;
 		float b = (argb & 0xFF) / 255.0f;
-		vc.vertex(entry, minX, minY, 0.0f).color(r, g, b, a);
-		vc.vertex(entry, maxX, minY, 0.0f).color(r, g, b, a);
-		vc.vertex(entry, maxX, maxY, 0.0f).color(r, g, b, a);
-		vc.vertex(entry, minX, maxY, 0.0f).color(r, g, b, a);
+		// ml.clh: full-sprite UV, camera-facing textured quad.
+		vc.vertex(entry, minX, minY, 0.0f).color(r, g, b, a).texture(0.0f, 1.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, maxX, minY, 0.0f).color(r, g, b, a).texture(1.0f, 1.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, maxX, maxY, 0.0f).color(r, g, b, a).texture(1.0f, 0.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, minX, maxY, 0.0f).color(r, g, b, a).texture(0.0f, 0.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
 	}
 
 	/** mG#coa(alpha).coh(): the particle color with the alpha replaced. */

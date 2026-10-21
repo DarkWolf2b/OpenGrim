@@ -36,7 +36,7 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.GroupSetting;
+import dev.opengrim.settings.ItemListSetting;
 
 /**
  * Storage ESP (registry sixtwo.dq, module id 81, bind -999): "Draws box around
@@ -80,14 +80,21 @@ import dev.opengrim.settings.GroupSetting;
  *
  * <p>Framework stand-ins (each labeled):
  * <ul>
- *   <li>[S] the {@code cK} item-set setting is a {@link GroupSetting} with nine
- *       {@link BoolSetting} children in the original seed order; the extra
- *       {@code .WQ()} flag (dq.java:136) has native semantics and no
- *       representation ([U], analysis/specs/handlers/dq.md "Unrecovered").</li>
- *   <li>[S] {@code cG} colors are {@link ColorSetting}s; the original defaults are
- *       the theme color ({@code rD.dlM().bjG().bis()}) and the same at 0.5 alpha
- *       ({@code .cob(0.5f)}), which resolve to white / 50% white - the convention
- *       of the peer ports (PopChams, SkeletonEsp, Trails).</li>
+ *   <li>The {@code cK} item-set setting is a real {@link ItemListSetting}: the nine-item
+ *       {@code WK} universe (Chest, Barrel, Shulker Box, Ender Chest, Furnace,
+ *       Trapped Chest, Brewing Stand, Spawner, Hopper), all selected at construction
+ *       via {@code WQ()}, empty selection allowed ({@code nppnu=true}) and
+ *       {@code mnYah} = {@link Integer#MAX_VALUE}. {@code ahO}'s colored-shulker
+ *       collapse is preserved in {@link #visibleFor(Item)}. The original widget's
+ *       native item-icon grid is rendered by the framework's item list.</li>
+ *   <li>{@code cG} colors are {@link ColorSetting}s; the original defaults are the
+ *       theme accent ({@code rD.dlM().bjG().bis()} = {@code ig.PtFoz} accent
+ *       {@code mG.yHyOB} = RGB 151,71,255) and the same at 0.5 alpha
+ *       ({@code .cob(0.5f)} → ARGB {@code 0x809747FF}). The recovered default
+ *       accent is used instead of the previous white stand-in. The three 16-colour
+ *       theme variants ({@code ig.gsTXO} etc.) change the accent only through the
+ *       live theme; the original captures the value once in {@code cG.Uf}, so the
+ *       port keeps the static default.</li>
  *   <li>[S] {@code ja.byG()} (native, "loaded chunks") is {@code
  *       ClientWorld#getChunks()}; {@code ja.byD(chunk)} is literally {@code new
  *       ArrayList<>(chunk.getBlockEntities().values())} (ja.java:42-44).</li>
@@ -120,39 +127,39 @@ public class StorageEsp extends Module {
 			Items.CYAN_SHULKER_BOX, Items.PURPLE_SHULKER_BOX, Items.BLUE_SHULKER_BOX, Items.BROWN_SHULKER_BOX,
 			Items.GREEN_SHULKER_BOX, Items.RED_SHULKER_BOX, Items.BLACK_SHULKER_BOX);
 
-	private final GroupSetting blockEntities = register(new GroupSetting("block_entities"));
-	private final BoolSetting chest = register(new BoolSetting("chest", true));
-	private final BoolSetting barrel = register(new BoolSetting("barrel", true));
-	private final BoolSetting shulkerBox = register(new BoolSetting("shulker_box", true));
-	private final BoolSetting enderChest = register(new BoolSetting("ender_chest", true));
-	private final BoolSetting furnace = register(new BoolSetting("furnace", true));
-	private final BoolSetting trappedChest = register(new BoolSetting("trapped_chest", true));
-	private final BoolSetting brewingStand = register(new BoolSetting("brewing_stand", true));
-	private final BoolSetting spawner = register(new BoolSetting("spawner", true));
-	private final BoolSetting hopper = register(new BoolSetting("hopper", true));
+	/**
+	 * {@code cK YLsuJ} (dq.java:136): the real item multiselect. Universe = the
+	 * nine {@code WK} entries, selection starts empty and {@code WQ()} selects
+	 * all of them ({@code nppnu} stays true, max = {@code cK.Xj("o",32104)}
+	 * decrypted as {@link Integer#MAX_VALUE}, full-dump.jsonl:22150).
+	 */
+	private final ItemListSetting blockEntities = register(new ItemListSetting("block_entities",
+			List.of(Items.CHEST, Items.BARREL, Items.SHULKER_BOX, Items.ENDER_CHEST, Items.FURNACE,
+					Items.TRAPPED_CHEST, Items.BREWING_STAND, Items.SPAWNER, Items.HOPPER),
+			Integer.MAX_VALUE, true, null));
 
 	private final BoolSetting filled = register(new BoolSetting("filled", false));
 	private final BoolSetting tracers = register(new BoolSetting("tracers", false));
 	private final DoubleSetting tracersWidth = register(new DoubleSetting("tracers_width", 0.1, 1.0, 3.0, 1.0, null));
 
-	private final ColorSetting chestOutlineColor = register(new ColorSetting("chest_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting chestFillColor = register(new ColorSetting("chest_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting barrelOutlineColor = register(new ColorSetting("barrel_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting barrelFillColor = register(new ColorSetting("barrel_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting shulkerOutlineColor = register(new ColorSetting("shulker_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting shulkerFillColor = register(new ColorSetting("shulker_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting enderChestOutlineColor = register(new ColorSetting("ender_chest_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting enderChestFillColor = register(new ColorSetting("ender_chest_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting furnaceOutlineColor = register(new ColorSetting("furnace_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting furnaceFillColor = register(new ColorSetting("furnace_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting trappedChestOutlineColor = register(new ColorSetting("trapped_chest_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting trappedChestFillColor = register(new ColorSetting("trapped_chest_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting brewingStandOutlineColor = register(new ColorSetting("brewing_stand_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting brewingStandFillColor = register(new ColorSetting("brewing_stand_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting spawnerOutlineColor = register(new ColorSetting("spawner_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting spawnerFillColor = register(new ColorSetting("spawner_fill_color", 0x80FFFFFF, true));
-	private final ColorSetting hopperOutlineColor = register(new ColorSetting("hopper_outline_color", 0xFFFFFFFF, false));
-	private final ColorSetting hopperFillColor = register(new ColorSetting("hopper_fill_color", 0x80FFFFFF, true));
+	private final ColorSetting chestOutlineColor = register(new ColorSetting("chest_outline_color", 0xFF9747FF, false));
+	private final ColorSetting chestFillColor = register(new ColorSetting("chest_fill_color", 0x809747FF, true));
+	private final ColorSetting barrelOutlineColor = register(new ColorSetting("barrel_outline_color", 0xFF9747FF, false));
+	private final ColorSetting barrelFillColor = register(new ColorSetting("barrel_fill_color", 0x809747FF, true));
+	private final ColorSetting shulkerOutlineColor = register(new ColorSetting("shulker_outline_color", 0xFF9747FF, false));
+	private final ColorSetting shulkerFillColor = register(new ColorSetting("shulker_fill_color", 0x809747FF, true));
+	private final ColorSetting enderChestOutlineColor = register(new ColorSetting("ender_chest_outline_color", 0xFF9747FF, false));
+	private final ColorSetting enderChestFillColor = register(new ColorSetting("ender_chest_fill_color", 0x809747FF, true));
+	private final ColorSetting furnaceOutlineColor = register(new ColorSetting("furnace_outline_color", 0xFF9747FF, false));
+	private final ColorSetting furnaceFillColor = register(new ColorSetting("furnace_fill_color", 0x809747FF, true));
+	private final ColorSetting trappedChestOutlineColor = register(new ColorSetting("trapped_chest_outline_color", 0xFF9747FF, false));
+	private final ColorSetting trappedChestFillColor = register(new ColorSetting("trapped_chest_fill_color", 0x809747FF, true));
+	private final ColorSetting brewingStandOutlineColor = register(new ColorSetting("brewing_stand_outline_color", 0xFF9747FF, false));
+	private final ColorSetting brewingStandFillColor = register(new ColorSetting("brewing_stand_fill_color", 0x809747FF, true));
+	private final ColorSetting spawnerOutlineColor = register(new ColorSetting("spawner_outline_color", 0xFF9747FF, false));
+	private final ColorSetting spawnerFillColor = register(new ColorSetting("spawner_fill_color", 0x809747FF, true));
+	private final ColorSetting hopperOutlineColor = register(new ColorSetting("hopper_outline_color", 0xFF9747FF, false));
+	private final ColorSetting hopperFillColor = register(new ColorSetting("hopper_fill_color", 0x809747FF, true));
 
 	/** {@code bZIEf} (dq.java:581): item -&gt; (outline, fill) color settings. */
 	private final Map<Item, Pair<ColorSetting, ColorSetting>> colorPairs = new LinkedHashMap<>();
@@ -171,16 +178,10 @@ public class StorageEsp extends Module {
 
 	public StorageEsp() {
 		super("storage_esp", "Storage ESP", "Draws box around storage blocks", ModuleCategory.VISUALS);
-		// cK seed order, dq.java:126-135.
-		blockEntities.add(chest);
-		blockEntities.add(barrel);
-		blockEntities.add(shulkerBox);
-		blockEntities.add(enderChest);
-		blockEntities.add(furnace);
-		blockEntities.add(trappedChest);
-		blockEntities.add(brewingStand);
-		blockEntities.add(spawner);
-		blockEntities.add(hopper);
+		// cK.WQ(): select the whole WK universe (all nine toggles default-on).
+		for (Item item : blockEntities.getOptions()) {
+			blockEntities.select(item);
+		}
 		// bZIEf seeding, dq.java:586-607.
 		bind(Items.CHEST, chestOutlineColor, chestFillColor);
 		bind(Items.BARREL, barrelOutlineColor, barrelFillColor);
@@ -287,42 +288,11 @@ public class StorageEsp extends Module {
 	 * plain/colored shulker box - the Shulker Box toggle.
 	 */
 	private boolean visibleFor(Item item) {
-		if (selected(item)) {
-			return true;
+		// cK.WW inside ahO: colored shulkers collapse onto SHULKER_BOX.
+		if (SHULKER_ITEMS.contains(item)) {
+			return blockEntities.contains(Items.SHULKER_BOX);
 		}
-		return SHULKER_ITEMS.contains(item) && shulkerBox.getValue();
-	}
-
-	/** The nine seeded item entries mapped onto their boolean stand-ins. */
-	private boolean selected(Item item) {
-		if (item == Items.CHEST) {
-			return chest.getValue();
-		}
-		if (item == Items.BARREL) {
-			return barrel.getValue();
-		}
-		if (item == Items.SHULKER_BOX) {
-			return shulkerBox.getValue();
-		}
-		if (item == Items.ENDER_CHEST) {
-			return enderChest.getValue();
-		}
-		if (item == Items.FURNACE) {
-			return furnace.getValue();
-		}
-		if (item == Items.TRAPPED_CHEST) {
-			return trappedChest.getValue();
-		}
-		if (item == Items.BREWING_STAND) {
-			return brewingStand.getValue();
-		}
-		if (item == Items.SPAWNER) {
-			return spawner.getValue();
-		}
-		if (item == Items.HOPPER) {
-			return hopper.getValue();
-		}
-		return false;
+		return blockEntities.contains(item);
 	}
 
 	/**

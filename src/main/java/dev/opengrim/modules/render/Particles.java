@@ -10,6 +10,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Frustum;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -22,10 +23,10 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 
 import dev.opengrim.event.Subscribe;
 import dev.opengrim.event.impl.PacketReceiveEvent;
@@ -90,9 +91,13 @@ import dev.opengrim.settings.ModeSetting;
  *
  * <p>Known gaps / divergences (documented, not guessed):
  * <ul>
- *   <li>The original's particle textures (mo style enum) and its private pipelines are not
- *       available — this port draws untinted billboard quads through
- *       {@link RenderLayers#debugFilledBox()} and approximates the glow pass with a 2x quad.</li>
+ *   <li>The eight {@code mo} style textures and the glow texture are the recovered particle
+ *       sprites ({@code star}, {@code snowflake}, {@code ghosts}, {@code heart},
+ *       {@code diamond}, {@code thunder}, {@code moon}, {@code cloud}, {@code glow}), shipped
+ *       under {@code assets/opengrim/textures/particles/} and bound through
+ *       {@link ParticleTextures} + {@link RenderLayers#entityTranslucent}. The mode→sprite
+ *       mapping follows the recovered asset names and the same order as Hit Particles
+ *       ({@code mo} DES plaintexts still unrecovered — [G]).</li>
  *   <li>The DES constants not present in analysis/decrypted/full-dump.jsonl: burst count
  *       (slot 7599 — 16 used here, [G]), particle lifetime range (mn constructor slot 45/31570 —
  *       1000..3000 ms used here, [G]) and the rk fade duration (slot 15236 — 200 ms used here,
@@ -122,6 +127,13 @@ public class Particles extends Module {
 	private static final int LIFETIME_MAX_MS = 3000;
 	/** rk fade duration — slot 15236 (unrecovered). [G] high-probability guess. */
 	private static final int FADE_DURATION_MS = 200;
+
+	/** mo enum order matching the Particles modes (dc/HitParticles SPRITE_KEYS). */
+	private static final String[] SPRITE_KEYS = {
+			"star", "snowflake", "ghosts", "heart", "diamond", "thunder", "moon", "cloud"
+	};
+	/** {@code ob.cBv(ZDept)} for the mn.clr glow pass — recovered asset {@code glow}. */
+	private static final String GLOW_KEY = "glow";
 
 	private final ModeSetting style = register(new ModeSetting("particles",
 			List.of("Stars", "Snowflakes", "Ghost", "Hearts", "Diamonds", "Thunders", "Moons", "Clouds"), "Stars"));
@@ -210,6 +222,8 @@ public class Particles extends Module {
 	/** YQ (cR.java:506-729) — spawner + particle advance. */
 	@Override
 	public void onTick() {
+		ParticleTextures.preload(SPRITE_KEYS);
+		ParticleTextures.preload(GLOW_KEY);
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
 		if (client.world == null || player == null) {
@@ -309,25 +323,31 @@ public class Particles extends Module {
 		Vec3d cameraPos = camera.getCameraPos();
 		float tickDelta = client.getRenderTickCounter().getTickProgress(true);
 
+		Identifier styleTexture = ParticleTextures.get(SPRITE_KEYS[Math.max(0,
+				Math.min(SPRITE_KEYS.length - 1, style.getModes().indexOf(style.getValue())))]);
+		Identifier glowTexture = glow.getValue() ? ParticleTextures.get(GLOW_KEY) : null;
+		if (styleTexture == null) {
+			return;
+		}
+
 		VertexConsumerProvider consumers = event.context().consumers();
-		VertexConsumer quads = consumers.getBuffer(RenderLayers.debugFilledBox());
 		MatrixStack matrices = event.context().matrices();
 
 		int rgb = color.getValue();
 		int r = (rgb >> 16) & 0xFF;
 		int g = (rgb >> 8) & 0xFF;
 		int b = rgb & 0xFF;
-		boolean hasGlow = glow.getValue();
 
 		matrices.push();
 		try {
 			matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-			Quaternionf rotation = camera.getRotation();
 
-			// cR.java:751 — jJ.bIA visibility gate over the interpolated positions
-			// (Trails point-box convention; a null captured frustum renders).
+			// cR.java:751 — jJ.bIA visibility gate over the interpolated positions.
 			Frustum frustum = client.worldRenderer.getCapturedFrustum();
+			List<ParticleInstance> visible = new java.util.ArrayList<>(activeParticles.size());
 
+			// YT first batch: mo.clD() style texture, mq.clq per visible particle.
+			VertexConsumer quads = consumers.getBuffer(RenderLayers.entityTranslucent(styleTexture));
 			for (ParticleInstance particle : activeParticles) {
 				Vec3d pos = particle.getLerpedPos(tickDelta);
 				if (frustum != null && !frustum.isVisible(new Box(
@@ -335,40 +355,60 @@ public class Particles extends Module {
 						pos.x + 0.5, pos.y + 0.5, pos.z + 0.5))) {
 					continue;
 				}
-				// mn.clq (mn.java:261-287) — the fade animation advances while drawing:
-				// forward (!fading) while alive, reverse once the lifetime expired.
+				visible.add(particle);
+				// mn.clq (mn.java:261-287) — fade target forward while alive.
 				float fade = particle.updateFade(!particle.fading);
 				int a = (int) (255.0f * fade * 0.4f);
 				if (a <= 0) {
 					continue;
 				}
+				drawParticle(matrices, quads, camera, pos, particle, r, g, b, a, false);
+			}
 
-				matrices.push();
-				try {
-					matrices.translate(pos.x, pos.y, pos.z);
-					matrices.multiply(rotation);
-
-					// mn.cls (mn.java:93-101): scale 0.07 then a quad of size hMiLh.
-					float sz = particle.scale * 0.07f * 0.5f;
-					Matrix4f matrix = matrices.peek().getPositionMatrix();
-
-					quads.vertex(matrix, -sz, -sz, 0.0f).color(r, g, b, a);
-					quads.vertex(matrix, sz, -sz, 0.0f).color(r, g, b, a);
-					quads.vertex(matrix, sz, sz, 0.0f).color(r, g, b, a);
-					quads.vertex(matrix, -sz, sz, 0.0f).color(r, g, b, a);
-
-					if (hasGlow) {
-						// mn.clr (mn.java:247-258): same alpha, 2x size glow quad.
-						float glowSz = sz * 2.0f;
-						quads.vertex(matrix, -glowSz, -glowSz, 0.0f).color(r, g, b, a);
-						quads.vertex(matrix, glowSz, -glowSz, 0.0f).color(r, g, b, a);
-						quads.vertex(matrix, glowSz, glowSz, 0.0f).color(r, g, b, a);
-						quads.vertex(matrix, -glowSz, glowSz, 0.0f).color(r, g, b, a);
+			// YT second batch: flush + swapTexture(ob.cBv(glow)), mq.clr 2x quads.
+			if (glowTexture != null) {
+				VertexConsumer glowQuads = consumers.getBuffer(RenderLayers.entityTranslucent(glowTexture));
+				for (ParticleInstance particle : visible) {
+					Vec3d pos = particle.getLerpedPos(tickDelta);
+					float fade = particle.updateFade(!particle.fading);
+					int a = (int) (255.0f * fade * 0.4f);
+					if (a <= 0) {
+						continue;
 					}
-				} finally {
-					matrices.pop();
+					drawParticle(matrices, glowQuads, camera, pos, particle, r, g, b, a, true);
 				}
 			}
+		} finally {
+			matrices.pop();
+		}
+	}
+
+	/**
+	 * mn.cls + clq/clr: translate to the interpolated position, billboard
+	 * {@code jI.bIu} (Y(-yaw)·X(pitch)), size {@code Scale·0.07} (2× for the glow pass).
+	 * The original's scale(0.07)+pivot translate is folded into the vertex sizes.
+	 */
+	private static void drawParticle(MatrixStack matrices, VertexConsumer vc, Camera camera, Vec3d pos,
+			ParticleInstance particle, int r, int g, int b, int a, boolean glowPass) {
+		float half = particle.scale * 0.07f * 0.5f * (glowPass ? 2.0f : 1.0f);
+		matrices.push();
+		try {
+			matrices.translate(pos.x, pos.y, pos.z);
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-camera.getYaw()));
+			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
+			MatrixStack.Entry entry = matrices.peek();
+			float x0 = -half;
+			float x1 = half;
+			float y0 = -half;
+			float y1 = half;
+			vc.vertex(entry, x0, y0, 0.0f).color(r, g, b, a).texture(0.0f, 1.0f)
+					.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+			vc.vertex(entry, x1, y0, 0.0f).color(r, g, b, a).texture(1.0f, 1.0f)
+					.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+			vc.vertex(entry, x1, y1, 0.0f).color(r, g, b, a).texture(1.0f, 0.0f)
+					.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+			vc.vertex(entry, x0, y1, 0.0f).color(r, g, b, a).texture(0.0f, 0.0f)
+					.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
 		} finally {
 			matrices.pop();
 		}

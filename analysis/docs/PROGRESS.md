@@ -3,14 +3,14 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-18 (Windows: waves 2-3 full-module audit merged - batches 6-29 (112 modules) reports folded, 110 rows stamped now + ff/dq via batch 30; PARITY gained the waves 2-3 section + divergence wave 4; spec corrections folded (dz/dv/fS/de/dh/cZ/dQ_/fX/dn); live bugs fixed - left-click EventBridge inversion + ClickGUI off-screen centering; jar rebuilt + copied to Prism for testing)
+Last updated: 2026-10-21 (Linux: module recovery queue — aggregate parity 78.9%, up from 78.1%; 24 module rows re-scored in PARITY; new shared range/item/entity-list settings, HUD cards, Chams/Outline/EffectDraw renderers and key/interaction mixins; combined build PASS; no commit/push)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
 - [x] Ghidra 12.1.4 extracted → `binaries/ghidra/ghidra_12.1.4_PUBLIC`
 - [x] JDK 26 on PATH (system), Vineflower 1.11.1 at `~/.local/tools/vineflower-1.11.1.jar`
 - [x] Isolation tools available if ever needed: bwrap, docker, systemd-nspawn
-- [x] Archive password: `wonderland.ac` (note: not `wonderlandac`)
+- [x] Archive credential: recovered locally (redacted from the public ledger)
 
 ## Artifact map (binaries/grim/extracted/)
 | File | Identity | Role |
@@ -1087,3 +1087,43 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   still use the opaque themed fill; `shadow/annular/checker/bezier` pipelines.
 - 2026-10-21: **Module audit — avoidable 1:1 gaps marked.** Added the "Avoidable 1:1 gaps" work-queue section to PARITY.md covering 12 fully-Java original classes whose ports used labeled stand-ins for recoverable data (Trap Esp, Hit Particles, Swing Animations, Chams, Jump Circle, Circle ESP, Fake Lag, Nametags, Storage ESP, 2D ESP, Nuker, Ambience). Prioritized P1-P3; no module behavior changed in this entry.
 - 2026-10-21: **Circle ESP / Jump Circle textures.** Extracted the recovered `circle` (1024x1024) and `circle_glow` (1424x1424) raster assets from `raster-assets.bin` to `src/main/resources/assets/opengrim/textures/`; `CircleTextures` now loads them, with the procedural ring only as fallback. `compileJava` PASS. Remaining: `db` `yqWBV` duration, `dw` `kz.bSr` constants.
+
+## 2026-10-21 (Linux): module recovery queue — 24 rows re-scored
+
+- **Re-score, not self-scoring:** read every `analysis/port/reports/module-fixes/*.md`
+  against the original callsites and residual lists, then updated the 24 changed
+  module rows and added `PARITY.md` → **Re-audit 2026-10-21 — module recovery
+  queue**. The table has old → new %, delta, closed surface and remaining gap
+  per module. Scores are confidence-weighted; `di` stayed at 50% because only a
+  plan landed.
+- **Aggregate parity:** **78.9%** (12,784/16,200; median 81%; 73 ported /
+  89 partial; 45 modules at 90% or higher), up from 78.1%. README's parity
+  section and Stats line now carry the same figure.
+- **Main movements:** `dl` 76→92 (live mask + `outlines.glsl`), `dg` 78→92
+  (`mh`/`me` simulator + HUD card), `dv` 80→93 (four chams passes), `de` 80→92
+  (`acv` hand pass + composites), `dp` 80→87 (HUD labels; hologram still open),
+  `cW` 93→96, `db` 93→96, `dz` 93→96, `cS` 92→96, `cR` 88→93, `dc` 86→93, and
+  the smaller settings/widget/event fixes. Full table is in PARITY.
+- **New shared surfaces:** `RangeSetting`/`RangeSliderWidget`,
+  `ItemListSetting`/`ItemListWidget`, `EntityListSetting`/`EntityListWidget`,
+  `ParticleTextures`, `EffectDraw`, `ChamsRenderer`/`OutlineRenderer`, the
+  recovered HUD-card draw path (existing `GuiDraw`/`MsdfFont`), and the
+  keyboard/held-item/attack-post/hand-render mixins.
+- **Still labeled:** `di` `pI` registry/profile editor; `dp` `kt` hologram;
+  `cZ` bloom composite and Behind Walls pipelines; `ro.diF` presets;
+  `aZ` theme editor (53 behavior natives); `ja.byI`; DES constants in
+  `cR/dz/dn/da/dg/do/cZ/dp/db/dw/dI/dh`; the four uncertain render findings
+  (`dG`/`dk`/`dj`/`cT`) are untouched.
+- **Build:** Gradle `build` on JDK 21 → BUILD SUCCESSFUL. Jar
+  `build/libs/opengrim-0.1.0.jar` is 4.2 MB, SHA-256
+  `cfa10b9991ded3c2d83ca619df21f5877fea215a7825a8238bed26b078b0bb3e`.
+- **Boot smoke:** `runClient --quickPlaySingleplayer "New World"` reached a
+  loaded world with `chams`, `outlines`, `hand_chams`, `china_hat`,
+  `target_esp`, `particles`, `nametags`, `trap_esp`, `hit_particles`,
+  `soul_effects`, and `tracers` enabled; stopped by the 210 s timeout while
+  saving. No mixin/resource/shader exception — only the expected narrator
+  `libflite` and X11 cursor warnings. Visual verification is the user's.
+  Test config is still enabled at `run/config/opengrim.json`; a backup is kept
+  outside the repo.
+- **Git:** no commit and no push in this wave. Public/local `main` remains
+  `e79b194`; the module changes and the two ledger edits are uncommitted.

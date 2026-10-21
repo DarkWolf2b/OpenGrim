@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import dev.opengrim.event.Subscribe;
-import dev.opengrim.event.impl.AttackEntityEvent;
+import dev.opengrim.event.impl.AttackEntityPostEvent;
 import dev.opengrim.event.impl.PacketReceiveEvent;
 import dev.opengrim.event.impl.PacketSendEvent;
 import dev.opengrim.module.Module;
@@ -13,6 +13,7 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.ModeSetting;
+import dev.opengrim.settings.RangeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
@@ -74,16 +75,6 @@ import net.minecraft.util.math.Vec3d;
  *
  * <p>Framework stand-ins (each labeled):
  * <ul>
- *   <li>[S] {@code cA} is a two-handle range (UI(lo, hi) = the two handles;
- *       {@code mU.cpR} draws a fresh uniform value from [lo, hi] on every
- *       redraw, and {@code cA.UM(d)} tests lo &le; d &le; hi). Our settings tree
- *       has no range widget, so both ranges are single-value sliders holding the
- *       original <em>left</em> handle (Packet Interval 100 ms, Lag Range
- *       Distance 1.0) and the per-cycle random draw is dropped - the same
- *       reduction used by the peer ports (WTap, SpearDoubleTap, AutoStunSlam,
- *       Ambience). Lag Range Distance is read as the upper bound of the band
- *       ({@code d <= value}) because the original lower handle (1.0) is the
- *       widget minimum, so no band narrower than the default can be expressed.</li>
  *   <li>[S] {@code mT} millisecond stopwatch is inlined (System.currentTimeMillis;
  *       cpC = elapsed &gt; arg, cpF = elapsed, cpB = reset - mT.class javap).</li>
  *   <li>[S] the {@code aIm} connection identity check
@@ -91,15 +82,16 @@ import net.minecraft.util.math.Vec3d;
  *       ff.java:710) is implicit: our PacketSendEvent is posted from
  *       ClientConnection#send and carries no connection reference; the play
  *       connection is the only sender in practice.</li>
- *   <li>[S] {@code aIk(hw$tw)} is the attack-<em>post</em> event (bootstrap mixin
- *       InteractionEventBridgeMixin#offline$attackPost constructs
- *       {@code new hw$tw(target)} at the TAIL of PlayerEntity#attack); our bus
- *       only has the pre-attack AttackEntityEvent, used here as the stand-in.</li>
  *   <li>[S] {@code aIj(gM)} - {@code gM} is the ClientWorld.disconnect event
  *       (JumpCircle/TargetEsp convention); our bus has no disconnect event, so
  *       the body (clear the queue, then {@code baa(false)} = disable the module)
  *       runs from the world-null guard in {@link #onTick()}.</li>
  * </ul>
+ *
+ * <p>Ranges: both {@code cA} widgets are real two-handle settings now
+ * ({@link RangeSetting}), matching {@code UI(low, high)} and
+ * {@code UM(d) = low <= d <= high}; the interval redraw uses
+ * {@code UN()} = uniform draw over the handles ({@code mU.cpR}).
  *
  * <p>[U] Not ported: the embedded {@code kx AhpMu} indicator (ff.java:233) and its
  * render handler {@code aIo(go$sX)} (ff.java:440-501). The indicator is a
@@ -112,8 +104,8 @@ import net.minecraft.util.math.Vec3d;
 public class FakeLag extends Module {
 	private final ModeSetting mode = register(new ModeSetting("mode",
 			List.of("normal", "lag_range"), "normal"));
-	private final DoubleSetting packetInterval = register(new DoubleSetting("packet_interval", 5.0, 0.0, 2000.0, 100.0, " ms"));
-	private final DoubleSetting lagRangeDistance = register(new DoubleSetting("lag_range_distance", 0.1, 1.0, 6.0, 1.0, " blocks"));
+	private final RangeSetting packetInterval = register(new RangeSetting("packet_interval", 5.0, 0.0, 2000.0, 100.0, 150.0, " ms"));
+	private final RangeSetting lagRangeDistance = register(new RangeSetting("lag_range_distance", 0.1, 1.0, 6.0, 1.0, 3.6, " blocks"));
 	private final BoolSetting resetOnKnockback = register(new BoolSetting("reset_on_knockback", false));
 	private final DoubleSetting resetTime = register(new DoubleSetting("reset_time", 5.0, 0.0, 1000.0, 100.0, " ms"));
 	private final BoolSetting resetOnExplosion = register(new BoolSetting("reset_on_explosion", true));
@@ -146,7 +138,7 @@ public class FakeLag extends Module {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
 		holdPos = player != null ? player.getEntityPos() : Vec3d.ZERO;
-		intervalMs = (int) packetInterval.getValue().doubleValue();
+		intervalMs = (int) packetInterval.randomValue();
 		timerStart = System.currentTimeMillis();
 		frozenBox = null;
 		inRangeLatch = false;
@@ -185,14 +177,14 @@ public class FakeLag extends Module {
 			if (releaseForRange(client, player)) {
 				flush();
 				resetHold();
-				intervalMs = (int) packetInterval.getValue().doubleValue();
+				intervalMs = (int) packetInterval.randomValue();
 				return;
 			}
 		}
 		if (System.currentTimeMillis() - timerStart > intervalMs) {
 			flush();
 			resetHold();
-			intervalMs = (int) packetInterval.getValue().doubleValue();
+			intervalMs = (int) packetInterval.randomValue();
 		}
 	}
 
@@ -255,7 +247,7 @@ public class FakeLag extends Module {
 				return;
 			}
 			flush();
-			intervalMs = (int) packetInterval.getValue().doubleValue();
+			intervalMs = (int) packetInterval.randomValue();
 		} else if (packet instanceof EntityVelocityUpdateS2CPacket velocity) {
 			if (client.player == null || velocity.getEntityId() != client.player.getId()) {
 				return;
@@ -270,17 +262,21 @@ public class FakeLag extends Module {
 				return;
 			}
 			flush();
-			intervalMs = (int) packetInterval.getValue().doubleValue();
+			intervalMs = (int) packetInterval.randomValue();
 		}
 	}
 
 	/**
 	 * {@code aIk(hw$tw)} (ff.java:1030-1064): in Lag Range mode an attack latches
 	 * {@code nlYuR} so the next release test keeps holding until the following
-	 * release. [S] stand-in for the attack-post event, see the class javadoc.
+	 * release. The trigger is {@link AttackEntityPostEvent}, posted at the TAIL
+	 * of {@code ClientPlayerInteractionManager#attackEntity} by
+	 * {@code ClientPlayerInteractionManagerMixin}, the same point as the shell's
+	 * {@code hw$tw} (bootstrap {@code InteractionEventBridgeMixin},
+	 * {@code offline$attackPost}).
 	 */
 	@Subscribe
-	public void onAttackEntity(AttackEntityEvent event) {
+	public void onAttackEntityPost(AttackEntityPostEvent event) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (!inGame(client)) {
 			return;
@@ -322,7 +318,7 @@ public class FakeLag extends Module {
 			return true;
 		}
 		double distance = eyeToBoxDistance(player.getEyePos(), target.getBoundingBox());
-		if (!(distance <= lagRangeDistance.getValue())) {
+		if (!lagRangeDistance.contains(distance)) {
 			inRangeLatch = false;
 			return true;
 		}
@@ -344,14 +340,12 @@ public class FakeLag extends Module {
 	 * player, is not dead (oh.java:228-247; invisible entities are kept - the
 	 * {@code iepqN} default, analysis/specs/handlers/eP.md:75) and whose
 	 * eye-to-bounding-box distance lies in the Lag Range Distance band
-	 * (oh.java:283-322). [S] the band's lower handle is dropped, see the class
-	 * javadoc.
+	 * (oh.java:283-322, {@code UM(d) = low <= d <= high}).
 	 */
 	private LivingEntity findLagTarget(MinecraftClient client, ClientPlayerEntity player) {
 		if (client.world == null) {
 			return null;
 		}
-		double range = lagRangeDistance.getValue();
 		LivingEntity best = null;
 		double bestDistance = Double.MAX_VALUE;
 		for (var entity : client.world.getEntities()) {
@@ -359,7 +353,7 @@ public class FakeLag extends Module {
 				continue;
 			}
 			double distance = eyeToBoxDistance(player.getEyePos(), living.getBoundingBox());
-			if (distance > range) {
+			if (!lagRangeDistance.contains(distance)) {
 				continue;
 			}
 			double sort = player.distanceTo(living);

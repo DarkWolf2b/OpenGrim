@@ -5,16 +5,17 @@ import java.util.List;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BuiltBuffer;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.BufferAllocator;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import dev.opengrim.event.Subscribe;
 import dev.opengrim.event.impl.WorldRenderEvent;
@@ -80,10 +81,13 @@ import dev.opengrim.settings.StringSetting;
  *     the db$sw class key (native {@code gb.aYR}, not derivable) and absent from
  *     the runtime dump; {@value #ANIM_MS} ms is a high-probability guess
  *     (matching the {@code new rk(400).dhs(rj.XzDkv)} pattern in cO/do).</li>
- * <li>[G] {@code ob.cBv} assets are generated procedurally
- *     ({@link CircleTextures}); {@code jd.bAm} is approximated; the textured
- *     layer (original {@code XSRvt} batch + {@code kR}) is ported to
- *     {@code RenderLayers.entityTranslucent} with full-bright lighting.</li>
+ * <li>[G] {@code ob.cBv} assets are the recovered {@code circle}/{@code circle_glow}
+ *     PNGs loaded by {@link CircleTextures} (raster-assets.bin); {@code jd.bAm} is
+ *     approximated. The textured quad is drawn immediately through the recovered
+ *     {@code kR.Dmmsd}/{@code kz.bSh} state (POSITION_COLOR_TEXTURE_LIGHT, blend
+ *     {@code lh.aApMr}, no depth test, no cull) by {@link EffectDraw}; the
+ *     original lightmap values are native {@code kz.bSr} constants, so the
+ *     custom stage is full-bright.</li>
  * <li>Trace 2026-10-17: YO 1× (disable only); no tick/render events captured.</li>
  * </ul>
  */
@@ -243,10 +247,8 @@ public class JumpCircle extends Module {
 		if (!isEnabled() || circles.isEmpty() || texture == null) {
 			return;
 		}
-		MinecraftClient client = MinecraftClient.getInstance();
 		Vec3d cam = event.camera().getCameraPos();
 		MatrixStack stack = event.context().matrices();
-		VertexConsumerProvider consumers = event.context().consumers();
 		float scale = circleScale.getValue().floatValue();
 		int argb = color.getValue();
 		for (int i = circles.size() - 1; i >= 0; --i) {
@@ -262,26 +264,34 @@ public class JumpCircle extends Module {
 				stack.translate(circle.pos.x - cam.x, circle.pos.y - cam.y, circle.pos.z - cam.z);
 				stack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0f));
 				MatrixStack.Entry entry = stack.peek();
-				VertexConsumer vc = consumers.getBuffer(RenderLayers.entityTranslucent(texture));
-				float size = radius * 2.0f;
-				quadVertex(vc, entry, -radius, -radius + size, argb, 0.0f, 1.0f);
-				quadVertex(vc, entry, -radius + size, -radius + size, argb, 1.0f, 1.0f);
-				quadVertex(vc, entry, -radius + size, -radius, argb, 1.0f, 0.0f);
-				quadVertex(vc, entry, -radius, -radius, argb, 0.0f, 0.0f);
+				// kz.bSh: POSITION_COLOR_TEXTURE_LIGHT quad through kR.Dmmsd.
+				BufferAllocator allocator = new BufferAllocator(
+						VertexFormats.POSITION_COLOR_TEXTURE_LIGHT.getVertexSize() * 4);
+				try {
+					BufferBuilder builder = new BufferBuilder(allocator, VertexFormat.DrawMode.QUADS,
+							VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+					float size = radius * 2.0f;
+					quadVertex(builder, entry, -radius, -radius + size, argb, 0.0f, 1.0f);
+					quadVertex(builder, entry, -radius + size, -radius + size, argb, 1.0f, 1.0f);
+					quadVertex(builder, entry, -radius + size, -radius, argb, 1.0f, 0.0f);
+					quadVertex(builder, entry, -radius, -radius, argb, 0.0f, 0.0f);
+					BuiltBuffer built = builder.end();
+					EffectDraw.drawTextured(built, texture);
+				} finally {
+					allocator.close();
+				}
 			} finally {
 				stack.pop();
 			}
 		}
 	}
 
-	private static void quadVertex(VertexConsumer vc, MatrixStack.Entry entry, float x, float y, int argb,
+	private static void quadVertex(BufferBuilder vc, MatrixStack.Entry entry, float x, float y, int argb,
 			float u, float v) {
 		vc.vertex(entry, x, y, 0.0f)
 				.color(argb)
 				.texture(u, v)
-				.overlay(OverlayTexture.DEFAULT_UV)
-				.light(FULL_BRIGHT)
-				.normal(entry, 0.0f, 0.0f, 1.0f);
+				.light(FULL_BRIGHT);
 	}
 
 	/** mT.cpC(long): now − last − ms > 0 (mT.java:60-81). */

@@ -7,6 +7,9 @@ import java.util.List;
 import org.joml.Matrix4f;
 import org.joml.Vector4f;
 
+import dev.opengrim.gui.ui.ColorF;
+import dev.opengrim.gui.ui.GuiDraw;
+import dev.opengrim.gui.ui.MsdfFont;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
@@ -103,11 +106,19 @@ import net.minecraft.util.math.Vec3d;
  * <p>Framework mappings (neighbor style, cf. TrapEsp/Arrows):
  * <ul>
  *   <li>The original's HUD event (gk) → Fabric {@link HudElementRegistry} element registered on enable;
- *       {@code lC.cfe()} → the vanilla {@link DrawContext}; {@code lC.cdh/cdg} → local rounded-fill helper;
- *       {@code lC.ceV/ceX/ceW} and {@code jH.bId/bIf} → {@code getMatrices().pushMatrix/translate/scale/popMatrix}.</li>
+ *       {@code lC.cfe()} → the vanilla {@link DrawContext}; {@code lC.cdh/cdg} → {@link GuiDraw#fillRounded}
+ *       (real recovered {@code shape.glsl} SDF path through {@code ShapeGuiElementRenderState} when the
+ *       pipeline compiled, inset-fill fallback otherwise); {@code lC.ceV/ceX/ceW} and {@code jH.bId/bIf} →
+ *       {@code getMatrices().pushMatrix/translate/scale/popMatrix}.</li>
  *   <li>The original's own 6.0f font stack ({@code lE.WTzbi.bYM(6.0f)}, width {@code lq.cao}, line height
- *       {@code lq.cat} = {@code 0.7f * size}) → vanilla {@link TextRenderer} drawn at scale 6.0/9.0 with the
- *       exact line-height formula (0.7f * 6.0f); text widths are vanilla widths scaled the same way.</li>
+ *       {@code lq.cat() = 0.7f * size}) is the recovered <b>medium</b> MSDF sheet: `analysis/decrypted/gui-dump.jsonl`
+ *       lines 427-431 decrypt lE's five font names in {@code cfn} order — {@code joxgd=regular},
+ *       {@code WTzbi=medium}, {@code SVnNc=semibold}, {@code ePKsc=bold}, {@code WxpHL=icons-4.4}.
+ *       Text is drawn through {@link MsdfFont#of}("medium") / the recovered {@code gui_msdf} pipeline.
+ *       {@code lj.bYw} measures {@code Σ(advance·size + 0.25f)} per char; {@code kJ.bUe} draws with
+ *       baseline {@code top + 0.7f·size} and pen step {@code advance·size + 0.025f·size} — both quirks are
+ *       reproduced (see {@link TagRenderer}). Vanilla {@link TextRenderer} remains only as the fallback when
+ *       the MSDF sheet/pipeline is unavailable.</li>
  *   <li>{@code jI.bIw} projection: camera-rotation * projection * camera-relative position (same approximation
  *       as TrapEsp; RenderSystem modelview is identity at HUD time).</li>
  *   <li>{@code oP.cJr(player).cJE()} is a native armor query — [U] slot order unrecovered; helmet → chest →
@@ -118,8 +129,9 @@ import net.minecraft.util.math.Vec3d;
  *   <li>{@code mY.crP(amplifier + 1)} numeral glyphs → the number drawn as vanilla text [G].</li>
  *   <li>The item renderers {@code jv}/{@code jw} + the batch flush {@code ju.bFV()} → one vanilla
  *       {@code DrawContext.drawItem} call at 0.75f scale.</li>
- *   <li>{@code lC.cdh}'s extra {@code kg.bOC(2.0f)} parameter meaning is unrecovered — [U], dropped by the
- *       rounded-fill approximation (radius 3.0f is kept).</li>
+ *   <li>{@code lC.cdh}'s extra {@code kg.bOC(2.0f)} parameter is the shape shader's smoothness field
+ *       ({@code kg.DeOtF}, default 0.75); the GuiDraw surface uses its recovered 0.75 default — [U] the 2.0
+ *       override is not exposed by the shared shape element, kept as a labeled divergence.</li>
  *   <li>The vanilla-nameplate cancel ({@code gi.bdX(true)}) has no hook in this framework: the predicate
  *       {@link #shouldCancelVanillaNameplates(PlayerEntity)} is the wiring point (same pattern as Esp2D).</li>
  * </ul>
@@ -241,8 +253,7 @@ public class Nametags extends Module {
 			return;
 		}
 		float delta = tickCounter.getTickProgress(true);
-		float textScale = FONT_SIZE / FONT_BASE;
-		TextRenderer font = client.textRenderer;
+		TagRenderer text = new TagRenderer(ctx, delta, client.textRenderer);
 		NameProtect protect = nameProtect();
 
 		List<List<ItemEntity>> groups = new ArrayList<>();
@@ -252,7 +263,7 @@ public class Nametags extends Module {
 			}
 			if (entity instanceof PlayerEntity player) {
 				if (players.getValue()) {
-					renderPlayerTag(ctx, player, protect, delta, textScale, font);
+					renderPlayerTag(ctx, player, protect, delta, text);
 				}
 				continue;
 			}
@@ -279,9 +290,9 @@ public class Nametags extends Module {
 
 		for (List<ItemEntity> group : groups) {
 			if (group.size() == 1) {
-				renderSingleItemTag(ctx, group.getFirst(), delta, textScale, font);
+				renderSingleItemTag(ctx, group.getFirst(), delta, text);
 			} else {
-				renderGroupedItemTag(ctx, group, delta, textScale, font);
+				renderGroupedItemTag(ctx, group, delta, text);
 			}
 		}
 	}
@@ -290,7 +301,7 @@ public class Nametags extends Module {
 	 * {@code ain} (dt.class ain:0-1561) — the player tag: chip strip, item row, effect row.
 	 */
 	private void renderPlayerTag(DrawContext ctx, PlayerEntity player, NameProtect protect, float delta,
-			float textScale, TextRenderer font) {
+			TagRenderer tag) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		Vec2f anchor = anchor(player, delta, ctx);
 		if (anchor == null) {
@@ -335,7 +346,7 @@ public class Nametags extends Module {
 		List<Float> widths = new ArrayList<>(chips.size());
 		float total = 0.0f;
 		for (Chip chip : chips) {
-			float chipWidth = textWidth(font, chip.text(), textScale) + 6.0f;
+			float chipWidth = tag.width(chip.text()) + 6.0f;
 			widths.add(chipWidth);
 			total += chipWidth;
 		}
@@ -372,18 +383,18 @@ public class Nametags extends Module {
 
 		boolean isConnected = connected.getValue();
 		if (isConnected) {
-			fillRounded(ctx, stripX, anchorY, total, tagHeight, 3.0f, backgroundColor.getValue());
+			tag.rounded(stripX, anchorY, total, tagHeight, 3.0f, backgroundColor.getValue());
 		}
 		float chipX = stripX;
 		for (int i = 0; i < chips.size(); i++) {
 			Chip chip = chips.get(i);
 			float chipWidth = widths.get(i);
 			if (!isConnected) {
-				fillRounded(ctx, chipX, anchorY, chipWidth, tagHeight, 3.0f, backgroundColor.getValue());
+				tag.rounded(chipX, anchorY, chipWidth, tagHeight, 3.0f, backgroundColor.getValue());
 			}
-			float chipTextWidth = textWidth(font, chip.text(), textScale);
-			drawText(ctx, font, chip.text(), chipX + (chipWidth - chipTextWidth) / 2.0f,
-					anchorY + (tagHeight - lineHeight) / 2.0f, textScale, chip.argb());
+			float chipTextWidth = tag.width(chip.text());
+			tag.draw(chip.text(), chipX + (chipWidth - chipTextWidth) / 2.0f,
+					anchorY + (tagHeight - lineHeight) / 2.0f, chip.argb());
 			chipX += chipWidth + 2.0f;
 		}
 
@@ -405,13 +416,13 @@ public class Nametags extends Module {
 		float enchantY = itemY - 12.0f;
 		float lowest = Float.POSITIVE_INFINITY;
 		for (ItemStack stack : stacks) {
-			lowest = Math.min(lowest, renderItem(ctx, stack, font, itemX, itemY, enchantY, textScale));
+			lowest = Math.min(lowest, renderItem(ctx, stack, tag, itemX, itemY, enchantY));
 			itemX += ITEM_SPACING + 2.0f;
 		}
 		// ju.bFV() — flush the original's item batch; vanilla item drawing is immediate.
 
 		if (effects.getValue() && lowest != Float.POSITIVE_INFINITY) {
-			renderEffectRow(ctx, player, font, anchorX, enchantY + lowest - 5.0f, textScale);
+			renderEffectRow(ctx, player, tag, anchorX, enchantY + lowest - 5.0f);
 		}
 
 		ctx.getMatrices().popMatrix();
@@ -421,8 +432,8 @@ public class Nametags extends Module {
 	 * {@code aio} (dt.class aio:0-109) — item stack at 0.75f scale plus its enchant text; returns the lowest
 	 * enchant y offset (negative) or +Infinity when "Enchants" is off (the original gates the effect row on this).
 	 */
-	private float renderItem(DrawContext ctx, ItemStack stack, TextRenderer font, float x, float y,
-			float enchantY, float textScale) {
+	private float renderItem(DrawContext ctx, ItemStack stack, TagRenderer text, float x, float y,
+			float enchantY) {
 		ctx.getMatrices().pushMatrix();
 		ctx.getMatrices().translate(x, y);
 		ctx.getMatrices().scale(ITEM_SCALE, ITEM_SCALE);
@@ -431,22 +442,21 @@ public class Nametags extends Module {
 		if (!enchants.getValue()) {
 			return Float.POSITIVE_INFINITY;
 		}
-		return renderEnchantText(ctx, stack, font, x, enchantY, textScale);
+		return renderEnchantText(ctx, stack, text, x, enchantY);
 	}
 
 	/**
 	 * {@code aip} (dt.class aip:0-142) — per enchantment: {@code name.substring(0, 2) + " " + level}, stacked
 	 * 8.0f upward from the passed y, white; returns the lowest y offset reached (0.0f when no enchantments).
 	 */
-	private float renderEnchantText(DrawContext ctx, ItemStack stack, TextRenderer font, float x, float y,
-			float textScale) {
+	private float renderEnchantText(DrawContext ctx, ItemStack stack, TagRenderer text, float x, float y) {
 		float lowest = 0.0f;
 		float offset = 0.0f;
 		ItemEnchantmentsComponent enchantments = EnchantmentHelper.getEnchantments(stack);
 		for (RegistryEntry<Enchantment> enchantment : enchantments.getEnchantments()) {
 			int level = enchantments.getLevel(enchantment);
-			String text = Enchantment.getName(enchantment, level).getString().substring(0, 2) + " " + level;
-			drawText(ctx, font, text, x, y + offset, textScale, 0xFFFFFFFF);
+			String label = Enchantment.getName(enchantment, level).getString().substring(0, 2) + " " + level;
+			text.draw(label, x, y + offset, 0xFFFFFFFF);
 			offset -= ENCHANT_LINE_SPACING;
 			lowest = Math.min(lowest, offset);
 		}
@@ -457,8 +467,7 @@ public class Nametags extends Module {
 	 * {@code aiq} (dt.class aiq:0-340) — the status-effect row: right-aligned from the anchor, one 10x10 icon
 	 * per effect with its duration below and amplifier glyphs above, all white.
 	 */
-	private void renderEffectRow(DrawContext ctx, PlayerEntity player, TextRenderer font, float x, float y,
-			float textScale) {
+	private void renderEffectRow(DrawContext ctx, PlayerEntity player, TagRenderer text, float x, float y) {
 		List<StatusEffectInstance> effectsList = new ArrayList<>(player.getStatusEffects());
 		if (effectsList.isEmpty()) {
 			return;
@@ -466,8 +475,8 @@ public class Nametags extends Module {
 		effectsList.sort(Comparator.reverseOrder());
 		float cursor = x + effectsList.size() * 12.5f;
 		for (StatusEffectInstance effect : effectsList) {
-			String text = durationString(effect);
-			if (text.isEmpty() || text.equals(ZERO_DURATION)) {
+			String label = durationString(effect);
+			if (label.isEmpty() || label.equals(ZERO_DURATION)) {
 				continue;
 			}
 			cursor -= EFFECT_STEP;
@@ -478,12 +487,10 @@ public class Nametags extends Module {
 			Identifier texture = InGameHud.getEffectTexture(effect.getEffectType());
 			ctx.drawGuiTexture(RenderPipelines.GUI_TEXTURED, texture, 0, 0, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE);
 			ctx.getMatrices().popMatrix();
-			drawText(ctx, font, text, centre - textWidth(font, text, textScale) / 2.0f, y - 8.0f, textScale,
-					0xFFFFFFFF);
-			// mY.crP(amplifier + 1) numeral glyphs [G]: drawn as vanilla text.
+			text.draw(label, centre - text.width(label) / 2.0f, y - 8.0f, 0xFFFFFFFF);
+			// mY.crP(amplifier + 1) numeral glyphs [G]: drawn as text.
 			String level = String.valueOf(effect.getAmplifier() + 1);
-			drawText(ctx, font, level, centre - textWidth(font, level, textScale) / 2.0f, y - 16.0f, textScale,
-					0xFFFFFFFF);
+			text.draw(level, centre - text.width(level) / 2.0f, y - 16.0f, 0xFFFFFFFF);
 		}
 	}
 
@@ -491,30 +498,27 @@ public class Nametags extends Module {
 	 * {@code air} (dt.class air:0-214) — single-item tag: {@code name + " x" + count} (site 678 = " x"),
 	 * box = text width + 6.0f by line height + 4.0f, radius 3.0f, text in "Color".
 	 */
-	private void renderSingleItemTag(DrawContext ctx, ItemEntity item, float delta, float textScale,
-			TextRenderer font) {
+	private void renderSingleItemTag(DrawContext ctx, ItemEntity item, float delta, TagRenderer text) {
 		Vec2f anchor = anchor(item, delta, ctx);
 		if (anchor == null) {
 			return;
 		}
 		String label = item.getName().getString() + " x" + item.getStack().getCount();
-		float textW = textWidth(font, label, textScale);
+		float textW = text.width(label);
 		float lineHeight = lineHeight();
 		float boxW = textW + 6.0f;
 		float boxH = lineHeight + 4.0f;
 		float boxX = anchor.x - boxW / 2.0f;
 		float boxY = anchor.y;
-		fillRounded(ctx, boxX, boxY, boxW, boxH, 3.0f, backgroundColor.getValue());
-		drawText(ctx, font, label, boxX + (boxW - textW) / 2.0f, boxY + (boxH - lineHeight) / 2.0f, textScale,
-				color.getValue());
+		text.rounded(boxX, boxY, boxW, boxH, 3.0f, backgroundColor.getValue());
+		text.draw(label, boxX + (boxW - textW) / 2.0f, boxY + (boxH - lineHeight) / 2.0f, color.getValue());
 	}
 
 	/**
 	 * {@code ais} (dt.class ais:0-229) — grouped-item tag: one line per item, margins 3/3, line gap 2,
 	 * radius 3.0f, text in "Color".
 	 */
-	private void renderGroupedItemTag(DrawContext ctx, List<ItemEntity> group, float delta, float textScale,
-			TextRenderer font) {
+	private void renderGroupedItemTag(DrawContext ctx, List<ItemEntity> group, float delta, TagRenderer text) {
 		Vec2f anchor = anchor(group.getFirst(), delta, ctx);
 		if (anchor == null) {
 			return;
@@ -525,18 +529,18 @@ public class Nametags extends Module {
 		}
 		float maxWidth = 0.0f;
 		for (String line : lines) {
-			maxWidth = Math.max(maxWidth, textWidth(font, line, textScale));
+			maxWidth = Math.max(maxWidth, text.width(line));
 		}
 		float lineHeight = lineHeight();
 		float boxW = maxWidth + GROUP_MARGIN * 2.0f;
 		float boxX = anchor.x - boxW / 2.0f;
 		float contentH = lines.size() * lineHeight + Math.max(0, lines.size() - 1) * GROUP_LINE_GAP;
 		float boxH = contentH + GROUP_MARGIN * 2.0f;
-		fillRounded(ctx, boxX, anchor.y, boxW, boxH, 3.0f, backgroundColor.getValue());
+		text.rounded(boxX, anchor.y, boxW, boxH, 3.0f, backgroundColor.getValue());
 		float textY = anchor.y + (boxH - contentH) / 2.0f;
 		for (String line : lines) {
-			float lineW = textWidth(font, line, textScale);
-			drawText(ctx, font, line, boxX + (boxW - lineW) / 2.0f, textY, textScale, color.getValue());
+			float lineW = text.width(line);
+			text.draw(line, boxX + (boxW - lineW) / 2.0f, textY, color.getValue());
 			textY += lineHeight + GROUP_LINE_GAP;
 		}
 	}
@@ -630,38 +634,70 @@ public class Nametags extends Module {
 		return LINE_HEIGHT_FACTOR * FONT_SIZE;
 	}
 
-	/** {@code lq.cao(text)}: the original's 6.0f font width; vanilla width at the same scale. */
-	private static float textWidth(TextRenderer font, String text, float textScale) {
-		return font.getWidth(text) * textScale;
-	}
-
-	/** {@code lC.cer}: text at the original's px size (vanilla font scaled size/9). */
-	private static void drawText(DrawContext ctx, TextRenderer font, String text, float x, float y, float textScale,
-			int argb) {
-		ctx.getMatrices().pushMatrix();
-		ctx.getMatrices().translate(x, y);
-		ctx.getMatrices().scale(textScale, textScale);
-		ctx.drawText(font, text, 0, 0, argb, false);
-		ctx.getMatrices().popMatrix();
-	}
-
 	/**
-	 * {@code lC.cdg}/{@code lC.cdh} (lC.class cdg:0-26 / cdh:0-31): rounded fill, corners approximated by
-	 * inset fills (framework approximation, cf. GuiDraw#fillRounded). The {@code kg.bOC(2.0f)} parameter of
-	 * {@code cdh} is unrecovered [U] and dropped.
+	 * The per-frame text/background surface: the recovered <b>medium</b> MSDF
+	 * sheet (lE.WTzbi, gui-dump lines 427-431) through the {@code gui_msdf}
+	 * pipeline, the recovered {@code shape.glsl} rounded fill through
+	 * {@link GuiDraw#fillRounded}, and the vanilla font only as the fallback
+	 * when the MSDF sheet/pipeline is unavailable.
 	 */
-	private static void fillRounded(DrawContext ctx, float x, float y, float w, float h, float radius, int argb) {
-		if (w <= 0.0f || h <= 0.0f) {
-			return;
+	private static final class TagRenderer {
+		private static final float LAYOUT_SPACING = 0.25f;
+		private static final float DRAW_SPACING = 0.025f;
+
+		private final GuiDraw draw;
+		private final TextRenderer vanilla;
+		private final MsdfFont msdf;
+
+		TagRenderer(DrawContext ctx, float delta, TextRenderer vanilla) {
+			this.draw = new GuiDraw(ctx, 0, 0, delta, vanilla);
+			this.vanilla = vanilla;
+			this.msdf = MsdfFont.of(MsdfFont.MEDIUM);
 		}
-		int r = Math.round(Math.min(radius, Math.min(w, h) / 2.0f));
-		int ix = Math.round(x);
-		int iy = Math.round(y);
-		int iw = Math.round(w);
-		int ih = Math.round(h);
-		ctx.fill(ix + r, iy, ix + iw - r, iy + ih, argb);
-		ctx.fill(ix, iy + r, ix + r, iy + ih - r, argb);
-		ctx.fill(ix + iw - r, iy + r, ix + iw, iy + ih - r, argb);
+
+		/** {@code lq.cao} → {@code lj.bYw}: Σ(advance·size + 0.25f). */
+		float width(String text) {
+			if (text == null || text.isEmpty()) {
+				return 0.0f;
+			}
+			if (msdf == null) {
+				return vanilla.getWidth(text) * (FONT_SIZE / FONT_BASE);
+			}
+			float total = 0.0f;
+			for (int i = 0; i < text.length(); i++) {
+				total += msdf.advance(text.charAt(i), FONT_SIZE) + LAYOUT_SPACING;
+			}
+			return total;
+		}
+
+		/**
+		 * {@code lC.cer} → {@code kJ.bUe}: baseline = top + 0.7·size, pen step
+		 * = advance·size + 0.025·size.
+		 */
+		void draw(String text, float x, float topY, int argb) {
+			if (text == null || text.isEmpty()) {
+				return;
+			}
+			ColorF color = ColorF.fromArgb(argb);
+			if (msdf == null) {
+				draw.text(vanilla, text, x, topY, FONT_SIZE, color);
+				return;
+			}
+			float glyphTop = topY + lineHeight() - msdf.ascent(FONT_SIZE);
+			float pen = x;
+			for (int i = 0; i < text.length(); i++) {
+				char codepoint = text.charAt(i);
+				if (msdf.has(codepoint)) {
+					draw.text(msdf, String.valueOf(codepoint), pen, glyphTop, FONT_SIZE, color);
+				}
+				pen += msdf.advance(codepoint, FONT_SIZE) + DRAW_SPACING * FONT_SIZE;
+			}
+		}
+
+		/** {@code lC.cdg/cdh}: recovered shape SDF, with GuiDraw's inset fallback. */
+		void rounded(float x, float y, float width, float height, float radius, int argb) {
+			draw.fillRounded(x, y, width, height, radius, ColorF.fromArgb(argb));
+		}
 	}
 
 	/**

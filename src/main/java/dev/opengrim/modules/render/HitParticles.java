@@ -9,11 +9,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.Frustum;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -49,17 +52,63 @@ import dev.opengrim.settings.ModeSetting;
  *       {@code jJ.bIA} visibility gate, {@code mq.clq} pass, optional glow pass {@code mq.clr}.</li>
  * </ul>
  *
- * <p>high-probability guess: the drawn billboard (a flat quad, 0.07-scaled, camera-facing, rotated by the
- * particle angle, plus a 2× glow quad) is a substitute for the original's textured {@code mo}-style sprites
- * and its post-process glow pass ({@code ob.cBv} texture id and {@code mo.clD()} identifiers unrecovered,
- * analysis/specs/casesafe/handlers/dc.md §Unrecovered). The {@code Time Before Disappear} ms factor ({@code ZRQxW}, mm.java:79) is
- * inferred 1000 from the setting's " s" suffix; the physics constants are exact bytecode literals.
+ * <p>Draw path recovered 1:1 from {@code mm.cls/clq/clr} (mm.java:88-230) and {@code mo}
+ * (mo.java:205-213, 224-226):
+ * <ul>
+ *   <li>{@code mm.cls}: translate {@code pos - camera} ({@code jI.bIs}), scale 0.07, translate
+ *       {@code +Scale/2} on all axes ({@code jI.bIt}), billboard
+ *       {@code RotationAxis.Y(-cameraYaw) * RotationAxis.X(cameraPitch)} ({@code jI.bIu}),
+ *       {@code RotationAxis.Z(angle += tickDelta * rotSpeed)}, translate {@code -Scale/2}.</li>
+ *   <li>{@code mm.clq}: push, {@code cls}, quad {@code (0,0)} size {@code Scale×Scale},
+ *       tinted by the Color setting, pop.</li>
+ *   <li>{@code mm.clr} (Glow): push, {@code cls} again (so the angle advances a second time),
+ *       quad offset {@code (Scale-2Scale)/2 = -Scale/2} size {@code 2Scale×2Scale}, same tint,
+ *       pop. The original flushes the core batch, swaps to {@code ob.cBv(glow)}, then draws
+ *       this pass; the rebuild emits the core layer first and the glow layer second.</li>
+ * </ul>
+ *
+ * <p>The eight {@code mo} enum textures are the recovered raster assets
+ * ({@code analysis/decompiled/bootstrap/offline/assets/raster-assets.bin}, keys
+ * {@code star}, {@code snowflake}, {@code ghosts}, {@code heart}, {@code diamond},
+ * {@code thunder}, {@code moon}, {@code cloud}); the Glow pass uses the recovered
+ * {@code glow} sprite. They ship under
+ * {@code assets/opengrim/textures/particles/} and are registered through
+ * {@link ParticleTextures}, then bound with
+ * {@code RenderLayers.entityTranslucent} (no cull, translucent, LEQUAL depth — the
+ * original batch state {@code kM.defaultState().bVG(LEQUAL_DEPTH_TEST)}). Sprites are
+ * pure-white alpha masks, so the Color setting tints them directly, and V is mapped
+ * with 0 at the top like vanilla billboards.
+ *
+ * <p>[G] The assignment mode→sprite follows the recovered asset names and the
+ * {@code abZ} mode index order; the {@code mo} DES plaintexts themselves remain
+ * unrecovered (mo.java:205-212). [G] The original's post-process bloom is replaced by
+ * the original 2× glow pass drawn with the recovered {@code glow} texture; the
+ * repository's bloom shaders are screen-space post effects with no world-render hook.
+ * [U] The {@code Time Before Disappear} ms factor ({@code ZRQxW}, mm.java:79) is
+ * inferred 1000 from the setting's " s" suffix; the physics constants are exact
+ * bytecode literals.
  */
 public class HitParticles extends Module {
 	/** cA "Rotation Angle" UI-pair second value (0.0, 180.0). */
 	private static final double ROTATION_ANGLE_ANCHOR = 180.0;
 	/** cA "Rotation Speed" UI-pair second value (0.0, 60.0). */
 	private static final double ROTATION_SPEED_ANCHOR = 60.0;
+
+	/**
+	 * mo enum texture order matching the abZ mode index (Stars … Clouds):
+	 * {@code mo.TcnVB, KePbo, Vflfx, bkxjV, kbKRO, mDCeI, KyziQ, KyHOi}
+	 * (dc.java:231; draw order dc handlers spec §Runtime model step 1).
+	 */
+	private static final String[] SPRITE_KEYS = {
+			"star", "snowflake", "ghosts", "heart", "diamond", "thunder", "moon", "cloud"
+	};
+	/** {@code ob.cBv(...)} for mm.clr's glow pass (asset key recovered as {@code glow}). */
+	private static final String GLOW_KEY = "glow";
+	/** Full-bright light, matching the original kM batch default (Circle ESP convention). */
+	private static final int FULL_BRIGHT = 0xF000F0;
+
+	/** The mo enum loads all textures at class init in the original. */
+	private static boolean texturesLoaded;
 
 	private final ModeSetting particles = register(new ModeSetting("particles",
 			List.of("Stars", "Snowflakes", "Ghost", "Hearts", "Diamonds", "Thunders", "Moons", "Clouds"), "Stars"));
@@ -207,6 +256,9 @@ public class HitParticles extends Module {
 		}
 
 		long now = System.currentTimeMillis();
+		// ob.cBv loads the mo enum textures at class init; register them on the
+		// client thread outside the render pass (Circle ESP convention).
+		loadTextures();
 		// Time.VC() (int) * ZRQxW (mm.java:79; inferred 1000 = ms/s from the
 		// " s" suffix).
 		long lifetimeMs = timeBeforeDisappear.getValue().intValue() * 1000L;
@@ -251,6 +303,22 @@ public class HitParticles extends Module {
 		return ThreadLocalRandom.current().nextDouble(left, right);
 	}
 
+	/**
+	 * abZ(go.sX), dc handlers spec §Runtime model step 2-5:
+	 * <ol>
+	 *   <li>map the Particles index to an {@code mo} style texture and start the batch with
+	 *       {@code kM.defaultState().bVG(LEQUAL_DEPTH_TEST)};</li>
+	 *   <li>visibility-gate each particle at its interpolated position ({@code jJ.bIA});</li>
+	 *   <li>draw every core billboard ({@code mq.clq});</li>
+	 *   <li>if Glow: flush, swap to the glow texture and draw every 2× glow billboard
+	 *       ({@code mq.clr});</li>
+	 *   <li>end the batch.</li>
+	 * </ol>
+	 * The rebuild's {@link VertexConsumerProvider} flushes each requested layer in
+	 * creation order, so requesting the core layer first and the glow layer second is
+	 * the equivalent of the original flush + {@code swapTexture} (both are
+	 * {@link RenderLayers#entityTranslucent} = no cull, translucent, LEQUAL depth).
+	 */
 	@Subscribe
 	public void onWorldRender(WorldRenderEvent event) {
 		if (event.phase() != WorldRenderEvent.Phase.AFTER_ENTITIES || particlesList.isEmpty()) {
@@ -263,56 +331,45 @@ public class HitParticles extends Module {
 
 		MatrixStack matrices = event.context().matrices();
 		VertexConsumerProvider consumers = event.context().consumers();
-		Vec3d cam = event.camera().getCameraPos();
-		float delta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
+		Camera camera = event.camera();
+		Vec3d cam = camera.getCameraPos();
+		float delta = client.getRenderTickCounter().getTickProgress(true);
+		int argb = color.getValue();
+
+		Identifier sprite = spriteForKey(SPRITE_KEYS[Math.max(0,
+				Math.min(SPRITE_KEYS.length - 1, particles.getModes().indexOf(particles.getValue())))]);
+		if (sprite == null) {
+			return;
+		}
+
+		// abZ step 3: jJ.bIA over the interpolated positions (point box ±0.5).
+		Frustum frustum = client.worldRenderer.getCapturedFrustum();
 
 		matrices.push();
 		try {
 			matrices.translate(-cam.x, -cam.y, -cam.z);
 
-			float r = color.redF();
-			float g = color.greenF();
-			float b = color.blueF();
-			float a = color.alphaF();
-
-			VertexConsumer vc = consumers.getBuffer(RenderLayers.debugFilledBox());
-
-			// abZ step 3: jJ.bIA visibility over the interpolated positions
-			// (Trails point-box convention; a null captured frustum renders).
-			Frustum frustum = client.worldRenderer.getCapturedFrustum();
-
+			// abZ step 4a: core pass on the style texture (mq.clq, mm.java:224-230).
+			VertexConsumer core = consumers.getBuffer(RenderLayers.entityTranslucent(sprite));
 			for (ParticleInstance p : particlesList) {
 				Vec3d renderPos = p.getLerpedPos(delta);
-				if (frustum != null && !frustum.isVisible(new Box(
-						renderPos.x - 0.5, renderPos.y - 0.5, renderPos.z - 0.5,
-						renderPos.x + 0.5, renderPos.y + 0.5, renderPos.z + 0.5))) {
+				if (!isVisible(frustum, renderPos)) {
 					continue;
 				}
-				float sz = p.getParticleScale() * 0.07f;
-				float half = sz / 2.0f;
+				drawBillboard(matrices, core, camera, renderPos, p, delta, 1.0f, argb);
+			}
 
-				// mq.clq pass (mm.java:224-230): cls transform, h-sized quad.
-				matrices.push();
-				try {
-					matrices.translate(renderPos.x, renderPos.y, renderPos.z);
-					matrices.multiply(event.camera().getRotation());
-					matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(p.advanceAngle(delta)));
-					drawBillboardQuad(matrices.peek(), vc, -half, -half, half, half, r, g, b, a);
-				} finally {
-					matrices.pop();
-				}
-
-				if (glow.getValue()) {
-					// mq.clr glow pass (mm.java:212-222): re-enters cls (the angle
-					// advances a second time) and draws a 2× quad in the same color.
-					matrices.push();
-					try {
-						matrices.translate(renderPos.x, renderPos.y, renderPos.z);
-						matrices.multiply(event.camera().getRotation());
-						matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(p.advanceAngle(delta)));
-						drawBillboardQuad(matrices.peek(), vc, -sz, -sz, sz, sz, r, g, b, a);
-					} finally {
-						matrices.pop();
+			// abZ step 4b: glow pass after the texture swap (mq.clr, mm.java:212-222).
+			if (glow.getValue()) {
+				Identifier glowSprite = spriteForKey(GLOW_KEY);
+				if (glowSprite != null) {
+					VertexConsumer glowConsumer = consumers.getBuffer(RenderLayers.entityTranslucent(glowSprite));
+					for (ParticleInstance p : particlesList) {
+						Vec3d renderPos = p.getLerpedPos(delta);
+						if (!isVisible(frustum, renderPos)) {
+							continue;
+						}
+						drawBillboard(matrices, glowConsumer, camera, renderPos, p, delta, 2.0f, argb);
 					}
 				}
 			}
@@ -321,12 +378,70 @@ public class HitParticles extends Module {
 		}
 	}
 
-	private static void drawBillboardQuad(MatrixStack.Entry entry, VertexConsumer vc,
-			float minX, float minY, float maxX, float maxY, float r, float g, float b, float a) {
-		vc.vertex(entry, minX, minY, 0.0f).color(r, g, b, a);
-		vc.vertex(entry, maxX, minY, 0.0f).color(r, g, b, a);
-		vc.vertex(entry, maxX, maxY, 0.0f).color(r, g, b, a);
-		vc.vertex(entry, minX, maxY, 0.0f).color(r, g, b, a);
+	/** jJ.bIA: box ±0.5 around the point; a null captured frustum renders. */
+	private static boolean isVisible(Frustum frustum, Vec3d pos) {
+		return frustum == null || frustum.isVisible(new Box(
+				pos.x - 0.5, pos.y - 0.5, pos.z - 0.5,
+				pos.x + 0.5, pos.y + 0.5, pos.z + 0.5));
+	}
+
+	/**
+	 * mm.cls (mm.java:88-97) + mm.clq/clr quad. {@code sizeFactor} 1 = core
+	 * (0,0,Scale,Scale), 2 = glow ((Scale-2Scale)/2, (Scale-2Scale)/2, 2Scale, 2Scale).
+	 * {@code angle += tickDelta * rotSpeed} runs inside the transform, so the glow pass
+	 * advances the angle a second time (the original cls is called once per pass).
+	 */
+	private static void drawBillboard(MatrixStack matrices, VertexConsumer vc, Camera camera,
+			Vec3d pos, ParticleInstance p, float delta, float sizeFactor, int argb) {
+		float h = p.getParticleScale();
+		float size = h * sizeFactor;
+		float offset = (h - size) / 2.0f;
+
+		matrices.push();
+		try {
+			// jI.bIs: the outer translate already removed the camera position.
+			matrices.translate(pos.x, pos.y, pos.z);
+			matrices.scale(0.07f, 0.07f, 0.07f);              // cls: float f3 = 0.07f
+			matrices.translate(h / 2.0, h / 2.0, h / 2.0);    // jI.bIt(stack, hMiLh / 2.0f)
+			// jI.bIu: Y(-yaw) then X(pitch).
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-camera.getYaw()));
+			matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
+			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(p.advanceAngle(delta)));
+			matrices.translate(-h / 2.0, -h / 2.0, -h / 2.0); // jI.bIt(stack, -hMiLh / 2.0f)
+
+			quad(matrices.peek(), vc, offset, offset, size, size, argb);
+		} finally {
+			matrices.pop();
+		}
+	}
+
+	/** kG.bTv(stack, x, y, 0, w, h), textured full-sprite (V=0 = top). */
+	private static void quad(MatrixStack.Entry entry, VertexConsumer vc,
+			float x, float y, float width, float height, int argb) {
+		float x1 = x + width;
+		float y1 = y + height;
+		vc.vertex(entry, x, y, 0.0f).color(argb).texture(0.0f, 1.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(FULL_BRIGHT).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, x1, y, 0.0f).color(argb).texture(1.0f, 1.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(FULL_BRIGHT).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, x1, y1, 0.0f).color(argb).texture(1.0f, 0.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(FULL_BRIGHT).normal(entry, 0.0f, 0.0f, 1.0f);
+		vc.vertex(entry, x, y1, 0.0f).color(argb).texture(0.0f, 0.0f)
+				.overlay(OverlayTexture.DEFAULT_UV).light(FULL_BRIGHT).normal(entry, 0.0f, 0.0f, 1.0f);
+	}
+
+	/** {@code ob.cBv(String)}: register all eight style sprites plus glow on first tick. */
+	private static void loadTextures() {
+		if (texturesLoaded) {
+			return;
+		}
+		ParticleTextures.preload(SPRITE_KEYS);
+		ParticleTextures.preload(GLOW_KEY);
+		texturesLoaded = true;
+	}
+
+	private static Identifier spriteForKey(String key) {
+		return ParticleTextures.get(key);
 	}
 
 	@Override

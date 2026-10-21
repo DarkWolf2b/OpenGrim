@@ -9,7 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
@@ -20,10 +25,18 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import dev.opengrim.event.Subscribe;
+import dev.opengrim.gui.ui.ColorF;
+import dev.opengrim.gui.ui.GuiDraw;
+import dev.opengrim.gui.ui.MsdfFont;
+import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.event.impl.WorldRenderEvent;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
@@ -85,6 +98,8 @@ import dev.opengrim.settings.ModeSetting;
  * </ul>
  */
 public class LogoutSpots extends Module {
+	private static final Identifier HUD_ID = Identifier.of("opengrim", "logout_spots_hud");
+
 	private final DoubleSetting refreshTimer = register(new DoubleSetting("refresh_timer", 1.0, 0.0, 100.0, 5.0, " s"));
 	private final BoolSetting loginNotification = register(new BoolSetting("login_notification", false));
 	private final ModeSetting positionRenderMode = register(new ModeSetting("position_render_mode",
@@ -118,6 +133,7 @@ public class LogoutSpots extends Module {
 
 	@Override
 	public void onEnable() {
+		HudElementRegistry.addLast(HUD_ID, this::renderHud);
 		// aaj (dp.java:368-394): rebuild the world snapshot, seed the tab-list
 		// snapshot, clear recorded spots.
 		rebuildWorldPlayers();
@@ -127,6 +143,11 @@ public class LogoutSpots extends Module {
 		}
 		loggedOut.clear();
 		spots.clear();
+	}
+
+	@Override
+	protected void onDisable() {
+		HudElementRegistry.removeElement(HUD_ID);
 	}
 
 	@Override
@@ -255,6 +276,123 @@ public class LogoutSpots extends Module {
 			}
 		} finally {
 			matrices.pop();
+		}
+	}
+
+	/**
+	 * {@code ahv(gk)} (dp.java:627-708): one projected name label per logged-out
+	 * player at {@code entityPos + Height}, medium MSDF 9.0, theme text color,
+	 * optional {@code lC.ccW} rounded background. The rebuild's HUD element is
+	 * the same {@link DrawContext} surface as {@code gk.baT()}.
+	 */
+	private void renderHud(DrawContext ctx, RenderTickCounter tickCounter) {
+		if (!isEnabled() || spots.isEmpty()) {
+			return;
+		}
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (client.player == null || client.world == null) {
+			return;
+		}
+		GuiDraw draw = new GuiDraw(ctx, 0, 0, tickCounter.getTickProgress(true), client.textRenderer);
+		LabelText text = new LabelText(draw, client.textRenderer);
+		Camera camera = client.gameRenderer.getCamera();
+		Vec3d cameraPos = camera.getCameraPos();
+		Matrix4f rotation = new Matrix4f().rotation(camera.getRotation());
+		float fov = client.options.getFov().getValue().floatValue();
+		Matrix4f projection = client.gameRenderer.getBasicProjectionMatrix(fov);
+		int width = ctx.getScaledWindowWidth();
+		int heightPx = ctx.getScaledWindowHeight();
+		int color = Theme.get().text().argb();
+		double labelHeight = height.getValue().doubleValue();
+		float lineHeight = 0.7f * 9.0f;
+
+		for (LogoutSpot spot : spots.values()) {
+			Vec3d pos = spot.pos();
+			Vec2f screen = project(new Vec3d(pos.x, pos.y + labelHeight, pos.z), cameraPos, rotation,
+					projection, width, heightPx);
+			if (screen == null) {
+				continue;
+			}
+			String name = spot.name();
+			float textW = text.width(name, 9.0f);
+			float boxW = textW + 8.0f;
+			float boxH = lineHeight + 4.0f;
+			float textX = screen.x - textW / 2.0f;
+			float textY = screen.y + (lineHeight - boxH) / 2.0f;
+			if (background.getValue()) {
+				drawCard(draw, screen.x - boxW / 2.0f, screen.y, boxW, boxH);
+			}
+			text.draw(name, textX, textY, 9.0f, color);
+		}
+	}
+
+	/** lC#ccW: Blur backdrop with the Solid branch fallback (Background setting). */
+	private static void drawCard(GuiDraw draw, float x, float y, float width, float height) {
+		if (draw.blurredBackdrop(x, y, width, height, 3.0f, ColorF.WHITE, 0.0f, 1.0f)) {
+			return;
+		}
+		Theme theme = Theme.get();
+		draw.fillRounded(x, y, width, height, 3.0f,
+				theme.background().withAlphaScale(theme.backgroundStyle().opacity));
+	}
+
+	/** {@code jI.bIw}: camera-relative position -> NDC -> screen pixels; null behind the camera. */
+	private static Vec2f project(Vec3d pos, Vec3d cameraPos, Matrix4f rotation, Matrix4f projection,
+			int width, int height) {
+		Vector4f v = new Vector4f((float) (pos.x - cameraPos.x), (float) (pos.y - cameraPos.y),
+				(float) (pos.z - cameraPos.z), 1.0f);
+		v.mul(rotation).mul(projection);
+		if (v.w <= 0.0f) {
+			return null;
+		}
+		v.div(v.w);
+		return new Vec2f((v.x + 1.0f) / 2.0f * width, (1.0f - v.y) / 2.0f * height);
+	}
+
+	/** lE.WTzbi = medium MSDF, lj.bYw width, kJ.bUe baseline (cf. Nametags TagRenderer). */
+	private static final class LabelText {
+		private final GuiDraw draw;
+		private final TextRenderer vanilla;
+		private final MsdfFont msdf;
+
+		LabelText(GuiDraw draw, TextRenderer vanilla) {
+			this.draw = draw;
+			this.vanilla = vanilla;
+			this.msdf = MsdfFont.of(MsdfFont.MEDIUM);
+		}
+
+		float width(String text, float size) {
+			if (text == null || text.isEmpty()) {
+				return 0.0f;
+			}
+			if (msdf == null) {
+				return vanilla.getWidth(text) * (size / 9.0f);
+			}
+			float total = 0.0f;
+			for (int i = 0; i < text.length(); i++) {
+				total += msdf.advance(text.charAt(i), size) + 0.25f;
+			}
+			return total;
+		}
+
+		void draw(String text, float x, float topY, float size, int argb) {
+			if (text == null || text.isEmpty()) {
+				return;
+			}
+			ColorF color = ColorF.fromArgb(argb);
+			if (msdf == null) {
+				draw.text(vanilla, text, x, topY, size, color);
+				return;
+			}
+			float glyphTop = topY + 0.7f * size - msdf.ascent(size);
+			float pen = x;
+			for (int i = 0; i < text.length(); i++) {
+				char codepoint = text.charAt(i);
+				if (msdf.has(codepoint)) {
+					draw.text(msdf, String.valueOf(codepoint), pen, glyphTop, size, color);
+				}
+				pen += msdf.advance(codepoint, size) + 0.025f * size;
+			}
 		}
 	}
 

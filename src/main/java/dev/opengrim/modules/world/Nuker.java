@@ -1,7 +1,6 @@
 package dev.opengrim.modules.world;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +17,7 @@ import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.ItemListSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -86,10 +86,14 @@ import net.minecraft.world.World;
  * <ul>
  *   <li>Block To Mine default is index 0 = From List (ct default {@code kErPl=0};
  *       the previous "all" default was wrong).</li>
- *   <li>Blocks (cK) default set is jc.GjreY - every block with an item
- *       ({@code jc.bzN}, jc.java:1335-1352); alL's From List branch tests
- *       {@code blocks.contains(block.asItem())} (cK.WY, cK.java:552-554). The
- *       previous port checked a permanently empty string set.</li>
+ *   <li>Blocks (cK): the available pool is jc.GjreY - every block with an item
+ *       ({@code jc.bzN}, jc.java:1335-1352). {@code WM(jc.GjreY)} only fills that
+ *       pool; the default {@code nppnu = true} means "empty selection allowed",
+ *       so {@code Xa(eAose, true)} leaves the initial selection EMPTY
+ *       (cK.java:54-60, 121-203) and From List mines nothing until items are
+ *       picked. {@code mnYah} decrypts to Integer.MAX_VALUE
+ *       (analysis/decrypted/full-dump.jsonl:22150). alL's From List branch
+ *       tests {@code blocks.contains(block.asItem())} (cK.WY, cK.java:552-554).</li>
  *   <li>Outline/Fill color defaults are the theme accent
  *       ({@code rD.dlM().bjG().bis()} = ig.bis = ie.bhJ = mG.yHyOB = 0xFF9747FF,
  *       Theme.java:80-86) and the same color with alpha 0.5 ({@code .cob(0.5f)}).</li>
@@ -109,8 +113,9 @@ import net.minecraft.world.World;
  *
  * <p>Known divergences:
  * <ul>
- *   <li>The cK "Blocks" item multiselect has no settings-API equivalent; it is a
- *       programmatic {@link #getBlocks()} set (BlockEsp precedent).</li>
+ *   <li>The cK "Blocks" widget geometry/item-icon grid is native; the port renders
+ *       a real scrollable item list (search + check rows) and keeps the full
+ *       selected-set semantics ([S], see {@link ItemListSetting}).</li>
  *   <li>gv (pre-rotation tick) is folded into the client tick and gA (input) is
  *       polled with an edge latch - neither event exists on the port's bus.</li>
  *   <li>gV (block state change) has no bus event; the break is observed at the
@@ -120,8 +125,9 @@ import net.minecraft.world.World;
  * </ul>
  */
 public class Nuker extends Module {
-	/** cK "Blocks" (fEoGq, dI.java:143): placeholder node - the item multiselect is programmatic. */
-	private final GroupSetting blocksGroup = register(new GroupSetting("blocks"));
+	/** cK "Blocks" (fEoGq, dI.java:143): item multiselect, pool jc.GjreY. */
+	private final ItemListSetting blocks = register(
+			new ItemListSetting("blocks", defaultBlockItems(), Integer.MAX_VALUE, true, null));
 	private final DoubleSetting range = register(new DoubleSetting("range", 0.1, 2.0, 6.0, 4.5, " blocks"));
 	private final DoubleSetting delay = register(new DoubleSetting("delay", 1.0, 0.0, 20.0, 0.0, " ticks"));
 	private final ModeSetting blockToMine = register(new ModeSetting("block_to_mine",
@@ -140,11 +146,19 @@ public class Nuker extends Module {
 	private final BoolSetting filled = register(new BoolSetting("filled", false));
 	private final BoolSetting mineInScreens = register(new BoolSetting("mine_in_screens", false));
 
-	/** ms per tick used by mT.cpD (dI.java:733). [G] - see class javadoc. */
+	/**
+	 * ms per tick used by mT.cpD (dI.java:733).
+	 *
+	 * <p>[G] not recovered: {@code mT.fCqJQ} is DES-CBC-decrypted in
+	 * {@code mT.<clinit>} from the block {@code -5376001920620031636L} with the
+	 * key {@code StDmr ^ 0x676A8E58E963L} (mT.java:29-54, payload-named-cfr).
+	 * {@code StDmr} itself is {@code gb.aYR(1886939362979048446L,
+	 * 7818008554207186013L, …).a(58514490112402L)} — native key derivation with
+	 * no recovered constant (gb.java declares {@code aYR}/{@code a} native), so
+	 * the quantum cannot be decrypted statically; 50 ms is the vanilla tick
+	 * quantum, used as a labelled high-probability value.
+	 */
 	private static final long MS_PER_TICK = 50L;
-
-	/** cK "Blocks" value set (eAose); default jc.GjreY, jc.java:2168. */
-	private final Set<Item> blocks = new LinkedHashSet<>(defaultBlockItems());
 
 	private MiningTarget target;
 	private Block pickedBlock;
@@ -191,19 +205,19 @@ public class Nuker extends Module {
 		return items;
 	}
 
-	/** cK.WL (cK.java:117-119): the current "Blocks" value set. */
+	/** cK.WP (cK.java:401-403): the selected "Blocks" subset (eAose). */
 	public Set<Item> getBlocks() {
-		return Collections.unmodifiableSet(blocks);
+		return blocks.getItems();
 	}
 
-	/** cK.WV (cK.java:484): add an item to the "Blocks" set. */
+	/** cK.WU (cK.java:584-620): add an item to the "Blocks" selection. */
 	public void addBlock(Item item) {
-		blocks.add(item);
+		blocks.select(item);
 	}
 
-	/** cK.WU (cK.java:584): remove an item from the "Blocks" set. */
+	/** cK.WV (cK.java:484-550): remove (toggle off) an item from "Blocks". */
 	public void removeBlock(Item item) {
-		blocks.remove(item);
+		blocks.deselect(item);
 	}
 
 	@Override
@@ -472,7 +486,7 @@ public class Nuker extends Module {
 		}
 		if ("from_list".equals(blockToMine.getValue())) {
 			// cK.WY (cK.java:552-554): the block's item is in the "Blocks" set.
-			return blocks.contains(block.asItem());
+			return blocks.contains(block);
 		}
 		if ("selected".equals(blockToMine.getValue())) {
 			return block == pickedBlock;

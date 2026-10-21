@@ -10,11 +10,11 @@ import java.util.Set;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BuiltBuffer;
 import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.BufferAllocator;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -23,6 +23,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import dev.opengrim.event.Subscribe;
 import dev.opengrim.event.impl.WorldRenderEvent;
@@ -91,15 +92,19 @@ import dev.opengrim.settings.StringSetting;
  * <li>[G] {@code kz.bSr} constants are unrecoverable (kz class key is
  *     {@code gb.aYR}-derived and kz is absent from the runtime dump): the ring
  *     segment count is a high-probability guess ({@value #RING_SEGMENTS}) and
- *     the rim alpha is a high-probability guess ({@value #RIM_ALPHA}); the
- *     TRIANGLE_STRIP is emulated as {@code DEBUG_FILLED_BOX} quads (our
- *     consumers API has no strip layer) with identical geometry and winding.</li>
+ *     the rim alpha is a high-probability guess ({@value #RIM_ALPHA}). The
+ *     recovered {@code kR.PMnQE} state is used for real: POSITION_COLOR
+ *     TRIANGLE_STRIP, blend {@code lh.aApMr} (SRC_ALPHA, ONE_MINUS_SRC_ALPHA,
+ *     ONE, ONE), no depth test, no cull ({@link EffectDraw}).</li>
  * <li>[G] texture light values ({@code kz.bSr("a",4097/28672)}) are replaced by
- *     full-bright 0xF000F0; the textured layer (original {@code kR.Dmmsd}) is
- *     ported to {@code RenderLayers.entityTranslucent} (no cull, blended).</li>
+ *     full-bright; the textured quad uses the recovered
+ *     {@code kR.Dmmsd}/{@code kz.bSh} state (POSITION_COLOR_TEXTURE_LIGHT,
+ *     {@code lh.aApMr}, no depth test, no cull, texture bound as
+ *     {@code Sampler0} from the texture's own sampler) through
+ *     {@link EffectDraw}.</li>
  * <li>[G] {@code jd.bAm(String)} (native) is approximated by a non-blank
- *     http(s) test; {@code ob.cBv} assets are generated procedurally
- *     ({@link CircleTextures}).</li>
+ *     http(s) test; {@code ob.cBv} assets are the recovered
+ *     {@code circle}/{@code circle_glow} PNGs loaded by {@link CircleTextures}.</li>
  * <li>[U] the original does not clear its draw list or phase on disable (no
  *     {@code YO} override in dw); this port matches that and also keeps the
  *     cF entity selection out of the settings tree — our framework has no
@@ -207,7 +212,6 @@ public class CircleEsp extends Module {
 			return;
 		}
 		MatrixStack stack = event.context().matrices();
-		VertexConsumerProvider consumers = event.context().consumers();
 		float delta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true);
 		float scale = circleScale.getValue().floatValue();
 		int period = speed.getValue().intValue() * 100;
@@ -217,9 +221,9 @@ public class CircleEsp extends Module {
 		}
 		for (Entity entity : targets) {
 			if (textured) {
-				renderTextured(entity, stack, consumers, delta, scale, period);
+				renderTextured(entity, stack, delta, scale, period);
 			} else {
-				renderSolid(entity, stack, consumers, event.camera().getCameraPos(), delta, scale);
+				renderSolid(entity, stack, event.camera().getCameraPos(), delta, scale);
 			}
 		}
 	}
@@ -273,8 +277,7 @@ public class CircleEsp extends Module {
 	 * bytecode-verified: the half-period sine bob is applied only when
 	 * {@code Animated} (DVJWE) is on.
 	 */
-	private void renderTextured(Entity entity, MatrixStack stack, VertexConsumerProvider consumers,
-			float delta, float scale, int period) {
+	private void renderTextured(Entity entity, MatrixStack stack, float delta, float scale, int period) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		Vec3d pos = entity.getLerpedPos(delta);
 		double d2 = System.currentTimeMillis() % (long) period;
@@ -289,25 +292,33 @@ public class CircleEsp extends Module {
 			stack.translate(pos.x - cam.x, pos.y - cam.y, pos.z - cam.z);
 			stack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0f));
 			MatrixStack.Entry entry = stack.peek();
-			VertexConsumer vc = consumers.getBuffer(RenderLayers.entityTranslucent(texture));
-			int argb = color.getValue();
-			vertex(vc, entry, -scale, scale, argb, 0.0f, 1.0f);
-			vertex(vc, entry, scale, scale, argb, 1.0f, 1.0f);
-			vertex(vc, entry, scale, -scale, argb, 1.0f, 0.0f);
-			vertex(vc, entry, -scale, -scale, argb, 0.0f, 0.0f);
+			// kz.bSh: POSITION_COLOR_TEXTURE_LIGHT quad through kR.Dmmsd.
+			BufferAllocator allocator = new BufferAllocator(
+					VertexFormats.POSITION_COLOR_TEXTURE_LIGHT.getVertexSize() * 4);
+			try {
+				BufferBuilder builder = new BufferBuilder(allocator, VertexFormat.DrawMode.QUADS,
+						VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+				int argb = color.getValue();
+				vertex(builder, entry, -scale, scale, argb, 0.0f, 1.0f);
+				vertex(builder, entry, scale, scale, argb, 1.0f, 1.0f);
+				vertex(builder, entry, scale, -scale, argb, 1.0f, 0.0f);
+				vertex(builder, entry, -scale, -scale, argb, 0.0f, 0.0f);
+				BuiltBuffer built = builder.end();
+				EffectDraw.drawTextured(built, texture);
+			} finally {
+				allocator.close();
+			}
 		} finally {
 			stack.pop();
 		}
 	}
 
-	private static void vertex(VertexConsumer vc, MatrixStack.Entry entry, float x, float y, int argb,
+	private static void vertex(BufferBuilder vc, MatrixStack.Entry entry, float x, float y, int argb,
 			float u, float v) {
 		vc.vertex(entry, x, y, 0.0f)
 				.color(argb)
 				.texture(u, v)
-				.overlay(OverlayTexture.DEFAULT_UV)
-				.light(FULL_BRIGHT)
-				.normal(entry, 0.0f, 0.0f, 1.0f);
+				.light(FULL_BRIGHT);
 	}
 
 	/**
@@ -315,8 +326,7 @@ public class CircleEsp extends Module {
 	 * Camera-relative vertical band; the TRIANGLE_STRIP (bottom,top pairs) is
 	 * emitted as quads with the same winding.
 	 */
-	private void renderSolid(Entity entity, MatrixStack stack, VertexConsumerProvider consumers,
-			Vec3d cam, float delta, float scale) {
+	private void renderSolid(Entity entity, MatrixStack stack, Vec3d cam, float delta, float scale) {
 		float p = MathHelper.lerp(delta, phasePrev, phase);
 		double top = Math.abs(1.0 + Math.sin(p - 0.44999998807907104)) / 2.0;
 		double bottom = Math.abs(1.0 + Math.sin(p)) / 2.0;
@@ -325,24 +335,28 @@ public class CircleEsp extends Module {
 		double bottomY = entity.lastRenderY + (entity.getY() - entity.lastRenderY) * (double) delta
 				- cam.y + bottom * (double) entity.getHeight();
 		double radius = (double) entity.getWidth() * (double) scale;
-		MatrixStack.Entry entry = stack.peek();
-		VertexConsumer vc = consumers.getBuffer(RenderLayers.debugFilledBox());
 		int rgb = color.getValue() & 0x00FFFFFF;
 		int bottomColor = rgb | RIM_ALPHA << 24;
 		int topColor = rgb; // alpha 0 (jk.bDv(color, 0), kz.java:370)
-		for (int i = 0; i < RING_SEGMENTS; i++) {
-			float a0 = (float) i * 6.2831855f / RING_SEGMENTS;
-			float a1 = (float) (i + 1) * 6.2831855f / RING_SEGMENTS;
-			float x0 = (float) (topRel.x + Math.cos(a0) * radius);
-			float z0 = (float) (topRel.z + Math.sin(a0) * radius);
-			float x1 = (float) (topRel.x + Math.cos(a1) * radius);
-			float z1 = (float) (topRel.z + Math.sin(a1) * radius);
-			float ty = (float) topRel.y;
-			float by = (float) bottomY;
-			vc.vertex(entry, x0, by, z0).color(bottomColor);
-			vc.vertex(entry, x0, ty, z0).color(topColor);
-			vc.vertex(entry, x1, ty, z1).color(topColor);
-			vc.vertex(entry, x1, by, z1).color(bottomColor);
+
+		MatrixStack.Entry entry = stack.peek();
+		// kz.bSi: POSITION_COLOR TRIANGLE_STRIP of bottom/top pairs through kR.PMnQE.
+		BufferAllocator allocator = new BufferAllocator(VertexFormats.POSITION_COLOR.getVertexSize()
+				* (RING_SEGMENTS + 1) * 2);
+		try {
+			BufferBuilder builder = new BufferBuilder(allocator, VertexFormat.DrawMode.TRIANGLE_STRIP,
+					VertexFormats.POSITION_COLOR);
+			for (int i = 0; i <= RING_SEGMENTS; i++) {
+				float angle = (float) i * 6.2831855f / RING_SEGMENTS;
+				float x = (float) (topRel.x + Math.cos(angle) * radius);
+				float z = (float) (topRel.z + Math.sin(angle) * radius);
+				builder.vertex(entry, x, (float) bottomY, z).color(bottomColor);
+				builder.vertex(entry, x, (float) topRel.y, z).color(topColor);
+			}
+			BuiltBuffer built = builder.end();
+			EffectDraw.drawSolid(built);
+		} finally {
+			allocator.close();
 		}
 	}
 

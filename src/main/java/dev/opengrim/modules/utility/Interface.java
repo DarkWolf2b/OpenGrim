@@ -2,6 +2,8 @@ package dev.opengrim.modules.utility;
 
 import java.util.List;
 
+import dev.opengrim.event.Subscribe;
+import dev.opengrim.event.impl.KeyEvent;
 import dev.opengrim.gui.screen.ClickGuiScreen;
 import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.module.Module;
@@ -38,11 +40,16 @@ import org.lwjgl.glfw.GLFW;
  * <li>YO(): toggle lifecycle hook calling baa(true) — self-re-enable (fX.java:226-229)</li>
  * </ul>
  *
+ * <p>Key handling: {@code aYc(gA)} is wired to {@link KeyEvent}, posted by
+ * {@link dev.opengrim.mixin.KeyboardMixin} at the head of
+ * {@code Keyboard#onKey} (the shell's {@code KeyboardInputMixin}). The exact
+ * original order is preserved: in-game gate ({@code bab()}) → {@code action == 1}
+ * → {@code currentScreen == null} → key == Emote Key → F3 not held → open the
+ * Click GUI ({@code bD.LD()}, fX_.java:231-287). The former GLFW edge detection
+ * in {@link #onTick} is gone.
+ *
  * <p>Framework divergences (labeled):
  * <ul>
- * <li>[G] No key event exists in this framework; the aYc trigger is emulated by
- *     edge-detecting the Emote Key with GLFW in {@link #onTick} (the bab() in-game
- *     gate is ported in full).</li>
  * <li>[G] The cI "Edit Theme" action opens the aZ(2.0f) theme editor routed via
  *     aw.route (fX.java:96-103); this rebuild has no theme-editor screen, so the
  *     BoolSetting trigger opens the ClickGuiScreen instead.</li>
@@ -55,7 +62,6 @@ public class Interface extends Module {
 	private final BoolSetting editTheme = register(new BoolSetting("edit_theme", false));
 
 	private static int[] probeChannel = new int[2];
-	private boolean emoteKeyDown;
 
 	public Interface() {
 		super("interface", "Interface", "Allows to change interface settings", ModuleCategory.CLIENT);
@@ -97,29 +103,34 @@ public class Interface extends Module {
 				client.setScreen(new ClickGuiScreen());
 			}
 		}
+	}
 
-		if (!isEnabled() || client.currentScreen != null) {
-			emoteKeyDown = false;
-			return;
-		}
+	/**
+	 * {@code aYc(gA)} (fX_.java:231-287): exact original order — in-game gate,
+	 * action == 1 (press), no open screen, Emote Key match, F3 not held, then
+	 * open the Click GUI.
+	 */
+	@Subscribe
+	public void onKey(KeyEvent event) {
+		MinecraftClient client = MinecraftClient.getInstance();
 		// bab() gate (gg.java:393-459): player, world, interaction manager, network handler.
 		if (client.player == null || client.world == null
 				|| client.interactionManager == null || client.getNetworkHandler() == null) {
-			emoteKeyDown = false;
 			return;
 		}
-
-		long handle = client.getWindow().getHandle();
-		int key = emoteKey.getValue();
-		boolean pressed = key >= 0 && GLFW.glfwGetKey(handle, key) == GLFW.GLFW_PRESS;
-
-		if (pressed && !emoteKeyDown) {
-			boolean f3Held = InputUtil.isKeyPressed(client.getWindow(), GLFW.GLFW_KEY_F3);
-			if (!f3Held) {
-				client.setScreen(new ClickGuiScreen());
-			}
+		if (event.action() != 1) {
+			return;
 		}
-		emoteKeyDown = pressed;
+		if (client.currentScreen != null) {
+			return;
+		}
+		if (event.key() != emoteKey.getValue()) {
+			return;
+		}
+		if (InputUtil.isKeyPressed(client.getWindow(), GLFW.GLFW_KEY_F3)) {
+			return;
+		}
+		client.setScreen(new ClickGuiScreen());
 	}
 
 	public static boolean isLiquidGlass() {

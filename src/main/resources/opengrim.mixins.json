@@ -5,6 +5,7 @@
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"ClientConnectionMixin",
+		"ClientPlayerInteractionManagerMixin",
 		"ClientWorldAccessor",
 		"MouseMixin",
 		"CameraMixin",
@@ -21,7 +22,13 @@
 		"ItemRendererMixin",
 		"HeldItemRendererMixin",
 		"ItemInHandRendererAccessor",
-		"SoundManagerMixin"
+		"KeyboardMixin",
+		"SoundManagerMixin",
+		"EntityRenderStateMixin",
+		"EntityRendererMixin",
+		"EntityRendererInvoker",
+		"GameRendererMixin",
+		"LivingEntityRendererMixin"
 	],
 	"mixins": [],
 	"injectors": {

@@ -28,6 +28,7 @@ public class OpenGrimClient implements ClientModInitializer {
 		dev.opengrim.hud.HudOverlay.init();
 		KeybindManager.init();
 		dev.opengrim.event.EventBridge.init();
+		dev.opengrim.modules.render.ChinaHatRenderer.init();
 		dev.opengrim.rotation.RotationManager.get().init();
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			ModuleManager.get().tick();
