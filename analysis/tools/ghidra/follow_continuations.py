@@ -23,9 +23,9 @@ from collections import OrderedDict
 
 import pyghidra
 
-DLL = '/workspace/analysis/ghidra/dumps/jna-decrypted-v2.dll'
-IN = '/workspace/analysis/ghidra/handlers-full-annotated'
-OUT = '/workspace/analysis/ghidra/continuations'
+DLL = 'analysis/ghidra/dumps/jna-decrypted-v2.dll'
+IN = 'analysis/ghidra/handlers-full-annotated'
+OUT = 'analysis/ghidra/continuations'
 IMAGE_BASE = 0x180000000
 RUNTIME_BASE = 0x6fffe7c10000
 PER_FUNC_TIMEOUT = 90
@@ -34,7 +34,7 @@ MAX_CHAIN = 24
 os.makedirs(OUT, exist_ok=True)
 
 img = open(DLL, 'rb').read()
-orig = open('/workspace/win/tmp/native/jna1.21.11', 'rb').read()
+orig = open('win/tmp/native/jna1.21.11', 'rb').read()
 
 # section map for file-offset lookup
 def sections():
@@ -99,7 +99,7 @@ pyghidra.start()
 from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
 
-with pyghidra.open_program(DLL, project_location='/workspace/win/ghidra-proj-dec',
+with pyghidra.open_program(DLL, project_location='win/ghidra-proj-dec',
                            project_name='dec', analyze=False) as flat:
     program = flat.getCurrentProgram()
     fm = program.getFunctionManager()

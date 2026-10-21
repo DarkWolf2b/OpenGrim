@@ -53,7 +53,7 @@ public class NativeDeep extends GhidraScript {
 	@Override
 	public void run() throws Exception {
 		String outPath = getScriptArgs().length > 0 ? getScriptArgs()[0]
-				: "/workspace/analysis/ghidra/deep-decomp.c";
+				: "analysis/ghidra/deep-decomp.c";
 		println("=== NativeDeep: bounded recursive decompilation ===");
 
 		DecompInterface di = new DecompInterface();

@@ -46,7 +46,7 @@ public class SlotLock extends Module {
 	private final BoolSetting[] locked = new BoolSetting[PlayerInventory.getHotbarSize()];
 
 	public SlotLock() {
-		super("slot_lock", "Slot Lock", "Disables item drop from selected slots", ModuleCategory.UTILITY);
+		super("slot_lock", "Slot Lock", "Disables item drop from selected slots", ModuleCategory.PLAYER);
 		for (int i = 0; i < locked.length; i++) {
 			locked[i] = register(new BoolSetting("slot_" + i, false));
 			lockedSlots.add(locked[i]);

@@ -66,7 +66,7 @@ public class CartAssist extends Module {
 	private boolean wasHoldingRail;
 
 	public CartAssist() {
-		super("cart_assist", "Cart Assist", "Automatically performs insta cart", ModuleCategory.WORLD);
+		super("cart_assist", "Cart Assist", "Automatically performs insta cart", ModuleCategory.COMBAT);
 		actions.add(placeRail);
 		actions.add(placeMinecart);
 		actions.add(placeProtect);

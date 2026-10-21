@@ -3,7 +3,7 @@ import java.io.*;
 
 public class ExtractCase {
     public static void main(String[] a) throws Exception {
-        String jar = "win/payload-named.jar";
+        String jar = System.getProperty("payload.jar", "payload-named.jar");
         String name = a[0]; // e.g. sixtwo/eY.class
         try (ZipFile z = new ZipFile(jar)) {
             ZipEntry e = z.getEntry(name);

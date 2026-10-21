@@ -1,6 +1,6 @@
 # OpenGrim — ground rules (always in effect)
 
-Clean-room GPL-3.0 rebuild of the "Grim 4.4" Minecraft utility mod (Fabric 1.21.11). 162/162 modules ported. Reverse-engineered behavior is translated **1:1** from the decompile — never reinvent, improve, or approximate (skill: `port-module`).
+1:1 rebuild of the "Grim 4.4" Minecraft utility mod (Fabric 1.21.11). 162/162 modules ported. Reverse-engineered behavior is translated **1:1** from the decompile — never reinvent, improve, or approximate (skill: `port-module`).
 
 ## Windows case-collision rule (critical)
 

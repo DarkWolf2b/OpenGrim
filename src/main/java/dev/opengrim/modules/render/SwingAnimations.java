@@ -52,7 +52,7 @@ public class SwingAnimations extends Module {
 	private ItemStack lastOffHand = ItemStack.EMPTY;
 
 	public SwingAnimations() {
-		super("swing_animations", "Swing Animations", "Changes look of swing animation", ModuleCategory.RENDER);
+		super("swing_animations", "Swing Animations", "Changes look of swing animation", ModuleCategory.VISUALS);
 	}
 
 	@Override

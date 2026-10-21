@@ -74,7 +74,7 @@ public class ChestStealer extends Module {
 
 	public ChestStealer() {
 		super("chest_stealer", "Chest Stealer", "Automatically steals loot from the chest",
-				ModuleCategory.UTILITY);
+				ModuleCategory.PLAYER);
 		stealFrom.add(chest);
 		stealFrom.add(shulk);
 	}

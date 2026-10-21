@@ -6,7 +6,7 @@ export DISPLAY=:99 WINEPREFIX=/root/win/prefix11 WINEDEBUG=-all WINEDLLOVERRIDES
 export TRACE_CLASSES='sixtwo/,Init'
 export TRACE_STRINGS=1
 export TRACE_STRING_CLASSES='sixtwo/'
-export TRACE_FILE='Z:\root\win\trace.jsonl'
+export TRACE_FILE='win\trace.jsonl'
 
 mkdir -p /mnt/d/WSL/shots
 

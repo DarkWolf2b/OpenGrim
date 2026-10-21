@@ -78,7 +78,7 @@ public class Tracers extends Module {
 	private final Set<EntityType<?>> universe = new HashSet<>();
 
 	public Tracers() {
-		super("tracers", "Tracers", "Draws lines to entities", ModuleCategory.RENDER);
+		super("tracers", "Tracers", "Draws lines to entities", ModuleCategory.VISUALS);
 		// cF.VT(EntityType.ITEM, EntityType.CHEST_MINECART, EntityType.TNT_MINECART)
 		universe.add(EntityType.ITEM);
 		universe.add(EntityType.CHEST_MINECART);

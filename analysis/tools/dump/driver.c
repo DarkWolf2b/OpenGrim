@@ -11,8 +11,8 @@
  * sixtwo classes are resolved via JVMTI GetLoadedClasses + signature match.
  *
  * Env:
- *   DRIVER_GO   go-file to wait for (default Z:\root\win\driver-go)
- *   DRIVER_LOG  output log (default Z:\root\win\driver.log)
+ *   DRIVER_GO   go-file to wait for (default win\driver-go)
+ *   DRIVER_LOG  output log (default win\driver.log)
  *   DRIVER_MS   per-module enabled window in ms (default 4000)
  *
  * Build (Linux, mingw):
@@ -69,7 +69,7 @@ static DWORD WINAPI driver_thread(LPVOID param) {
     jobjectArray arr;
     (void)param;
 
-    if (!go || !*go) go = "Z:\\root\\win\\driver-go";
+    if (!go || !*go) go = "win\\driver-go";
     if (msenv && *msenv) per_ms = atoi(msenv);
 
     /* Phase 1: pure Win32 polling — never touch the JVM during VM init. */
@@ -78,7 +78,7 @@ static DWORD WINAPI driver_thread(LPVOID param) {
     /* Phase 2: the go-file is written only after join; the VM is fully up. */
     if ((*g_vm)->AttachCurrentThread(g_vm, (void **)&env, NULL) != JNI_OK) return 1;
 
-    log = fopen("Z:\\root\\win\\driver.log", "w");
+    log = fopen("win\\driver.log", "w");
     if (!log) return 1;
     fprintf(log, "go file seen; resolving registry\n");
     fflush(log);

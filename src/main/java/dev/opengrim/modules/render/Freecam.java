@@ -62,7 +62,7 @@ public class Freecam extends Module {
 	private Method cameraSetRotation;
 
 	public Freecam() {
-		super("freecam", "Freecam", "Detaches camera allowing free movement", ModuleCategory.RENDER);
+		super("freecam", "Freecam", "Detaches camera allowing free movement", ModuleCategory.PLAYER);
 		setBind(71);
 	}
 

@@ -130,7 +130,7 @@ public class HandChams extends Module {
 
 	public HandChams() {
 		super("hand_chams", "Hand Chams", "Customizes hand rendering with custom colors and transparency",
-				ModuleCategory.RENDER);
+				ModuleCategory.VISUALS);
 		glassGroup.add(reflection);
 		glassGroup.add(depth);
 		glassGroup.add(frost);

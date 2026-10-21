@@ -71,7 +71,7 @@ public class HotbarRestorer extends Module {
 	private boolean restoreKeyDown;
 
 	public HotbarRestorer() {
-		super("hotbar_restorer", "Hotbar Restorer", "Restores hotbar to saved state", ModuleCategory.UTILITY);
+		super("hotbar_restorer", "Hotbar Restorer", "Restores hotbar to saved state", ModuleCategory.PLAYER);
 		setBind(-999);
 		Arrays.fill(this.snapshot, ItemStack.EMPTY);
 	}

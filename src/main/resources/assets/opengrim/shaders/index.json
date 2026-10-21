@@ -1,0 +1,126 @@
+[
+ {
+  "name": "outlines",
+  "size": 4178
+ },
+ {
+  "name": "texture_copy",
+  "size": 146
+ },
+ {
+  "name": "chams_water",
+  "size": 7608
+ },
+ {
+  "name": "chams_glass",
+  "size": 8386
+ },
+ {
+  "name": "shadow",
+  "size": 3586
+ },
+ {
+  "name": "line",
+  "size": 480
+ },
+ {
+  "name": "reveal_vertex",
+  "size": 281
+ },
+ {
+  "name": "chams_liquidmetal",
+  "size": 7919
+ },
+ {
+  "name": "blur",
+  "size": 668
+ },
+ {
+  "name": "checker",
+  "size": 1172
+ },
+ {
+  "name": "liquid_glass",
+  "size": 18682
+ },
+ {
+  "name": "position_color_tex_lightmap_vertex",
+  "size": 445
+ },
+ {
+  "name": "arc",
+  "size": 1689
+ },
+ {
+  "name": "position_tex_reveal",
+  "size": 783
+ },
+ {
+  "name": "bloom_composite",
+  "size": 2755
+ },
+ {
+  "name": "msdf",
+  "size": 1972
+ },
+ {
+  "name": "bezier",
+  "size": 2026
+ },
+ {
+  "name": "chams_chrome",
+  "size": 9682
+ },
+ {
+  "name": "checker_vertex",
+  "size": 280
+ },
+ {
+  "name": "shape",
+  "size": 4817
+ },
+ {
+  "name": "shadow_vertex",
+  "size": 301
+ },
+ {
+  "name": "line_vertex",
+  "size": 1383
+ },
+ {
+  "name": "position_tex_vertex",
+  "size": 553
+ },
+ {
+  "name": "position_color_tex_lightmap",
+  "size": 335
+ },
+ {
+  "name": "posteffect_vertex",
+  "size": 186
+ },
+ {
+  "name": "annular_sector",
+  "size": 5927
+ },
+ {
+  "name": "soul_particle",
+  "size": 367
+ },
+ {
+  "name": "bloom_blur",
+  "size": 1700
+ },
+ {
+  "name": "msdf_vertex",
+  "size": 412
+ },
+ {
+  "name": "position_color_vertex",
+  "size": 566
+ },
+ {
+  "name": "position_tex_color_vertex",
+  "size": 640
+ }
+]

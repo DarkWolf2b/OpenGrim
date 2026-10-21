@@ -170,7 +170,7 @@ public class StorageEsp extends Module {
 	private boolean scanReady;
 
 	public StorageEsp() {
-		super("storage_esp", "Storage ESP", "Draws box around storage blocks", ModuleCategory.RENDER);
+		super("storage_esp", "Storage ESP", "Draws box around storage blocks", ModuleCategory.VISUALS);
 		// cK seed order, dq.java:126-135.
 		blockEntities.add(chest);
 		blockEntities.add(barrel);

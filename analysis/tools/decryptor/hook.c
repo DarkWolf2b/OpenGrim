@@ -75,7 +75,7 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     fprintf(stderr, "[hook] VMInit notify = %d\n", (int)err);
     fflush(stderr);
 
-    g_log = fopen("Z:\\workspace\\win\\native-bind-log.jsonl", "w");
+    g_log = fopen("native-bind-log.jsonl", "w");
     if (!g_log) g_log = fopen("native-bind-log.jsonl", "w");
     fprintf(stderr, "[hook] OnLoad done, log=%p\n", (void *)g_log);
     fflush(stderr);

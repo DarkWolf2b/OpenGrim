@@ -165,7 +165,7 @@ public class Nuker extends Module {
 	}
 
 	public Nuker() {
-		super("nuker", "Nuker", "Automatically mines blocks", ModuleCategory.WORLD);
+		super("nuker", "Nuker", "Automatically mines blocks", ModuleCategory.PLAYER);
 		options.add(throughWalls);
 		options.add(mineFlat);
 		options.add(avoidLava);

@@ -1,21 +1,36 @@
-# --- Reverse-engineering environment (rebuildable; NOT part of the published tree) ---
-win/
+# --- Local privacy/operating rules (never commit) ---
+/privacy.md
+
+# --- Local runtime/scratch (never commit) ---
+run/
+analysis/tmp/
+analysis/ghidra/dumps/*.dll
+ghidra_12.1.4_PUBLIC_20260921/
+/screenshot-*.png
+/image.png
+
+# --- Local caches/large archives (never commit) ---
+__pycache__/
+*.pyc
+/open-grim-full.tar.xz
+/package-lock.json
+
+# --- Original binary material (analysis-only, never distributed) ---
 binaries/
-ghidra_*/
 *.zip
+
+# --- RE runtime environments (rebuildable; see analysis/docs/) ---
+win/
+binaries/ghidra-proj/
 
 # --- RE toolchain downloads (reproducible from maven/github) ---
 analysis/tools/libs/
 analysis/tools/tr-meta.xml
 analysis/tools/decryptor/*.class
 
-# --- Runtime trace bulk data (small trace artifacts stay trackable) ---
+# --- Runtime trace data (heavy; small artifacts stay trackable) ---
 analysis/traces/**/raw/
 analysis/traces/**/by-class-casesafe/
-
-# --- Local scratch / generated junk ---
-analysis/tmp/
-*.tar.xz
 
 # --- Build outputs ---
 build/
@@ -25,6 +40,3 @@ hs_err_pid*.log
 javac.*.args
 logs/
 recover/
-
-# --- Native dumps published as external assets (over the 100 MiB forge limit) ---
-analysis/ghidra/dumps/*.dll

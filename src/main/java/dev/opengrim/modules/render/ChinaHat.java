@@ -74,7 +74,7 @@ public class ChinaHat extends Module {
 	private final DoubleSetting gradientSpeed = register(new DoubleSetting("gradient_speed", 1.0, 1.0, 10.0, 5.0, null));
 
 	public ChinaHat() {
-		super("china_hat", "China Hat", "Renders china hat on your head", ModuleCategory.RENDER);
+		super("china_hat", "China Hat", "Renders china hat on your head", ModuleCategory.VISUALS);
 		showFor.add(self);
 		showFor.add(friends);
 	}

@@ -62,7 +62,7 @@ public class AutoExp extends Module {
 	private long lastThrowAt;
 
 	public AutoExp() {
-		super("auto_exp", "Auto Exp", "Throws exp bottles faster", ModuleCategory.UTILITY);
+		super("auto_exp", "Auto Exp", "Throws exp bottles faster", ModuleCategory.PLAYER);
 		setBind(74);
 	}
 

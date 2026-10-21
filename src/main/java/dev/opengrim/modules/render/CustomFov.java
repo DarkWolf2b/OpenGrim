@@ -39,7 +39,7 @@ public class CustomFov extends Module {
 	private int storedFov = 70;
 
 	public CustomFov() {
-		super("custom_fov", "Custom FOV", "Allows to set custom fov", ModuleCategory.RENDER);
+		super("custom_fov", "Custom FOV", "Allows to set custom fov", ModuleCategory.PLAYER);
 	}
 
 	@Override

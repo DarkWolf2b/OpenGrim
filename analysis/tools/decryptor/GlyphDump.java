@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class GlyphDump {
     public static void main(String[] args) throws Exception {
-        String dll = "win/tmp/harness/native/jna1.21.11";
+        String dll = System.getProperty("native.dll", "jna1.21.11");
         System.load(dll);
         Class<?> loader = Class.forName("native.Loader");
         byte[] key;

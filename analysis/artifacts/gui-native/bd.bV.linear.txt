@@ -1,0 +1,143 @@
+== bV (Lsixtwo/lC;)V ==
+// 0x18f124290
+  sD8 = a0
+  sB8 = this:bd
+  s40 = 0
+  s48 = 0
+  sC8 = 0
+  sD0 = 0
+  sC0 = 0
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s40 = str('sixtwo/bd')
+// 0x18f12438e
+  s20 = 1201
+// 0x18f124406
+  sixtwo/bd.aAWpI
+  s50 = sixtwo/bd.aAWpI
+// 0x18f124446
+  s58 = 39317934599785
+  s118 = sixtwo/bd.aAWpI
+// 0x18f124476
+  sF8 = (0xa45470d56d4f46ab ^ 2216829733)
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  s38 = env
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  call 0x18f146f00  
+  s50 = (((((1388947808486604262 | 0xa45470d56d4f46ab) ^ 2216829733) ^ (1388947808486604262 | 0xa45470d56d4f46ab)) ^ 2216829733) ^ sixtwo/bd.aAWpI)
+  str = 'sixtwo/bg\x00Dd\x00cMafA\x00AV\x00VKbkM\x00VeSmn\x00De\x00AD\x00AE\x00()Lsixtwo/if;\x00AF\x00()Lsixtwo/id;\x00([ILsixtwo/ie;Lsixtwo/if;Lsixtwo/id;)V\x00bjq\x00(Lsixtwo/ig;)V\x00yAejq\x00bis\x00Bi\x00()Lsixtwo/ba;\x00ERseG\x00bio\x00Bj\x00YtBwS\x00bip\x00At\x00(Lsixtwo/bb;)V\x00gipIr\x00Al\x00biq\x00IkudM\x00klcWm\x00bir\x00bix\x00PqAQr\x00sixtwo/if\x00bib\x00biy\x00waETu\x00sixtwo/id\x00bhj\x00KKBtz\x00bhk\x00Wklho\x00bhg\x00hk'
+  s40 = str('sixtwo/bg')
+// 0x18f12726e
+  s20 = 1475
+// 0x18f1272c5
+  call 0x1847d4a10  
+  s50 = env[?]
+// 0x18f1272fa
+  sF8 = env[?]
+  s50 = this:bd
+// 0x18f1273a5
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s48 = str('sixtwo/bd')
+// 0x18f1273ee
+  s20 = 1206
+// 0x18f127445
+  this:bd.None
+  s50 = this:bd.None
+// 0x18f127485
+  s58 = this:bd
+// 0x18f127525
+  s20 = 1207
+// 0x18f12757c
+  this:bd.None
+  s58 = this:bd.None
+// 0x18f1275be
+  s60 = env[?]
+// 0x18f12e9fa
+  str = 'sixtwo/rk\x00dhe\x00(F)V\x00x\x00sg\x00rYxNo\x00NjfvR\x00L\x00IjHGR\x00RxnRu\x00[Ljava/lang/Integer;\x00LPQVU\x00[J\x00dmLYJ'
+  s48 = str('sixtwo/rk')
+// 0x18f12ea43
+  s20 = 229
+// 0x18f12ee88
+  sixtwo/rk.dhq(this:bd.None, this:bd.None) -> obj
+  s50 = ret
+// 0x18f12eed0
+  s50 = this:bd
+// 0x18f12ef7a
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s48 = str('sixtwo/bd')
+// 0x18f12efc8
+  s20 = 1206
+// 0x18f12f024
+  this:bd.None
+  s50 = this:bd.None
+// 0x18f12f069
+  s58 = this:bd
+// 0x18f12f113
+  s20 = 1207
+// 0x18f12f16f
+  this:bd.None
+  s58 = this:bd.None
+// 0x18f12f1b6
+  s60 = env[?]
+// 0x18f12f205
+  str = 'sixtwo/rk\x00dhe\x00(F)V\x00x\x00sg\x00rYxNo\x00NjfvR\x00L\x00IjHGR\x00RxnRu\x00[Ljava/lang/Integer;\x00LPQVU\x00[J\x00dmLYJ'
+  s48 = str('sixtwo/rk')
+// 0x18f12f24e
+  s20 = 258
+  this:bd.None.dhc(this:bd.None)
+// 0x18f13049b
+  ExceptionOccurred
+  str = 'java'
+// 0x18f1304cf
+  s40 = str('java')
+  IsInstanceOf
+// 0x18f1304fb
+  s50 = env[?]
+// 0x18f130add
+  ExceptionClear
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+// 0x18f130b0c
+  s40 = str('sixtwo/bd')
+// 0x18f130b32
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s48 = str('sixtwo/bd')
+// 0x18f130b80
+  s20 = 1641
+// 0x18f130bdc
+  sixtwo/bd.Cn(env[?]) -> obj
+  s50 = ret
+// 0x18f130e53
+  Throw
+// 0x18f130e67
+  ExceptionOccurred
+  str = 'java'
+// 0x18f130e96
+  s40 = str('java')
+  IsInstanceOf
+// 0x18f130ec2
+  s50 = env[?]
+// 0x18f130f38
+  ExceptionClear
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+// 0x18f130f67
+  s40 = str('sixtwo/bd')
+// 0x18f130f8d
+  s20 = 1641
+// 0x18f130fe4
+  sixtwo/bd.Cn(env[?]) -> obj
+  s50 = ret
+// 0x18f1310a5
+  Throw

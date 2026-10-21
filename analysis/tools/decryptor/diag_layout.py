@@ -8,8 +8,8 @@ from collections import defaultdict, Counter
 import ahocorasick
 import numpy as np
 
-DUMP = '/workspace/win/dump/mem-pid216130.bin'
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
+DUMP = 'win/dump/mem-pid216130.bin'
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
 
 regions = []
 with open(DUMP, 'rb') as f:

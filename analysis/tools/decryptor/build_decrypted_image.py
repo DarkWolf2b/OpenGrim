@@ -15,11 +15,11 @@ import struct
 import sys
 import os
 
-DUMP_DIR = sys.argv[1] if len(sys.argv) > 1 else '/workspace/win/dump'
-ORIG_DLL = sys.argv[2] if len(sys.argv) > 2 else '/workspace/win/tmp/native/jna1.21.11'
-OUT_BASE = sys.argv[3] if len(sys.argv) > 3 else '/workspace/analysis/ghidra/dumps/jna-decrypted'
-RUNTIME_JSON = sys.argv[4] if len(sys.argv) > 4 else '/workspace/analysis/ghidra/native-handlers-runtime-full.jsonl'
-IMAGE_JSON = sys.argv[5] if len(sys.argv) > 5 else '/workspace/analysis/ghidra/native-handlers.json'
+DUMP_DIR = sys.argv[1] if len(sys.argv) > 1 else 'win/dump'
+ORIG_DLL = sys.argv[2] if len(sys.argv) > 2 else 'win/tmp/native/jna1.21.11'
+OUT_BASE = sys.argv[3] if len(sys.argv) > 3 else 'analysis/ghidra/dumps/jna-decrypted'
+RUNTIME_JSON = sys.argv[4] if len(sys.argv) > 4 else 'analysis/ghidra/native-handlers-runtime-full.jsonl'
+IMAGE_JSON = sys.argv[5] if len(sys.argv) > 5 else 'analysis/ghidra/native-handlers.json'
 
 PAGE = 0x1000
 

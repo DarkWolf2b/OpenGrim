@@ -3,7 +3,7 @@
 import struct
 import sys
 
-DUMP = sys.argv[1] if len(sys.argv) > 1 else '/workspace/win/dump/mem-pid216130.bin'
+DUMP = sys.argv[1] if len(sys.argv) > 1 else 'win/dump/mem-pid216130.bin'
 data = open(DUMP, 'rb').read()
 print('file size:', len(data))
 assert data[:5] == b'WMEM2'

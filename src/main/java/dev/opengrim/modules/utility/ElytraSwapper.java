@@ -70,7 +70,7 @@ public class ElytraSwapper extends Module {
 	private boolean keyDown;
 
 	public ElytraSwapper() {
-		super("elytra_swapper", "Elytra Swapper", "Swaps chestplate with elytra", ModuleCategory.UTILITY);
+		super("elytra_swapper", "Elytra Swapper", "Swaps chestplate with elytra", ModuleCategory.PLAYER);
 	}
 
 	@Override

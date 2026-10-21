@@ -54,7 +54,7 @@ public class XRay extends Module {
 	private final Set<Item> ores = new LinkedHashSet<>(DEFAULT_ORES);
 
 	public XRay() {
-		super("xray", "XRay", "Allows to see ores through walls", ModuleCategory.RENDER);
+		super("xray", "XRay", "Allows to see ores through walls", ModuleCategory.VISUALS);
 		// registry metadata.txt:147 sixtwo.dk key=96 (= module id) bind=-999.
 	}
 

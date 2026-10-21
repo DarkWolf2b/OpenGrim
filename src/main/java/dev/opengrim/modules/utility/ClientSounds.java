@@ -50,7 +50,7 @@ public class ClientSounds extends Module {
 	private final DoubleSetting soundVolume = register(new DoubleSetting("sound_volume", 1.0, 0.0, 100.0, 70.0, " %"));
 
 	public ClientSounds() {
-		super("client_sounds", "Client Sounds", "Manages sounds of client", ModuleCategory.UTILITY);
+		super("client_sounds", "Client Sounds", "Manages sounds of client", ModuleCategory.CLIENT);
 	}
 
 	/**

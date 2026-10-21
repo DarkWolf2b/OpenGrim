@@ -42,7 +42,7 @@ public class Glow extends Module {
 	private final Set<Entity> applied = new HashSet<>();
 
 	public Glow() {
-		super("glow", "Glow", "Adds glowing effect to entities", ModuleCategory.RENDER);
+		super("glow", "Glow", "Adds glowing effect to entities", ModuleCategory.VISUALS);
 	}
 
 	@Override

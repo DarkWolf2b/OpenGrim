@@ -67,7 +67,7 @@ public class ResourcePackBypass extends Module {
 
 	public ResourcePackBypass() {
 		super("resource_pack_bypass", "Resource Pack Bypass", "Allows to bypass required server texture pack",
-				ModuleCategory.UTILITY);
+				ModuleCategory.CLIENT);
 		mode.add(enableForAll);
 		mode.add(specificServers);
 	}

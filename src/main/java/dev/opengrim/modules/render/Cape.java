@@ -114,7 +114,7 @@ public class Cape extends Module {
 	private final BoolSetting hideWings = register(new BoolSetting("hide_wings", false));
 
 	public Cape() {
-		super("cape", "Cape", "Allows to set custom cape", ModuleCategory.RENDER);
+		super("cape", "Cape", "Allows to set custom cape", ModuleCategory.PLAYER);
 		// ee.java:117-135 ZOSxo.Vf(() -> !sxdUz.WF()): "Texture URL" is only
 		// visible while "Use Presets" is off. Set the boot state here (the
 		// module starts disabled); the Use Presets change callback keeps it

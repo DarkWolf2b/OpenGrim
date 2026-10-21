@@ -72,7 +72,7 @@ public class FastPlace extends Module {
 	private static boolean fieldLookupDone;
 
 	public FastPlace() {
-		super("fast_place", "Fast Place", "Removes right click delay", ModuleCategory.WORLD);
+		super("fast_place", "Fast Place", "Removes right click delay", ModuleCategory.PLAYER);
 		slots.add(slot0);
 		slots.add(slot1);
 		slots.add(slot2);

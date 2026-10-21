@@ -509,6 +509,6 @@ final edit.
   in the `casesafe/handlers/en.md` spec and, if the High Jump module (`em`) is re-audited, the
   same tokens should be credited there.
 - Reusable tooling written for this pass lives in the temp workspace
-  (`<temp-dir>`): `cparse.py`, `des.py` (validated DES),
+  (`<tmp>/opencode/w1/`): `cparse.py`, `des.py` (validated DES),
   `pool.py` (native pool resolver), `yarn.py` (intermediary→yarn), `surf3.py` (class-scoped
   pool runs). Nothing under `analysis/` was modified except this report.

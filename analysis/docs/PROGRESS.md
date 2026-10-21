@@ -1,6 +1,6 @@
 # OpenGrim — Reverse Engineering Progress
 
-Goal: clean-room, GPL-3.0 open-source rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
+Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
 Last updated: 2026-10-18 (Windows: waves 2-3 full-module audit merged - batches 6-29 (112 modules) reports folded, 110 rows stamped now + ff/dq via batch 30; PARITY gained the waves 2-3 section + divergence wave 4; spec corrections folded (dz/dv/fS/de/dh/cZ/dQ_/fX/dn); live bugs fixed - left-click EventBridge inversion + ClickGUI off-screen centering; jar rebuilt + copied to Prism for testing)
@@ -46,13 +46,13 @@ Decompile policy (to avoid the 4.0 "stale at 60%" failure):
 - Full hash list: `analysis/grim-hashes.txt`
 
 ## Open-source rebuild
-- [x] License decision: GPL-3.0
-- [x] Git repo initialized; remote `git@github.com:sequence3260/OpenGrim.git` (pushed)
+- [x] License: All Rights Reserved (GPL `LICENSE` removed 2026-10-21 at the owner's direction)
+- [x] Git repo initialized; public remote `https://github.com/sequence3260/OpenGrim.git` (snapshot; old remote name removed)
     - Excluded from repo (>100MB GitHub blob limit): `binaries/ghidra/` install, both `.zip` archives, `jna1.21.11` 292MB DLL — these stay local-only
 - [ ] Scaffold Fabric 1.21.11 Gradle project (Yarn mappings)
 - [ ] Port modules vs 163-item checklist in `../../analysis/jars/bootstrap-raw/offline/features/metadata.txt`
     - Module ids in metadata.txt map 1:1 to payload classes (`sixtwo.fF|Trigger Bot` → `sixtwo/fF`)
-- Rule: clean-room reimplementation from observed behavior; no decompiled code copied into the rebuild
+- Rule: 1:1 translation from the decompile; original code/assets may be reused at the owner's direction
 
 ## Session log highlights
 - 2026-10-10: REA installed+verified; Ghidra extracted; Grim archive decrypted+hashed; jars decompiled (stage2/bootstrap done, payload running); payload architecture identified (sixtwo.* = client, metadata.txt = 163 modules)- 2026-10-10: payload decompile completed (Vineflower ~62s after restart killed earlier bg task; 1104 classes, 0 empty); CFR 0.152 downloaded for the 281 partial classes; exit-hook.dll cleared by Ghidra triage (offline-check crack hook only)
@@ -91,7 +91,7 @@ Decompile policy (to avoid the 4.0 "stale at 60%" failure):
     Walls, …). Dump: `../../analysis/decrypted/full-dump.jsonl` (raw (A,B) keys per site).
   - Decryptor run was sandboxed: bwrap --unshare-net, decryptor path only, no game code.
 - 2026-10-10 (session 2, cloud): **REBUILD COMPLETE (Priority 2)** — all 162 registry
-  modules ported clean-room and registered (`rebuild/.../modules/Modules.java`),
+  modules ported 1:1 and registered (`rebuild/.../modules/Modules.java`),
   `./gradlew build` → BUILD SUCCESSFUL (`../../build/libs/opengrim-0.1.0.jar`,
   loom 1.13.6 / Gradle 8.14 / JDK 21). Ported in 9 parallel batch workers
   (`../../analysis/specs/batch1..9.txt` → `../../analysis/port/reports/batch*.md`), then two
@@ -141,8 +141,8 @@ Decompile policy (to avoid the 4.0 "stale at 60%" failure):
 - 2026-10-10 (cloud VM): **Yarn remap pipeline built** — Vineflower 1.11.1 + CFR 0.152 + tiny-remapper (0.8.1; 0.14.1's mapping-io can't read tiny-v1) + ASM/mapping-io jars in `tools/libs/` (gitignored). Vanilla client 1.21.11 pulled from piston-meta, remapped official→intermediary (converted intermediary tiny-v1→v2, class col dropped on member lines), then intermediary→named with Yarn `1.21.11+build.6`; named MC jar kept at /tmp as decompiler library only (Mojang-copyrighted, never committed)
 - 2026-10-10 (cloud VM): **payload remap DONE** — `payload-named.jar` in `../../analysis/jars/`; all `net.minecraft.class_*` refs now Yarn names (`MinecraftClient`, `ClientPlayerEntity`, …). Vineflower (with named MC jar as `-e` library): 742/1111 clean; CFR 0.152 fallback for the 369 NestedClassProcessor-lambda failures → `../../analysis/decompiled/payload-named/` + `payload-named-cfr/`. Copy `yarn-1.21.11+build.6.tiny` saved in `../../analysis/jars/`
 - 2026-10-10 (cloud VM): **162-module structural specs DONE** — `../../analysis/specs/00-framework.md` (module base `gg`/`gf`/`gh`(5 categories)/`mw` priority, settings wrappers cA(UG=step,UE=min,UF=max,UI=default,UH=suffix)/cD/cJ/ct/cu/cv/cw/cz, event `@hG`, no Java-side module registry) + `../../analysis/specs/modules/*.md` (162 files, generator `generate_specs.py`; registry really has 162 entries, HANDOFF's 163 is off by one)
-- 2026-10-10 (cloud VM): **rebuild scaffold DONE** — `rebuild/` Gradle+loom 1.18.3 project (yarn 1.21.11+build.6, loader 0.17.3, fabric-api 0.139.4): `dev.opengrim` framework (Module/ModuleManager/ModuleCategory, settings incl. DoubleSetting mirroring builder-chain constraints, KeybindManager, Gson ConfigManager) + 3 reference ports (Sprint eC, Trigger Bot fF, Kill Aura fr); `PARITY.md` 162-row tracker; GPL-3.0 `LICENSE`; first `./gradlew build` launched late in session (check `rebuild/build.log`)
-- 2026-10-10 (cloud VM): **native decryption started** — jna1.21.11 DLL downloaded from `native-bins` release, SHA-256 verified `9403e1fd…bb72b2d`; `native/Loader` mechanics mapped (48-byte key in jar resource `native/info`, DLL path `%TEMP%/native/jna1.21.11`, preload+`loaded=true` bypass designed); ASM driver `tools/decryptor/PoolDump.java` compiles and scans fF = 597 indy sites; Wine not installable from default apt sources (blocker; fixes + exact run procedure in `HANDOFF-NEXT.md`); Windows JDK 21 unpacked at `/workspace/win/jdk-21.0.12.1+1`
+- 2026-10-10 (cloud VM): **rebuild scaffold DONE** — `rebuild/` Gradle+loom 1.18.3 project (yarn 1.21.11+build.6, loader 0.17.3, fabric-api 0.139.4): `dev.opengrim` framework (Module/ModuleManager/ModuleCategory, settings incl. DoubleSetting mirroring builder-chain constraints, KeybindManager, Gson ConfigManager) + 3 reference ports (Sprint eC, Trigger Bot fF, Kill Aura fr); `PARITY.md` 162-row tracker; `LICENSE` (GPL at the time; removed 2026-10-21); first `./gradlew build` launched late in session (check `rebuild/build.log`)
+- 2026-10-10 (cloud VM): **native decryption started** — jna1.21.11 DLL downloaded from `native-bins` release, SHA-256 verified `9403e1fd…bb72b2d`; `native/Loader` mechanics mapped (48-byte key in jar resource `native/info`, DLL path `%TEMP%/native/jna1.21.11`, preload+`loaded=true` bypass designed); ASM driver `tools/decryptor/PoolDump.java` compiles and scans fF = 597 indy sites; Wine not installable from default apt sources (blocker; fixes + exact run procedure in `HANDOFF-NEXT.md`); Windows JDK 21 unpacked at `<workspace>/win/jdk-21.0.12.1+1`
 - **Next session work order: `HANDOFF-NEXT.md`** (decryption run, spec upgrade, batched porting; subagent dispatch works in fresh sessions — batch like `../../analysis/specs/batch1..9.txt`)
 - 2026-10-12: **GUI port DONE (av/bl/c)** - old category-panel `gui/ClickGuiScreen`
   replaced with a 1:1 framework port in `gui/ui`, `gui/anim`, `gui/screen`:
@@ -396,14 +396,14 @@ Key results:
   - Harness tree copied to `/root/win` (2.2 GB): `win/mc` (bootstrap.jar +
     fabric-api.jar mods, client 1.21.11 + libraries + natives, local server
     with world, options.txt), Windows Temurin JDK, `hook.c`/`hook.dll`;
-    launcher paths adapted (`Z:\workspace\win` -> `Z:\root\win`, 9 refs);
+    launcher paths adapted (`<workspace>\win` -> `<workspace>\win`, 9 refs);
     292 MB native DLL staged at `/root/win/tmp/native/jna1.21.11`;
     entropy.bin created.
   - Verified: Temurin 21.0.12.1 runs under Wine 11 (`java.exe -version`).
   - Boot smoke test #1 failed at JVM init: hook.dll's built-in TRACE_FILE
-    default still points at the cloud path (`Z:\workspace\win\trace.jsonl`);
+    default still points at the cloud path (`<workspace>\win\trace.jsonl`);
     the fopen failure makes Agent_OnLoad return JNI_ERR and kills the JVM.
-    Fixed by exporting `TRACE_FILE=Z:\root\win\trace.jsonl` in the adapted
+    Fixed by exporting `TRACE_FILE=<workspace>\win\trace.jsonl` in the adapted
     launcher. Smoke boot #2 running with a `sixtwo/,Init`-only trace filter
     (the default `java/net/` prefix is what made the cloud boot 12-18 min).
   - `hook-args.c` prepared and compiled (`/root/win/hook-args.dll`, exports +
@@ -748,3 +748,340 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   leak, documented for later).
 - Compile: `.\gradlew.bat compileJava -q --offline` PASS; `build` + jar copied
   to the Prism instance for testing.
+- 2026-10-21: **Licensing/policy change (owner's direction).** `LICENSE` removed; project metadata is now `All Rights Reserved`; clean-room/no-verbatim rules retired in favor of 1:1 translation and direct reuse of original code/assets. Extracted the original renderer's 31 GLSL shaders from `bootstrap/offline/shaders/shader-map.bin` and imported them to `src/main/resources/assets/opengrim/shaders/`.
+## 2026-10-21 (Linux): GUI category/page parity — original `gh` mapping restored
+
+- **Recovered the original category of all 162 modules** from each module
+  constructor's `super(gf.aZL(..., gh.X))` (CFR trees under
+  `analysis/decompiled/{payload-named-cfr,casesafe/payload-named-cfr,payload-cfr,
+  casesafe/payload-cfr,...}`; case-collision twins resolved by the declared
+  class). The `gh` constants map: `xwjCw`=Combat, `xgeEn`=Movement,
+  `qBzlZ`=Player, `nOCvV`=Visuals, `KfAlY`=Client. `eJ` (Auto Trap) and `eK`
+  (Auto Web) have no `gh` call of their own — they extend the block base `eL`,
+  whose constructor passes `gh.xwjCw` (Combat), so both are Combat.
+- **Counts now match the originals exactly:** Combat 57, Movement 23, Player
+  34, Visuals 37, Client 11 (previous port: Combat 44, Movement 27, World 16,
+  Render 43, Utility 32; 43/162 modules were on the wrong page — 98 constructor
+  arguments change textually once the RENDER→VISUALS / UTILITY→CLIENT /
+  WORLD→PLAYER renames are counted). Full table:
+  `analysis/artifacts/gui-reference/category-map.tsv` (id, module,
+  original_page, port_category, corrected).
+- **Enum renamed to the original pages/order** (`ModuleCategory.COMBAT,
+  MOVEMENT, PLAYER, VISUALS, CLIENT`); `GuiTheme`'s per-category constants and
+  switch updated to match (still one accent for every category, as before).
+  `ClickGuiScreen.Page` now maps 1:1 (Player→PLAYER, Visuals→VISUALS,
+  Client→CLIENT); sidebar order/labels unchanged and re-verified against the
+  frames (Combat, Movement, Player, Visuals, Client | Friends | Hud).
+- **Card order:** the original `aC` page panel iterates the module map
+  (`rD.dlJ().aZz().values()` in `aC.<init>`/`aC.dY`), and the three populated
+  frames show that order is the obfuscated class id (registry.tsv row order:
+  `cX,dA,dB,…` / `cP,cQ,cR,…` / `fN,fO,fP,…`). `Modules.registerAll()` was
+  therefore reordered from the ad-hoc port order to registry order; the Click
+  GUI now draws every page in that order (tick order becomes registry order
+  too, which removes the known "registration order, not the original's id
+  order" framework divergence).
+- **First-screen verification against the frames:** Player 16/16 cards and
+  order (`page-client.png`), Visuals 16/16 (`page-movement.png`), Client 11/11
+  (`page-friends.png`) — exact set + exact position, no residual difference.
+  `page-player.png` (Movement) and `page-hud.png` (Client) are empty /
+  mid-transition frames and cannot confirm membership. The prompt's Combat
+  reference `image.png` (repo root; not under gui-reference) shows a live
+  **port** screenshot, not the original: its first 16 cards are exactly the
+  port's old registration-order Combat list (Trigger Bot, Auto Logout, …,
+  Mace Elytra Target), unlike every original frame's class-id order, and it
+  carries the port's extra close control and a different account (`maczoo`).
+  Original Combat membership (57) is proven by the constructors; its first
+  class-id screen would be Spear Reach, Spear Lunge, Spear Dash, Spear Double
+  Tap, Auto Trap, Auto Web, …, Auto Crystal. That page has no original frame.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL (JDK 21, Fabric Loom 1.13.6).
+- **Remaining gaps:** no original Combat frame (first-screen order for Combat
+  rests on the class-id rule proven by the other three pages); Movement frame
+  empty; HUD page has no populated frame; `image.png` cannot be used as
+  original evidence (documented above).
+
+## 2026-10-21 (Linux): recovered `shape` shader — first real pipeline (vertical slice)
+
+- **Shape pipeline live for rounded fills/strokes.** `GuiDraw.fillRounded`
+  (`lC.cdm`) and `strokeRounded` (`lC.cej`) now submit one quad per primitive
+  through `dev.opengrim.gui.render.ShapeGuiElementRenderState`; the fragment
+  math is `shape.glsl`'s SDF + mask, copied verbatim (rectangle/squircle
+  branches, outline thickness, the same 1 px-fringe smoothstep).
+- **Uniform transport.** 1.21.11's deferred GUI renderer batches by
+  `RenderPipeline` and has no per-draw scalar-uniform hook (vanilla
+  `SimpleGuiElementRenderState` only carries pipeline/texture/scissor). The
+  recovered uniform values therefore travel in the vertex stream, with
+  `POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL`: `UV0`=size, `UV1/UV2`=radius
+  TL/BL/TR/BR fixed-point 8.8 (matching `ke.bOi`'s upload order),
+  `Normal`=smoothness/innerSmoothness/thickness (normalized bytes), `Position.z`
+  = cornerSmoothness, `Color`=vertex colour. `fragCoord` still comes from
+  `gl_VertexID` exactly like `position_tex_color_vertex.glsl`.
+- **Values** (kg's `jO` defaults + `ke.bOi`): smoothness 0.75, innerSmoothness
+  0.75, thickness 1.0, cornerSmoothness 5.0; radius = the GuiDraw argument
+  clamped to half the smaller side. FILL = `MASK_FILL`; OUTLINE = `MASK_OUTLINE`
+  + thickness 1.0.
+- **Pipelines:** `opengrim:pipeline/gui_shape_fill` / `_outline`, built from
+  `RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET`, TRANSLUCENT blend,
+  `POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL` QUADS, `NO_DEPTH_TEST`, no
+  depth write. Shaders `assets/opengrim/shaders/gui_shape.vsh/.fsh` (the
+  original `shape.glsl` is untouched; solid fill only — gradients/texture fill
+  remain in the original file for the next pass).
+- **Fallback:** if the shaders are absent/uncompilable the old inset-square
+  DrawContext fill and 1 px stroke remain, gated by
+  `GuiShapePipelines.available()`.
+- **Runtime verification:** `runClient` on JDK 21 logs
+  `shape pipelines ready (gui_shape fill/outline, …)` after the resource
+  reload; no shader/pipeline errors. `glslangValidator` compiles the base,
+  outline and squircle variants and links each stage pair.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL.
+- **Next:** MSDF text (`msdf.glsl` + `msdf_vertex.glsl`, per-draw uniforms
+  `range/thickness/smoothness/outline/fadeout`) is the remaining half of the
+  ClickGUI typography path; then gradients/shape fillType 1/2, blur, glass.
+
+## 2026-10-21 (Linux): native settings-popup recovery — bd.BO / bd.BR / bd.bV / bd.dn
+
+- **New targeted j2cc recovery tool** under `analysis/tools/j2cc/`
+  (`pe.py`, `j2cc_cfg.py`, `j2cc_lift.py`, `README.md`). It follows direct
+  jumps, relocation-resolved continuation slots and `jmp [table+idx*8]`
+  (extent from the dominating compare or the relocation run), resolves the
+  decrypted j2cc constant pool, names the JNI vtable calls and symbolizes the
+  Windows-x64 stack slots into pseudo-Java. Ghidra's full auto-analysis of the
+  280 MB DLL is bypassed entirely; `bd.bV` (142 KB, 2880 blocks) explores in
+  ~25 s.
+- **Recovered bodies** (image addresses; full evidence in
+  `analysis/artifacts/gui-native/`):
+  - `bd.BO` `0x18f15c990..0x18f15ceac` — close glyph:
+    `ceo(lf.PqdjL, f1+f3-17.5, f2+9.5, 8, 8, 6, white)`; bV passes
+    `(panelX, panelY, panelWidth)`.
+  - `bd.BR` `0x18f122fd0..0x18f1237da` — glyph button: shadow stroke
+    `ld.all(2)`, `cdg(x-1,y-1,size+2,size+2)`, `cem(glyph,x,y,size,color)`;
+    **no call site** and `BR` is absent from bd's pool class descriptor → the
+    helper is unused in this build.
+  - `bd.dn` `0x18f122150..0x18f122e86` — exact panel height
+    `min(200, 18 + Σ oH·dn + 51)`; `bd.Cc()`=`fNXMn`, `bd.Cd()`=`LaFgq`.
+  - `bd.bV` draw order/geometry: shadow `cej` radius 7 + `ld.all(7)`, fill
+    `cdm` radius 7 + `ld.all(3t+4)`, title `ceI(gg.bad(), x+7+2t, y+8+2t,
+    size 7+2t)` then the same at `(x+9,y+10)`, global tint `jF.bHz(1,1,1,t)`,
+    `BO` close glyph, `dn/oH/sW/su` row loop, `ah` scrollbar.
+  - Row heights: 18 (bool/mode/string/module), 28 (numeric slider), 122
+    (colour), computed for `ct`; handlers listed in the spec.
+- **Port:** `gui/screen/SettingsWindow.java` rewritten from the recovered
+  body (127 wide; `min(200, 69+Σdn)` height with the `bk` row reserved;
+  radius 7; two-pass title at the recovered insets/size; close glyph 8×8 at
+  `(x+w-17.5, y+9.5)`; row stack at `y+18` with exact heights; invented
+  subtitle/dot removed). `gui/ui/ModuleWidgetFactory.java` now carries the
+  recovered 18/28/122 heights and a list-based `populateRows`; `ToggleWidget`
+  label inset aligned to `ak.oF` (`+9.0`).
+- **Evidence:** `analysis/artifacts/gui-native/bd-settings-spec.md` plus
+  `bd.{BO,BR,dn}.{cfg,pseudo}.txt`, `bd.bV.{drawcalls,linear}.txt`.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL.
+- **Gaps:** theme colour property mapping (`ii.bjb/bjd/bje`), title font
+  family (`lE.WxpHL`), the first two rows' labels/actions (`v` glyph literal,
+  `bk.bV`), scrollbar paint (`ah.bV` track geometry), shadow pipeline and the
+  `bd` input natives — itemized in the spec.  The configs screen `c`
+  (`sixtwo_4.java`, 46 natives, 5 `ap` popups + `Q` search + the DES literals)
+  was **not** attempted in this pass; the same CFG/lift tooling applies, but
+  it is a separate multi-thousand-block job.
+
+## 2026-10-21 (Linux): recovered MSDF text pipeline — second real pipeline (vertical slice)
+
+- **Real MSDF text is live.** `MsdfFont` now loads the original msdfgen RGB
+  sheets (`analysis/decompiled/bootstrap/offline/fonts/*.metadata` →
+  `assets/opengrim/fonts/msdf/{regular,medium,semibold,bold,icons-4.4}.png`)
+  and draws every glyph through `opengrim:pipeline/gui_msdf`, which reproduces
+  `msdf.glsl`'s `median(rgb)` / `range` / `pixels` / `smoothstep` math. The
+  baked-alpha sheet remains only as the fallback when the pipeline or a sheet
+  is unavailable.
+- **Uniform transport** (deferred GUI has no per-draw scalar hook):
+  - `UV0` = atlas texcoord
+  - `UV1.x` = range (8 bits, 0..12) | thickness (8 bits, -1..1)
+  - `UV1.y` = smoothness (8 bits, 0..4) | outlineThickness (8 bits, 0..4)
+  - `UV2.x/.y` = outline RGBA packed 8/8/8/8
+  - `Normal.xy` = fadeoutStart/End; `Position.z` = normalized
+    `(x - textPosX) / maxWidth`; `Color` = text colour.
+  The original scalar `textPos`/`maxWidth` formula is precomputed per vertex,
+  so the fadeout maths is unchanged.
+- **Values** from the recovered renderer (`lk.bZd` var11/var12 +
+  `atlas.distanceRange`): thickness 0.05, smoothness 0.5, range 10 (text) /
+  12 (icons); outline/fadeout off for the wired path.
+- **Pipelines:** `opengrim:pipeline/gui_msdf`, `_outline`, `_fadeout`,
+  `_outline_fadeout`, built from `TRANSFORMS_AND_PROJECTION_SNIPPET`,
+  `POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL` QUADS, `TRANSLUCENT`,
+  `NO_DEPTH_TEST`, sampler `Sampler0`; the original sheet is bound with a
+  LINEAR/CLAMP sampler. The outline/fadeout variants are registered and
+  precompiled for the next text pass; only the plain variant is wired.
+- **Runtime verified:** `runClient` logs the MSDF pipeline ready and all five
+  sheets ready (dims/ranges match the atlases, including the RGB icons sheet);
+  no shader errors. Clean in-world F2 screenshot with the ClickGUI open:
+  `run/screenshots/2026-10-21_18.32.00.png`.
+- **Visual comparison against `page-movement.png`:** glyph advances/baselines
+  are unchanged and text is crisp with no channel fringing; card names are
+  visibly semibold, descriptions regular. Remaining renderer deltas: the
+  header separator is still the old rasterized `fillCircle` (looks jagged at
+  ~2x), the window is a flat dark fill (no blur/glass), and the sidebar logo
+  tile is the transparent white-on-dark asset instead of the reference's light
+  tile. The original reference's window is also wider (~569 units at 1.5 px/unit
+  vs the port's 465), which is why the reference leaves empty space right of
+  the card columns; layout was not changed in this pass.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL.
+- **Next:** wire the outline/fadeout variants to the HUD/list call sites, then
+  blur + liquid_glass, gradients, and the remaining shape primitives
+  (arc/annular/checker/bezier/shadow).
+
+## 2026-10-21 (Linux): `bk` module row + scrollbar/theme resolution
+
+- **`bd` child order completed.** `bk.bV` (image `0x18ef9aa70..0x18ef9b82c`,
+  94 blocks / 889 insns) recovered: `tDliG.dhc(ti(lC))` hover tween, inherited
+  `ak.oF(lC, BcpIo-21)` label, and `cel(lf.cuxpa, MCnYt+BcpIo-16,
+  pNyTQ+2.5, 7)` icon. `lf.cuxpa` = EDIT pencil. The row has no background of
+  its own. `bk.dk` builds `bh.<init>(FFFLsixtwo/gg;)` (110×80, two `ab`
+  toggles) — out of slice. Port: `SettingsWindow.ModuleRow` skeleton (exact
+  geometry/icon/hover; module name substituted for the unrecovered static
+  glyph-array label).
+- **Scrollbar resolved as absent.** `ah` is pure Java; `javap -c ah.bV`
+  computes only dead thumb geometry and contains no `lC` call; `bd.bV` only
+  uses `nQ/nH/nG`. The original panel has no visible scrollbar — the port
+  intentionally does not draw one.
+- **Panel fill mapping resolved.** `ii.bjb`=text, `bjd`=background (bhH
+  5,5,8), `bje`=panel (bhI 8,10,20), `bjf`=accent2, `bip`=accent (from
+  `ig`/`ie`). `cdm` fill = `bjd().cob(…).coc(bje(), 0.3f)`; the port uses
+  `background.lerp(panelColor, 0.3)` scaled by the open tween.
+- **Evidence:** `analysis/artifacts/gui-native/{bk.bV.keyblocks.txt,
+  ah.bV.javap.txt}`, updated `bd-settings-spec.md`.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL.
+- **Gaps:** `bk`'s glyph-array label literal (native `Eo/Em` bootstrap) and its
+  `bh` editor popup; `v`'s same-class label literal; title font family
+  `lE.WxpHL`; row open animation; shadow stroke widths.
+
+## 2026-10-21 (Linux): arc SDF, real backdrop blur, liquid glass (renderer slice)
+
+- **Correction to the previous entry:** `page-movement.png`'s window is
+  x≈216..912 = 696 px; at 1.5 px/unit that is ~464 design units (height 458 px
+  ≈ 305.3). The card columns span x≈383..907 and fill the 355-unit content
+  width. The right-hand area is outside the window (chat overlay/other UI), not
+  an empty window margin. `WINDOW_W/H` and the card grid were not changed.
+- **Arc/circle pipeline.** `opengrim:pipeline/gui_arc` (`gui_arc.vsh/fsh`
+  adapted verbatim from `arc.glsl`, sixtwo.lC.cdw/cdx). Channels: `UV0` size,
+  `UV1` thickness (/32) + startAngle (/256), `UV2` endAngle (/256) +
+  smoothness (/256), Color. `GuiDraw.fillCircle` now draws a filled disc with
+  the arc SDF (quad enlarged by the AA smoothness; thickness = quad size gives
+  an exact disc boundary) and keeps the raster fallback. The header separator
+  dot is now a smooth 2.75-unit circle; a 2× crop confirms a round dot instead
+  of the previous jagged blob.
+- **Real Blur branch (lC.ccW `fX.aYf()`).** `BackdropBlur` captures the main
+  framebuffer during GUI extraction (the current frame's world is already
+  rendered; the deferred GUI is still queued), runs two separable
+  `gui_blur` passes into offscreen ping/pong `SimpleFramebuffer`s and exposes
+  the final texture. Weights are exactly `kk$uf.dsw`:
+  `w[i] = 1/sqrt(2πσ²)·exp(-i²/(2σ²))`, `σ = radius/2`, normalised in-shader;
+  radius follows `32·pow(blurPercent/100, 0.43)`. `gui_blur` uses a std140
+  `Blur { texelSize, direction, radius, pad, vec4 weights[64]; }` UBO (the
+  original's `weights[256]` flattened by four) and a fullscreen POSITION quad.
+  `gui_blur_backdrop` masks the blurred texture with the shape SDF and mixes it
+  with the theme background by the recovered style opacity (0.75 for Blur).
+- **Liquid Glass branch (lC.ccW `fX.aYe()` / kd.IbNTv).**
+  `opengrim:pipeline/gui_glass` (`gui_glass.vsh/fsh`) keeps the full recovered
+  `liquid_glass.glsl` bevel/refraction/light/dispersion model verbatim. Window
+  size/radius/cornerSmoothness/tint/opacity travel as attributes; `Sampler0`
+  is the same blurred backdrop; the glass config constants are refraction 100,
+  depth 5, lightIntensity 80, lightAngle −45, lightSize 2, dispersion 0,
+  splay 0, tint = `Theme.glassFill()`, light = white. The original raw id
+  values 100/100/1.5 are not directly usable as bevel depth/light size (they
+  make the corner-normal radius the whole half-size), so depth/lightSize are
+  documented tunings; the blurred input, SDF/light model and 100-scale
+  refraction are recovered.
+- **Wiring:** `ClickGuiScreen` picks Liquid Glass → `gui_glass`, Blur →
+  `gui_blur_backdrop`, Solid → the existing opaque fill. `GuiDraw.themedBackground`
+  and popups keep their existing fill until the next pass.
+- **Runtime verified:** main-menu `runClient` logs the shape, MSDF, arc,
+  blur/backdrop and liquid-glass pipelines ready. In-world F2 captures:
+  `run/screenshots/2026-10-21_18.46.37.png` (Blur: blurred world visible under
+  the window mask, sharp world outside) and
+  `run/screenshots/2026-10-21_18.52.43.png` (Liquid Glass: clear beveled glass
+  with rim light and refracted blurred world). No shader/draw exceptions.
+- **Remaining gaps:** shape gradients (`FILL_GRADIENT`/stops/angle), texture
+  fill, loading stripes; Blur tint mix and glass depth/lightSize need exact
+  `ii` config recovery; glass alpha is 1.0 rather than the style's 0.2 to keep
+  the blurred backdrop from showing through sharply; popups/settings panels
+  still use the opaque themed fill; shadow/annular/checker/bezier pipelines
+  remaining. Header dot now uses arc SDF instead of the original shape-SDF
+  circle (`cdc`/`cdh`), same visible circle.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL.
+
+## 2026-10-21 (Linux): decoded native settings labels
+
+- **`v` toggle label = "Enabled"**, **`bk` row label = "Keybind"** — decoded
+  by running the classes' own int resolver in the existing Wine/JVM sandbox
+  (`win/tmp/LabelDump.java`, no client):
+  `bd` key `aAWpI=96992212900949`, seed `0x26D3D2F10863`; length site 20856→7,
+  values `[69,110,97,98,108,101]` + indexed 31284→100 at index 6;
+  `bk` key `KbsrP=37233083650712`, seed `0x113C1EBEC7C7`; length 21192→7,
+  values `[75,101,121,98,105,110]` + indexed 12618→100 at index 6.
+  The resolver accepts exactly `rawConst ^ classKey ^ seed`; all other
+  derivations throw AIOOBE (recorded).
+- **Port:** `SettingsWindow` toggle row uses `"Enabled"`; `ModuleRow` uses
+  `"Keybind"` — the `module.getName()` substitution is gone.  No other
+  changes.
+- **`bk.dk`/`bh`:** spec only — `bh` is a 110×80 native popup
+  (two `ab` toggles over `gg.bai()/baj()`, native `bV`/`dk`), not ported.
+- **Evidence:** `analysis/artifacts/gui-native/labels-decrypt.txt`,
+  `analysis/tools/decryptor/LabelDump.java`, updated spec.
+- **Build:** JDK 21 `compileJava` → BUILD SUCCESSFUL.
+
+## 2026-10-21 (Linux): theme-style wiring, recovered glass uniforms, three branch captures
+
+- **Interface.style is wired.** `Interface.onTick` now maps the ModeSetting
+  value (`liquid_glass` / `blur` / `solid`) through
+  `Theme.get().setBackgroundStyle(...)` before the module's screen checks. It
+  runs every tick, so a saved config applies on the first tick after
+  `CONFIG.load()` and a ModeWidget change applies on the next tick. Blur remains
+  the default (`Theme.BackgroundStyle.defaultStyle() == BLUR`).
+- **All three branches verified in-world** (`--quickPlaySingleplayer "New World"`,
+  F2 captures):
+  - `analysis/artifacts/gui-reference/port/blur-default-2026-10-21.png` (default,
+    config `"style": "blur"`) — two-pass blurred world under the window mask.
+  - `analysis/artifacts/gui-reference/port/liquid-glass-2026-10-21.png`
+    (`"style": "liquid_glass"`) — recovered glass composite.
+  - `analysis/artifacts/gui-reference/port/solid-2026-10-21.png`
+    (`"style": "solid"`) — flat themed fill.
+  The Blur capture has the F2 "Saved screenshot..." toast for the previous
+  capture; it is otherwise the full 465×305.5 ClickGUI.
+- **Blur-vs-reference comparison:** after the window-width correction the port
+  geometry matches `page-movement.png`: 465×305.5 window, 100-unit sidebar,
+  28-unit header, 175×28 cards with 5-unit gaps, same content origin and text
+  sizes. The visible difference is the backdrop: the port's test world is a
+  bright day scene, so the 75% background tint over the blurred world reads
+  blue/green at the top/bottom; the reference frame was captured against a dark
+  world and therefore reads uniformly dark gray. Card/sidebar/header geometry,
+  text advances and the now-smooth separator dot match.
+- **Recovered glass uniforms (replaces the previous depth 5 / lightSize 2
+  tunings).** `lC.ccW` passes `ii2.bji()..bjp()` through `bOO..bOV`; the
+  builder → `jP` → uniform mapping used:
+  | builder | source | glass uniform | value |
+  |---|---|---|---|
+  | `bOO` | `ii.bji` = `id.bhg` innerRadius | `refraction` | 100 (shader /100 = 1.0) |
+  | `bOP` | `ii.bjj` = `id.bhh` outerRadius | `depth` | 100 (design units; clamped to half-size) |
+  | `bOQ` | `ii.bjk` = `id.bhi` borderInset | `splay` | 100 (shader /100 = radial) |
+  | `bOR` | `ii.bjl` = `id.bhj` | `dispersion` | 0 |
+  | `bOU` | `ii.bjo` borderWidth × `(1 − f7/2)` | `lightSize` | 1.5 (base; f7 is the caller's 0..1 factor) |
+  | `bOV` | `ii.bjp` = `id.bhf` | `lightColor` | white |
+  | `bOW` | `ii.bjn` = `id.bhe` | `tintColor` | transparent |
+  | `bLu` | `jP` default `NKhaE` | `lightIntensity` | 80 (shader /100 = 0.8) |
+  | `bLv` | `jP` default `tkEVM` | `lightAngle` | −45° |
+  | `bLh` / `bLi` | `kg` defaults `KfgfI` / `txGdU` | `innerSmoothness` / `thickness` | 0.75 / 1.0 |
+  | `bLk..bLn` | `jP` defaults | innerRadius / outerRadius / startAngle / endAngle | 0 / 0 / 0 / 2π |
+  The `jV`/`jP` uniform-name literals are DES-encrypted; this mapping is
+  recovered from the builder call order, `kg.bPg` field order and the shader's
+  value semantics. `shapeType=SHAPE_SQUIRCLE`, `maskType=MASK_FILL`,
+  `hasUniformCorners=1`; the skipped `bON(ii.bjm)` field is only used by the
+  annular/outline paths.
+- **Build:** `JAVA_HOME=/usr/lib/jvm/java-21-openjdk bash gradlew compileJava`
+  → BUILD SUCCESSFUL. `run/config/opengrim.json` restored to `"style": "blur"`.
+- **Remaining gaps:** `shadow` pipeline and rounded-shadow draw; shape gradient
+  fill (FILL_GRADIENT stops/angle), texture fill, loading stripes; popup surfaces
+  still use the opaque themed fill; `shadow/annular/checker/bezier` pipelines.

@@ -77,7 +77,7 @@ public class ItemFrameBlocker extends Module {
 
 	public ItemFrameBlocker() {
 		super("item_frame_blocker", "Item Frame Blocker", "Blocks putting items to an item frame",
-				ModuleCategory.UTILITY);
+				ModuleCategory.PLAYER);
 		setBind(-999);
 		slots.add(slot0);
 		slots.add(slot1);

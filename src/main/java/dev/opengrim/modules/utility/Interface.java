@@ -3,6 +3,7 @@ package dev.opengrim.modules.utility;
 import java.util.List;
 
 import dev.opengrim.gui.screen.ClickGuiScreen;
+import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
@@ -57,7 +58,7 @@ public class Interface extends Module {
 	private boolean emoteKeyDown;
 
 	public Interface() {
-		super("interface", "Interface", "Allows to change interface settings", ModuleCategory.UTILITY);
+		super("interface", "Interface", "Allows to change interface settings", ModuleCategory.CLIENT);
 		setBind(344);
 	}
 
@@ -84,6 +85,11 @@ public class Interface extends Module {
 	@Override
 	public void onTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
+
+		// fX background-style selection: the stored fX mode is applied to the
+		// renderer theme every tick, so a config load or a ModeWidget change
+		// takes effect without a restart.
+		Theme.get().setBackgroundStyle(themeStyle(style.getValue()));
 
 		if (editTheme.getValue()) {
 			editTheme.setValue(false);
@@ -119,6 +125,17 @@ public class Interface extends Module {
 	public static boolean isLiquidGlass() {
 		Interface self = lookup();
 		return self != null && "liquid_glass".equalsIgnoreCase(self.style.getValue());
+	}
+
+	/** fX.aYe/aYf/aYg: mode-setting value → renderer background style. */
+	private static Theme.BackgroundStyle themeStyle(String value) {
+		if ("liquid_glass".equalsIgnoreCase(value)) {
+			return Theme.BackgroundStyle.LIQUID_GLASS;
+		}
+		if ("solid".equalsIgnoreCase(value)) {
+			return Theme.BackgroundStyle.SOLID;
+		}
+		return Theme.BackgroundStyle.BLUR;
 	}
 
 	public static boolean isBlur() {

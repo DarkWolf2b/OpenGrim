@@ -135,7 +135,7 @@ public class FakeLag extends Module {
 	private boolean flushing;
 
 	public FakeLag() {
-		super("fake_lag", "Fake Lag", "Creates lagging effect", ModuleCategory.MOVEMENT);
+		super("fake_lag", "Fake Lag", "Creates lagging effect", ModuleCategory.COMBAT);
 		setBind(82); // registry metadata.txt:ff key=18 bind=82
 	}
 

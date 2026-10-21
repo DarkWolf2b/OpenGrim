@@ -33,7 +33,7 @@ import net.minecraft.client.gui.screen.ingame.SignEditScreen;
  */
 public class NoSignScreen extends Module {
 	public NoSignScreen() {
-		super("no_sign_screen", "No Sign Screen", "Disables editing signs", ModuleCategory.UTILITY);
+		super("no_sign_screen", "No Sign Screen", "Disables editing signs", ModuleCategory.PLAYER);
 	}
 
 	@Override

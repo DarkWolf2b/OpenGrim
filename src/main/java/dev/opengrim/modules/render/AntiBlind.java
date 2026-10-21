@@ -35,7 +35,7 @@ public class AntiBlind extends Module {
 	private final BoolSetting disableWaterOverlay = register(new BoolSetting("disable_water_overlay", false));
 
 	public AntiBlind() {
-		super("anti_blind", "Anti Blind", "Allows to disable screen effects", ModuleCategory.RENDER);
+		super("anti_blind", "Anti Blind", "Allows to disable screen effects", ModuleCategory.VISUALS);
 	}
 
 	/** "Disable Fire" (dx.java accessor ajk, field rNxMx). */

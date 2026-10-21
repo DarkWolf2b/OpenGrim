@@ -66,7 +66,7 @@ public class Trails extends Module {
 	private final Map<PlayerEntity, List<TrailPoint>> history = new HashMap<>();
 
 	public Trails() {
-		super("trails", "Trails", "Renders trails behind players", ModuleCategory.RENDER);
+		super("trails", "Trails", "Renders trails behind players", ModuleCategory.VISUALS);
 		showFor.add(players);
 		showFor.add(friends);
 		showFor.add(invisibles);

@@ -99,7 +99,7 @@ public class FireworkSpots extends Module {
 	private final Set<Integer> seenIds = new HashSet<>();
 
 	public FireworkSpots() {
-		super("firework_spots", "Firework Spots", "Renders used fireworks", ModuleCategory.RENDER);
+		super("firework_spots", "Firework Spots", "Renders used fireworks", ModuleCategory.VISUALS);
 	}
 
 	/**

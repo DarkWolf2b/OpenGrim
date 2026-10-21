@@ -2,9 +2,9 @@
 """Find the JNI table via GetVersion's distinctive code pattern."""
 import struct
 
-DUMP = '/workspace/binaries/native/jna1.21.11'
-DUMP = '/workspace/win/dump/mem-pid216130.bin'
-JVM_DLL = '/workspace/win/jdk-21.0.12.1+1/bin/server/jvm.dll'
+DUMP = 'binaries/native/jna1.21.11'
+DUMP = 'win/dump/mem-pid216130.bin'
+JVM_DLL = 'win/jdk-21.0.12.1+1/bin/server/jvm.dll'
 jbase, jend = 0x6ffff9770000, 0x6ffffa512000
 
 regions = []

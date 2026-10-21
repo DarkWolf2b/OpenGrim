@@ -51,7 +51,7 @@ public class MiddleClickFriend extends Module {
 
 	public MiddleClickFriend() {
 		super("middle_click_friend", "Middle Click Friend", "Adds friend when you click scroll on him",
-				ModuleCategory.UTILITY);
+				ModuleCategory.CLIENT);
 		setBind(-999);
 	}
 

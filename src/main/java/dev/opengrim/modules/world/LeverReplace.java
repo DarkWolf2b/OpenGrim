@@ -84,7 +84,7 @@ public class LeverReplace extends Module {
 	private boolean releaseUseKey;
 
 	public LeverReplace() {
-		super("lever_replace", "Lever Replace", "Automatically replaces levers and buttons", ModuleCategory.WORLD);
+		super("lever_replace", "Lever Replace", "Automatically replaces levers and buttons", ModuleCategory.PLAYER);
 		instant = new BoolSetting("instant", true) {
 			@Override
 			protected void onChange() {

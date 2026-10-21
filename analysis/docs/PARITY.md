@@ -1166,3 +1166,188 @@ against the recovered material (report:
 - **dl (Outlines):** `isOutliningActive` stays false — the original sets it only
   inside the outline-framebuffer batch (`ki.bPi` → `ki.bPk` → `kn.bQo`), which
   has no consumer in the rebuild; setting it around `onTick` would diverge.
+
+### Wave 5 — GUI category/page parity (2026-10-21)
+
+Supersedes the 2026-10-17 "Repo-wide — category partition" note (the repo's
+semantic assignment is no longer kept) and the ClickGUI divergence that called
+the page grouping structural.
+
+- **Original category recovered for all 162 modules** from the `gh` constant in
+  each constructor: `gh.xwjCw`=Combat, `gh.xgeEn`=Movement, `gh.qBzlZ`=Player,
+  `gh.nOCvV`=Visuals, `gh.KfAlY`=Client. Auto Trap (`eJ`) and Auto Web (`eK`)
+  inherit Combat from the block base `sixtwo.eL` (`eL.<init>` passes
+  `gh.xwjCw`). Table: `analysis/artifacts/gui-reference/category-map.tsv`.
+- **Exact original membership:** Combat 57, Movement 23, Player 34, Visuals 37,
+  Client 11 (43 modules were on the wrong page; 98 constructor arguments change
+  textually with the enum rename). `ModuleCategory` is now
+  `COMBAT, MOVEMENT, PLAYER, VISUALS, CLIENT` in the original `gh` order, and
+  `ClickGuiScreen.Page` maps Player/Visuals/Client directly (previously
+  WORLD/RENDER/UTILITY).
+- **Ordering:** the original page panel (`aC.<init>`, `aC.dY`) walks the module
+  map (`rD.dlJ().aZz().values()`), and `page-client.png`/`page-movement.png`/
+  `page-friends.png` show that order is obfuscated class id (registry.tsv row
+  order). `Modules.registerAll()` now registers in that order; no renderer or
+  card-grid geometry was changed.
+- **Verified:** first screens are exact set + exact order — Player 16/16,
+  Visuals 16/16, Client 11/11. No residual order difference on those pages.
+  Movement's frame is empty and Hud has no populated frame, so those are
+  proven by constructors only. `image.png` (repo root) is a **port**
+  screenshot, not the original Combat page (its first 16 are the port's old
+  registration order); it is explicitly not used as parity evidence.
+- **Build:** `compileJava` on JDK 21 → BUILD SUCCESSFUL.
+
+### Wave 6 — recovered `shape` shader pipeline (2026-10-21, vertical slice)
+
+- **No divergence in the visible SDF.** `gui_shape.vsh/.fsh` reproduce
+  `shape.glsl`'s `shapeSDF` (rectangle + squircle) and `maskAlpha`
+  (fill/outline) verbatim; the solid path uses the original
+  smoothness 0.75 / innerSmoothness 0.75 / thickness 1.0 values.
+- **Mechanism divergence (documented):** the original binds per-primitive
+  scalar uniforms with raw GL (`sixtwo.jN.bJq/bJr/bJt`, `ke.bOi`). 1.21.11's
+  deferred GUI renderer cannot bind per-draw scalar uniforms, so the same
+  values are carried in the vertex attributes (`UV0` size, `UV1/UV2` radius in
+  `ke.bOi` order, `Normal` smoothness/inner/thickness, `Position.z`
+  cornerSmoothness). This changes transport only, not the math or values.
+- **Parameterization gap (next):** `GuiDraw`'s single-radius API maps to
+  `SHAPE_RECTANGLE` (`kd.AhlXN` mode) with the given radius. The original
+  `kd.sQVlR` calls pass a scalar cornerSmoothness (5.0 for the window/cards)
+  plus a per-corner `ld` multiplier (e.g. `ld.all(11)` for the window,
+  `ld.all(6)` for popups) and run the SHAPE_SQUIRCLE branch
+  (`ke.bOk`: radius = ld * cornerSmoothness / 2). The shader already supports
+  it; the GuiDraw surface does not expose the pair yet.
+- **Not wired yet:** fillType gradient (1) / texture (2), loading stripes,
+  dithering (gradient-only in shape.glsl), MSDF text, blur, liquid glass.
+  DrawContext fallbacks remain only when the pipeline cannot be created.
+- **Verification:** `glslangValidator` passes for fill/outline/squircle and
+  links both stage pairs; `runClient` logs the pipelines ready after resource
+  reload with no shader errors.
+
+### Wave 7 — native settings popup recovered (2026-10-21)
+
+- **No divergence in the recovered geometry.** `SettingsWindow` now uses the
+  recovered `bd` values: width 127 (`BcpIo`), height
+  `min(200, 18 + Σ oH·dn + 51)` (`bd.dn`), radius 7, title at
+  `(x+7+2t, y+8+2t)` with size `7+2t` plus the `(x+9,y+10)` pass, close glyph
+  8×8/font 6 at `(x+w-17.5, y+9.5)` (`bd.BO`), row stack at `y+18`, row
+  heights 18/28/122 from the `ak.dn()` handlers.
+- **Removed reconstruction:** the invented subtitle, separator dot and
+  20×20 close-button chrome are gone — the original header is the module-name
+  glyph array drawn twice (sliding pass + static pass) and a bare CROSS glyph.
+- **Reserved space (documented):** the original child list is
+  `v` (18) + `bk` (18) + settings; the port's visible row set is the module
+  toggle + settings, and the `bk` 18 units are kept in the height formula so
+  the panel height stays exact.
+- **Theme/colour gap:** the fill is `themeA.cob(…).coc(themeB,t)` in the
+  original (`ii.bjb/bjd/bje`); the `ig` theme key mapping is not recoverable
+  from the current evidence, so the port uses `Theme.panelColor()`/`text()`.
+  Same for the title family (`lE.WxpHL`, one of five `lj`) — port uses the
+  SEMIBOLD sheet.
+- **Not drawn/modelled:** the `ah` scrollbar (its paint body is not in the
+  recovered decompile); wheel scrolling remains. Per-row open animation
+  (`oH·dn`) and the `ld.all(7)`/`ld.all(3t+4)` shadow/fill stroke widths are
+  not modelled (GuiDraw stroke surface is renderer-owned).
+- **Build:** JDK 21 `compileJava` → BUILD SUCCESSFUL.
+
+### Wave 7 — recovered MSDF text pipeline (2026-10-21, vertical slice)
+
+- **No divergence in the glyph math.** `gui_msdf.vsh/.fsh` reproduce
+  `msdf.glsl`'s `median(rgb)` distance, `range`/`pixels` derivative scaling,
+  `smoothstep(-smoothness, smoothness, ...)`, outline mix and fadeout
+  normalization. `MsdfFont` loads the original msdfgen sheets (including the
+  MTSDF RGB channels and the icons sheet) instead of the baked-alpha sheet.
+- **Mechanism divergence (documented):** per-text uniforms are packed into
+  vertex attributes (`UV1`, `UV2`, `Normal`, `Position.z`) because the 1.21.11
+  deferred GUI renderer has no per-draw scalar uniform hook. `maxWidth` /
+  `textPosX` are pre-normalized per vertex; values and fade curve are
+  unchanged. Quantization: range 1/255 of 12, thickness 1/255 of 2,
+  smoothness/outline 1/255 of 4, outline colour 8 bit/channel, fade 1/255.
+- **Wired:** plain text (regular/medium/semibold/bold/icons) through
+  `opengrim:pipeline/gui_msdf`. Baked-alpha fallback remains for shader/sheet
+  failure.
+- **Precompiled but not wired:** `gui_msdf_outline`, `gui_msdf_fadeout`,
+  `gui_msdf_outline_fadeout`. The state/shader already carry outline colour /
+  thickness and fade start/end; call sites are the next step.
+- **Visual gaps (not text-shader gaps):** header separator is still the old
+  `fillCircle` rasterizer; background is flat (no blur/glass); logo tile asset
+  is dark/transparent vs the reference light tile; reference window width is
+  ~569 design units at 1.5 image px/unit while the port keeps 465, leaving the
+  reference with empty space right of the card columns. Page/category mapping
+  untouched.
+
+### Wave 8 — `bd` module row + scrollbar/theme (2026-10-21)
+
+- **`bk` row geometry is exact:** 18 units, inherited `ak.oF` label at
+  `(x+9, centred)`, max width `127-21=106`, EDIT icon (`lf.cuxpa`,
+  `IconGlyph.EDIT`) at `(x+w-16, y+2.5)` size 7, hover tween brightening the
+  label. Row background: none (the original draws only text+icon).
+- **Divergence [N]:** `bk`'s label is a static glyph array whose length and
+  codepoints are decrypted by its native `Eo`/`Em` bootstrap; the port
+  skeleton substitutes the module name. `bk.dk` opens a `bh` 110×80 popup (two toggles) — not ported.
+- **No scrollbar in the original:** `ah.bV` has no `lC` calls (dead thumb
+  math only); `bd.bV` uses `ah` as a scroll model. The port draws none, so
+  the previous "scrollbar not drawn" gap is closed as *not a divergence*.
+- **Panel fill [resolved]:** `background.lerp(panel, 0.3)` (`bjd`→`bje`,
+  constant 0.3 at `0x18f139585`), faded by the open tween — replaces the
+  previous unmapped `Theme.panelColor()` guess.
+- **Remaining [N]:** `v` toggle label literal, title family `lE.WxpHL`,
+  per-row open animation, `ld.all(7)`/`ld.all(3t+4)` stroke widths
+  (GuiDraw surface), shadow pipeline.
+- **Build:** JDK 21 `compileJava` → BUILD SUCCESSFUL.
+
+### Wave 8 — arc, backdrop blur, liquid glass (2026-10-21)
+
+- **Correction:** the reference window is ~464 design units wide
+  (`page-movement.png` x≈216..912 at 1.5 px/unit), not ~569. The area to its
+  right is outside the window. No window/grid change was made.
+- **Arc:** `gui_arc.vsh/fsh` reproduce `arc.glsl`; `GuiDraw.fillCircle` uses it
+  for the 2.75 header dot and slider knobs. The original dot path was the
+  shape-SDF `lC.cdc`/`cdh` circle, so this is an implementation substitution
+  with the same visible smooth disc (the task requested the arc pipeline).
+- **Blur:** the two-pass separable `blur.glsl` and the exact Gaussian weights
+  (`σ = radius/2`) are used. The original blurs the post-GUI framebuffer; the
+  deferred rebuild captures during GUI extraction, so the HUD is not in the
+  backdrop and the world is current-frame but not yet GUI-composited. Window
+  mask + tint mix reproduce the Blur branch; `ii.bjm()` (blur percent) is not
+  carried by the port Theme, so 75 is used.
+- **Glass:** `liquid_glass.glsl`'s SDF/bevel/refraction/light/dispersion math
+  is verbatim. Uniform transport changed (size/radius/cornerSmoothness/tint/
+  opacity in attributes, config as consts). Divergences: depth 5 / lightSize 2
+  are tuned values (the raw id 100/1.5 values break the corner normal);
+  refraction 100, lightIntensity 80, lightAngle −45, dispersion 0 are the
+  recovered/default scale; window alpha is 1.0 instead of the style's 0.2 so
+  the blurred backdrop does not show the sharp world through it.
+- **Not wired:** shape gradient/texture fill types, loading stripes, popup
+  blur/glass surfaces, shadow/annular/checker/bezier.
+- **Verified:** pipelines register/precompile at startup; in-world F2 captures
+  show the blurred backdrop and the glass bevel/rim. No draw exceptions.
+
+### Wave 9 — native settings labels decoded (2026-10-21)
+
+- **No more label substitution.** `v`/`cJ` = **"Enabled"**, `bk` = **"Keybind"**
+  (native glyph arrays decoded through `bd.Co`/`bk.Em` with the class-key
+  derivation; dump = `analysis/artifacts/gui-native/labels-decrypt.txt`).
+  The previous `[N]` module-name substitution divergence is closed.
+- **Still [N]:** `bk.dk`'s `bh` keybind popup (110×80, two toggles, native
+  `bV`/`dk`) — precise spec recorded, not implemented.
+- **Build:** JDK 21 `compileJava` → BUILD SUCCESSFUL.
+
+### Wave 9 — selectable background styles + recovered glass values (2026-10-21)
+
+- **Selector:** `Interface.style` now drives `Theme.setBackgroundStyle` every
+  tick, so `blur`/`liquid_glass`/`solid` are user-selectable and a saved config
+  applies after load. Default remains Blur.
+- **Captures:** `analysis/artifacts/gui-reference/port/`
+  `blur-default-2026-10-21.png`, `liquid-glass-2026-10-21.png`,
+  `solid-2026-10-21.png`. Geometry matches the corrected reference measurement
+  (465×305.5 window; cards fill the 355-unit content width).
+- **Glass values:** previous `depth 5`/`lightSize 2` tunings are replaced by the
+  recovered `ii`/`id`/`jP` values: refraction 100, depth 100, splay 100,
+  dispersion 0, lightIntensity 80, lightAngle −45, lightSize 1.5,
+  tint = glassFill (transparent), light = glassBorder (white). The builder →
+  uniform mapping is in PROGRESS.md; it is inferred from call order/field order
+  because `jV`'s uniform-name literals remain DES-encrypted. `depth`/`splay` are
+  used raw (the shader scales refraction/splay by 100 internally); `lightSize`
+  uses the base borderWidth because the caller's `f7` factor is not exposed.
+- **Remaining:** shadow pipeline/rounded shadow, gradient fills, popup blur/glass,
+  texture/loading fill types, remaining primitives.

@@ -51,7 +51,7 @@ public class Transactions extends Module {
 	private int totalTransactionsObserved;
 
 	public Transactions() {
-		super("transactions", "Transactions", "Reads the transactions the server sends you", ModuleCategory.UTILITY);
+		super("transactions", "Transactions", "Reads the transactions the server sends you", ModuleCategory.CLIENT);
 	}
 
 	@Subscribe

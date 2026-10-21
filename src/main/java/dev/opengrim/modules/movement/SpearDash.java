@@ -73,7 +73,7 @@ public class SpearDash extends Module {
 
 	public SpearDash() {
 		super("spear_dash", "Spear Dash",
-				"Automatically dashes in given direction with spear", ModuleCategory.MOVEMENT);
+				"Automatically dashes in given direction with spear", ModuleCategory.COMBAT);
 	}
 
 	@Override

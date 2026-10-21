@@ -1,9 +1,9 @@
 # OpenGrim
 
-Clean-room, GPL-3.0 open-source rebuild of the "Grim 4.4" Fabric 1.21.11
-utility client. This project reimplements observed behavior from static
-analysis only; no original code is copied (see `../../../analysis/specs/` for the
-behavior specs and `../PARITY.md` for module parity tracking).
+1:1 rebuild of the "Grim 4.4" Fabric 1.21.11 utility client. This project
+reimplements observed behavior from static analysis; original code/assets may be
+reused at the owner's direction (see `../../../analysis/specs/` for the behavior
+specs and `../PARITY.md` for module parity tracking).
 
 ## Build
 
@@ -29,4 +29,4 @@ Framework complete; module porting in progress — see `../PARITY.md`
 
 ## License
 
-GPL-3.0-or-later. See `LICENSE`.
+All Rights Reserved. The GPL `LICENSE` was removed at the owner's direction.

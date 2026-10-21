@@ -10,9 +10,9 @@ from collections import deque
 
 import pyghidra
 
-BINARY = '/workspace/binaries/native/jna1.21.11'
-PROJ_LOC = '/workspace/binaries/ghidra-proj/pydeep'
-OUT = '/workspace/analysis/ghidra/deep-decomp.c'
+BINARY = 'binaries/native/jna1.21.11'
+PROJ_LOC = 'binaries/ghidra-proj/pydeep'
+OUT = 'analysis/ghidra/deep-decomp.c'
 MAX_DEPTH = 3
 MAX_FUNCS = 400
 PER_FUNC_TIMEOUT = 120

@@ -2,8 +2,8 @@
 # setup-harness.sh — first-stage WSL harness setup for the Grim runtime dump.
 # Run from Windows:  wsl -d GrimHarness -e bash /mnt/d/WSL/setup-harness.sh
 set -e
-BASE=<local-checkout>
-[ -d "$BASE/win" ] || BASE=<local-checkout>
+BASE=.
+[ -d "$BASE/win" ] || BASE=.
 echo "BASE=$BASE"
 
 # 1. copy harness tree into the distro (native fs, not /mnt)
@@ -14,8 +14,8 @@ cp -r "$BASE/win/." /root/win/
 mkdir -p /root/win/tmp/native
 cp "$BASE/binaries/native/jna1.21.11" /root/win/tmp/native/jna1.21.11
 
-# 3. adapt launcher paths: Z:\workspace\win -> Z:\root\win
-sed -i 's|Z:\\workspace\\win|Z:\\root\\win|g; s|/workspace/win|/root/win|g' /root/win/mc/run-client.sh
+# 3. adapt launcher paths: win -> win
+sed -i 's|win|win|g; s|win|/root/win|g' /root/win/mc/run-client.sh
 echo "run-client root.win refs: $(grep -c 'root.win' /root/win/mc/run-client.sh || true)"
 
 # 4. entropy file for java.security.egd

@@ -98,7 +98,7 @@ public class KnockbackDisplacement extends Module {
 
 	public KnockbackDisplacement() {
 		super("knockback_displacement", "Knockback Displacement",
-				"Allows to knockback target in custom direction", ModuleCategory.MOVEMENT);
+				"Allows to knockback target in custom direction", ModuleCategory.COMBAT);
 	}
 
 	@Override

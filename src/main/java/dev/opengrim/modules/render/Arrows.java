@@ -78,7 +78,7 @@ public class Arrows extends Module {
 	private final List<TrackedArrow> tracked = new ArrayList<>();
 
 	public Arrows() {
-		super("arrows", "Arrows", "Draws arrows to entities", ModuleCategory.RENDER);
+		super("arrows", "Arrows", "Draws arrows to entities", ModuleCategory.VISUALS);
 	}
 
 	@Override

@@ -104,7 +104,7 @@ public class TargetEsp extends Module {
 	private final AngleInterpolator angle = new AngleInterpolator();
 
 	public TargetEsp() {
-		super("target_esp", "Target ESP", "Marks the active target", ModuleCategory.RENDER);
+		super("target_esp", "Target ESP", "Marks the active target", ModuleCategory.VISUALS);
 	}
 
 	/** {@code rPpMG.Vd(() -> { if (hGhYF != null) IffVm.dhg(); })} - dz.java:190-213 / ajK. */

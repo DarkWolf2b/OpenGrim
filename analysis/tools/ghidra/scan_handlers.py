@@ -12,9 +12,9 @@ import json
 import struct
 import sys
 
-DLL = '/workspace/binaries/native/jna1.21.11'
-SIGS = '/workspace/analysis/ghidra/native-sigs.json'
-OUT = '/workspace/analysis/ghidra/native-handlers.json'
+DLL = 'binaries/native/jna1.21.11'
+SIGS = 'analysis/ghidra/native-sigs.json'
+OUT = 'analysis/ghidra/native-handlers.json'
 
 data = open(DLL, 'rb').read()
 print('loaded %d bytes' % len(data), flush=True)

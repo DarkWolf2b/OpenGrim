@@ -100,7 +100,7 @@ public class AnchorMacro extends Module {
 	private boolean detonateWaitDone;
 
 	public AnchorMacro() {
-		super("anchor_macro", "Anchor Macro", "Automatically charges and explodes an anchor", ModuleCategory.WORLD);
+		super("anchor_macro", "Anchor Macro", "Automatically charges and explodes an anchor", ModuleCategory.COMBAT);
 		safeAnchorBlocks.add(obsidianBlock);
 		safeAnchorBlocks.add(glowstoneBlock);
 	}

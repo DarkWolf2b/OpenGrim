@@ -2,10 +2,10 @@
 """Generate structural behavior specs for all registry modules."""
 import os, re, io
 
-SRC = '/workspace/analysis/decompiled/payload-decrypted/sixtwo'
-SRC_FALLBACK = '/workspace/analysis/decompiled/payload-named/sixtwo'
-OUT = '/workspace/analysis/specs/modules'
-REG = '/workspace/analysis/specs/registry.tsv'
+SRC = 'analysis/decompiled/payload-decrypted/sixtwo'
+SRC_FALLBACK = 'analysis/decompiled/payload-named/sixtwo'
+OUT = 'analysis/specs/modules'
+REG = 'analysis/specs/registry.tsv'
 
 os.makedirs(OUT, exist_ok=True)
 

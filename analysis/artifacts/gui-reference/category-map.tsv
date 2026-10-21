@@ -1,0 +1,163 @@
+id	module	original_page	port_category	corrected
+cP	Trajectories	Visuals	RENDER	VISUALS
+cQ	Swing Animations	Visuals	RENDER	VISUALS
+cR	Particles	Visuals	RENDER	VISUALS
+cS	China Hat	Visuals	RENDER	VISUALS
+cT	Pop Chams	Visuals	RENDER	VISUALS
+cU	Trails	Visuals	RENDER	VISUALS
+cV	Skeleton ESP	Visuals	RENDER	VISUALS
+cW	Trap ESP	Visuals	RENDER	VISUALS
+cX	Fake Player	Player	UTILITY	PLAYER
+cY	Shield Status	Visuals	RENDER	VISUALS
+cZ	Soul Effects	Visuals	RENDER	VISUALS
+dA	Elytra Target	Player	MOVEMENT	PLAYER
+dB	Full Bright	Player	RENDER	PLAYER
+dC	View Model	Visuals	RENDER	VISUALS
+dD	Item Frame Blocker	Player	UTILITY	PLAYER
+dE	Spammer	Player	UTILITY	PLAYER
+dF	Lever Replace	Player	WORLD	PLAYER
+dG	Anti Trap	Player	RENDER	PLAYER
+dH	No Sign Screen	Player	UTILITY	PLAYER
+dI	Nuker	Player	WORLD	PLAYER
+dJ	Mouse Tweaks	Player	UTILITY	PLAYER
+dK	Auto Lever Replace	Player	WORLD	PLAYER
+dL	No Entity Clip	Player	WORLD	PLAYER
+dM	Auto Market	Player	UTILITY	PLAYER
+dN	Slot Lock	Player	UTILITY	PLAYER
+dO	Hotbar Restorer	Player	UTILITY	PLAYER
+dP	Block Piercer	Player	WORLD	PLAYER
+dQ	Hit Sounds	Player	UTILITY	PLAYER
+dR	Click Action	Player	UTILITY	PLAYER
+dS	Hand No Clip	Player	COMBAT	PLAYER
+dT	Multi Task	Player	UTILITY	PLAYER
+dU	Auto Fish	Player	UTILITY	PLAYER
+dV	Custom FOV	Player	RENDER	PLAYER
+dW	Freecam	Player	RENDER	PLAYER
+dX	No Miss Delay	Player	COMBAT	PLAYER
+dY	Anti Invisible	Player	RENDER	PLAYER
+dZ	Fast Place	Player	WORLD	PLAYER
+da	Sound ESP	Visuals	RENDER	VISUALS
+db	Jump Circle	Visuals	RENDER	VISUALS
+dc	Hit Particles	Visuals	RENDER	VISUALS
+dd	Block ESP	Visuals	RENDER	VISUALS
+de	Hand Chams	Visuals	RENDER	VISUALS
+df	Aspect Ratio	Visuals	RENDER	VISUALS
+dg	Pearl Prediction	Visuals	RENDER	VISUALS
+dh	Ambience	Visuals	UTILITY	VISUALS
+di	2D ESP	Visuals	RENDER	VISUALS
+dj	Hole ESP	Visuals	RENDER	VISUALS
+dk	XRay	Visuals	RENDER	VISUALS
+dl	Outlines	Visuals	RENDER	VISUALS
+dm	Friend Indicator	Visuals	RENDER	VISUALS
+dn	Firework Spots	Visuals	RENDER	VISUALS
+do	Arrows	Visuals	RENDER	VISUALS
+dp	Logout Spots	Visuals	RENDER	VISUALS
+dq	Storage ESP	Visuals	RENDER	VISUALS
+dr	Health Indicators	Visuals	RENDER	VISUALS
+ds	Entity ESP	Visuals	RENDER	VISUALS
+dt	Nametags	Visuals	RENDER	VISUALS
+du	Tracers	Visuals	RENDER	VISUALS
+dv	Chams	Visuals	RENDER	VISUALS
+dw	Circle ESP	Visuals	RENDER	VISUALS
+dx	Anti Blind	Visuals	RENDER	VISUALS
+dy	Glow	Visuals	RENDER	VISUALS
+dz	Target ESP	Visuals	RENDER	VISUALS
+eA	Strafe	Movement	MOVEMENT	MOVEMENT
+eB	Flight	Movement	MOVEMENT	MOVEMENT
+eC	Sprint	Movement	MOVEMENT	MOVEMENT
+eD	Fast Bridge	Movement	MOVEMENT	MOVEMENT
+eE	Parkour	Movement	MOVEMENT	MOVEMENT
+eF	Spear Reach	Combat	COMBAT	COMBAT
+eG	Spear Lunge	Combat	COMBAT	COMBAT
+eH	Spear Dash	Combat	MOVEMENT	COMBAT
+eI	Spear Double Tap	Combat	COMBAT	COMBAT
+eJ	Auto Trap	Combat	WORLD	COMBAT
+eK	Auto Web	Combat	WORLD	COMBAT
+eM	Double Tap	Combat	COMBAT	COMBAT
+eN	Mace Swap	Combat	COMBAT	COMBAT
+eO	Auto Pearl Catch	Combat	COMBAT	COMBAT
+eP	Mace Aura	Combat	COMBAT	COMBAT
+eQ	Mace Elytra Target	Combat	COMBAT	COMBAT
+eR	Wind Hop	Combat	COMBAT	COMBAT
+eS	Auto Stun Slam	Combat	COMBAT	COMBAT
+eT	Shield Drain	Combat	COMBAT	COMBAT
+eU	Air Anchor	Combat	COMBAT	COMBAT
+eV	Auto Crystal	Combat	COMBAT	COMBAT
+eW	Auto Hit Crystal	Combat	COMBAT	COMBAT
+eX	Anchor Macro	Combat	WORLD	COMBAT
+eY	Crystal Optimizer	Combat	COMBAT	COMBAT
+eZ	Auto Double Hand	Combat	COMBAT	COMBAT
+ea	No Break Delay	Player	WORLD	PLAYER
+eb	Chest Stealer	Player	UTILITY	PLAYER
+ec	Ghost Hand	Player	WORLD	PLAYER
+ed	Custom Camera Distance	Player	RENDER	PLAYER
+ee	Cape	Player	RENDER	PLAYER
+ef	Elytra Swapper	Player	UTILITY	PLAYER
+eg	No Swing	Player	UTILITY	PLAYER
+eh	Auto Exp	Player	UTILITY	PLAYER
+ei	Scaffold	Movement	MOVEMENT	MOVEMENT
+ej	Air Stuck	Movement	MOVEMENT	MOVEMENT
+ek	Inventory Move	Movement	MOVEMENT	MOVEMENT
+el	Water Speed	Movement	MOVEMENT	MOVEMENT
+em	High Jump	Movement	MOVEMENT	MOVEMENT
+en	Anti Ghost	Movement	WORLD	MOVEMENT
+eo	No Slow	Movement	MOVEMENT	MOVEMENT
+ep	Super Firework	Movement	MOVEMENT	MOVEMENT
+eq	Null Movement	Movement	MOVEMENT	MOVEMENT
+er	Speed	Movement	MOVEMENT	MOVEMENT
+es	No Push	Movement	MOVEMENT	MOVEMENT
+et	Anti Web	Movement	MOVEMENT	MOVEMENT
+eu	Trident Boost	Movement	MOVEMENT	MOVEMENT
+ev	Collision Long Jump	Movement	MOVEMENT	MOVEMENT
+ew	No Jump Delay	Movement	MOVEMENT	MOVEMENT
+ex	Safe Walk	Movement	MOVEMENT	MOVEMENT
+ey	Blink	Movement	MOVEMENT	MOVEMENT
+ez	No Fall	Movement	MOVEMENT	MOVEMENT
+fA	Potion Refill	Combat	COMBAT	COMBAT
+fB	Auto Shield Break	Combat	COMBAT	COMBAT
+fC	Velocity	Combat	COMBAT	COMBAT
+fD	Uncharge Block	Combat	COMBAT	COMBAT
+fE	No Miss	Combat	COMBAT	COMBAT
+fF	Trigger Bot	Combat	COMBAT	COMBAT
+fG	W-Tap	Combat	COMBAT	COMBAT
+fH	Aim Assist	Combat	COMBAT	COMBAT
+fI	Auto Logout	Combat	COMBAT	COMBAT
+fJ	Target Margin	Combat	COMBAT	COMBAT
+fK	Reach	Combat	COMBAT	COMBAT
+fL	Auto Tool	Combat	COMBAT	COMBAT
+fM	Auto MLG	Combat	WORLD	COMBAT
+fN	Skin Protect	Client	UTILITY	CLIENT
+fO	Discord Activity	Client	UTILITY	CLIENT
+fP	Anti-Cheat Detector	Client	UTILITY	CLIENT
+fQ	No Protocol Disconnect	Client	UTILITY	CLIENT
+fR	Client Sounds	Client	UTILITY	CLIENT
+fS	Name Protect	Client	UTILITY	CLIENT
+fT	Resource Pack Bypass	Client	UTILITY	CLIENT
+fU	Middle Click Friend	Client	UTILITY	CLIENT
+fV	Self Destruct	Client	UTILITY	CLIENT
+fW	Transactions	Client	UTILITY	CLIENT
+fX	Interface	Client	UTILITY	CLIENT
+fa	Auto X-Bow	Combat	COMBAT	COMBAT
+fb	Cart Assist	Combat	WORLD	COMBAT
+fc	Cart Refill	Combat	WORLD	COMBAT
+fd	Auto Dripstone	Combat	WORLD	COMBAT
+ff	Fake Lag	Combat	MOVEMENT	COMBAT
+fg	Target Lock	Combat	COMBAT	COMBAT
+fh	Attribute Swap	Combat	COMBAT	COMBAT
+fi	Shield Block	Combat	COMBAT	COMBAT
+fj	Projectile Aim Bot	Combat	COMBAT	COMBAT
+fl	Auto Potion	Combat	COMBAT	COMBAT
+fm	Pearl Chaser	Combat	MOVEMENT	COMBAT
+fn	Auto Clicker	Combat	UTILITY	COMBAT
+fo	Anti Bot	Combat	UTILITY	COMBAT
+fp	Backtrack	Combat	COMBAT	COMBAT
+fq	Hitbox	Combat	COMBAT	COMBAT
+fr	Kill Aura	Combat	COMBAT	COMBAT
+fs	Knockback Displacement	Combat	MOVEMENT	COMBAT
+ft	Auto GApple	Combat	UTILITY	COMBAT
+fu	Criticals	Combat	COMBAT	COMBAT
+fv	Auto Armor	Combat	UTILITY	COMBAT
+fw	Auto Drain	Combat	COMBAT	COMBAT
+fx	Auto Totem	Combat	COMBAT	COMBAT
+fy	Totem Refill	Combat	COMBAT	COMBAT
+fz	Auto Jump Reset	Combat	COMBAT	COMBAT

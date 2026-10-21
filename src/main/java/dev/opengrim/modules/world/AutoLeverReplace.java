@@ -77,7 +77,7 @@ public class AutoLeverReplace extends Module {
 	private float range = 4.5f;
 
 	public AutoLeverReplace() {
-		super("auto_lever_replace", "Auto Lever Replace", "Automatically destroys levers", ModuleCategory.WORLD);
+		super("auto_lever_replace", "Auto Lever Replace", "Automatically destroys levers", ModuleCategory.PLAYER);
 		workWith.add(autoTrap);
 		workWith.add(autoWeb);
 	}

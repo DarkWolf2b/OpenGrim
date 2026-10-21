@@ -10,7 +10,7 @@ export TRACE_STRING_CLASSES='sixtwo/'
 pgrep -f 'Xvfb :99' >/dev/null || { nohup Xvfb :99 -screen 0 1280x720x24 >/tmp/xvfb.log 2>&1 & sleep 3; }
 
 # switch the launcher to the string-capturing agent
-sed -i 's|-agentpath:Z:\\root\\win\\hook\.dll|-agentpath:Z:\\root\\win\\hook-args.dll|' /root/win/mc/run-client.sh
+sed -i 's|-agentpath:win\\hook\.dll|-agentpath:win\\hook-args.dll|' /root/win/mc/run-client.sh
 echo "agent: $(grep -o 'hook-args.dll' /root/win/mc/run-client.sh | head -1)"
 
 # local server

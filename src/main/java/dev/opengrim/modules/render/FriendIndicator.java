@@ -75,7 +75,7 @@ public class FriendIndicator extends Module {
 	private final List<PlayerEntity> markedFriends = new ArrayList<>();
 
 	public FriendIndicator() {
-		super("friend_indicator", "Friend Indicator", "Visually marks friends", ModuleCategory.RENDER);
+		super("friend_indicator", "Friend Indicator", "Visually marks friends", ModuleCategory.VISUALS);
 	}
 
 	@Override

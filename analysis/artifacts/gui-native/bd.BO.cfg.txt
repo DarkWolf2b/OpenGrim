@@ -1,0 +1,669 @@
+entry 0x18f15c990  function 0x18f15c990..0x18f15ceac  blocks 30  insns 311
+
+// ---- block 0x18f15c990 ----
+  00018f15c990  push     rsi
+  00018f15c991  push     rdi
+  00018f15c992  sub      rsp, 0x98
+        // rsp sub= 152
+  00018f15c999  movups   xmmword ptr [rsp + 0x80], xmm6
+        // [rsp + 0x80] = xmm6
+  00018f15c9a1  movaps   xmm6, xmm3
+        // xmm6 = xmm3
+  00018f15c9a4  mov      rsi, rcx
+        // rsi = rcx
+  00018f15c9a7  mov      qword ptr [rsp + 0x78], 0
+        // [rsp + 0x78] = 0
+  00018f15c9b0  mov      qword ptr [rsp + 0x30], r8
+        // [rsp + 0x30] = r8
+  00018f15c9b5  mov      rax, qword ptr [rip - 0xc13db6c]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13db6c]
+  00018f15c9bc  mov      edx, 0x516
+        // rdx = 1302
+  00018f15c9c1  add      rdx, qword ptr [rax]   ; blob_off=0x516 pool='sixtwo/lf'
+        // rdx add= [rax]
+  00018f15c9c4  mov      r8d, 0x19
+        // r8 = 25
+  00018f15c9ca  call     0x190dd72e0   ; pool_str pool[0x516] = 'sixtwo/lf\x00NCCOy\x00Lsixtwo/l'
+        // call 0x190dd72e0  // pool_str pool[0x516] = 'sixtwo/lf\x00NCCOy\x00Lsixtwo/l'
+  00018f15c9cf  mov      qword ptr [rsp + 0x28], rax
+        // [rsp + 0x28] = rax
+  00018f15c9d4  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15c9d7  mov      rcx, rsi
+        // rcx = rsi
+  00018f15c9da  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck  args=['sixtwo/lf']
+        // call [rax + 0x720]  // JNI ExceptionCheck  args=['sixtwo/lf']
+  00018f15c9e0  test     al, al
+        // if (rax & rax)
+  00018f15c9e2  sete     al
+  00018f15c9e5  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15c9e7  mov      cl, al
+        // rcx = rax
+  00018f15c9e9  mov      eax, ecx
+        // rax = rcx
+  00018f15c9eb  lea      rcx, [rip - 0xc91fe22]   ; [0x18283cbd0] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fe22]
+  00018f15c9f2  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15c9f5
+
+// ---- block 0x18f15c9f5 ----
+  00018f15c9f5  mov      rax, qword ptr [rip - 0xc13dbac]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13dbac]
+  00018f15c9fc  mov      r8, qword ptr [rax]
+        // r8 = [rax]
+  00018f15c9ff  lea      r9, [r8 + 0x526]   ; pool[0x526] = 'Lsixtwo/lf;'
+        // r9 = &[r8 + 0x526]
+  00018f15ca06  add      r8, 0x4a40   ; pool[0x4a40] = 'PqdjL'
+        // r8 add= 19008
+  00018f15ca0d  mov      dword ptr [rsp + 0x20], 0x2d0
+        // [rsp + 0x20] = 720
+  00018f15ca15  lea      rdx, [rsp + 0x28]
+        // rdx = &[rsp + 0x28]
+  00018f15ca1a  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ca1d  call     0x190ddce00   ; resolve_static_field name='PqdjL' sig='Lsixtwo/lf;'
+        // call 0x190ddce00  // resolve_static_field name='PqdjL' sig='Lsixtwo/lf;'
+  00018f15ca22  jmp      qword ptr [rip - 0xc91fe10]   ; [0x18283cc18] 0x6ffff6d6ca28
+  -> slot 0x18f15ca28
+
+// ---- block 0x18f15ca28 ----
+  00018f15ca28  mov      rdi, rax
+        // rdi = rax
+  00018f15ca2b  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ca2e  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ca31  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15ca37  test     al, al
+        // if (rax & rax)
+  00018f15ca39  sete     al
+  00018f15ca3c  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15ca3e  mov      cl, al
+        // rcx = rax
+  00018f15ca40  mov      eax, ecx
+        // rax = rcx
+  00018f15ca42  lea      rcx, [rip - 0xc91fd69]   ; [0x18283cce0] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fd69]
+  00018f15ca49  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15ca4c
+
+// ---- block 0x18f15ca4c ----
+  00018f15ca4c  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ca4f  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ca52  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15ca58  test     al, al
+        // if (rax & rax)
+  00018f15ca5a  sete     al
+  00018f15ca5d  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15ca5f  mov      cl, al
+        // rcx = rax
+  00018f15ca61  mov      eax, ecx
+        // rax = rcx
+  00018f15ca63  lea      rcx, [rip - 0xc91fcea]   ; [0x18283cd80] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fcea]
+  00018f15ca6a  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15ca6d
+
+// ---- block 0x18f15ca6d ----
+  00018f15ca6d  mov      rdx, qword ptr [rsp + 0x28]
+        // rdx = [rsp + 0x28]
+  00018f15ca72  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ca75  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ca78  mov      r8, rdi
+        // r8 = rdi
+  00018f15ca7b  call     qword ptr [rax + 0x488]   ; JNI GetStaticObjectField
+        // call [rax + 0x488]  // JNI GetStaticObjectField
+  00018f15ca81  mov      qword ptr [rsp + 0x38], rax
+        // [rsp + 0x38] = rax
+  00018f15ca86  jmp      qword ptr [rip - 0xc91fe64]   ; [0x18283cc28] 0x6ffff6d6ca8c
+  -> slot 0x18f15ca8c
+
+// ---- block 0x18f15ca8c ----
+  00018f15ca8c  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ca8f  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ca92  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15ca98  test     al, al
+        // if (rax & rax)
+  00018f15ca9a  sete     al
+  00018f15ca9d  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15ca9f  mov      cl, al
+        // rcx = rax
+  00018f15caa1  mov      eax, ecx
+        // rax = rcx
+  00018f15caa3  lea      rcx, [rip - 0xc91fd7a]   ; [0x18283cd30] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fd7a]
+  00018f15caaa  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15caad
+
+// ---- block 0x18f15caad ----
+  00018f15caad  addss    xmm6, dword ptr [rsp + 0xd8]
+        // xmm6 s= [rsp + 0xd8]
+  00018f15cab6  addss    xmm6, dword ptr [rip - 0xc91fd1e]   ; [0x18283cda0] f32 -19.5, u32 0xc19c0000
+        // xmm6 s= [rip - 0xc91fd1e]
+  00018f15cabe  movss    dword ptr [rsp + 0x40], xmm6
+  00018f15cac4  mov      dword ptr [rsp + 0x48], 0x41000000
+        // [rsp + 0x48] = 1090519040
+  00018f15cacc  mov      dword ptr [rsp + 0x50], 0x41400000
+        // [rsp + 0x50] = 1094713344
+  00018f15cad4  jmp      qword ptr [rip - 0xc91fe82]   ; [0x18283cc58] 0x6ffff6d6cada
+  -> slot 0x18f15cada
+
+// ---- block 0x18f15cada ----
+  00018f15cada  mov      rax, qword ptr [rip - 0xc13dc91]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13dc91]
+  00018f15cae1  mov      rdx, qword ptr [rax]
+        // rdx = [rax]
+  00018f15cae4  add      rdx, 0x619   ; pool[0x619] = 'sixtwo/jf'
+        // rdx add= 1561
+  00018f15caeb  mov      rcx, rsi
+        // rcx = rsi
+  00018f15caee  mov      r8d, 0x1e
+        // r8 = 30
+  00018f15caf4  call     0x190dd72e0   ; pool_str pool[0x619] = 'sixtwo/jf\x00bAZ\x00(Ljava/lang/Stri'
+        // call 0x190dd72e0  // pool_str pool[0x619] = 'sixtwo/jf\x00bAZ\x00(Ljava/lang/Stri'
+  00018f15caf9  mov      qword ptr [rsp + 0x28], rax
+        // [rsp + 0x28] = rax
+  00018f15cafe  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cb01  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cb04  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck  args=['sixtwo/jf']
+        // call [rax + 0x720]  // JNI ExceptionCheck  args=['sixtwo/jf']
+  00018f15cb0a  test     al, al
+        // if (rax & rax)
+  00018f15cb0c  sete     al
+  00018f15cb0f  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cb11  mov      cl, al
+        // rcx = rax
+  00018f15cb13  mov      eax, ecx
+        // rax = rcx
+  00018f15cb15  lea      rcx, [rip - 0xc91fe5c]   ; [0x18283ccc0] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fe5c]
+  00018f15cb1c  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cb1f
+
+// ---- block 0x18f15cb1f ----
+  00018f15cb1f  mov      rax, qword ptr [rip - 0xc13dcd6]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13dcd6]
+  00018f15cb26  mov      r8, qword ptr [rax]
+        // r8 = [rax]
+  00018f15cb29  lea      r9, [r8 + 0x1bad]   ; pool[0x1bad] = '(FF)F'
+        // r9 = &[r8 + 0x1bad]
+  00018f15cb30  add      r8, 0x1ba9   ; pool[0x1ba9] = 'bAH'
+        // r8 add= 7081
+  00018f15cb37  mov      dword ptr [rsp + 0x20], 0xf2
+        // [rsp + 0x20] = 242
+  00018f15cb3f  lea      rdx, [rsp + 0x28]
+        // rdx = &[rsp + 0x28]
+  00018f15cb44  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cb47  call     0x190de3220   ; resolve_field name='bAH' sig='(FF)F'
+        // call 0x190de3220  // resolve_field name='bAH' sig='(FF)F'
+  00018f15cb4c  jmp      qword ptr [rip - 0xc91ff4a]   ; [0x18283cc08] 0x6ffff6d6cb52
+  -> slot 0x18f15cb52
+
+// ---- block 0x18f15cb52 ----
+  00018f15cb52  mov      rdi, rax
+        // rdi = rax
+  00018f15cb55  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cb58  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cb5b  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cb61  test     al, al
+        // if (rax & rax)
+  00018f15cb63  sete     al
+  00018f15cb66  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cb68  mov      cl, al
+        // rcx = rax
+  00018f15cb6a  mov      eax, ecx
+        // rax = rcx
+  00018f15cb6c  lea      rcx, [rip - 0xc91fee3]   ; [0x18283cc90] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fee3]
+  00018f15cb73  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cb76
+
+// ---- block 0x18f15cb76 ----
+  00018f15cb76  lea      r9, [rsp + 0x48]
+        // r9 = &[rsp + 0x48]
+  00018f15cb7b  mov      rdx, qword ptr [rsp + 0x28]
+        // rdx = [rsp + 0x28]
+  00018f15cb80  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cb83  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cb86  mov      r8, rdi
+        // r8 = rdi
+  00018f15cb89  call     qword ptr [rax + 0x448]   ; JNI CallStaticFloatMethodA
+        // call [rax + 0x448]  // JNI CallStaticFloatMethodA
+  00018f15cb8f  movss    dword ptr [rsp + 0x48], xmm0
+  00018f15cb95  jmp      qword ptr [rip - 0xc91ffa3]   ; [0x18283cbf8] 0x6ffff6d6cb9b
+  -> slot 0x18f15cb9b
+
+// ---- block 0x18f15cb9b ----
+  00018f15cb9b  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cb9e  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cba1  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cba7  test     al, al
+        // if (rax & rax)
+  00018f15cba9  sete     al
+  00018f15cbac  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cbae  mov      cl, al
+        // rcx = rax
+  00018f15cbb0  mov      eax, ecx
+        // rax = rcx
+  00018f15cbb2  lea      rcx, [rip - 0xc91fe99]   ; [0x18283cd20] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91fe99]
+  00018f15cbb9  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cbbc
+
+// ---- block 0x18f15cbbc ----
+  00018f15cbbc  movss    xmm0, dword ptr [rsp + 0xd0]
+  00018f15cbc5  addss    xmm0, dword ptr [rip - 0xcc9da4d]   ; [0x1824bf180] f32 7.5, u32 0x40f00000
+        // xmm0 s= [rip - 0xcc9da4d]
+  00018f15cbcd  movss    xmm1, dword ptr [rsp + 0x48]
+  00018f15cbd3  addss    xmm1, dword ptr [rsp + 0x40]
+        // xmm1 s= [rsp + 0x40]
+  00018f15cbd9  movss    dword ptr [rsp + 0x40], xmm1
+  00018f15cbdf  movss    dword ptr [rsp + 0x48], xmm0
+  00018f15cbe5  mov      dword ptr [rsp + 0x50], 0x41000000
+        // [rsp + 0x50] = 1090519040
+  00018f15cbed  mov      dword ptr [rsp + 0x58], 0x41400000
+        // [rsp + 0x58] = 1094713344
+  00018f15cbf5  jmp      qword ptr [rip - 0xc91fe93]   ; [0x18283cd68] 0x6ffff6d6cbfb
+  -> slot 0x18f15cbfb
+
+// ---- block 0x18f15cbfb ----
+  00018f15cbfb  lea      r9, [rsp + 0x50]
+        // r9 = &[rsp + 0x50]
+  00018f15cc00  mov      rdx, qword ptr [rsp + 0x28]
+        // rdx = [rsp + 0x28]
+  00018f15cc05  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cc08  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cc0b  mov      r8, rdi
+        // r8 = rdi
+  00018f15cc0e  call     qword ptr [rax + 0x448]   ; JNI CallStaticFloatMethodA
+        // call [rax + 0x448]  // JNI CallStaticFloatMethodA
+  00018f15cc14  movss    dword ptr [rsp + 0x50], xmm0
+  00018f15cc1a  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cc1d  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cc20  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cc26  test     al, al
+        // if (rax & rax)
+  00018f15cc28  sete     al
+  00018f15cc2b  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cc2d  mov      cl, al
+        // rcx = rax
+  00018f15cc2f  mov      eax, ecx
+        // rax = rcx
+  00018f15cc31  lea      rcx, [rip - 0xc91ff88]   ; [0x18283ccb0] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc91ff88]
+  00018f15cc38  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cc3b
+
+// ---- block 0x18f15cc3b ----
+  00018f15cc3b  movss    xmm0, dword ptr [rsp + 0x50]
+  00018f15cc41  addss    xmm0, dword ptr [rsp + 0x48]
+        // xmm0 s= [rsp + 0x48]
+  00018f15cc47  movss    dword ptr [rsp + 0x48], xmm0
+  00018f15cc4d  mov      dword ptr [rsp + 0x50], 0x41000000
+        // [rsp + 0x50] = 1090519040
+  00018f15cc55  mov      dword ptr [rsp + 0x58], 0x41000000
+        // [rsp + 0x58] = 1090519040
+  00018f15cc5d  mov      dword ptr [rsp + 0x60], 0x40c00000
+        // [rsp + 0x60] = 1086324736
+  00018f15cc65  jmp      qword ptr [rip - 0xc91fff3]   ; [0x18283cc78] 0x6ffff6d6cc6b
+  -> slot 0x18f15cc6b
+
+// ---- block 0x18f15cc6b ----
+  00018f15cc6b  mov      rax, qword ptr [rip - 0xc13de22]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13de22]
+  00018f15cc72  mov      edx, 0xfcf
+        // rdx = 4047
+  00018f15cc77  add      rdx, qword ptr [rax]   ; blob_off=0xfcf pool='sixtwo/mG'
+        // rdx add= [rax]
+  00018f15cc7a  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cc7d  mov      r8d, 0x3b
+        // r8 = 59
+  00018f15cc83  call     0x190dd72e0   ; pool_str pool[0xfcf] = 'sixtwo/mG\x00aOPCa\x00Lsixtwo/Q;\x00cob\x00(F)Lsixtwo/mG;\x00sixtwo/Q\x00dk\x00('
+        // call 0x190dd72e0  // pool_str pool[0xfcf] = 'sixtwo/mG\x00aOPCa\x00Lsixtwo/Q;\x00cob\x00(F)Lsixtwo/mG;\x00sixtwo/Q\x00dk\x00('
+  00018f15cc88  mov      qword ptr [rsp + 0x28], rax
+        // [rsp + 0x28] = rax
+  00018f15cc8d  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cc90  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cc93  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck  args=['sixtwo/mG']
+        // call [rax + 0x720]  // JNI ExceptionCheck  args=['sixtwo/mG']
+  00018f15cc99  test     al, al
+        // if (rax & rax)
+  00018f15cc9b  sete     al
+  00018f15cc9e  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cca0  mov      cl, al
+        // rcx = rax
+  00018f15cca2  mov      eax, ecx
+        // rax = rcx
+  00018f15cca4  lea      rcx, [rip - 0xc92006b]   ; [0x18283cc40] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc92006b]
+  00018f15ccab  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15ccae
+
+// ---- block 0x18f15ccae ----
+  00018f15ccae  mov      rax, qword ptr [rip - 0xc13de65]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13de65]
+  00018f15ccb5  mov      r8, qword ptr [rax]
+        // r8 = [rax]
+  00018f15ccb8  lea      r9, [r8 + 0x6d5]   ; pool[0x6d5] = 'Lsixtwo/mG;'
+        // r9 = &[r8 + 0x6d5]
+  00018f15ccbf  add      r8, 0x2378   ; pool[0x2378] = 'hoGuU'
+        // r8 add= 9080
+  00018f15ccc6  mov      dword ptr [rsp + 0x20], 0x8e
+        // [rsp + 0x20] = 142
+  00018f15ccce  lea      rdx, [rsp + 0x28]
+        // rdx = &[rsp + 0x28]
+  00018f15ccd3  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ccd6  call     0x190ddce00   ; resolve_static_field name='hoGuU' sig='Lsixtwo/mG;'
+        // call 0x190ddce00  // resolve_static_field name='hoGuU' sig='Lsixtwo/mG;'
+  00018f15ccdb  jmp      qword ptr [rip - 0xc91ff89]   ; [0x18283cd58] 0x6ffff6d6cce1
+  -> slot 0x18f15cce1
+
+// ---- block 0x18f15cce1 ----
+  00018f15cce1  mov      rdi, rax
+        // rdi = rax
+  00018f15cce4  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cce7  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ccea  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15ccf0  test     al, al
+        // if (rax & rax)
+  00018f15ccf2  sete     al
+  00018f15ccf5  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15ccf7  mov      cl, al
+        // rcx = rax
+  00018f15ccf9  mov      eax, ecx
+        // rax = rcx
+  00018f15ccfb  lea      rcx, [rip - 0xc920062]   ; [0x18283cca0] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc920062]
+  00018f15cd02  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cd05
+
+// ---- block 0x18f15cd05 ----
+  00018f15cd05  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cd08  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cd0b  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cd11  test     al, al
+        // if (rax & rax)
+  00018f15cd13  sete     al
+  00018f15cd16  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cd18  mov      cl, al
+        // rcx = rax
+  00018f15cd1a  mov      eax, ecx
+        // rax = rcx
+  00018f15cd1c  lea      rcx, [rip - 0xc9200a3]   ; [0x18283cc80] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc9200a3]
+  00018f15cd23  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cd26
+
+// ---- block 0x18f15cd26 ----
+  00018f15cd26  mov      rdx, qword ptr [rsp + 0x28]
+        // rdx = [rsp + 0x28]
+  00018f15cd2b  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cd2e  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cd31  mov      r8, rdi
+        // r8 = rdi
+  00018f15cd34  call     qword ptr [rax + 0x488]   ; JNI GetStaticObjectField
+        // call [rax + 0x488]  // JNI GetStaticObjectField
+  00018f15cd3a  mov      qword ptr [rsp + 0x68], rax
+        // [rsp + 0x68] = rax
+  00018f15cd3f  jmp      qword ptr [rip - 0xc92002d]   ; [0x18283cd18] 0x6ffff6d6cd45
+  -> slot 0x18f15cd45
+
+// ---- block 0x18f15cd45 ----
+  00018f15cd45  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cd48  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cd4b  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cd51  test     al, al
+        // if (rax & rax)
+  00018f15cd53  sete     al
+  00018f15cd56  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cd58  mov      cl, al
+        // rcx = rax
+  00018f15cd5a  mov      eax, ecx
+        // rax = rcx
+  00018f15cd5c  lea      rcx, [rip - 0xc920023]   ; [0x18283cd40] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc920023]
+  00018f15cd63  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cd66
+
+// ---- block 0x18f15cd66 ----
+  00018f15cd66  mov      rax, qword ptr [rip - 0xc13df1d]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13df1d]
+  00018f15cd6d  mov      edx, 0x1b6c
+        // rdx = 7020
+  00018f15cd72  add      rdx, qword ptr [rax]   ; blob_off=0x1b6c pool='sixtwo/lC'
+        // rdx add= [rax]
+  00018f15cd75  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cd78  mov      r8d, 0x5e
+        // r8 = 94
+  00018f15cd7e  call     0x190dd72e0   ; pool_str pool[0x1b6c] = 'sixtwo/lC\x00cff\x00()D\x00cfg\x00ci\x00(FFFFF)V\x00FmeTj\x00Lsixtwo/az;\x00kN\x00Ngfhl\x00bAH\x00(FF)F\x00ezaOY\x00Ljava/lang/Object'
+        // call 0x190dd72e0  // pool_str pool[0x1b6c] = 'sixtwo/lC\x00cff\x00()D\x00cfg\x00ci\x00(FFFFF)V\x00FmeTj\x00Lsixtwo/az;\x00kN\x00Ngfhl\x00bAH\x00(FF)F\x00ezaOY\x00Ljava/lang/Object'
+  00018f15cd83  mov      qword ptr [rsp + 0x78], rax
+        // [rsp + 0x78] = rax
+  00018f15cd88  jmp      qword ptr [rip - 0xc9200b6]   ; [0x18283ccd8] 0x6ffff6d6cd8e
+  -> slot 0x18f15cd8e
+
+// ---- block 0x18f15cd8e ----
+  00018f15cd8e  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cd91  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cd94  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cd9a  test     al, al
+        // if (rax & rax)
+  00018f15cd9c  sete     al
+  00018f15cd9f  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cda1  mov      cl, al
+        // rcx = rax
+  00018f15cda3  mov      eax, ecx
+        // rax = rcx
+  00018f15cda5  lea      rcx, [rip - 0xc9201cc]   ; [0x18283cbe0] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc9201cc]
+  00018f15cdac  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15cdaf
+
+// ---- block 0x18f15cdaf ----
+  00018f15cdaf  mov      rax, qword ptr [rip - 0xc13df66]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13df66]
+  00018f15cdb6  mov      r8, qword ptr [rax]
+        // r8 = [rax]
+  00018f15cdb9  lea      r9, [r8 + 0x4a4a]   ; pool[0x4a4a] = '(Lsixtwo/lf;FFFFFLsixtwo/mG;)V'
+        // r9 = &[r8 + 0x4a4a]
+  00018f15cdc0  add      r8, 0x4a46   ; pool[0x4a46] = 'ceo'
+        // r8 add= 19014
+  00018f15cdc7  mov      dword ptr [rsp + 0x20], 0x3d7
+        // [rsp + 0x20] = 983
+  00018f15cdcf  lea      rdx, [rsp + 0x78]
+        // rdx = &[rsp + 0x78]
+  00018f15cdd4  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cdd7  call     0x190ddfc90   ; resolve_static_method name='ceo' sig='(Lsixtwo/lf;FFFFFLsixtwo/mG;)V'
+        // call 0x190ddfc90  // resolve_static_method name='ceo' sig='(Lsixtwo/lf;FFFFFLsixtwo/mG;)V'
+  00018f15cddc  jmp      qword ptr [rip - 0xc9200da]   ; [0x18283cd08] 0x6ffff6d6cde2
+  -> slot 0x18f15cde2
+
+// ---- block 0x18f15cde2 ----
+  00018f15cde2  mov      rdi, rax
+        // rdi = rax
+  00018f15cde5  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15cde8  mov      rcx, rsi
+        // rcx = rsi
+  00018f15cdeb  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15cdf1  test     al, al
+        // if (rax & rax)
+  00018f15cdf3  sete     al
+  00018f15cdf6  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15cdf8  mov      cl, al
+        // rcx = rax
+  00018f15cdfa  mov      eax, ecx
+        // rax = rcx
+  00018f15cdfc  lea      rcx, [rip - 0xc9201a3]   ; [0x18283cc60] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc9201a3]
+  00018f15ce03  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15ce06
+
+// ---- block 0x18f15ce06 ----
+  00018f15ce06  mov      rdx, qword ptr [rsp + 0x30]
+        // rdx = [rsp + 0x30]
+  00018f15ce0b  test     rdx, rdx
+        // if (rdx & rdx)
+  00018f15ce0e  sete     al
+  00018f15ce11  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15ce13  mov      cl, al
+        // rcx = rax
+  00018f15ce15  mov      eax, ecx
+        // rax = rcx
+  00018f15ce17  lea      rcx, [rip - 0xc9200ae]   ; [0x18283cd70] 0x6ffff6d6ce73
+        // rcx = &[rip - 0xc9200ae]
+  00018f15ce1e  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce73
+  -> table[1] 0x18f15ce21
+
+// ---- block 0x18f15ce21 ----
+  00018f15ce21  mov      rax, qword ptr [rip - 0xc13dfd8]   ; [0x18301ee50] 0x6fffeac2ee40
+        // rax = [rip - 0xc13dfd8]
+  00018f15ce28  mov      rdx, qword ptr [rax]
+        // rdx = [rax]
+  00018f15ce2b  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ce2e  xor      r8d, r8d
+        // r8 xor= r8
+  00018f15ce31  call     0x190dd72e0   ; pool_str
+        // call 0x190dd72e0  // pool_str
+  00018f15ce36  mov      rdi, rax
+        // rdi = rax
+  00018f15ce39  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ce3c  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ce3f  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15ce45  test     al, al
+        // if (rax & rax)
+  00018f15ce47  sete     al
+  00018f15ce4a  xor      ecx, ecx
+        // rcx xor= rcx
+  00018f15ce4c  mov      cl, al
+        // rcx = rax
+  00018f15ce4e  mov      eax, ecx
+        // rax = rcx
+  00018f15ce50  lea      rcx, [rip - 0xc9200c7]   ; [0x18283cd90] 0x6ffff6d6ce99
+        // rcx = &[rip - 0xc9200c7]
+  00018f15ce57  jmp      qword ptr [rcx + rax*8]
+  -> table[0] 0x18f15ce99
+  -> table[1] 0x18f15ce5a
+
+// ---- block 0x18f15ce5a ----
+  00018f15ce5a  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ce5d  lea      r8, [rip - 0xc1ecbbc]   ; [0x182f702a8] 0x7e00000000
+        // r8 = &[rip - 0xc1ecbbc]
+  00018f15ce64  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ce67  mov      rdx, rdi
+        // rdx = rdi
+  00018f15ce6a  call     qword ptr [rax + 0x70]   ; JNI ThrowNew
+        // call [rax + 0x70]  // JNI ThrowNew
+  00018f15ce6d  jmp      qword ptr [rip - 0xc92023b]   ; [0x18283cc38] 0x6ffff6d6ce99
+  -> slot 0x18f15ce99
+
+// ---- block 0x18f15ce73 ----
+  00018f15ce73  lea      r9, [rsp + 0x38]
+        // r9 = &[rsp + 0x38]
+  00018f15ce78  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ce7b  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ce7e  mov      r8, rdi
+        // r8 = rdi
+  00018f15ce81  call     qword ptr [rax + 0x1f8]   ; JNI CallVoidMethodA
+        // call [rax + 0x1f8]  // JNI CallVoidMethodA
+  00018f15ce87  mov      rax, qword ptr [rsi]
+        // rax = [rsi]
+  00018f15ce8a  mov      rcx, rsi
+        // rcx = rsi
+  00018f15ce8d  call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck
+        // call [rax + 0x720]  // JNI ExceptionCheck
+  00018f15ce93  jmp      qword ptr [rip - 0xc9201a1]   ; [0x18283ccf8] 0x6ffff6d6ce99
+  -> slot 0x18f15ce99
+
+// ---- block 0x18f15ce99 ----
+  00018f15ce99  movups   xmm6, xmmword ptr [rsp + 0x80]
+        // xmm6 = [rsp + 0x80]
+  00018f15cea1  add      rsp, 0x98
+        // rsp add= 152
+  00018f15cea8  pop      rdi
+  00018f15cea9  pop      rsi
+  00018f15ceaa  ret      

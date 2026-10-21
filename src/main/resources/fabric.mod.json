@@ -3,12 +3,12 @@
 	"id": "opengrim",
 	"version": "${version}",
 	"name": "OpenGrim",
-	"description": "Clean-room, GPL-3.0 open-source rebuild of the Grim 4.4 Fabric 1.21.11 utility client.",
+	"description": "1:1 reimplementation of the Grim 4.4 Fabric 1.21.11 utility client.",
 	"authors": [
 		"OpenGrim contributors"
 	],
 	"contact": {},
-	"license": "GPL-3.0-or-later",
+	"license": "All Rights Reserved",
 	"environment": "client",
 	"entrypoints": {
 		"client": [

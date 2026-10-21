@@ -152,7 +152,7 @@ public class Particles extends Module {
 	private final List<ParticleInstance> activeParticles = new CopyOnWriteArrayList<>();
 
 	public Particles() {
-		super("particles", "Particles", "Renders particles in the world", ModuleCategory.RENDER);
+		super("particles", "Particles", "Renders particles in the world", ModuleCategory.VISUALS);
 	}
 
 	private static BoolSetting boolIn(GroupSetting group, String id, boolean defaultValue) {

@@ -5,7 +5,7 @@ from ghidra.app.decompiler import DecompInterface
 from collections import deque
 
 args = getScriptArgs()
-out_path = args[0] if args else '/workspace/analysis/ghidra/deep-decomp.c'
+out_path = args[0] if args else 'analysis/ghidra/deep-decomp.c'
 MAX_DEPTH = 3
 MAX_FUNCS = 400
 

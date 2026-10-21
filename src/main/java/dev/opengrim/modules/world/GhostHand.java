@@ -60,7 +60,7 @@ public class GhostHand extends Module {
 	private final Set<BlockPos> SRuur = new HashSet<>();
 
 	public GhostHand() {
-		super("ghost_hand", "Ghost Hand", "Allows to open containers through walls", ModuleCategory.WORLD);
+		super("ghost_hand", "Ghost Hand", "Allows to open containers through walls", ModuleCategory.PLAYER);
 	}
 
 	@Override

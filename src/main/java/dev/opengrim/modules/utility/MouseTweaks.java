@@ -74,7 +74,7 @@ public class MouseTweaks extends Module {
 	private Slot lastRightSlot;
 
 	public MouseTweaks() {
-		super("mouse_tweaks", "Mouse Tweaks", "Enhances inventory management", ModuleCategory.UTILITY);
+		super("mouse_tweaks", "Mouse Tweaks", "Enhances inventory management", ModuleCategory.PLAYER);
 		setBind(-999);
 	}
 

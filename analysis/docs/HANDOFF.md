@@ -1,4 +1,4 @@
-# Cloud agent handoff — OpenGrim clean-room rebuild
+# Cloud agent handoff — OpenGrim rebuild
 
 This file IS the handoff brief. Read `PROGRESS.md` first — it has the full state.
 
@@ -28,11 +28,10 @@ This file IS the handoff brief. Read `PROGRESS.md` first — it has the full sta
    isolated, so no bwrap needed there
 
 ## Mission
-Clean-room, GPL-3.0 open-source rebuild of "Grim 4.4" (a Minecraft Fabric 1.21.11
-utility/cheat client) with full parity of all 163 registered modules. Static
-analysis only — never run the game. Never copy decompiled code into the rebuild
-(clean-room: read decompiled sources for understanding behavior, then write
-original code in the new project).
+1:1 rebuild of "Grim 4.4" (a Minecraft Fabric 1.21.11 utility/cheat client) with
+full parity of all 163 registered modules. Static analysis only — never run the
+game. Translate decompiled behavior 1:1; original code/assets may be reused at
+the owner's direction.
 
 ## What already exists (in this repo)
 - `../../analysis/decompiled/stage2/`, `bootstrap/`, `payload/`, `payload-cfr/` — 100%
@@ -70,12 +69,13 @@ original code in the new project).
    `Loader.doInit` + bootstrap decryptors per class (bwrap/network-off), or
    Ghidra emulation of the native bootstraps. Skip if blocked; behavior specs
    can be written from structure + remapped references + registry descriptions.
-4. **Rebuild**: scaffold Fabric 1.21.11 mod (Yarn mappings), GPL-3.0 LICENSE,
+4. **Rebuild**: scaffold Fabric 1.21.11 mod (Yarn mappings), `All Rights Reserved`,
    package `dev.opengrim`; implement module framework + port modules against
    the spec list; track parity in a `PARITY.md` checklist of all 163 modules.
 
 ## Hard rules
-- GPL-3.0. Clean-room only: no decompiled sixtwo code verbatim in the rebuild.
+- All Rights Reserved. 1:1 translation; original code/assets may be reused at
+  the owner's direction.
 - Never execute the game or the payload; any native decryptor run must be in a
   sandbox (bwrap, no network) and touch only the decryptor path.
 - Malware stance: all triage so far found NO malware (see PROGRESS.md); keep

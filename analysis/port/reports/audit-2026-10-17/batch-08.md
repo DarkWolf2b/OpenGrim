@@ -174,7 +174,7 @@ fixed:
   list at construction (cv.java:24-25,40-126), so all three default **off**; the impl had all
   three `true` (only `.Tz()` children default on — same rule as the NoSlow eo port)
   (Sprint.java:57-59).
-- Javadoc rewritten: removed stale absolute `C:\Users\...` citations; added the `cv`/`cw`
+- Javadoc rewritten: removed stale absolute `<home>/...` citations; added the `cv`/`cw`
   semantics, the shim-pinned core loop (`sideways²+forward² > 1.0E-4F` →
   `setSprinting(true)`, ClientEventBridgeMixin `restoreMovementModules`), the mixin-verified
   Ignore gates (`awe` hunger / `awf` collision / `awg` ownership) and the trace.

@@ -70,7 +70,7 @@ public class EntityEsp extends Module {
 	private final List<Entity> targets = new ArrayList<>();
 
 	public EntityEsp() {
-		super("entity_esp", "Entity ESP", "Draws box around entities", ModuleCategory.RENDER);
+		super("entity_esp", "Entity ESP", "Draws box around entities", ModuleCategory.VISUALS);
 	}
 
 	@Subscribe

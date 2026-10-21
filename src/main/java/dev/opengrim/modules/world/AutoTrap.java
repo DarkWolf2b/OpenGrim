@@ -75,7 +75,7 @@ public class AutoTrap extends Module {
 			1.0, 2.0, 12.0, 8.0, null));
 
 	public AutoTrap() {
-		super("auto_trap", "Auto Trap", "Automatically traps enemy", ModuleCategory.WORLD);
+		super("auto_trap", "Auto Trap", "Automatically traps enemy", ModuleCategory.COMBAT);
 		blocks.add(obsidian);
 		alternativeBlock.add(cryingObsidian);
 		alternativeBlock.add(oakPlanks);

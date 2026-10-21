@@ -7,8 +7,8 @@ import re
 import json
 import subprocess
 
-CLASSES = '/workspace/analysis/jars/payload-raw/sixtwo'
-OUT = '/workspace/analysis/ghidra/native-sigs.json'
+CLASSES = 'analysis/jars/payload-raw/sixtwo'
+OUT = 'analysis/ghidra/native-sigs.json'
 
 JAVAP = '/usr/lib/jvm/java-21-openjdk-amd64/bin/javap'
 

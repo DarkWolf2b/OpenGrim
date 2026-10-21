@@ -1,13 +1,19 @@
 package dev.opengrim.module;
 
 /**
- * Module categories. The original client registers five categories
- * (see analysis/specs/00-framework.md); names below are our own.
+ * Module categories, in the original {@code gh} enum order:
+ * {@code xwjCw} (Combat), {@code xgeEn} (Movement), {@code qBzlZ} (Player),
+ * {@code nOCvV} (Visuals), {@code KfAlY} (Client).
+ *
+ * <p>Every module constructor passes its original constant
+ * ({@code super(gf.aZL(..., gh.X))}); the recovered mapping is recorded in
+ * analysis/artifacts/gui-reference/category-map.tsv. The Click GUI pages use
+ * this order (page-*.png sidebar).
  */
 public enum ModuleCategory {
 	COMBAT,
 	MOVEMENT,
-	RENDER,
-	UTILITY,
-	WORLD
+	PLAYER,
+	VISUALS,
+	CLIENT
 }

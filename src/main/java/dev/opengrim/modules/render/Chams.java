@@ -137,7 +137,7 @@ public class Chams extends Module {
 	private final List<Entity> chammed = new ArrayList<>();
 
 	public Chams() {
-		super("chams", "Chams", "Renders entities through walls", ModuleCategory.RENDER);
+		super("chams", "Chams", "Renders entities through walls", ModuleCategory.VISUALS);
 		glassGroup.add(refraction);
 		glassGroup.add(depth);
 		glassGroup.add(frost);

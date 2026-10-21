@@ -70,7 +70,7 @@ public class BlockEsp extends Module {
 	private final List<BlockPos> positions = new ArrayList<>();
 
 	public BlockEsp() {
-		super("block_esp", "Block ESP", "Highlights selected blocks", ModuleCategory.RENDER);
+		super("block_esp", "Block ESP", "Highlights selected blocks", ModuleCategory.VISUALS);
 	}
 
 	@Override

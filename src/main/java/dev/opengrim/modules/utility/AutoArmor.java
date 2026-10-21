@@ -59,7 +59,7 @@ public class AutoArmor extends Module {
 	private boolean open;
 
 	public AutoArmor() {
-		super("auto_armor", "Auto Armor", "Automatically replaces armor", ModuleCategory.UTILITY);
+		super("auto_armor", "Auto Armor", "Automatically replaces armor", ModuleCategory.COMBAT);
 	}
 
 	@Override

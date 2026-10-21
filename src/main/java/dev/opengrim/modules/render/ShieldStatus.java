@@ -76,7 +76,7 @@ public class ShieldStatus extends Module {
 	private final Map<UUID, PlayerShieldState> playerStates = new ConcurrentHashMap<>();
 
 	public ShieldStatus() {
-		super("shield_status", "Shield Status", "Shows shield status represented by color", ModuleCategory.RENDER);
+		super("shield_status", "Shield Status", "Shows shield status represented by color", ModuleCategory.VISUALS);
 	}
 
 	@Override

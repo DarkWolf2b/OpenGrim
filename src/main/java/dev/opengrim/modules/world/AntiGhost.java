@@ -70,7 +70,7 @@ public class AntiGhost extends Module {
 	private long lastEnableAt;
 
 	public AntiGhost() {
-		super("anti_ghost", "Anti Ghost", "Fixes ghost blocks", ModuleCategory.WORLD);
+		super("anti_ghost", "Anti Ghost", "Fixes ghost blocks", ModuleCategory.MOVEMENT);
 	}
 
 	@Override

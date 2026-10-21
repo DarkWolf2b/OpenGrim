@@ -35,7 +35,7 @@ import net.minecraft.util.hit.HitResult;
  */
 public class MultiTask extends Module {
 	public MultiTask() {
-		super("multi_task", "Multi Task", "Allows to use two items at same time", ModuleCategory.UTILITY);
+		super("multi_task", "Multi Task", "Allows to use two items at same time", ModuleCategory.PLAYER);
 	}
 
 	@Override

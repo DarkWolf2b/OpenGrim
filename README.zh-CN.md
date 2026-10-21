@@ -2,7 +2,7 @@
 
 **[English](README.md) · [Polski](README.pl.md)**
 
-对 "Grim 4.4" Minecraft 实用客户端（Fabric 1.21.11）的净室（clean-room）开源重实现，采用 GPL-3.0 许可证。
+对 "Grim 4.4" Minecraft 实用客户端（Fabric 1.21.11）的 1:1 重实现。
 
 ## 构建与运行
 
@@ -27,7 +27,7 @@ cd OpenGrim
 - **162 个模块**，分为 5 个类别（Combat、Movement、Render、Utility、World）— 战斗辅助、移动工具、ESP/渲染覆盖层、世界工具
 - 完整的 Click GUI（滑块、模式、颜色、按键绑定设置）、HUD 覆盖层、JSON 配置持久化、每个模块的主/副快捷键
 - 事件驱动架构：通过类型化事件总线 + Fabric mixin 实现渲染、数据包发送/接收、攻击、鼠标和相机钩子
-- **100% 原创代码。** 不包含也不执行原客户端的任何内容 — 本仓库只提供源代码。
+- **1:1 保真。** 在需要匹配原客户端行为和渲染的地方，复用原始代码和资源。
 
 ## 保真度状态
 
@@ -37,7 +37,7 @@ cd OpenGrim
 分母，并逐模块列出。逐模块评分、缺口分级与差异日志见
 [`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)。
 
-## 构建方法（净室逆向工程）
+## 构建方法（逆向工程）
 
 仅使用静态分析 — 从未将原客户端作为游戏运行，也未复制任何游戏代码：
 
@@ -93,4 +93,4 @@ cd OpenGrim
 3. **完成 89 个部分移植模块** — 各模块状态、差距分级与证据见 PARITY.md；移植工作流见 [`.opencode/skills/port-module/SKILL.md`](.opencode/skills/port-module/SKILL.md)。
 4. **1:1 渲染效果** — chams/ChinaHat 风格的着色器目前是近似实现；运行时捕获原版着色器参数即可实现精确移植。
 5. **重新运行保真度审计** — 方法论见 [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)；更新 PARITY.md 各行以及本 README 顶部的总体数值。
-6. **卫生工作** — 在全新机器上验证 `./gradlew build` 干净构建，补齐测试与 CI（目前没有），审查从原客户端恢复的字体图集 / 图标字形的许可。
+6. **卫生工作** — 在全新机器上验证 `./gradlew build` 干净构建，补齐测试与 CI（目前没有），确认原始资源的使用已获得所有者授权。

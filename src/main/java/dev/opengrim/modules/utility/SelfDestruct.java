@@ -71,7 +71,7 @@ public class SelfDestruct extends Module {
 	private boolean fired;
 
 	public SelfDestruct() {
-		super("self_destruct", "Self Destruct", "Self destructs the client", ModuleCategory.UTILITY);
+		super("self_destruct", "Self Destruct", "Self destructs the client", ModuleCategory.CLIENT);
 		// Initial visibility wiring (fV.java:165-166); refreshed in onTick while enabled.
 		replaceFilePath.setVisible("replace_file".equals(postAction.getValue()));
 		modId.setVisible(customModId.getValue());

@@ -67,9 +67,9 @@ public final class GuiTheme {
 	/** Per-category accents: one accent for all categories in the original. */
 	public static final int COMBAT = ACCENT;
 	public static final int MOVEMENT = ACCENT;
-	public static final int RENDER = ACCENT;
-	public static final int UTILITY = ACCENT;
-	public static final int WORLD = ACCENT;
+	public static final int PLAYER = ACCENT;
+	public static final int VISUALS = ACCENT;
+	public static final int CLIENT = ACCENT;
 
 	/** HUD watermark color. */
 	public static final int HUD_WATERMARK = 0xFFFFFFFF;
@@ -126,9 +126,9 @@ public final class GuiTheme {
 		return switch (category) {
 			case COMBAT -> COMBAT;
 			case MOVEMENT -> MOVEMENT;
-			case RENDER -> RENDER;
-			case UTILITY -> UTILITY;
-			case WORLD -> WORLD;
+			case PLAYER -> PLAYER;
+			case VISUALS -> VISUALS;
+			case CLIENT -> CLIENT;
 		};
 	}
 

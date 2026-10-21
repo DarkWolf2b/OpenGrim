@@ -148,7 +148,7 @@ public class SoulEffects extends Module {
 	private final Set<UUID> processedEntities = ConcurrentHashMap.newKeySet();
 
 	public SoulEffects() {
-		super("soul_effects", "Soul Effects", "Spawns souls after killing an entity", ModuleCategory.RENDER);
+		super("soul_effects", "Soul Effects", "Spawns souls after killing an entity", ModuleCategory.VISUALS);
 	}
 
 	/**

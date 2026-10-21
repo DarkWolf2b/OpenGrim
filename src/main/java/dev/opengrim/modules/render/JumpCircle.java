@@ -139,7 +139,7 @@ public class JumpCircle extends Module {
 	}
 
 	public JumpCircle() {
-		super("jump_circle", "Jump Circle", "Draws circle when you jump", ModuleCategory.RENDER);
+		super("jump_circle", "Jump Circle", "Draws circle when you jump", ModuleCategory.VISUALS);
 		textureUrl.setVisible(false); // default mode is Default, not Custom
 	}
 

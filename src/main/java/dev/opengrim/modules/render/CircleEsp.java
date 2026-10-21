@@ -151,7 +151,7 @@ public class CircleEsp extends Module {
 	private static float phase;
 
 	public CircleEsp() {
-		super("circle_esp", "Circle ESP", "Draws circle around entities", ModuleCategory.RENDER);
+		super("circle_esp", "Circle ESP", "Draws circle around entities", ModuleCategory.VISUALS);
 	}
 
 	/**

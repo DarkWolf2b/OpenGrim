@@ -12,9 +12,15 @@ import com.google.gson.JsonParser;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
+import net.minecraft.client.texture.TextureSetup;
 import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.textures.FilterMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Renderer for the original MSDF font stack (sixtwo.lE: "regular", "medium",
@@ -27,13 +33,13 @@ import net.minecraft.util.Identifier;
  * {@code *.atlas} is the msdfgen layout JSON (metrics + per-glyph
  * {@code advance}/{@code planeBounds} in em units and {@code atlasBounds} in
  * sheet pixels, {@code yOrigin = bottom}), {@code *.metadata} is the sheet PNG
- * itself. The sheets are MSDF (multi-channel signed distance field) images;
- * this port ships a pre-baked alpha conversion
- * ({@code assets/opengrim/fonts/*.png}, alpha = clamp((median(r,g,b) - 0.5) *
- * 10 + 0.5), i.e. a ~1 px smoothing band at the intended sizes) so the glyphs
- * can be drawn with the vanilla {@code GUI_TEXTURED} pipeline as tinted
- * textured quads. The exact glyph shapes, advances and the plane placement are
- * therefore 1:1 with the original.
+ * itself. The original RGB distance sheets are imported at
+ * {@code assets/opengrim/fonts/msdf/*.png} and drawn through
+ * {@code opengrim:pipeline/gui_msdf}, which reproduces {@code msdf.glsl} exactly
+ * (median distance, range, smoothness, outline/fadeout). The baked-alpha sheets
+ * at {@code assets/opengrim/fonts/*.png} remain only as a fallback when the
+ * pipeline or an MSDF sheet cannot be created. The exact glyph shapes,
+ * advances and plane placement are 1:1 with the original.
  *
  * <p>Layout contract (matching the original's text shader): a glyph's ink is
  * placed at {@code penX + planeBounds.left * size .. penX + planeBounds.right *
@@ -53,6 +59,7 @@ public final class MsdfFont {
 
 	private static final Map<String, MsdfFont> CACHE = new HashMap<>();
 	private static final Map<String, Boolean> FAILED = new HashMap<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger("opengrim/msdf-font");
 
 	/** One glyph: metrics in em units (y-up) plus its sheet region in pixels. */
 	private record Glyph(float advance, float left, float bottom, float right, float top,
@@ -62,22 +69,31 @@ public final class MsdfFont {
 		}
 	}
 
+	/** lk.bZd constants: var11_9 / var12_10 for the MSDF glyph pass. */
+	private static final float MSDF_THICKNESS = 0.05f;
+	private static final float MSDF_SMOOTHNESS = 0.5f;
+
 	private final Identifier texture;
 	private final float atlasWidth;
 	private final float atlasHeight;
 	private final float ascender;
 	private final float descender;
 	private final float lineHeight;
+	private final float distanceRange;
 	private final Map<Integer, Glyph> glyphs = new HashMap<>();
+	/** Original msdfgen RGB sheet for the real MSDF pipeline (null -> bake fallback). */
+	private AbstractTexture msdfTexture;
+	private TextureSetup msdfTextureSetup;
 
 	private MsdfFont(Identifier texture, float atlasWidth, float atlasHeight, float ascender, float descender,
-			float lineHeight) {
+			float lineHeight, float distanceRange) {
 		this.texture = texture;
 		this.atlasWidth = atlasWidth;
 		this.atlasHeight = atlasHeight;
 		this.ascender = ascender;
 		this.descender = descender;
 		this.lineHeight = lineHeight;
+		this.distanceRange = distanceRange;
 	}
 
 	/**
@@ -106,6 +122,16 @@ public final class MsdfFont {
 		return of(REGULAR);
 	}
 
+	/** lE semibold (card titles / section headers). */
+	public static MsdfFont semibold() {
+		return of(SEMIBOLD);
+	}
+
+	/** lE bold. */
+	public static MsdfFont bold() {
+		return of(BOLD);
+	}
+
 	/** lE icons-4.4 (lf glyphs, codepoints 59905-59971). */
 	public static MsdfFont icons() {
 		return of(ICONS);
@@ -123,9 +149,10 @@ public final class MsdfFont {
 			JsonObject metrics = root.getAsJsonObject("metrics");
 			float width = atlas.get("width").getAsFloat();
 			float height = atlas.get("height").getAsFloat();
+			float distanceRange = atlas.has("distanceRange") ? atlas.get("distanceRange").getAsFloat() : 10.0f;
 			MsdfFont font = new MsdfFont(Identifier.of("opengrim", "fonts/" + name), width, height,
 					metrics.get("ascender").getAsFloat(), metrics.get("descender").getAsFloat(),
-					metrics.get("lineHeight").getAsFloat());
+					metrics.get("lineHeight").getAsFloat(), distanceRange);
 			JsonArray array = root.getAsJsonArray("glyphs");
 			for (JsonElement element : array) {
 				JsonObject glyph = element.getAsJsonObject();
@@ -163,10 +190,52 @@ public final class MsdfFont {
 				MinecraftClient.getInstance().getTextureManager().registerTexture(font.texture,
 						new NativeImageBackedTexture(() -> "opengrim-font-" + name, image));
 			}
+			font.loadMsdfSheet(name);
 			return font;
 		} catch (Throwable throwable) {
 			return null;
 		}
+	}
+
+	/**
+	 * Load the original msdfgen sheet (RGB distance channels) for the real MSDF
+	 * pipeline. The baked-alpha sheet above stays as the fallback when the
+	 * MSDF pipeline or this resource is unavailable.
+	 */
+	private void loadMsdfSheet(String name) {
+		Identifier id = Identifier.of("opengrim", "fonts/msdf/" + name);
+		try (InputStream stream = MsdfFont.class.getResourceAsStream("/assets/opengrim/fonts/msdf/" + name + ".png")) {
+			if (stream == null) {
+				return;
+			}
+			NativeImage image = NativeImage.read(stream);
+			MinecraftClient.getInstance().getTextureManager().registerTexture(id,
+					new NativeImageBackedTexture(() -> "opengrim-msdf-" + name, image));
+			AbstractTexture texture = MinecraftClient.getInstance().getTextureManager().getTexture(id);
+			msdfTexture = texture;
+			msdfTextureSetup = TextureSetup.of(texture.getGlTextureView(),
+					RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
+			LOGGER.info("MSDF sheet ready: {} ({}x{}, range {})", name, atlasWidth, atlasHeight, distanceRange);
+		} catch (Throwable throwable) {
+			msdfTexture = null;
+			msdfTextureSetup = null;
+			LOGGER.warn("MSDF sheet failed for {}; the baked-alpha fallback stays active", name, throwable);
+		}
+	}
+
+	/** Original msdfgen RGB sheet, or null when only the baked fallback exists. */
+	public AbstractTexture msdfTexture() {
+		return msdfTexture;
+	}
+
+	/** Cached texture binding for the MSDF pipeline (linear, clamp). */
+	public TextureSetup msdfTextureSetup() {
+		return msdfTextureSetup;
+	}
+
+	/** msdfgen distance range in texels (atlas {@code distanceRange}). */
+	public float distanceRange() {
+		return distanceRange;
 	}
 
 	public boolean has(char codepoint) {
@@ -256,6 +325,14 @@ public final class MsdfFont {
 		float y0 = baseline - glyph.top() * size;
 		float x1 = penX + glyph.right() * size;
 		float y1 = baseline - glyph.bottom() * size;
+		if (msdfTextureSetup != null
+				&& draw.msdfGlyph(msdfTextureSetup, x0, y0, x1, y1,
+						glyph.srcX() / atlasWidth, glyph.srcY() / atlasHeight,
+						(glyph.srcX() + glyph.srcW()) / atlasWidth,
+						(glyph.srcY() + glyph.srcH()) / atlasHeight,
+						color.argb(), distanceRange, MSDF_THICKNESS, MSDF_SMOOTHNESS)) {
+			return;
+		}
 		draw.texturedQuad(texture, x0, y0, x1, y1, glyph.srcX(), glyph.srcY(), glyph.srcW(), glyph.srcH(),
 				atlasWidth, atlasHeight, color);
 	}

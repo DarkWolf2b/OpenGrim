@@ -191,7 +191,7 @@ public class Nametags extends Module {
 	}
 
 	public Nametags() {
-		super("nametags", "Nametags", "Displays information about player", ModuleCategory.RENDER);
+		super("nametags", "Nametags", "Displays information about player", ModuleCategory.VISUALS);
 		renderFor.add(players);
 		renderFor.add(items);
 		infoToRender.add(name);

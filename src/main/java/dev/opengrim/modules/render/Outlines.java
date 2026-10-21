@@ -82,7 +82,7 @@ public class Outlines extends Module {
 	private final List<Entity> outlined = new ArrayList<>();
 
 	public Outlines() {
-		super("outlines", "Outlines", "Renders outlines around entities", ModuleCategory.RENDER);
+		super("outlines", "Outlines", "Renders outlines around entities", ModuleCategory.VISUALS);
 	}
 
 	@Override

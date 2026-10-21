@@ -74,7 +74,7 @@ public class CustomCameraDistance extends Module {
 	private static boolean cameraPosLookupDone;
 
 	public CustomCameraDistance() {
-		super("custom_camera_distance", "Custom Camera Distance", "Changes camera distance from player", ModuleCategory.RENDER);
+		super("custom_camera_distance", "Custom Camera Distance", "Changes camera distance from player", ModuleCategory.PLAYER);
 	}
 
 	/**

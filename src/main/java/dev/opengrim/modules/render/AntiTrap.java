@@ -85,7 +85,7 @@ public class AntiTrap extends Module {
 	}
 
 	public AntiTrap() {
-		super("anti_trap", "Anti Trap", "Cancels rendering of specific entities", ModuleCategory.RENDER);
+		super("anti_trap", "Anti Trap", "Cancels rendering of specific entities", ModuleCategory.PLAYER);
 		hide.add(paintings);
 		hide.add(signs);
 		hide.add(buttons);

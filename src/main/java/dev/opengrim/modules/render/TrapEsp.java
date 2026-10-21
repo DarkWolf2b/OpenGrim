@@ -142,7 +142,7 @@ public class TrapEsp extends Module {
 	private final List<TrackedCluster> displayedClusters = new ArrayList<>();
 
 	public TrapEsp() {
-		super("trap_esp", "Trap ESP", "Detects potential trap locations", ModuleCategory.RENDER);
+		super("trap_esp", "Trap ESP", "Detects potential trap locations", ModuleCategory.VISUALS);
 		scanFor.add(paintings);
 		scanFor.add(signs);
 		scanFor.add(buttons);

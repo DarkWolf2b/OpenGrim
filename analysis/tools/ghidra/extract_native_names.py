@@ -5,8 +5,8 @@ import os
 import re
 import json
 
-SRC = '/workspace/analysis/decompiled/payload-named/sixtwo'
-OUT = '/workspace/analysis/ghidra/native-names.json'
+SRC = 'analysis/decompiled/payload-named/sixtwo'
+OUT = 'analysis/ghidra/native-names.json'
 
 LINE_NATIVE = re.compile(r'\bnative\b')
 NAME_RE = re.compile(r'(\w+)\s*\(')

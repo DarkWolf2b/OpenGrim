@@ -61,7 +61,7 @@ public class NoBreakDelay extends Module {
 	private static boolean fieldLookupDone;
 
 	public NoBreakDelay() {
-		super("no_break_delay", "No Break Delay", "Removes destroy delay", ModuleCategory.WORLD);
+		super("no_break_delay", "No Break Delay", "Removes destroy delay", ModuleCategory.PLAYER);
 	}
 
 	@Override

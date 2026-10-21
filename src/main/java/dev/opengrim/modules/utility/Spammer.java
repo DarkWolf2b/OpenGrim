@@ -81,7 +81,7 @@ public class Spammer extends Module {
 	}
 
 	public Spammer() {
-		super("spammer", "Spammer", "Spams specified messages in chat", ModuleCategory.UTILITY);
+		super("spammer", "Spammer", "Spams specified messages in chat", ModuleCategory.PLAYER);
 	}
 
 	@Override

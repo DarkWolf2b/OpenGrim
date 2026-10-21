@@ -53,7 +53,7 @@ public class SkeletonEsp extends Module {
 	private final DoubleSetting lineWidth = register(new DoubleSetting("line_width", 0.1, 1.0, 3.0, 1.0, null));
 
 	public SkeletonEsp() {
-		super("skeleton_esp", "Skeleton ESP", "Renders skeleton on player models", ModuleCategory.RENDER);
+		super("skeleton_esp", "Skeleton ESP", "Renders skeleton on player models", ModuleCategory.VISUALS);
 	}
 
 	@Subscribe

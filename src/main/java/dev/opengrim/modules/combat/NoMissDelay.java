@@ -46,7 +46,7 @@ public class NoMissDelay extends Module {
 	private static boolean fieldLookupFailed;
 
 	public NoMissDelay() {
-		super("no_miss_delay", "No Miss Delay", "Removes delay after miss", ModuleCategory.COMBAT);
+		super("no_miss_delay", "No Miss Delay", "Removes delay after miss", ModuleCategory.PLAYER);
 	}
 
 	@Override

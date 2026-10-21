@@ -90,7 +90,7 @@ public class BlockPiercer extends Module {
 	private boolean useHeld;
 
 	public BlockPiercer() {
-		super("block_piercer", "Block Piercer", "Allows to place blocks through entities", ModuleCategory.WORLD);
+		super("block_piercer", "Block Piercer", "Allows to place blocks through entities", ModuleCategory.PLAYER);
 		entities.add(players);
 		entities.add(hostiles);
 		entities.add(passive);

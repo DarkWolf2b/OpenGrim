@@ -89,7 +89,7 @@ public class NameProtect extends Module {
 	private final StringSetting serverAlias = register(new StringSetting("server_name", "protected.gg"));
 
 	public NameProtect() {
-		super("name_protect", "Name Protect", "Hides real player name", ModuleCategory.UTILITY);
+		super("name_protect", "Name Protect", "Hides real player name", ModuleCategory.CLIENT);
 		protect.add(name);
 		protect.add(friends);
 		protect.add(server);

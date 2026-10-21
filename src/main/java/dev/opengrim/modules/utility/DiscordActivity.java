@@ -45,7 +45,7 @@ public class DiscordActivity extends Module {
 	private int status;
 
 	public DiscordActivity() {
-		super("discord_activity", "Discord Activity", "Changes your in game activity", ModuleCategory.UTILITY);
+		super("discord_activity", "Discord Activity", "Changes your in game activity", ModuleCategory.CLIENT);
 	}
 
 	/**

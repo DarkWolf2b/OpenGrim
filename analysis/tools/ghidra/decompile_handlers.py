@@ -9,10 +9,10 @@ from collections import defaultdict
 
 import pyghidra
 
-BINDLOG = '/workspace/win/native-bind-log.jsonl'
+BINDLOG = 'win/native-bind-log.jsonl'
 RUNTIME_BASE = 0x6fffe7a60000   # stable wine load base for jna1.21.11
 IMAGE_BASE = 0x180000000        # PE image base used by ghidra loader
-OUTDIR = '/workspace/analysis/ghidra/handlers'
+OUTDIR = 'analysis/ghidra/handlers'
 PER_FUNC_TIMEOUT = 60
 
 os.makedirs(OUTDIR, exist_ok=True)
@@ -31,8 +31,8 @@ pyghidra.start()
 from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
 
-with pyghidra.open_program('/workspace/binaries/native/jna1.21.11',
-                           project_location='/workspace/binaries/ghidra-proj/pydeep',
+with pyghidra.open_program('binaries/native/jna1.21.11',
+                           project_location='binaries/ghidra-proj/pydeep',
                            project_name='pydeep', analyze=False) as flat:
     program = flat.getCurrentProgram()
     fm = program.getFunctionManager()

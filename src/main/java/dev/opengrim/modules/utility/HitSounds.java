@@ -78,7 +78,7 @@ public class HitSounds extends Module {
 	private final StringSetting soundUrl = register(new StringSetting("sound_url", ""));
 
 	public HitSounds() {
-		super("hit_sounds", "Hit Sounds", "Plays sound after hit", ModuleCategory.UTILITY);
+		super("hit_sounds", "Hit Sounds", "Plays sound after hit", ModuleCategory.PLAYER);
 	}
 
 	@Override

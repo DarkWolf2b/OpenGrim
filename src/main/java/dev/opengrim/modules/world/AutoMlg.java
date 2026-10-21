@@ -59,7 +59,7 @@ public class AutoMlg extends Module {
 	private final BoolSetting cherry = new BoolSetting("cherry", false);
 
 	public AutoMlg() {
-		super("auto_mlg", "Auto MLG", "Places block underneath to avoid fall damage", ModuleCategory.WORLD);
+		super("auto_mlg", "Auto MLG", "Places block underneath to avoid fall damage", ModuleCategory.COMBAT);
 		mode.add(bucket);
 		mode.add(slime);
 		mode.add(honey);

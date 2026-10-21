@@ -84,7 +84,7 @@ public class AntiBot extends Module {
 	private final Map<UUID, Boolean> everSlept = new HashMap<>();
 
 	public AntiBot() {
-		super("anti_bot", "Anti Bot", "Distincts real players from bots", ModuleCategory.UTILITY);
+		super("anti_bot", "Anti Bot", "Distincts real players from bots", ModuleCategory.COMBAT);
 	}
 
 	@Override

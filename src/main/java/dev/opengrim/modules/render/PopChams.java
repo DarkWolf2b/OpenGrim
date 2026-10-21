@@ -110,7 +110,7 @@ public class PopChams extends Module {
 	private final CopyOnWriteArrayList<PopChamClone> clones = new CopyOnWriteArrayList<>();
 
 	public PopChams() {
-		super("pop_chams", "Pop Chams", "Highlights player totem pops", ModuleCategory.RENDER);
+		super("pop_chams", "Pop Chams", "Highlights player totem pops", ModuleCategory.VISUALS);
 	}
 
 	@Subscribe

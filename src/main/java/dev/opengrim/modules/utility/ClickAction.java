@@ -75,7 +75,7 @@ public class ClickAction extends Module {
 	private boolean potionDown;
 
 	public ClickAction() {
-		super("click_action", "Click Action", "Uses item on click", ModuleCategory.UTILITY);
+		super("click_action", "Click Action", "Uses item on click", ModuleCategory.PLAYER);
 	}
 
 	@Override

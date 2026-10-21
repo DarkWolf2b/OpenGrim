@@ -51,7 +51,7 @@ import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
 public class NoProtocolDisconnect extends Module {
 	public NoProtocolDisconnect() {
 		super("no_protocol_disconnect", "No Protocol Disconnect",
-				"Prevents disconnections caused by invalid server packets", ModuleCategory.UTILITY);
+				"Prevents disconnections caused by invalid server packets", ModuleCategory.CLIENT);
 	}
 
 	/**

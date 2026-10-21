@@ -46,7 +46,7 @@ public class FullBright extends Module {
 	private boolean hasStored;
 
 	public FullBright() {
-		super("full_bright", "Full Bright", "Changes gamma value", ModuleCategory.RENDER);
+		super("full_bright", "Full Bright", "Changes gamma value", ModuleCategory.PLAYER);
 	}
 
 	@Override

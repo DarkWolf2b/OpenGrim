@@ -62,7 +62,7 @@ public class HandNoClip extends Module {
 	private final BoolSetting painting = new BoolSetting("painting", true);
 
 	public HandNoClip() {
-		super("hand_no_clip", "Hand No Clip", "Allows to attack through blocks", ModuleCategory.COMBAT);
+		super("hand_no_clip", "Hand No Clip", "Allows to attack through blocks", ModuleCategory.PLAYER);
 		workOn.add(place);
 		workOn.add(breakBlock);
 		blocks.add(cobweb);

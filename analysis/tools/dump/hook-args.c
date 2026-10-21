@@ -16,7 +16,7 @@
  * Env (as hook.c):
  *   TRACE_CLASSES   comma-separated class prefixes
  *                   (default "java/net/,sixtwo/,Init,av,bz,bl,bD,c,e,i,lC,p,R")
- *   TRACE_FILE      output path (default Z:\workspace\win\trace.jsonl)
+ *   TRACE_FILE      output path (default win\trace.jsonl)
  *   TRACE_MAX       max events before tracing stops (default 10000000)
  *
  * Build (Linux, mingw):
@@ -379,7 +379,7 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     (void)options; (void)reserved;
 
     g_vm = vm;
-    env_get("TRACE_GO", "Z:\\root\\win\\trace-go", trace_go_path, sizeof(trace_go_path));
+    env_get("TRACE_GO", "win\\trace-go", trace_go_path, sizeof(trace_go_path));
 
     const char *tc = getenv("TRACE_CLASSES");
     if (!tc) {
@@ -395,7 +395,7 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
         const char *ts = getenv("TRACE_STRINGS");
         if (ts && *ts && strcmp(ts, "0") != 0) trace_strings = 1;
     }
-    env_get("TRACE_FILE", "Z:\\workspace\\win\\trace.jsonl", file, sizeof(file));
+    env_get("TRACE_FILE", "win\\trace.jsonl", file, sizeof(file));
     {
         const char *m = getenv("TRACE_MAX");
         if (m && *m) trace_remaining = atol(m);

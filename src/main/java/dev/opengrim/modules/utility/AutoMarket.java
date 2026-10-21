@@ -91,7 +91,7 @@ public class AutoMarket extends Module {
 	private boolean addRuleDown;
 
 	public AutoMarket() {
-		super("auto_market", "Auto Market", "Automatically buys and sells items on market", ModuleCategory.UTILITY);
+		super("auto_market", "Auto Market", "Automatically buys and sells items on market", ModuleCategory.PLAYER);
 	}
 
 	/**

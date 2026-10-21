@@ -85,7 +85,7 @@ public class PearlChaser extends Module {
 
 	public PearlChaser() {
 		super("pearl_chaser", "Pearl Chaser",
-				"Automatically throws pearls after players", ModuleCategory.MOVEMENT);
+				"Automatically throws pearls after players", ModuleCategory.COMBAT);
 	}
 
 	@Override

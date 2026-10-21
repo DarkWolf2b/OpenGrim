@@ -2,17 +2,17 @@
 """Parse the wine JVM memory dump: find runtime-built JNINativeMethod triples
 {char* name, char* sig, void* fn} and map fn pointers to the jna1.21.11 image.
 
-Input:  /workspace/win/dump/mem-pid<java>.bin  (WMEM1 format from dump_wine_mem.py)
-Output: /workspace/analysis/ghidra/native-handlers-runtime.json
+Input:  win/dump/mem-pid<java>.bin  (WMEM1 format from dump_wine_mem.py)
+Output: analysis/ghidra/native-handlers-runtime.json
 """
 import json
 import re
 import struct
 import sys
 
-DUMP = sys.argv[1] if len(sys.argv) > 1 else '/workspace/win/dump/mem-pid211329.bin'
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
-OUT = '/workspace/analysis/ghidra/native-handlers-runtime.json'
+DUMP = sys.argv[1] if len(sys.argv) > 1 else 'win/dump/mem-pid211329.bin'
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
+OUT = 'analysis/ghidra/native-handlers-runtime.json'
 
 # --- load dump ---
 regions = []  # (start, end, blob)

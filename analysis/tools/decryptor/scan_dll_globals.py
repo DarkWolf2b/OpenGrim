@@ -8,8 +8,8 @@ from collections import defaultdict
 import ahocorasick
 import numpy as np
 
-DUMP = '/workspace/win/dump/mem-pid216130.bin'
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
+DUMP = 'win/dump/mem-pid216130.bin'
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
 
 regions = []
 with open(DUMP, 'rb') as f:
@@ -89,5 +89,5 @@ print('handler-pointer qwords in DLL data: %d' % handler_ptrs, flush=True)
 for sm in samples:
     print('sample:', sm, flush=True)
 print('resolved: %d across %d classes' % (sum(len(v) for v in resolved.values()), len(resolved)), flush=True)
-with open('/workspace/analysis/ghidra/native-handlers-runtime.json', 'w') as f:
+with open('analysis/ghidra/native-handlers-runtime.json', 'w') as f:
     json.dump(resolved, f, indent=1)

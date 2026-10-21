@@ -8,8 +8,8 @@ from collections import defaultdict
 import ahocorasick
 import numpy as np
 
-DUMP = '/workspace/win/dump/mem-pid222702.bin'
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
+DUMP = 'win/dump/mem-pid222702.bin'
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
 
 regions = []
 region_path = {}
@@ -102,5 +102,5 @@ for s, e, blob in regions:
             break
 
 print('resolved classes:', {k: v[:3] for k, v in resolved.items()}, flush=True)
-with open('/workspace/analysis/ghidra/native-handlers-runtime.json', 'w') as f:
+with open('analysis/ghidra/native-handlers-runtime.json', 'w') as f:
     json.dump(resolved, f, indent=1)

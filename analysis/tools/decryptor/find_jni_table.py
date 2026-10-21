@@ -3,8 +3,8 @@
 RegisterNatives entry, and locate its code in the jvm.dll FILE to derive RVA."""
 import struct
 
-DUMP = '/workspace/win/dump/mem-pid216130.bin'
-JVM_DLL = '/workspace/win/jdk-21.0.12.1+1/bin/server/jvm.dll'
+DUMP = 'win/dump/mem-pid216130.bin'
+JVM_DLL = 'win/jdk-21.0.12.1+1/bin/server/jvm.dll'
 
 # jvm.dll mapped range (from hs_err): 0x6ffff9770000 - 0x6ffffa512000
 jbase, jend = 0x6ffff9770000, 0x6ffffa512000

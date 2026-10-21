@@ -42,7 +42,7 @@ public class AntiInvisible extends Module {
 	private final Set<EntityType<?>> selected = new HashSet<>(List.of(EntityType.PLAYER));
 
 	public AntiInvisible() {
-		super("anti_invisible", "Anti Invisible", "Makes invisible entites visible", ModuleCategory.RENDER);
+		super("anti_invisible", "Anti Invisible", "Makes invisible entites visible", ModuleCategory.PLAYER);
 	}
 
 	/**

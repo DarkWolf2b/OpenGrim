@@ -63,7 +63,7 @@ public class AutoFish extends Module {
 	private double prevBobberY;
 
 	public AutoFish() {
-		super("auto_fish", "Auto Fish", "Automatically fishes for you", ModuleCategory.UTILITY);
+		super("auto_fish", "Auto Fish", "Automatically fishes for you", ModuleCategory.PLAYER);
 	}
 
 	@Override

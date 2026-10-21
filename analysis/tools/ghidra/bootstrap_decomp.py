@@ -2,11 +2,11 @@
 """Decompile just Java_native_Loader_bootstrap with a long timeout."""
 import pyghidra
 
-BINARY = '/workspace/binaries/native/jna1.21.11'
-OUT = '/workspace/analysis/ghidra/bootstrap-decomp.c'
+BINARY = 'binaries/native/jna1.21.11'
+OUT = 'analysis/ghidra/bootstrap-decomp.c'
 
 pyghidra.start()
-with pyghidra.open_program(BINARY, project_location='/workspace/binaries/ghidra-proj/pydeep',
+with pyghidra.open_program(BINARY, project_location='binaries/ghidra-proj/pydeep',
                            project_name='pydeep', analyze=False) as flat:
     program = flat.getCurrentProgram()
     fm = program.getFunctionManager()

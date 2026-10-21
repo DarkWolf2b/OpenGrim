@@ -3,18 +3,36 @@ package dev.opengrim.gui.ui;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.texture.TextureSetup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
+import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
+
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import dev.opengrim.gui.render.ArcGuiElementRenderState;
+import dev.opengrim.gui.render.BackdropBlur;
+import dev.opengrim.gui.render.BackdropGuiElementRenderState;
+import dev.opengrim.gui.render.GuiArcPipelines;
+import dev.opengrim.gui.render.GuiBackdropPipelines;
+import dev.opengrim.gui.render.GuiGlassPipelines;
+import dev.opengrim.gui.render.GuiMsdfPipelines;
+import dev.opengrim.gui.render.GuiShapePipelines;
+import dev.opengrim.gui.render.MsdfGuiElementRenderState;
+import dev.opengrim.gui.render.ShapeGuiElementRenderState;
 
 /**
  * Port of the sixtwo.lC draw-context subset used by the widget framework.
  * The original forwards to custom shader pipelines ({@code kd.AhlXN} rect,
- * {@code kd.sQVlR} rounded rect, custom font renderer {@code ln}); here the
- * same surface is drawn with vanilla {@link DrawContext} primitives
- * (verified against Yarn 1.21.11+build.6), with rounded corners approximated
- * by corner-inset fills.
+ * {@code kd.sQVlR} rounded rect, custom font renderer {@code ln}); the rounded
+ * fill/stroke paths use the recovered {@code shape} shader through
+ * {@link dev.opengrim.gui.render.GuiShapePipelines} (one quad per primitive,
+ * exact shape.glsl SDF/mask), and {@link MsdfFont} draws every glyph through
+ * the recovered {@code msdf.glsl} math ({@link #msdfGlyph}). The remaining
+ * primitives (rects, circles, gradients, circles) still use vanilla
+ * {@link DrawContext} primitives; the shader paths only run when their
+ * pipelines compiled, otherwise the previous baked/inset fallbacks are kept.
  *
  * <p>lC method mapping: {@code cdm}=rounded fill, {@code cej}=rounded stroke,
  * {@code cdg}=rect fill, {@code cdj}=rect fill from Rect, {@code cdf}=rounded
@@ -136,11 +154,34 @@ public final class GuiDraw {
 		fillRect(rect.x(), rect.y(), rect.width(), rect.height(), color);
 	}
 
-	/** lC.cdm: rounded rect fill; corners approximated by inset squares. */
+	/**
+	 * shader defaults recovered from the original calls (lC.cdm/cej): scalar
+	 * cornerSmoothness 5.0f, smoothness/innerSmoothness 0.75f, outline
+	 * thickness 1.0f (kg's jO defaults + ke.bOi upload order).
+	 */
+	private static final float SHAPE_SMOOTHNESS = 0.75f;
+	private static final float SHAPE_INNER_SMOOTHNESS = 0.75f;
+	private static final float SHAPE_THICKNESS = 1.0f;
+	private static final float SHAPE_CORNER_SMOOTHNESS = 5.0f;
+
+	/** lC.cdm: rounded rect fill through the recovered {@code shape} shader. */
 	public void fillRounded(float x, float y, float w, float h, float radius, ColorF color) {
 		if (w <= 0.0f || h <= 0.0f) {
 			return;
 		}
+		if (GuiShapePipelines.available()) {
+			float r = Math.min(radius, Math.min(w, h) / 2.0f);
+			ctx.state.addSimpleElement(new ShapeGuiElementRenderState(GuiShapePipelines.fill(),
+					new Matrix3x2f(ctx.getMatrices()), x, y, w, h, r, SHAPE_SMOOTHNESS,
+					SHAPE_INNER_SMOOTHNESS, SHAPE_THICKNESS, SHAPE_CORNER_SMOOTHNESS,
+					color.argb(), ctx.scissorStack.peekLast()));
+			return;
+		}
+		fillRoundedFallback(x, y, w, h, radius, color);
+	}
+
+	/** DrawContext approximation kept only when the shape pipeline cannot load. */
+	private void fillRoundedFallback(float x, float y, float w, float h, float radius, ColorF color) {
 		float r = Math.min(radius, Math.min(w, h) / 2.0f);
 		int ix = Math.round(x);
 		int iy = Math.round(y);
@@ -158,8 +199,24 @@ public final class GuiDraw {
 		fillRounded(rect.x(), rect.y(), rect.width(), rect.height(), radius, color);
 	}
 
-	/** lC.cej: rounded stroke (1px outline, corners approximated). */
+	/** lC.cej: rounded stroke through the shape shader's MASK_OUTLINE path. */
 	public void strokeRounded(float x, float y, float w, float h, float radius, ColorF color) {
+		if (w <= 0.0f || h <= 0.0f) {
+			return;
+		}
+		if (GuiShapePipelines.available()) {
+			float r = Math.min(radius, Math.min(w, h) / 2.0f);
+			ctx.state.addSimpleElement(new ShapeGuiElementRenderState(GuiShapePipelines.outline(),
+					new Matrix3x2f(ctx.getMatrices()), x, y, w, h, r, SHAPE_SMOOTHNESS,
+					SHAPE_INNER_SMOOTHNESS, SHAPE_THICKNESS, SHAPE_CORNER_SMOOTHNESS,
+					color.argb(), ctx.scissorStack.peekLast()));
+			return;
+		}
+		strokeRoundedFallback(x, y, w, h, radius, color);
+	}
+
+	/** 1 px inset approximation kept only when the shape pipeline cannot load. */
+	private void strokeRoundedFallback(float x, float y, float w, float h, float radius, ColorF color) {
 		fillRect(x, y, w, 1.0f, color);
 		fillRect(x, y + h - 1.0f, w, 1.0f, color);
 		fillRect(x, y, 1.0f, h, color);
@@ -171,8 +228,20 @@ public final class GuiDraw {
 		strokeRounded(rect.x(), rect.y(), rect.width(), rect.height(), radius, color);
 	}
 
-	/** lC.cdd: circle fill. */
+	/** lC.cdd: circle fill through the recovered arc SDF (diameter argument). */
 	public void fillCircle(float x, float y, float radius, ColorF color) {
+		if (radius <= 0.0f) {
+			return;
+		}
+		if (GuiArcPipelines.available()) {
+			float smoothness = 0.5f;
+			float size = radius + smoothness * 2.0f;
+			ctx.state.addSimpleElement(new ArcGuiElementRenderState(GuiArcPipelines.arc(),
+					new Matrix3x2f(ctx.getMatrices()), x - smoothness, y - smoothness,
+					size, size, size, 0.0f, (float) (Math.PI * 2.0), smoothness,
+					color.argb(), ctx.scissorStack.peekLast()));
+			return;
+		}
 		int cx = Math.round(x + radius / 2.0f);
 		int cy = Math.round(y + radius / 2.0f);
 		int r = Math.max(1, Math.round(radius / 2.0f));
@@ -247,10 +316,53 @@ public final class GuiDraw {
 	// ------------------------------------------------------------------
 
 	/**
-	 * lC.ccW: themed window background. Blur/Liquid-Glass cannot be reproduced
-	 * with vanilla passes; both render as translucent panel fill (see
-	 * PARITY-DIVERGENCES.md), Solid as opaque background-color fill at
-	 * fX.aYh() opacity.
+	 * lC.ccW Blur branch ({@code fX.aYf()}): blurs the current world framebuffer
+	 * with the recovered separable Gaussian and composites it under the window
+	 * mask. Returns false when the blur path is unavailable so the caller can
+	 * use the opaque themed fill.
+	 */
+	public boolean blurredBackdrop(float x, float y, float w, float h, float radius, ColorF tint,
+			float tintMix, float opacity) {
+		if (w <= 0.0f || h <= 0.0f || !GuiBackdropPipelines.available()) {
+			return false;
+		}
+		TextureSetup setup = BackdropBlur.prepare();
+		if (setup == null || GuiBackdropPipelines.backdrop() == null) {
+			return false;
+		}
+		ctx.state.addSimpleElement(new BackdropGuiElementRenderState(
+				GuiBackdropPipelines.backdrop(), setup, new Matrix3x2f(ctx.getMatrices()),
+				x, y, w, h, radius, 0.75f, tintMix, opacity, tint.argb(), 2.0f,
+				ctx.scissorStack.peekLast()));
+		return true;
+	}
+
+	/**
+	 * lC.ccW Liquid Glass branch ({@code fX.aYe()}, kd.IbNTv): composites the
+	 * blurred backdrop through the recovered liquid_glass.glsl refraction /
+	 * bevel / light model. Returns false when the glass pipeline or blurred
+	 * backdrop is unavailable.
+	 */
+	public boolean glassBackdrop(float x, float y, float w, float h, float radius,
+			float cornerSmoothness, ColorF tint, float opacity) {
+		if (w <= 0.0f || h <= 0.0f || !GuiGlassPipelines.available()) {
+			return false;
+		}
+		TextureSetup setup = BackdropBlur.prepare();
+		if (setup == null || GuiGlassPipelines.glass() == null) {
+			return false;
+		}
+		ctx.state.addSimpleElement(new BackdropGuiElementRenderState(
+				GuiGlassPipelines.glass(), setup, new Matrix3x2f(ctx.getMatrices()),
+				x, y, w, h, radius, 0.75f, 0.0f, opacity, tint.argb(), cornerSmoothness,
+				ctx.scissorStack.peekLast()));
+		return true;
+	}
+
+	/**
+	 * lC.ccW: themed window background. Blur uses the recovered two-pass
+	 * separable backdrop, Liquid Glass uses liquid_glass.glsl, Solid remains
+	 * the opaque background-color fill at fX.aYh() opacity.
 	 */
 	public void themedBackground(float x, float y, float w, float h, float radius, float alpha) {
 		Theme style = Theme.get();
@@ -351,11 +463,33 @@ public final class GuiDraw {
 	// ------------------------------------------------------------------
 
 	/**
+	 * Real MSDF glyph quad through the recovered {@code msdf.glsl} math
+	 * ({@code opengrim:pipeline/gui_msdf}). Returns false when the pipeline or
+	 * the original MSDF sheet is unavailable so {@link MsdfFont} can use the
+	 * baked-alpha {@link #texturedQuad} fallback.
+	 */
+	public boolean msdfGlyph(TextureSetup texture, float x0, float y0, float x1, float y1,
+			float u0, float v0, float u1, float v1, int argb, float range, float thickness,
+			float smoothness) {
+		if (texture == null || !GuiMsdfPipelines.available()) {
+			return false;
+		}
+		RenderPipeline pipeline = GuiMsdfPipelines.plain();
+		if (pipeline == null) {
+			return false;
+		}
+		ctx.state.addSimpleElement(new MsdfGuiElementRenderState(pipeline, texture,
+				new Matrix3x2f(ctx.getMatrices()), x0, y0, x1, y1, u0, v0, u1, v1,
+				argb, range, thickness, smoothness, 0.0f, 0,
+				0.0f, 0.0f, 0.0f, 0.0f, ctx.scissorStack.peekLast()));
+		return true;
+	}
+
+	/**
 	 * Tinted textured quad in design space (the lC text-shader primitive):
 	 * pixel-space destination with a source region in texture pixels, drawn
-	 * through the vanilla {@code GUI_TEXTURED} pipeline (lC's custom MSDF
-	 * shader is not reproducible; the glyph coverage is baked into the sheet
-	 * alpha by {@link MsdfFont}).
+	 * through the vanilla {@code GUI_TEXTURED} pipeline. Only the fallback path
+	 * (MSDF pipeline or original sheet unavailable) uses this now.
 	 */
 	public void texturedQuad(Identifier texture, float x0, float y0, float x1, float y1,
 			float srcX, float srcY, float srcW, float srcH, float textureW, float textureH, ColorF color) {

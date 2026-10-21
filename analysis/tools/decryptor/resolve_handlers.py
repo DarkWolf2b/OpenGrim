@@ -9,8 +9,8 @@ from collections import defaultdict
 import ahocorasick
 import numpy as np
 
-DUMP = '/workspace/win/dump/mem-pid216130.bin'
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
+DUMP = 'win/dump/mem-pid216130.bin'
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
 
 regions = []
 with open(DUMP, 'rb') as f:
@@ -107,6 +107,6 @@ for s, e, blob in regions:
 print('resolved: %d methods across %d classes' % (sum(len(v) for v in resolved.values()), len(resolved)), flush=True)
 for cid in sorted(resolved)[:10]:
     print(cid, resolved[cid][:3], flush=True)
-with open('/workspace/analysis/ghidra/native-handlers-runtime.json', 'w') as f:
+with open('analysis/ghidra/native-handlers-runtime.json', 'w') as f:
     json.dump(resolved, f, indent=1)
-print('-> /workspace/analysis/ghidra/native-handlers-runtime.json', flush=True)
+print('-> analysis/ghidra/native-handlers-runtime.json', flush=True)

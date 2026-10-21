@@ -1,0 +1,28 @@
+
+RECOVERED FORMULA (blocks 0x18f122664, 0x18f1229f0, 0x18f122a79):
+    float h = 18.0f;
+    for (ak child : this.iWGks) h += child.oH() * child.dn();
+    return Math.min(200.0f, h + 51.0f);   // 0x190dea2a0 = minss
+bd.Cc() = this.fNXMn (0x18f147990); bd.Cd() = this.LaFgq (0x18f147ba0)
+== dn ()F ==
+// 0x18f122150
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s30 = str('sixtwo/bd')
+// 0x18f1221b9
+  s20 = 1201
+// 0x18f122237
+  sixtwo/bd.aAWpI
+// 0x18f122275
+  str = 'sixtwo/bg\x00Dd\x00cMafA\x00AV\x00VKbkM\x00VeSmn\x00De\x00AD\x00AE\x00()Lsixtwo/if;\x00AF\x00()Lsixtwo/id;\x00([ILsixtwo/ie;Lsixtwo/if;Lsixtwo/id;)V\x00bjq\x00(Lsixtwo/ig;)V\x00yAejq\x00bis\x00Bi\x00()Lsixtwo/ba;\x00ERseG\x00bio\x00Bj\x00YtBwS\x00bip\x00At\x00(Lsixtwo/bb;)V\x00gipIr\x00Al\x00biq\x00IkudM\x00klcWm\x00bir\x00bix\x00PqAQr\x00sixtwo/if\x00bib\x00biy\x00waETu\x00sixtwo/id\x00bhj\x00KKBtz\x00bhk\x00Wklho\x00bhg\x00hk'
+  s30 = str('sixtwo/bg')
+// 0x18f1222c1
+  s20 = 1475
+// 0x18f12231b
+  call 0x1847d4a10  
+// 0x18f1223ea
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s38 = str('sixtwo/bd')
+// 0x18f122436
+  s20 = 1216
+// 0x18f122490
+  this:bd.None

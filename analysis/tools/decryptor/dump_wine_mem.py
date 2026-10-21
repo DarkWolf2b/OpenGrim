@@ -13,11 +13,11 @@ import sys
 import json
 import glob
 
-OUT_DIR = sys.argv[1] if len(sys.argv) > 1 else '/workspace/win/dump'
+OUT_DIR = sys.argv[1] if len(sys.argv) > 1 else 'win/dump'
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # name strings the JVM passes to RegisterNatives come from the class files
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
 all_names = sorted({nm for pairs in SIGS.values() for nm, _ in pairs}, key=len, reverse=True)
 sig_set = set()
 for pairs in SIGS.values():

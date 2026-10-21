@@ -200,7 +200,7 @@ public class HoleEsp extends Module {
 	private final Map<Hole, Animator> fades = new HashMap<>();
 
 	public HoleEsp() {
-		super("hole_esp", "Hole ESP", "Highlights safe holes", ModuleCategory.RENDER);
+		super("hole_esp", "Hole ESP", "Highlights safe holes", ModuleCategory.VISUALS);
 		// cG#Vf visibility wiring, dj.java:214-265.
 		obsidianColor.setVisible(obsidian.getValue());
 		obsidianBedrockColor.setVisible(obsidianBedrock.getValue());

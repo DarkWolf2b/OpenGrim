@@ -66,7 +66,7 @@ public class ElytraTarget extends Module {
 	private boolean fireworkPending;
 
 	public ElytraTarget() {
-		super("elytra_target", "Elytra Target", "Automatically uses firework for target", ModuleCategory.MOVEMENT);
+		super("elytra_target", "Elytra Target", "Automatically uses firework for target", ModuleCategory.PLAYER);
 		setBind(82); // registry metadata.txt:88 sixtwo.dA key=59 bind=82
 	}
 

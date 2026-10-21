@@ -48,7 +48,7 @@ state and exact next steps.
 | Yarn remap (intermediary→named, yarn `1.21.11+build.6`) | DONE — `../../analysis/jars/payload-named.jar` |
 | Re-decompile | DONE — `../../analysis/decompiled/payload-named/` 1111/1111 (369 CFR fallbacks merged; `payload-named-cfr/` kept) |
 | 162-module behavior specs (structural tier) | DONE — `../../analysis/specs/00-framework.md`, `../../analysis/specs/modules/*.md` (generator: `../../analysis/specs/generate_specs.py`) |
-| Fabric 1.21.11 rebuild scaffold (`rebuild/`, dev.opengrim, GPL-3.0) | DONE — framework + 3 example modules (Sprint, Trigger Bot, Kill Aura); first `gradlew build` possibly unfinished, see `rebuild/build.log` |
+| Fabric 1.21.11 rebuild scaffold (`rebuild/`, dev.opengrim, All Rights Reserved) | DONE — framework + 3 example modules (Sprint, Trigger Bot, Kill Aura); first `gradlew build` possibly unfinished, see `rebuild/build.log` |
 | PARITY.md | DONE — 162 rows, 3 ported, rest not-started |
 | **Native constant-pool decryption** | IN PROGRESS — driver written, env assembled, Wine missing (see below) |
 
@@ -70,8 +70,8 @@ decryptor path. Everything is prepared:
 
 - DLL: `binaries/native/jna1.21.11` (SHA-256 verified
   `9403e1fd…bb72b2d`, matches HANDOFF). PE, 292MB. NOT in git.
-- Windows JDK: Temurin 21.0.12.1 unpacked at `/workspace/win/jdk-21.0.12.1+1/`.
-- Driver: `tools/decryptor/PoolDump.java` (compiled classes in `/workspace/win/classes/`).
+- Windows JDK: Temurin 21.0.12.1 unpacked at `<workspace>/win/jdk-21.0.12.1+1/`.
+- Driver: `tools/decryptor/PoolDump.java` (compiled classes in `<workspace>/win/classes/`).
   It: (1) ASM-scans invokedynamic sites, (2) force-inits classes
   (`<clinit>` → `Loader.doInit` → native), (3) reflectively invokes each
   bootstrap and dumps decrypted constants as JSONL. Smoke-tested on Linux:
@@ -81,9 +81,9 @@ decryptor path. Everything is prepared:
   (`sudo dpkg --add-architecture i386; wget -O- https://dl.winehq.org/.../winehq.key | sudo apt-key add; ...`)
   or install wine via `bottles`/flatpak alternative. Any wine ≥ 9 works.
 - Run procedure (when wine works):
-  1. `cp /workspace/win/tmp/native/jna1.21.11` is already in place; also set
-     `-Djava.io.tmpdir=Z:\workspace\win\tmp` so `native.Loader` finds the DLL
-     at `Z:\workspace\win\tmp\native\jna1.21.11` (Loader appends `native/jna<mcver>`,
+  1. `cp <workspace>/win/tmp/native/jna1.21.11` is already in place; also set
+     `-Djava.io.tmpdir=<workspace>\win\tmp` so `native.Loader` finds the DLL
+     at `<workspace>\win\tmp\native\jna1.21.11` (Loader appends `native/jna<mcver>`,
      mcver = 1.21.11).
   2. Because `native.Loader.<clinit>` calls a native stub BEFORE the DLL is
      normally loaded, the driver must: `System.load(dllPath)` → reflectively
@@ -93,7 +93,7 @@ decryptor path. Everything is prepared:
      **Extend `PoolDump` to do this** (it currently relies on clinit; add a
      `--preload` phase before class init).
   3. Run under wine with network off:
-     `bwrap --unshare-net --dev-bind / / wine jdk-21.0.12.1+1/bin/java.exe -cp 'Z:\workspace\win\classes;Z:\workspace\win\asm-9.9.1.jar;Z:\workspace\win\payload-named.jar' -Djava.io.tmpdir=Z:\workspace\win\tmp PoolDump 'Z:\workspace\win\payload-named.jar' 'Z:\workspace\win\out\<batch>.json' sixtwo.fF …`
+     `bwrap --unshare-net --dev-bind / / wine jdk-21.0.12.1+1/bin/java.exe -cp '<workspace>\win\classes;<workspace>\win\asm-9.9.1.jar;<workspace>\win\payload-named.jar' -Djava.io.tmpdir=<workspace>\win\tmp PoolDump '<workspace>\win\payload-named.jar' '<workspace>\win\out\<batch>.json' sixtwo.fF …`
      Batch classes (162 module classes + framework classes: gg, gf, gh, mw, iS,
      gc, rk, ri, rj, mr, gb, cA-cz wrappers).
   4. Fold decrypted strings/ints back into specs: setting names resolve via

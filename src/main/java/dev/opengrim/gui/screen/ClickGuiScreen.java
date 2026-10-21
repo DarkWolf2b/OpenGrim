@@ -185,13 +185,19 @@ public class ClickGuiScreen extends AnimatedScreen {
 	 */
 	private static final Identifier ICON_LOGO = Identifier.of("opengrim", "icons/logo.png");
 
-	/** The sidebar pages in the recovered order (page-*.png; trace tab loop). */
+	/**
+	 * The sidebar pages in the recovered order (page-*.png; trace tab loop).
+	 * The five feature pages are the original {@code gh} categories; their
+	 * cards come from {@link ModuleManager#byCategory} in registration order,
+	 * which is the original module-map order (registry class id — see
+	 * analysis/artifacts/gui-reference/category-map.tsv).
+	 */
 	private enum Page {
 		COMBAT(ModuleCategory.COMBAT, "Combat", "category_combat"),
 		MOVEMENT(ModuleCategory.MOVEMENT, "Movement", "category_movement"),
-		PLAYER(ModuleCategory.WORLD, "Player", "category_player"),
-		VISUALS(ModuleCategory.RENDER, "Visuals", "category_visuals"),
-		CLIENT(ModuleCategory.UTILITY, "Client", "category_client"),
+		PLAYER(ModuleCategory.PLAYER, "Player", "category_player"),
+		VISUALS(ModuleCategory.VISUALS, "Visuals", "category_visuals"),
+		CLIENT(ModuleCategory.CLIENT, "Client", "category_client"),
 		FRIENDS(null, FRIENDS_TITLE, "category_friends"),
 		HUD(null, HUD_TITLE, "category_hud");
 
@@ -360,11 +366,24 @@ public class ClickGuiScreen extends AnimatedScreen {
 		float t = Math.min(1.0f, openTween.current());
 		float alpha = Math.min(1.0f, t);
 
-		// bl.Ep: background layer (themed style opacity; blur/glass refraction
-		// is not reproducible, see the class doc).
-		draw.fillRounded(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
-				theme.background().withAlphaScale(alpha * styleOpacity())
-						.lerp(theme.panelColor(), 0.3f * alpha));
+		// bl.Ep: background layer. Blur uses the recovered two-pass separable
+		// backdrop; Liquid Glass uses the recovered liquid_glass composite;
+		// Solid keeps the opaque themed fill.
+		boolean blurred;
+		if (theme.backgroundStyle() == Theme.BackgroundStyle.LIQUID_GLASS) {
+			blurred = draw.glassBackdrop(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
+					5.0f, theme.glassFill(), alpha);
+		} else if (theme.backgroundStyle() == Theme.BackgroundStyle.BLUR) {
+			blurred = draw.blurredBackdrop(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
+					theme.background(), styleOpacity(), alpha);
+		} else {
+			blurred = false;
+		}
+		if (!blurred) {
+			draw.fillRounded(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
+					theme.background().withAlphaScale(alpha * styleOpacity())
+							.lerp(theme.panelColor(), 0.3f * alpha));
+		}
 		draw.strokeRounded(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
 				theme.text().withAlphaScale(0.06f * alpha));
 

@@ -2,7 +2,7 @@
 
 **[English](README.md) · [中文](README.zh-CN.md)**
 
-Czystorodne (clean-room), otwartoźródłowe (GPL-3.0) odtworzenie klienta "Grim 4.4" dla Minecraft (Fabric 1.21.11).
+Odtworzenie 1:1 klienta "Grim 4.4" dla Minecraft (Fabric 1.21.11).
 
 ## Budowa i uruchomienie
 
@@ -27,7 +27,7 @@ Gotowy mod trafia do `build/libs/opengrim-0.1.0.jar`. Użycie:
 - **162 moduły** w 5 kategoriach (Combat, Movement, Render, Utility, World) — wspomagacze walki, narzędzia ruchu, nakładki ESP/render, narzędzia świata
 - Click GUI z pełnymi widgetami ustawień (suwaki, tryby, kolory, bininde), nakładka HUD, trwała konfiguracja JSON, główne + zapasowe przypisanie klawiszy per moduł
 - Architektura zdarzeniowa: hooki renderu, pakietów (wysyłanie/odbieranie), ataku, myszy i kamery przez typowaną magistralę zdarzeń + mixiny Fabric
-- **100% oryginalnego kodu.** Żadna część oryginalnego klienta nie jest dołączona ani wykonywana — to repozytorium zawiera wyłącznie kod źródłowy.
+- **Wierność 1:1.** Oryginalny kod i zasoby są ponownie wykorzystywane tam, gdzie jest to wymagane do odwzorowania zachowania i renderowania oryginału.
 
 ## Status wierności
 
@@ -39,7 +39,7 @@ zamknięte w natywnej/VM-owej warstwie oryginału jest wyłączone z mianownika 
 wyszczególnione per moduł. Oceny per moduł, klasyfikacja luk i dziennik różnic:
 [`analysis/docs/PARITY.md`](analysis/docs/PARITY.md).
 
-## Jak powstało (czystorodny inżynieria odwrotna)
+## Jak powstało (inżynieria odwrotna)
 
 Wyłącznie analiza statyczna — oryginalny klient **nigdy nie został uruchomiony jako gra**, a kod gry nie został skopiowany:
 
@@ -95,4 +95,4 @@ Zagregowana zgodność wynosi 78,1% ([`analysis/docs/PARITY.md`](analysis/docs/P
 3. **Dokończenie 89 modułów częściowych** — status per moduł, klasyfikacja luk i dowody są w PARITY.md; workflow portowania w [`.opencode/skills/port-module/SKILL.md`](.opencode/skills/port-module/SKILL.md).
 4. **Efekty renderowania 1:1** — shadery typu chams/ChinaHat są przybliżone; przechwycenie parametrów shaderów oryginału w runtime umożliwi port 1:1.
 5. **Powtórny audyt zgodności** — metodologia w [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md); zaktualizuj wiersze PARITY.md i zagregowany wynik na górze tego README.
-6. **Higiena** — zweryfikuj czysty `./gradlew build` na świeżej maszynie, dodaj testy i CI (jeszcze ich nie ma), zweryfikuj licencje atlasów czcionek / glifów ikon odzyskanych z oryginału.
+6. **Higiena** — zweryfikuj czysty `./gradlew build` na świeżej maszynie, dodaj testy i CI (jeszcze ich nie ma), potwierdź, że oryginalne zasoby są używane za zgodą właściciela.

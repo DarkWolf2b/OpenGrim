@@ -195,7 +195,7 @@ public class HitParticles extends Module {
 	private final List<ParticleInstance> particlesList = new ArrayList<>();
 
 	public HitParticles() {
-		super("hit_particles", "Hit Particles", "Renders particles on hit", ModuleCategory.RENDER);
+		super("hit_particles", "Hit Particles", "Renders particles on hit", ModuleCategory.VISUALS);
 	}
 
 	@Override

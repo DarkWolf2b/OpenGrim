@@ -5,9 +5,9 @@ import sys
 import os
 import pyghidra
 
-DLL = '/workspace/analysis/ghidra/dumps/jna-decrypted-invoke.dll'
+DLL = 'analysis/ghidra/dumps/jna-decrypted-invoke.dll'
 IMAGE_BASE = 0x180000000
-OUT = '/workspace/analysis/ghidra/funcs'
+OUT = 'analysis/ghidra/funcs'
 os.makedirs(OUT, exist_ok=True)
 
 rvas = [int(a, 16) for a in sys.argv[1:]] or [0x0dd72e0]
@@ -16,7 +16,7 @@ pyghidra.start()
 from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
 
-with pyghidra.open_program(DLL, project_location='/workspace/win/ghidra-proj-dec',
+with pyghidra.open_program(DLL, project_location='win/ghidra-proj-dec',
                            project_name='dec', analyze=False) as flat:
     program = flat.getCurrentProgram()
     fm = program.getFunctionManager()

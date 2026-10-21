@@ -103,7 +103,7 @@ public class FakePlayer extends Module {
 	private ItemStack heldItem = ItemStack.EMPTY;
 
 	public FakePlayer() {
-		super("fake_player", "Fake Player", "Spawns fake player", ModuleCategory.UTILITY);
+		super("fake_player", "Fake Player", "Spawns fake player", ModuleCategory.PLAYER);
 	}
 
 	/** Use modes of the tick state machine (cX$ss: idle / shield / custom item). */

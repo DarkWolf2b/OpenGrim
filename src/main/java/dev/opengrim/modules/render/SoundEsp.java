@@ -108,7 +108,7 @@ public class SoundEsp extends Module {
 	private final SoundInstanceListener soundListener = (sound, soundSet, range) -> onSound(sound);
 
 	public SoundEsp() {
-		super("sound_esp", "Sound ESP", "Highlights sounds", ModuleCategory.RENDER);
+		super("sound_esp", "Sound ESP", "Highlights sounds", ModuleCategory.VISUALS);
 	}
 
 	@Override

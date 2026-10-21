@@ -138,7 +138,7 @@ public class HealthIndicators extends Module {
 
 	public HealthIndicators() {
 		super("health_indicators", "Health Indicators", "Displays other players health above their head",
-				ModuleCategory.RENDER);
+				ModuleCategory.VISUALS);
 	}
 
 	@Override

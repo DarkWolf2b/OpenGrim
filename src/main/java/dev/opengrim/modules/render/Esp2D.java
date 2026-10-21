@@ -80,7 +80,7 @@ public class Esp2D extends Module {
 	private final List<EspTarget> targets = new ArrayList<>();
 
 	public Esp2D() {
-		super("2d_esp", "2D ESP", "Allows you to see targets through walls", ModuleCategory.RENDER);
+		super("2d_esp", "2D ESP", "Allows you to see targets through walls", ModuleCategory.VISUALS);
 	}
 
 	@Override

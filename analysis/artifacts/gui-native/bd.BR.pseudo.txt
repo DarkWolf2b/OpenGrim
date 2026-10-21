@@ -1,0 +1,201 @@
+== BR (Lsixtwo/lC;Lsixtwo/lf;FFFLsixtwo/mG;)V ==
+// 0x18f122fd0
+  s30 = 0
+  s40 = a0
+  s68 = 2.0
+  str = 'sixtwo/ld\x00NONE\x00ccX\x00(FFFFFLsixtwo/ld;F)V\x00ceW\x00sixtwo/jG\x00bHN\x00bHK\x00(Lsixtwo/lC;FFFF)V\x00qbars\x00jbaJU\x00dhc\x00l'
+  s38 = str('sixtwo/ld')
+// 0x18f1230ad
+  s20 = 320
+// 0x18f123104
+  sixtwo/ld.all(2.0) -> obj
+  s68 = ret
+// 0x18f123149
+  s70 = this:bd
+// 0x18f1231e1
+  str = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  s30 = str('sixtwo/bd')
+// 0x18f12322a
+  s20 = 1217
+// 0x18f123281
+  this:bd.None
+  s70 = this:bd.None
+// 0x18f1232c1
+  str = 'sixtwo/i'
+  s30 = str('sixtwo/i')
+// 0x18f12330a
+  s20 = 85
+// 0x18f1233ce
+  call 0x184117d80  
+  s70 = env[?]
+// 0x18f1233ff
+  s78 = 0.3
+  str = 'sixtwo/mG\x00aOPCa\x00Lsixtwo/Q;\x00cob\x00(F)Lsixtwo/mG;\x00sixtwo/Q\x00dk\x00('
+  s30 = str('sixtwo/mG')
+// 0x18f123450
+  s20 = 86
+// 0x18f123514
+  sixtwo/mG.cob(env[?], 0.3) -> obj
+  s70 = ret
+// 0x18f123554
+  str = 'sixtwo/lC\x00cff\x00()D\x00cfg\x00ci\x00(FFFFF)V\x00FmeTj\x00Lsixtwo/az;\x00kN\x00Ngfhl\x00bAH\x00(FF)F\x00ezaOY\x00Ljava/lang/Object'
+  s30 = str('sixtwo/lC')
+// 0x18f12359d
+  s20 = 321
+  a0.cdg((a2 + -1.0), (-1.0 + a3), (2.0 + a4), (2.0 + a4), ret, ret)
+
+
+==== key blocks (full annotated CFG in bd.BR.cfg.txt) ====
+
+## prologue: t = x, y, size; ld.all(2.0)
+  18f122fd0 push     r15
+  18f122fd2 push     r14
+  18f122fd4 push     rsi
+  18f122fd5 push     rdi
+  18f122fd6 push     rbx
+  18f122fd7 sub      rsp, 0xb0
+  18f122fde movups   xmmword ptr [rsp + 0xa0], xmm8
+  18f122fe7 movups   xmmword ptr [rsp + 0x90], xmm7
+  18f122fef movups   xmmword ptr [rsp + 0x80], xmm6
+  18f122ff7 mov      rdi, r9
+  18f122ffa mov      rbx, r8
+  18f122ffd mov      r14, rdx
+  18f123000 mov      rsi, rcx
+  18f123003 movss    xmm6, dword ptr [rsp + 0x110]
+  18f12300c movss    xmm7, dword ptr [rsp + 0x108]
+  18f123015 movss    xmm8, dword ptr [rsp + 0x100]
+  18f12301f mov      qword ptr [rsp + 0x30], 0
+  18f123028 movss    xmm0, dword ptr [rip - 0xea48f8c]   ; [0x1806da0a4] f32 2, u32 0x40000000
+  18f123030 addss    xmm0, xmm6
+  18f123034 mov      qword ptr [rsp + 0x40], r8
+  18f123039 movss    xmm1, dword ptr [rip - 0xd7ae6d1]   ; [0x181974970] f32 -1, u32 0xbf800000
+  18f123041 movaps   xmm2, xmm8
+  18f123045 addss    xmm2, xmm1
+  18f123049 movss    dword ptr [rsp + 0x48], xmm2
+  18f12304f addss    xmm1, xmm7
+  18f123053 movss    dword ptr [rsp + 0x50], xmm1
+  18f123059 movss    dword ptr [rsp + 0x58], xmm0
+  18f12305f movss    dword ptr [rsp + 0x60], xmm0
+  18f123065 mov      dword ptr [rsp + 0x68], 0x40000000
+  18f12306d mov      rax, qword ptr [rip - 0xc104224]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f123074 mov      edx, 0x1ca4
+  18f123079 add      rdx, qword ptr [rax]   ; blob_off=0x1ca4 pool='sixtwo/ld'
+  18f12307c mov      r8d, 0x62
+  18f123082 call     0x190dd72e0   ; pool_str pool[0x1ca4] = 'sixtwo/ld\x00NONE\x00ccX\x00(FFFFFLsixtwo/ld;F)V\x00ceW\x00sixtwo/jG\x00bHN\x00bHK\x00(Lsixtwo/lC;FFFF)V\x00qbars\x00jbaJU\x00dhc\x00l'
+  18f123087 mov      qword ptr [rsp + 0x38], rax
+  18f12308c mov      rax, qword ptr [rsi]
+  18f12308f mov      rcx, rsi
+  18f123092 call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck  args=['sixtwo/ld']
+  18f123098 test     al, al
+  18f12309a sete     al
+  18f12309d xor      ecx, ecx
+  18f12309f mov      cl, al
+  18f1230a1 mov      eax, ecx
+  18f1230a3 lea      rcx, [rip - 0xc8f7fa2]   ; [0x18282b108] 0x6ffff6d337b1
+  18f1230aa jmp      qword ptr [rcx + rax*8]
+
+## ld.all(2.0)
+  18f1230ad mov      rax, qword ptr [rip - 0xc104264]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f1230b4 mov      r8, qword ptr [rax]
+  18f1230b7 lea      r9, [r8 + 0x2237]   ; pool[0x2237] = '(F)Lsixtwo/ld;'
+  18f1230be add      r8, 0x2233   ; pool[0x2233] = 'all'
+  18f1230c5 mov      dword ptr [rsp + 0x20], 0x140
+  18f1230cd lea      rdx, [rsp + 0x38]
+  18f1230d2 mov      rcx, rsi
+  18f1230d5 call     0x190de3220   ; resolve_field name='all' sig='(F)Lsixtwo/ld;'
+  18f1230da jmp      qword ptr [rip - 0xc8f7dd0]   ; [0x18282b310] 0x6ffff6d330e0
+
+## this null check
+  18f123149 mov      qword ptr [rsp + 0x70], r14
+  18f12314e test     r14, r14
+  18f123151 sete     al
+  18f123154 xor      ecx, ecx
+  18f123156 mov      cl, al
+  18f123158 mov      eax, ecx
+  18f12315a lea      rcx, [rip - 0xc8f7dc9]   ; [0x18282b398] 0x6ffff6d331e1
+  18f123161 jmp      qword ptr [rcx + rax*8]
+
+## class sixtwo/bd
+  18f1231e1 mov      rax, qword ptr [rip - 0xc104398]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f1231e8 mov      edx, 0x701c
+  18f1231ed add      rdx, qword ptr [rax]   ; blob_off=0x701c pool='sixtwo/bd'
+  18f1231f0 mov      rcx, rsi
+  18f1231f3 mov      r8d, 0x13c
+  18f1231f9 call     0x190dd72e0   ; pool_str pool[0x701c] = 'sixtwo/bd\x00aAWpI\x00Cn\x00lWwPB\x00MqINl\x00UUEVR\x00Wmfur\x00WmfRJ\x00nS\x00qMYan\x00fNXMn\x00LaFgq\x00dhn\x00JbGQS\x00gLpse\x00Lsixtwo/bg;\x00csl\x00(DDD)F\x00sixtwo/bh\x00(FFFLsixtwo/gg;)V\x00iWGks\x00BO\x00ceX\x00BP\x00JrgcS\x00qicmf\x00jyYNO\x00Lsixtwo/v;\x00TUcNz\x00Lsixtwo/bk;\x00aZZ\x00SSEbJ\x00HhdWQ\x00HPoXz\x00Co\x00sixtwo/be\x00ukNDG\x00SGppE\x00bIldw\x00Cu\x00HWjtp\x00UbxXC\x00downloadSkin\x00WqZWe\x00whlUn\x00jSGrk\x00nx\x00(Ljava/lang/St'
+  18f1231fe mov      qword ptr [rsp + 0x30], rax
+  18f123203 jmp      qword ptr [rip - 0xc8f8069]   ; [0x18282b1a0] 0x6ffff6d33209
+
+## this.CtPwV (ii)
+  18f12322a mov      rax, qword ptr [rip - 0xc1043e1]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f123231 mov      r8, qword ptr [rax]
+  18f123234 lea      r9, [r8 + 0xfbb]   ; pool[0xfbb] = 'Lsixtwo/ii;'
+  18f12323b add      r8, 0xfb5   ; pool[0xfb5] = 'CtPwV'
+  18f123242 mov      dword ptr [rsp + 0x20], 0x4c1
+  18f12324a lea      rdx, [rsp + 0x30]
+  18f12324f mov      rcx, rsi
+  18f123252 call     0x190dd9df0
+  18f123257 jmp      qword ptr [rip - 0xc8f811d]   ; [0x18282b140] 0x6ffff6d3325d
+
+## ii.bjd() colour
+  18f12330a mov      rax, qword ptr [rip - 0xc1044c1]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f123311 mov      r8, qword ptr [rax]
+  18f123314 lea      r9, [r8 + 0x1d9]   ; pool[0x1d9] = '()Lsixtwo/mG;'
+  18f12331b add      r8, 0xfcb   ; pool[0xfcb] = 'bjd'
+  18f123322 mov      dword ptr [rsp + 0x20], 0x55
+  18f12332a lea      rdx, [rsp + 0x30]
+  18f12332f mov      rcx, rsi
+  18f123332 call     0x190ddfc90   ; resolve_static_method name='bjd' sig='()Lsixtwo/mG;'
+  18f123337 jmp      qword ptr [rip - 0xc8f7fad]   ; [0x18282b390] 0x6ffff6d3333d
+
+## mG.cob(0.3)
+  18f1233ff mov      dword ptr [rsp + 0x78], 0x3e99999a
+  18f123407 mov      rax, qword ptr [rip - 0xc1045be]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f12340e mov      edx, 0xfcf
+  18f123413 add      rdx, qword ptr [rax]   ; blob_off=0xfcf pool='sixtwo/mG'
+  18f123416 mov      rcx, rsi
+  18f123419 mov      r8d, 0x3b
+  18f12341f call     0x190dd72e0   ; pool_str pool[0xfcf] = 'sixtwo/mG\x00aOPCa\x00Lsixtwo/Q;\x00cob\x00(F)Lsixtwo/mG;\x00sixtwo/Q\x00dk\x00('
+  18f123424 mov      qword ptr [rsp + 0x30], rax
+  18f123429 jmp      qword ptr [rip - 0xc8f819f]   ; [0x18282b290] 0x6ffff6d3342f
+
+## lC.cdg(x-1,y-1,size+2,size+2,stroke,tint)
+  18f12359d mov      rax, qword ptr [rip - 0xc104754]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f1235a4 mov      r8, qword ptr [rax]
+  18f1235a7 lea      r9, [r8 + 0x225c]   ; pool[0x225c] = '(FFFFLsixtwo/ld;Lsixtwo/mG;)V'
+  18f1235ae add      r8, 0x2258   ; pool[0x2258] = 'cdg'
+  18f1235b5 mov      dword ptr [rsp + 0x20], 0x141
+  18f1235bd lea      rdx, [rsp + 0x30]
+  18f1235c2 mov      rcx, rsi
+  18f1235c5 call     0x190ddfc90   ; resolve_static_method name='cdg' sig='(FFFFLsixtwo/ld;Lsixtwo/mG;)V'
+  18f1235ca jmp      qword ptr [rip - 0xc8f8420]   ; [0x18282b1b0] 0x6ffff6d335d0
+
+## lC.cem args
+  18f12369f mov      rax, qword ptr [rsp + 0x118]
+  18f1236a7 mov      qword ptr [rsp + 0x40], rbx
+  18f1236ac mov      qword ptr [rsp + 0x48], rdi
+  18f1236b1 movss    dword ptr [rsp + 0x50], xmm8
+  18f1236b8 movss    dword ptr [rsp + 0x58], xmm7
+  18f1236be movss    dword ptr [rsp + 0x60], xmm6
+  18f1236c4 mov      qword ptr [rsp + 0x68], rax
+  18f1236c9 jmp      qword ptr [rip - 0xc8f846f]   ; [0x18282b260] 0x6ffff6d336cf
+
+## lC.cem(glyph,x,y,size,color)
+  18f1236cf mov      rax, qword ptr [rip - 0xc104886]   ; [0x18301ee50] 0x6fffeac2ee40
+  18f1236d6 mov      r8, qword ptr [rax]
+  18f1236d9 lea      r9, [r8 + 0x2a44]   ; pool[0x2a44] = '(Lsixtwo/lf;FFFLsixtwo/mG;)V'
+  18f1236e0 add      r8, 0x2a40   ; pool[0x2a40] = 'cem'
+  18f1236e7 mov      dword ptr [rsp + 0x20], 0x1cb
+  18f1236ef lea      rdx, [rsp + 0x30]
+  18f1236f4 mov      rcx, rsi
+  18f1236f7 call     0x190ddfc90   ; resolve_static_method name='cem' sig='(Lsixtwo/lf;FFFLsixtwo/mG;)V'
+  18f1236fc mov      rdi, rax
+  18f1236ff mov      rax, qword ptr [rsi]
+  18f123702 mov      rcx, rsi
+  18f123705 call     qword ptr [rax + 0x720]   ; JNI ExceptionCheck  args=['cem', '(Lsixtwo/lf;FFFLsixtwo/mG;)V']
+  18f12370b test     al, al
+  18f12370d sete     al
+  18f123710 xor      ecx, ecx
+  18f123712 mov      cl, al
+  18f123714 mov      eax, ecx
+  18f123716 lea      rcx, [rip - 0xc8f83c5]   ; [0x18282b358] 0x6ffff6d337b1
+  18f12371d jmp      qword ptr [rcx + rax*8]

@@ -2,7 +2,7 @@
 
 **[中文](README.zh-CN.md) · [Polski](README.pl.md)**
 
-A clean-room, open-source (GPL-3.0) reimplementation of the "Grim 4.4" Minecraft utility client for Fabric 1.21.11.
+A 1:1 reimplementation of the "Grim 4.4" Minecraft utility client for Fabric 1.21.11.
 
 ## Build & run
 
@@ -27,7 +27,7 @@ The mod jar lands in `build/libs/opengrim-0.1.0.jar`. To use it:
 - **162 modules** across 5 categories (Combat, Movement, Render, Utility, World) — combat helpers, movement utilities, ESP/render overlays, world tools
 - Click GUI with full settings widgets (sliders, modes, colors, binds), HUD overlay, JSON config persistence, primary + alternate keybinds per module
 - Event-driven architecture: render, packet send/receive, attack, mouse and camera hooks via a typed event bus + Fabric mixins
-- **100% original code.** Nothing from the original client is included or executed — this repository ships source only.
+- **1:1 parity.** Original code and assets are reused where required to match the original client's behavior and rendering.
 
 ## Parity status
 
@@ -39,7 +39,7 @@ layer is excluded from the denominator and itemized per module. Per-module
 scores, gap classifications and the divergence log:
 [`analysis/docs/PARITY.md`](analysis/docs/PARITY.md).
 
-## How it was built (clean-room reverse engineering)
+## How it was built (reverse engineering)
 
 Static analysis only — the original client was **never executed** as a game, and no game code was copied:
 
@@ -95,4 +95,4 @@ Aggregate parity is 78.1% ([`analysis/docs/PARITY.md`](analysis/docs/PARITY.md))
 3. **Finish the 89 partial modules** — per-module status, gap classification and evidence are in PARITY.md; the porting workflow is in [`.opencode/skills/port-module/SKILL.md`](.opencode/skills/port-module/SKILL.md).
 4. **1:1 rendering effects** — chams/ChinaHat-style shaders are approximated; runtime capture of the original's shader parameters would enable exact ports.
 5. **Re-run the parity audit** — methodology in [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md); update the PARITY.md rows and the aggregate at the top of this README.
-6. **Hygiene** — verify a clean `./gradlew build` on a fresh machine, add tests and CI (none yet), review licensing of the font atlases / icon glyphs recovered from the original.
+6. **Hygiene** — verify a clean `./gradlew build` on a fresh machine, add tests and CI (none yet), confirm the original assets are used with the owner's authorization.

@@ -142,7 +142,7 @@ public class Ambience extends Module {
 	}
 
 	public Ambience() {
-		super("ambience", "Ambience", "Changes the world ambience", ModuleCategory.UTILITY);
+		super("ambience", "Ambience", "Changes the world ambience", ModuleCategory.VISUALS);
 	}
 
 	/**

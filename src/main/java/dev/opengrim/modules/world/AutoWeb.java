@@ -72,7 +72,7 @@ public class AutoWeb extends Module {
 			1.0, 1.0, 6.0, 3.0, null));
 
 	public AutoWeb() {
-		super("auto_web", "Auto Web", "Automatically places webs at enemies", ModuleCategory.WORLD);
+		super("auto_web", "Auto Web", "Automatically places webs at enemies", ModuleCategory.COMBAT);
 		placementOptions.add(legs);
 		placementOptions.add(head);
 		placementOptions.add(surround);

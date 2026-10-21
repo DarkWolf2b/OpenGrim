@@ -14,12 +14,12 @@ Usage:
 import sys
 import struct
 
-IMG = '/workspace/analysis/ghidra/dumps/jna-decrypted-v2.dll'
+IMG = 'analysis/ghidra/dumps/jna-decrypted-v2.dll'
 RUNTIME_BASE = 0x6fffe7c10000
 POOL_PTR_RVA = 0x301ee50
 
 img = open(IMG, 'rb').read()
-orig = open('/workspace/win/tmp/native/jna1.21.11', 'rb').read()
+orig = open('win/tmp/native/jna1.21.11', 'rb').read()
 
 e = struct.unpack_from('<I', orig, 0x3c)[0]; coff = e + 4
 nsec = struct.unpack_from('<H', orig, coff + 2)[0]

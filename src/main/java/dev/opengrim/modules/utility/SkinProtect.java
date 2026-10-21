@@ -70,7 +70,7 @@ public class SkinProtect extends Module {
 	private final StringSetting otherTextureUrl = register(new StringSetting("other_texture_url", ""));
 
 	public SkinProtect() {
-		super("skin_protect", "Skin Protect", "Hides real player skin", ModuleCategory.UTILITY);
+		super("skin_protect", "Skin Protect", "Hides real player skin", ModuleCategory.CLIENT);
 		protect.add(ownSkin);
 		protect.add(otherPlayers);
 		ownSkinSource.add(ownDefaults);

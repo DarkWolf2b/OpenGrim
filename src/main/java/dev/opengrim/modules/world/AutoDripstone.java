@@ -84,7 +84,7 @@ public class AutoDripstone extends Module {
 
 	public AutoDripstone() {
 		super("auto_dripstone", "Auto Dripstone", "Automatically places dripstone and opens trapdoor",
-				ModuleCategory.WORLD);
+				ModuleCategory.COMBAT);
 	}
 
 	@Override

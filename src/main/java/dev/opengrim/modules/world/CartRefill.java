@@ -61,7 +61,7 @@ public class CartRefill extends Module {
 	private long lastRefillMs;
 
 	public CartRefill() {
-		super("cart_refill", "Cart Refill", "Automatically refills TNT minecarts", ModuleCategory.WORLD);
+		super("cart_refill", "Cart Refill", "Automatically refills TNT minecarts", ModuleCategory.COMBAT);
 		slotsToRefill.add(slot0);
 		slotsToRefill.add(slot1);
 		slotsToRefill.add(slot2);

@@ -64,7 +64,9 @@ public class ToggleWidget extends Widget {
 			bg = bg.lerp(theme.text(), 0.05f * hoverT);
 		}
 		draw.fillRounded(x, y, w, h, 3.5f, bg);
-		draw.text(semibold, label, x + 7.5f, y + h / 2.0f - 1.0f, 7.0f,
+		// ak.oF (plaintext): label at MCnYt + 9.0f, vertically centred in the
+		// row (jf.bAH(font.cat(), 18.0f)).
+		draw.text(semibold, label, x + 9.0f, y + h / 2.0f - 1.0f, 7.0f,
 				state ? theme.accent() : theme.text());
 		// Switch indicator on the right edge.
 		float sw = 14.0f;

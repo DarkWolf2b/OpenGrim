@@ -93,7 +93,7 @@ public class AntiCheatDetector extends Module {
 
 	public AntiCheatDetector() {
 		super("anti_cheat_detector", "Anti-Cheat Detector", "Analyzes packets to detect Anti-Cheat",
-				ModuleCategory.UTILITY);
+				ModuleCategory.CLIENT);
 	}
 
 	@Override

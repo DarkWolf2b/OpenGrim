@@ -10,11 +10,11 @@ from collections import defaultdict
 
 import pyghidra
 
-BINDLOG = '/workspace/analysis/ghidra/native-handlers-final.jsonl'
-DLL = '/workspace/analysis/ghidra/dumps/jna-decrypted-invoke.dll'
+BINDLOG = 'analysis/ghidra/native-handlers-final.jsonl'
+DLL = 'analysis/ghidra/dumps/jna-decrypted-invoke.dll'
 RUNTIME_BASE = int(sys.argv[1], 16) if len(sys.argv) > 1 else 0x6fffe7c10000
 IMAGE_BASE = 0x180000000
-OUTDIR = '/workspace/analysis/ghidra/handlers-full'
+OUTDIR = 'analysis/ghidra/handlers-full'
 PER_FUNC_TIMEOUT = 90
 
 os.makedirs(OUTDIR, exist_ok=True)
@@ -32,7 +32,7 @@ from ghidra.app.decompiler import DecompInterface
 from ghidra.util.task import ConsoleTaskMonitor
 
 with pyghidra.open_program(DLL,
-                           project_location='/workspace/win/ghidra-proj-dec',
+                           project_location='win/ghidra-proj-dec',
                            project_name='dec', analyze=False) as flat:
     program = flat.getCurrentProgram()
     fm = program.getFunctionManager()

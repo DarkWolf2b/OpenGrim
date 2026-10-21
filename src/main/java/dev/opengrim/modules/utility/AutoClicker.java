@@ -61,7 +61,7 @@ public class AutoClicker extends Module {
 	private long nextRightAt;
 
 	public AutoClicker() {
-		super("auto_clicker", "Auto Clicker", "Clicks automatically when holding attack key", ModuleCategory.UTILITY);
+		super("auto_clicker", "Auto Clicker", "Clicks automatically when holding attack key", ModuleCategory.COMBAT);
 		mouseButtons.add(leftClick);
 		mouseButtons.add(rightClick);
 		conditions.add(holdingWeapon);

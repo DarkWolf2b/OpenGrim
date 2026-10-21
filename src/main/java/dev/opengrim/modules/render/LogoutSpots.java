@@ -113,7 +113,7 @@ public class LogoutSpots extends Module {
 	private long lastRefreshMs = System.currentTimeMillis();
 
 	public LogoutSpots() {
-		super("logout_spots", "Logout Spots", "Renders boxes at where player logged out", ModuleCategory.RENDER);
+		super("logout_spots", "Logout Spots", "Renders boxes at where player logged out", ModuleCategory.VISUALS);
 	}
 
 	@Override

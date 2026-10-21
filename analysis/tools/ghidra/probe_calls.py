@@ -2,10 +2,10 @@
 """Probe: how do call instructions look in unanalyzed code?"""
 import pyghidra
 
-BINARY = '/workspace/binaries/native/jna1.21.11'
+BINARY = 'binaries/native/jna1.21.11'
 
 pyghidra.start()
-with pyghidra.open_program(BINARY, project_location='/workspace/binaries/ghidra-proj/pydeep',
+with pyghidra.open_program(BINARY, project_location='binaries/ghidra-proj/pydeep',
                            project_name='pydeep', analyze=False) as flat:
     program = flat.getCurrentProgram()
     fm = program.getFunctionManager()

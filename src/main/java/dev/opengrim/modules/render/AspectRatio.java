@@ -27,7 +27,7 @@ public class AspectRatio extends Module {
 	private final DoubleSetting ratio = register(new DoubleSetting("ratio", 0.001, 0.1, 5.0, 1.7777777777777777, null));
 
 	public AspectRatio() {
-		super("aspect_ratio", "Aspect Ratio", "Changes game aspect ratio", ModuleCategory.RENDER);
+		super("aspect_ratio", "Aspect Ratio", "Changes game aspect ratio", ModuleCategory.VISUALS);
 	}
 
 	@Override

@@ -85,7 +85,7 @@ public class PearlPrediction extends Module {
 	private final List<PearlMarker> markers = new ArrayList<>();
 
 	public PearlPrediction() {
-		super("pearl_prediction", "Pearl Prediction", "Renders thrown pearl trajectory", ModuleCategory.RENDER);
+		super("pearl_prediction", "Pearl Prediction", "Renders thrown pearl trajectory", ModuleCategory.VISUALS);
 	}
 
 	private record SimResult(Vec3d landingPos, int steps) {

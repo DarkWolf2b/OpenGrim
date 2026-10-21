@@ -76,7 +76,7 @@ public class Trajectories extends Module {
 	private static final double WATER_DRAG = 0.8;
 
 	public Trajectories() {
-		super("trajectories", "Trajectories", "Renders trajectories of items", ModuleCategory.RENDER);
+		super("trajectories", "Trajectories", "Renders trajectories of items", ModuleCategory.VISUALS);
 	}
 
 	@Subscribe

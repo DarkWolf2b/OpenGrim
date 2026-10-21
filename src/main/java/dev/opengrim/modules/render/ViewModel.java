@@ -61,7 +61,7 @@ public class ViewModel extends Module {
 	private final DoubleSetting armRotationZ = register(new DoubleSetting("arm_rotation_z", 1.0, -180.0, 180.0, 0.0, " deg"));
 
 	public ViewModel() {
-		super("view_model", "View Model", "Changes player View Model", ModuleCategory.RENDER);
+		super("view_model", "View Model", "Changes player View Model", ModuleCategory.VISUALS);
 	}
 
 	@Override

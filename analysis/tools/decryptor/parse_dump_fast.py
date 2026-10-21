@@ -11,9 +11,9 @@ from collections import defaultdict
 import ahocorasick
 import numpy as np
 
-DUMP = sys.argv[1] if len(sys.argv) > 1 else '/workspace/win/dump/mem-pid216130.bin'
-SIGS = json.load(open('/workspace/analysis/ghidra/native-sigs.json'))
-OUT = '/workspace/analysis/ghidra/native-handlers-runtime.json'
+DUMP = sys.argv[1] if len(sys.argv) > 1 else 'win/dump/mem-pid216130.bin'
+SIGS = json.load(open('analysis/ghidra/native-sigs.json'))
+OUT = 'analysis/ghidra/native-handlers-runtime.json'
 
 data = open(DUMP, 'rb').read()
 assert data[:5] == b'WMEM2'

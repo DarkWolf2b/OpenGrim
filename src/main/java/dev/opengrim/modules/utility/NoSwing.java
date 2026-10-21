@@ -58,7 +58,7 @@ public class NoSwing extends Module {
 	private final BoolSetting both = register(new BoolSetting("both", false));
 
 	public NoSwing() {
-		super("no_swing", "No Swing", "Cancels swinging", ModuleCategory.UTILITY);
+		super("no_swing", "No Swing", "Cancels swinging", ModuleCategory.PLAYER);
 	}
 
 	@Override

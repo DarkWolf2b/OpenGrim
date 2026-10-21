@@ -18,7 +18,7 @@ The product is a 3-stage chain — never a plain Fabric mod:
 2. `stage2-runtime.jar` extracted to `tmpdir` by preLaunch; `main.Loader.init`
    loads the 32.5MB DLL, `native.Loader.init` (payload) loads the 292MB
    `j2cc_natives.dll` from `-Doffline.client.nativePath=`
-   (`Z:\workspace\win\tmp\native\jna1.21.11`).
+   (`<workspace>\win\tmp\native\jna1.21.11`).
 3. `OfflineClientInit.onInitializeClient` → `OfflineIdentityOverride.apply`
    (sets `sixtwo.ry` singleton via `dkB`, session fields in `sixtwo.mC`) →
    `sixtwo.rD.dmn()` (module manager) → Fabric API `ClientTickEvents` hook.
@@ -50,12 +50,12 @@ Running `payload-orig.jar` directly as a mod does nothing: its
 `win/mc/run-client.sh` (Wine 11, prefix11, Xvfb :99, llvmpipe):
 
 ```
-java.exe -agentpath:Z:\workspace\win\hook.dll \
-  -Doffline.client.nativePath=Z:\workspace\win\tmp\native\jna1.21.11 \
-  -Djava.io.tmpdir=Z:\workspace\win\tmp \
-  -Djava.security.egd=file:/Z:/workspace/win/entropy.bin \
+java.exe -agentpath:<workspace>\win\hook.dll \
+  -Doffline.client.nativePath=<workspace>\win\tmp\native\jna1.21.11 \
+  -Djava.io.tmpdir=<workspace>\win\tmp \
+  -Djava.security.egd=file:/<workspace>/win/entropy.bin \
   -Xmx3G -cp <client.jar;libraries...> net.fabricmc.loader.impl.launch.knot.KnotClient \
-  --gameDir Z:\workspace\win\mc --version 1.21.11 --username OpenGrimRE \
+  --gameDir <workspace>\win\mc --version 1.21.11 --username <username> \
   --quickPlayMultiplayer 127.0.0.1:25565
 ```
 
@@ -73,7 +73,7 @@ window 1 — mouse motion hovers but clicks/keys do nothing), then
 - `TRACE_CLASSES` (comma-separated class-name prefixes; boundary-aware:
   `sixtwo/` matches packages, `Init` matches exact default-package names).
   Default traces `java/net/` + sixtwo + the Java shell classes.
-- `TRACE_FILE` (default `Z:\workspace\win\trace.jsonl`), `TRACE_MAX` events,
+- `TRACE_FILE` (default `<workspace>\win\trace.jsonl`), `TRACE_MAX` events,
   line-buffered. MethodExit dumps primitive return values (`"r":…`) — exact
   numeric ground truth for helper math that is VM-virtualized statically.
 - Overhead: ~20x (unfiltered callbacks); client boot ≈ 12-18 min with agent.

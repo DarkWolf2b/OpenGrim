@@ -21,56 +21,73 @@ import dev.opengrim.settings.StringSetting;
 /**
  * Binds {@link dev.opengrim.settings.Setting} trees to the widget framework —
  * the same binding the original performs inside the module settings popup
- * (sixtwo.bd: 42 native handlers wiring BoolSetting/cJ, Double/IntSetting/cC,
- * ModeSetting/cD, StringSetting/in, ColorSetting rows and GroupSetting
- * ct/cu/cv/cw groups; the bd handler bodies are runtime-decrypted so the
- * binding is rebuilt from the observable widget set).
+ * ({@code jf.bAR} in the payload; sixtwo.bd: 42 native handlers).
+ *
+ * <p>Row heights are the recovered {@code ak.dn()} natives (image addresses):
+ *
+ * <table>
+ *   <tr><th>widget</th><th>setting</th><th>dn()</th><th>handler</th></tr>
+ *   <tr><td>{@code v}</td><td>bool/cJ</td><td>18.0</td><td>0x1907f1c80</td></tr>
+ *   <tr><td>{@code x}</td><td>cz/cF/cK</td><td>18.0</td><td>0x1907d0d30</td></tr>
+ *   <tr><td>{@code y}</td><td>cD</td><td>18.0</td><td>0x1907c61b0</td></tr>
+ *   <tr><td>{@code u}</td><td>cx</td><td>18.0</td><td>0x19085c750</td></tr>
+ *   <tr><td>{@code A}</td><td>cG</td><td>18.0</td><td>0x19077b3e0</td></tr>
+ *   <tr><td>{@code B}</td><td>cH</td><td>18.0</td><td>0x19072ce40</td></tr>
+ *   <tr><td>{@code w}</td><td>cy</td><td>18.0</td><td>0x1907defa0</td></tr>
+ *   <tr><td>{@code bk}</td><td>module row</td><td>18.0</td><td>0x18efa30a0</td></tr>
+ *   <tr><td>{@code o}/{@code p}</td><td>cC/cA numeric</td><td>28.0</td><td>0x190b26880 / 0x190a6e120</td></tr>
+ *   <tr><td>{@code D}</td><td>cL colour</td><td>122.0</td><td>0x1906b6210</td></tr>
+ * </table>
  */
 public final class ModuleWidgetFactory {
 	private ModuleWidgetFactory() {
 	}
 
-	/** Row heights in design units (slider rows are taller: cC has label + track). */
-	public static final float TOGGLE_H = 12.0f;
-	public static final float SLIDER_H = 16.0f;
+	/**
+	 * Row heights in design units, recovered from the native {@code dn()}
+	 * handlers (see class javadoc).
+	 */
+	public static final float TOGGLE_H = 18.0f;
+	public static final float SLIDER_H = 28.0f;
+	public static final float COLOR_H = 122.0f;
 
 	public static float measureHeight(List<Setting<?>> settings) {
-		java.util.Set<Setting<?>> groupChildren = collectGroupChildren(settings);
+		List<Widget> widgets = new ArrayList<>();
+		build(widgets, settings, 0.0f, 0);
 		float h = 0.0f;
-		for (Setting<?> setting : settings) {
-			if (groupChildren.contains(setting) || !setting.isVisible()) {
-				continue;
-			}
-			if (setting instanceof DoubleSetting || setting instanceof IntSetting) {
-				h += SLIDER_H;
-			} else {
-				h += TOGGLE_H;
-			}
-			if (setting instanceof GroupSetting group) {
-				h += measureHeight(group.getChildren());
-			}
-			if (setting instanceof ColorSetting color) {
-				h += SLIDER_H * (color.allowAlpha() ? 4 : 3);
-			}
+		for (Widget widget : widgets) {
+			h += widget.height();
 		}
 		return h;
 	}
 
-	/** Populate a container with widgets for the setting list (width in design units). */
-	public static void populate(ContainerWidget container, List<Setting<?>> settings, float width) {
-		populate(container, settings, width, 0);
+	/** Add the setting widgets to a plain list (settings panel row stack). */
+	public static void populateRows(List<Widget> out, List<Setting<?>> settings, float width) {
+		build(out, settings, width, 0);
 	}
 
-	private static void populate(ContainerWidget container, List<Setting<?>> settings, float width, int indent) {
+	/**
+	 * Populate a container with widgets for the setting list (width in design
+	 * units).
+	 */
+	public static void populate(ContainerWidget container, List<Setting<?>> settings, float width) {
+		List<Widget> widgets = new ArrayList<>();
+		build(widgets, settings, width, 0);
+		for (Widget widget : widgets) {
+			container.add(widget);
+		}
+	}
+
+	private static void build(List<Widget> out, List<Setting<?>> settings, float width, int indent) {
 		java.util.Set<Setting<?>> groupChildren = collectGroupChildren(settings);
-		float x = 4.0f + indent * 8.0f;
-		float w = width - x - 4.0f;
+		float x = indent * 8.0f;
+		float w = width - x;
 		for (Setting<?> setting : settings) {
 			if (groupChildren.contains(setting) || !setting.isVisible()) {
 				continue;
 			}
 			switch (setting) {
-				case BoolSetting bool -> container.add(
+				case BoolSetting bool -> out.add(
 						new ToggleWidget(bool.getId(), bool.getValue()) {
 							@Override
 							protected void drawWidget(GuiDraw draw) {
@@ -86,16 +103,16 @@ public final class ModuleWidgetFactory {
 							dbl.getSuffix(), decimalsFor(dbl.getStep()));
 					slider.getter(dbl::getValue);
 					slider.onChange(() -> dbl.setValue((double) slider.value()));
-					container.add(slider.bounds(x, 0.0f, w, SLIDER_H));
+					out.add(slider.bounds(x, 0.0f, w, SLIDER_H));
 				}
 				case IntSetting intg -> {
 					SliderWidget slider = new SliderWidget(intg.getId(), intg.getMin(), intg.getMax(), 1.0f,
 							intg.getValue(), "", 0);
 					slider.getter(intg::getValue);
 					slider.onChange(() -> intg.setValue(Math.round(slider.value())));
-					container.add(slider.bounds(x, 0.0f, w, SLIDER_H));
+					out.add(slider.bounds(x, 0.0f, w, SLIDER_H));
 				}
-				case ModeSetting mode -> container.add(
+				case ModeSetting mode -> out.add(
 						new ModeWidget(mode.getId(), mode.getModes(), mode.getValue()) {
 							@Override
 							protected void drawWidget(GuiDraw draw) {
@@ -128,23 +145,22 @@ public final class ModuleWidgetFactory {
 							str.setValue(value);
 						}
 					});
-					container.add(field);
+					out.add(field);
 				}
-				case ColorSetting color -> populateColor(container, color, x, w);
+				case ColorSetting color -> populateColor(out, color, x, w);
 				case GroupSetting group -> {
 					ActionWidget header = new ActionWidget("+ " + group.getId())
 							.bounds(x, 0.0f, w, TOGGLE_H);
-					container.add(header);
-					int before = container.children().size();
-					populate(container, group.getChildren(), width, indent + 1);
-					List<dev.opengrim.gui.ui.Widget> childWidgets = new ArrayList<>(
-							container.children().subList(before, container.children().size()));
+					out.add(header);
+					int before = out.size();
+					build(out, group.getChildren(), width, indent + 1);
+					List<Widget> childWidgets = new ArrayList<>(out.subList(before, out.size()));
 					header.onClick(() -> {
 						if (childWidgets.isEmpty()) {
 							return;
 						}
 						boolean visible = !childWidgets.get(0).isVisible();
-						for (dev.opengrim.gui.ui.Widget child : childWidgets) {
+						for (Widget child : childWidgets) {
 							child.setVisible(visible);
 						}
 					});
@@ -155,9 +171,9 @@ public final class ModuleWidgetFactory {
 		}
 	}
 
-	private static void populateColor(ContainerWidget container, ColorSetting color, float x, float w) {
-		// Color row: name + swatch; then per-channel sliders (R/G/B/A).
-		container.add(new ToggleWidget(color.getId(), false) {
+	private static void populateColor(List<Widget> out, ColorSetting color, float x, float w) {
+		// cL.dn() == 122: name+swatch row (18) + channels split the rest.
+		out.add(new ToggleWidget(color.getId(), false) {
 			@Override
 			protected void drawWidget(GuiDraw draw) {
 				Theme theme = Theme.get();
@@ -168,13 +184,14 @@ public final class ModuleWidgetFactory {
 					bg = bg.lerp(theme.text(), 0.05f * hoverT);
 				}
 				draw.fillRounded(x, y, w, h, 3.5f, bg);
-				draw.text(semibold, label, x + 7.5f, y + h / 2.0f - 1.0f, 7.0f, theme.text());
+				draw.text(semibold, label, x + 9.0f, y + h / 2.0f - 1.0f, 7.0f, theme.text());
 				float sw = 12.0f;
 				draw.fillRounded(x + w - sw - 7.5f, y + 2.0f, sw, h - 4.0f, 2.5f,
 						ColorF.fromArgb(color.getValue()));
 			}
 		}.bounds(x, 0.0f, w, TOGGLE_H));
 		int channels = color.allowAlpha() ? 4 : 3;
+		float channelH = (COLOR_H - TOGGLE_H) / channels;
 		String[] names = {"R", "G", "B", "A"};
 		for (int channel = 0; channel < channels; channel++) {
 			final int ch = channel;
@@ -203,7 +220,7 @@ public final class ModuleWidgetFactory {
 					return true;
 				}
 			};
-			container.add(slider.bounds(x + 8.0f, 0.0f, w - 8.0f, SLIDER_H));
+			out.add(slider.bounds(x + 8.0f, 0.0f, w - 8.0f, channelH));
 		}
 	}
 

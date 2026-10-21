@@ -59,7 +59,7 @@ public class NoEntityClip extends Module {
 	private BlockState breakingState;
 
 	public NoEntityClip() {
-		super("no_entity_clip", "No Entity Clip", "Ignores entity hitboxes", ModuleCategory.WORLD);
+		super("no_entity_clip", "No Entity Clip", "Ignores entity hitboxes", ModuleCategory.PLAYER);
 	}
 
 	@Override

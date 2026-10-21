@@ -1,6 +1,6 @@
 # Batch 7 port report (eu, ev, ew, ex, ey, ez, fA–fL)
 
-Batch: `/workspace/../../../analysis/specs/batch7.txt` (18 modules).
+Batch: `analysis/specs/batch7.txt` (18 modules).
 Category evidence: original `gh` constants — `eu`–`ez` = `gh.xgeEn` (movement),
 `fA`–`fL` = `gh.xwjCw` (combat). Files under
 `../../../src/main/java/dev/opengrim/modules/{movement,combat}/`.

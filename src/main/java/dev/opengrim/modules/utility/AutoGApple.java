@@ -66,7 +66,7 @@ public class AutoGApple extends Module {
 	private boolean ateOne;
 
 	public AutoGApple() {
-		super("auto_gapple", "Auto GApple", "Automatically eats golden apples", ModuleCategory.UTILITY);
+		super("auto_gapple", "Auto GApple", "Automatically eats golden apples", ModuleCategory.COMBAT);
 	}
 
 	@Override
