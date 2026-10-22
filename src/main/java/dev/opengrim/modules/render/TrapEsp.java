@@ -36,6 +36,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.WorldChunk;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
 import dev.opengrim.gui.ui.ColorF;
@@ -45,6 +46,7 @@ import dev.opengrim.gui.ui.MsdfFont;
 import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.render.WorldProjection;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
@@ -98,9 +100,12 @@ import dev.opengrim.settings.GroupSetting;
  *       ({@code y + 0.7·size}, pen {@code advance + 0.025·size}). Vanilla
  *       {@link net.minecraft.client.font.TextRenderer} remains the fallback if the sheet does
  *       not load.</li>
- *   <li>[S] Projection (sixtwo.jI#bIw): the original applies P * modelview * camera-rotation to the
+ *   <li>Projection (sixtwo.jI#bIw): the original applies P * modelview * camera-rotation to the
  *       camera-relative position; this port uses P * camera-rotation (RenderSystem modelview is
- *       identity at that point) with GameRenderer#getBasicProjectionMatrix at the base FOV.</li>
+ *       identity at that point) with P = {@link dev.opengrim.render.WorldProjection}: the
+ *       live world FOV captured from {@code GameRenderer#getFov} (the same value the original
+ *       bridge feeds to {@code getBasicProjectionMatrix} before the hand pass), not the base FOV
+ *       option, so sprint/water/death FOV modulation matches the world.</li>
  * </ul>
  */
 public class TrapEsp extends Module {
@@ -409,9 +414,10 @@ public class TrapEsp extends Module {
 		int screenWidth = ctx.getScaledWindowWidth();
 		int screenHeight = ctx.getScaledWindowHeight();
 		Vec3d cameraPos = client.gameRenderer.getCamera().getCameraPos();
-		Matrix4f rotation = new Matrix4f().rotation(client.gameRenderer.getCamera().getRotation());
-		float fov = client.options.getFov().getValue().floatValue();
-		Matrix4f projection = client.gameRenderer.getBasicProjectionMatrix(fov);
+		// View rotation = conjugate of Camera#getRotation (GameRenderer.project:844-845).
+		Matrix4f rotation = new Matrix4f()
+				.rotation(client.gameRenderer.getCamera().getRotation().conjugate(new Quaternionf()));
+		Matrix4f projection = WorldProjection.get(client);
 		int minCount = minimalCount.getValue().intValue();
 
 		for (TrackedCluster cluster : displayedClusters) {

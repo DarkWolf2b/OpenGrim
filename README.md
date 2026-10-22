@@ -17,10 +17,28 @@ A 1:1 reimplementation of the "Grim 4.4" Minecraft utility client for Fabric 1.2
 ```bash
 git clone https://github.com/sequence3260/OpenGrim.git
 cd OpenGrim
+chmod +x gradlew
 ./gradlew build
 ```
 
 > **Mirrors:** GitLab (`https://gitlab.com/sequence3260/OpenGrim`) is the fallback if the GitHub repo goes down. The repository is published as a single snapshot — there is no git history to clone, only the current tree.
+
+### Source-only clone (skip the reverse-engineering trees)
+
+The `analysis/` tree is ~9,100 files / ~390 MB and is not needed to compile the
+mod. A partial clone (Git 2.25+) can check out only the Gradle project:
+
+```bash
+git clone --filter=blob:none --sparse https://github.com/sequence3260/OpenGrim.git
+cd OpenGrim
+git sparse-checkout set src gradle
+chmod +x gradlew
+./gradlew build
+```
+
+The checkout is ~12 MB before building (root build files + `src/` + `gradle/`).
+Widen it later with `git sparse-checkout add analysis`, or restore a full
+checkout with `git sparse-checkout disable`.
 
 The mod jar lands in `build/libs/opengrim-0.1.0.jar`. To use it:
 

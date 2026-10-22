@@ -313,6 +313,11 @@ final class ChamsRenderer {
 		CommandEncoder encoder = RenderSystem.getDevice().createCommandEncoder();
 		GpuBuffer uniforms = uniformBuffer(encoder, slots, maskTarget.textureWidth,
 				maskTarget.textureHeight);
+		// Index-buffer growth must happen before the pass (vanilla RenderLayer.draw:73-83).
+		RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
+				VertexFormat.DrawMode.QUADS);
+		GpuBuffer indexBuffer = indices.getIndexBuffer(6);
+		VertexFormat.IndexType indexType = indices.getIndexType();
 		try (RenderPass pass = encoder.createRenderPass(() -> "opengrim chams",
 				main.getColorAttachmentView(), OptionalInt.empty())) {
 			pass.setPipeline(pipelines[selected]);
@@ -322,10 +327,11 @@ final class ChamsRenderer {
 			pass.bindTexture("backgroundTexture", backgroundTarget.getColorAttachmentView(),
 					RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
 			pass.setVertexBuffer(0, quad);
-			RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
-					VertexFormat.DrawMode.QUADS);
-			pass.setIndexBuffer(indices.getIndexBuffer(4), indices.getIndexType());
-			pass.drawIndexed(0, 0, 4, 1);
+			// A QUADS shape of 4 vertices is indexed with 6 indices; drawIndexed counts
+			// indices (RenderPassImpl -> drawBoundObjectWithRenderPass count). 4 drew a
+			// single triangle, so the composite only covered half of the screen.
+			pass.setIndexBuffer(indexBuffer, indexType);
+			pass.drawIndexed(0, 0, 6, 1);
 		}
 		return true;
 	}

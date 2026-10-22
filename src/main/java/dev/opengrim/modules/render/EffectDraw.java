@@ -4,6 +4,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.CompiledRenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -37,8 +38,12 @@ import org.slf4j.LoggerFactory;
  *
  * <ul>
  *   <li>{@code kR.Dmmsd.bUZ(kz.aKqGY)} - POSITION_COLOR_TEXTURE_LIGHT quads,
- *       blend {@code lh.aApMr} (SRC_ALPHA, ONE_MINUS_SRC_ALPHA, ONE, ONE),
+ *       blend {@code lh.aApMr} (SRC_ALPHA, ONE, ONE, ONE — additive; lh.java:227),
  *       {@code NO_DEPTH_TEST}, depth write {@code true}, cull {@code false};
+ *       additive is required: the recovered {@code circle.png} is an opaque
+ *       black square with a white ring (alpha 255 everywhere), so black texels
+ *       must contribute nothing. Standard alpha blending drew an opaque black
+ *       card around every circle (user screenshot 2026-10-22 21:59).
  *       texture bound as {@code Sampler0} from
  *       {@code AbstractTexture.getGlTextureView()/getSampler()} (kz.bSj).</li>
  *   <li>{@code kR.PMnQE} - POSITION_COLOR TRIANGLE_STRIP, same state.</li>
@@ -54,8 +59,9 @@ final class EffectDraw {
 	private static final Logger LOGGER = LoggerFactory.getLogger("opengrim/circles");
 	private static final Identifier TEXTURED_SHADER = Identifier.of("opengrim", "circle_textured");
 	private static final Identifier SOLID_SHADER = Identifier.of("opengrim", "circle_solid");
+	/** {@code lh.aApMr} (lh.java:227): SRC_ALPHA/ONE additive, not alpha blending. */
 	private static final BlendFunction BLEND = new BlendFunction(
-			SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA,
+			SourceFactor.SRC_ALPHA, DestFactor.ONE,
 			SourceFactor.ONE, DestFactor.ONE);
 
 	private static boolean attempted;
@@ -173,25 +179,33 @@ final class EffectDraw {
 		}
 		try (buffer) {
 			CommandEncoder encoder = RenderSystem.getDevice().createCommandEncoder();
+			// Everything that can map/upload a buffer must happen before the pass is open
+			// (vanilla RenderLayer.draw:73-83 order): DynamicUniforms.write, the immediate
+			// vertex upload and ShapeIndexBuffer.getIndexBuffer all issue command-encoder
+			// writes. Doing any of them inside the pass throws
+			// "Close the existing render pass before performing additional commands" and
+			// killed every ChinaHat/JumpCircle/CircleEsp draw.
+			GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().write(
+					RenderSystem.getModelViewMatrix(), new Vector4f(1.0f, 1.0f, 1.0f, 1.0f),
+					new Vector3f(0.0f), new Matrix4f());
+			GpuBuffer vertices = pipeline.getVertexFormat()
+					.uploadImmediateVertexBuffer(buffer.getBuffer());
+			BuiltBuffer.DrawParameters parameters = buffer.getDrawParameters();
+			RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
+					parameters.mode());
+			GpuBuffer indexBuffer = indices.getIndexBuffer(parameters.indexCount());
+			VertexFormat.IndexType indexType = indices.getIndexType();
 			try (RenderPass pass = encoder.createRenderPass(() -> "opengrim circles",
 					main.getColorAttachmentView(), OptionalInt.empty(),
 					main.getDepthAttachmentView(), OptionalDouble.empty())) {
 				pass.setPipeline(pipeline);
 				RenderSystem.bindDefaultUniforms(pass);
-				pass.setUniform("DynamicTransforms", RenderSystem.getDynamicUniforms().write(
-						RenderSystem.getModelViewMatrix(), new Vector4f(1.0f, 1.0f, 1.0f, 1.0f),
-						new Vector3f(0.0f), new Matrix4f()));
-				GpuBuffer vertices = pipeline.getVertexFormat()
-						.uploadImmediateVertexBuffer(buffer.getBuffer());
+				pass.setUniform("DynamicTransforms", dynamicTransforms);
 				pass.setVertexBuffer(0, vertices);
 				if (texture != null) {
 					pass.bindTexture("Sampler0", texture, sampler);
 				}
-				BuiltBuffer.DrawParameters parameters = buffer.getDrawParameters();
-				RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
-						parameters.mode());
-				pass.setIndexBuffer(indices.getIndexBuffer(parameters.indexCount()),
-						indices.getIndexType());
+				pass.setIndexBuffer(indexBuffer, indexType);
 				pass.drawIndexed(0, 0, parameters.indexCount(), 1);
 			}
 		}

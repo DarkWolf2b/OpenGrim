@@ -2,6 +2,7 @@ package dev.opengrim.modules.world;
 
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.rotation.Rotation;
 import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
@@ -12,8 +13,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -40,8 +43,13 @@ import net.minecraft.world.World;
  * positioning, and place onto ground.
  *
  * <p>high-probability guesses (VM bodies, casesafe/handlers/fM_.md "Unrecovered"): the
- * fall-damage estimation (vanilla fallDistance vs Threshold), the 16-block ground scan,
- * the placement hit (interactBlock on the ground top face) and the gv phase split.
+ * fall-damage estimation (fallDistance + height still to fall vs Threshold), the 16-block
+ * ground scan and the gv phase split. The placement mechanism is decided by the held item:
+ * buckets go through {@code interactItem} (a water bucket has no {@code useOnBlock} - calling
+ * {@code interactBlock} with it is a silent no-op in vanilla), blocks through
+ * {@code interactBlock}. Both aim through {@code Rotation}, and the real yaw/pitch are set
+ * around the bucket use because {@code BucketItem.raycast} reads them directly; the silent
+ * rotation alone never reaches the raycast. Divergence notes: analysis/docs/PARITY.md.
  *
  * <p>trace 2026-10-17: aVp (pre-rotation) and aVq (tick) ran 1x each during the tour
  * window; no fall occurred, so no placement path executed. Capture condition: fall more
@@ -75,24 +83,38 @@ public class AutoMlg extends Module {
 		if (player == null || client.world == null || client.interactionManager == null) {
 			return;
 		}
-		if (client.interactionManager.getCurrentGameMode() != null
-				&& client.interactionManager.getCurrentGameMode().isCreative()) {
-			return;
-		}
-		if (player.isOnGround() || player.fallDistance < threshold.getValue().floatValue()) {
+		// Only while actually falling: the prediction below would otherwise fire while
+		// jumping upward over a ledge (fallDistance 0 + the height already gained). In a
+		// fluid or on a climbable vanilla resets/clamps fallDistance, so there is no fall
+		// damage to predict there either.
+		if (player.isOnGround() || player.isTouchingWater() || player.isInLava()
+				|| player.isClimbing() || player.getVelocity().y >= 0.0) {
 			return;
 		}
 
 		World world = player.getEntityWorld();
 		Vec3d pos = player.getEntityPos();
-		Vec3d targetCol = anchorPlayer.getValue() ? pos : pos.add(player.getVelocity());
-		if (anchorPlayer.getValue()) {
-			Vec3d velocity = player.getVelocity();
-			player.setVelocity(0.0, velocity.y, 0.0);
+		// Anchor Player keeps the target column directly under the player; otherwise the
+		// landing column is projected with the horizontal velocity. The vertical component
+		// is deliberately not projected: starting the scan at feetY + vy skips the surface
+		// on fast falls and returns a block below the real landing block.
+		Vec3d targetCol = anchorPlayer.getValue()
+				? pos
+				: new Vec3d(pos.x + player.getVelocity().x, pos.y, pos.z + player.getVelocity().z);
+
+		BlockPos ground = findGroundBelow(world, targetCol.x, targetCol.y, targetCol.z);
+		if (ground == null) {
+			return;
 		}
 
-		BlockPos ground = findGroundBelow(world, targetCol);
-		if (ground == null) {
+		// fM_.md:70-72 - estimate the *upcoming* damage, not the distance already fallen.
+		// fallDistance is reset in the same tick onGround becomes true, so an elapsed-distance
+		// gate never opens for a fall of exactly Threshold blocks. Creative skips the check
+		// (fM_.md:72), it does not disable the module.
+		double remaining = Math.max(0.0, player.getY() - (ground.getY() + 1.0));
+		boolean creative = client.interactionManager.getCurrentGameMode() != null
+				&& client.interactionManager.getCurrentGameMode().isCreative();
+		if (!creative && player.fallDistance + remaining < threshold.getValue().floatValue()) {
 			return;
 		}
 
@@ -102,16 +124,51 @@ public class AutoMlg extends Module {
 			return;
 		}
 
-		int slot = findMlgSlot(player, world, ground);
-		if (slot < 0) {
-			return;
+		// Main hand first (no slot switch when already holding the material), then offhand,
+		// then the hotbar scan.
+		Hand hand = Hand.MAIN_HAND;
+		ItemStack stack = player.getMainHandStack();
+		if (!matches(stack, world, ground)) {
+			if (matches(player.getOffHandStack(), world, ground)) {
+				hand = Hand.OFF_HAND;
+				stack = player.getOffHandStack();
+			} else {
+				int slot = findMlgSlot(player, world, ground);
+				if (slot < 0) {
+					return;
+				}
+				player.getInventory().setSelectedSlot(slot);
+				stack = player.getInventory().getStack(slot);
+			}
 		}
-		player.getInventory().setSelectedSlot(slot);
 
-		RotationManager.get().submitPosition(groundCenter, RotationPriority.uWTdl, this);
-		BlockHitResult hit = new BlockHitResult(groundCenter, Direction.UP, ground, false);
-		client.interactionManager.interactBlock(player, Hand.MAIN_HAND, hit);
-		player.swingHand(Hand.MAIN_HAND);
+		Rotation rotation = Rotation.lookingAt(player.getEyePos(), groundCenter).clamped();
+		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
+
+		ActionResult result;
+		if (stack.getItem() instanceof BucketItem) {
+			// InteractItem is the only path that runs BucketItem.use -> raycast -> placeFluid.
+			// The raycast reads the player's real rotation, so apply and restore it around
+			// the use (cf. mk.java:405-424, which does the same around an item use).
+			float yaw = player.getYaw();
+			float pitch = player.getPitch();
+			player.setYaw(rotation.getYaw());
+			player.setPitch(rotation.getPitch());
+			try {
+				result = client.interactionManager.interactItem(player, hand);
+			} finally {
+				player.setYaw(yaw);
+				player.setPitch(pitch);
+			}
+		} else {
+			BlockHitResult hit = new BlockHitResult(groundCenter, Direction.UP, ground, false);
+			result = client.interactionManager.interactBlock(player, hand, hit);
+		}
+		// Vanilla swings only for a successful client-side use (MinecraftClient.doItemUse).
+		if (result instanceof ActionResult.Success success
+				&& success.swingSource() == ActionResult.SwingSource.CLIENT) {
+			player.swingHand(hand);
+		}
 	}
 
 	private int findMlgSlot(ClientPlayerEntity player, World world, BlockPos ground) {
@@ -153,8 +210,8 @@ public class AutoMlg extends Module {
 		return cherry.getValue() && (stack.isOf(Items.SWEET_BERRIES) || stack.isOf(Items.CHERRY_LEAVES));
 	}
 
-	private static BlockPos findGroundBelow(World world, Vec3d col) {
-		BlockPos pos = BlockPos.ofFloored(col.x, col.y, col.z);
+	private static BlockPos findGroundBelow(World world, double x, double feetY, double z) {
+		BlockPos pos = BlockPos.ofFloored(x, feetY, z);
 		for (int i = 0; i < 16; i++) {
 			BlockState state = world.getBlockState(pos);
 			if (!state.isAir() && !state.isLiquid()) {

@@ -163,6 +163,12 @@ public final class BackdropBlur {
 
 	private static void drawPass(CommandEncoder encoder, Framebuffer source, Framebuffer target,
 			GpuBuffer uniforms) {
+		// Index-buffer growth must happen before the pass (vanilla RenderLayer.draw:73-83);
+		// the first getIndexBuffer(6) allocates/upload the shared quad index buffer.
+		RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
+				VertexFormat.DrawMode.QUADS);
+		GpuBuffer indexBuffer = indices.getIndexBuffer(6);
+		VertexFormat.IndexType indexType = indices.getIndexType();
 		try (RenderPass pass = encoder.createRenderPass(() -> "opengrim backdrop blur",
 				target.getColorAttachmentView(), OptionalInt.empty(), null, OptionalDouble.empty())) {
 			pass.setPipeline(GuiBackdropPipelines.blur());
@@ -170,10 +176,11 @@ public final class BackdropBlur {
 			pass.bindTexture("inTexture", source.getColorAttachmentView(),
 					RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
 			pass.setVertexBuffer(0, quad);
-			RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
-					VertexFormat.DrawMode.QUADS);
-			pass.setIndexBuffer(indices.getIndexBuffer(4), indices.getIndexType());
-			pass.drawIndexed(0, 0, 4, 1);
+			// A QUADS shape of 4 vertices is indexed with 6 indices (drawIndexed counts
+			// indices, not vertices). Drawing 4 left one triangle unwritten, which showed
+			// up as a diagonal blur/no-blur seam across the GUI.
+			pass.setIndexBuffer(indexBuffer, indexType);
+			pass.drawIndexed(0, 0, 6, 1);
 		}
 	}
 

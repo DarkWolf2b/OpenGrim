@@ -30,6 +30,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
 import dev.opengrim.event.Subscribe;
@@ -42,6 +43,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
 import dev.opengrim.modules.utility.AntiBot;
+import dev.opengrim.render.WorldProjection;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
@@ -297,9 +299,9 @@ public class LogoutSpots extends Module {
 		LabelText text = new LabelText(draw, client.textRenderer);
 		Camera camera = client.gameRenderer.getCamera();
 		Vec3d cameraPos = camera.getCameraPos();
-		Matrix4f rotation = new Matrix4f().rotation(camera.getRotation());
-		float fov = client.options.getFov().getValue().floatValue();
-		Matrix4f projection = client.gameRenderer.getBasicProjectionMatrix(fov);
+		// View rotation = conjugate of Camera#getRotation (GameRenderer.project:844-845).
+		Matrix4f rotation = new Matrix4f().rotation(camera.getRotation().conjugate(new Quaternionf()));
+		Matrix4f projection = WorldProjection.get(client);
 		int width = ctx.getScaledWindowWidth();
 		int heightPx = ctx.getScaledWindowHeight();
 		int color = Theme.get().text().argb();

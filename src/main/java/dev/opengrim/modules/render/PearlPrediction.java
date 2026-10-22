@@ -25,6 +25,7 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
 import dev.opengrim.event.Subscribe;
@@ -35,6 +36,7 @@ import dev.opengrim.gui.ui.MsdfFont;
 import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.render.WorldProjection;
 import dev.opengrim.settings.BoolSetting;
 
 /**
@@ -175,9 +177,9 @@ public class PearlPrediction extends Module {
 		MsdfFont medium = MsdfFont.of(MsdfFont.MEDIUM);
 		Camera camera = client.gameRenderer.getCamera();
 		Vec3d cameraPos = camera.getCameraPos();
-		Matrix4f rotation = new Matrix4f().rotation(camera.getRotation());
-		float fov = client.options.getFov().getValue().floatValue();
-		Matrix4f projection = client.gameRenderer.getBasicProjectionMatrix(fov);
+		// View rotation = conjugate of Camera#getRotation (GameRenderer.project:844-845).
+		Matrix4f rotation = new Matrix4f().rotation(camera.getRotation().conjugate(new Quaternionf()));
+		Matrix4f projection = WorldProjection.get(client);
 		int width = ctx.getScaledWindowWidth();
 		int height = ctx.getScaledWindowHeight();
 		boolean displayTimeLeft = showTimeLeft.getValue();

@@ -148,17 +148,22 @@ final class OutlineRenderer {
 		GpuBuffer uniforms = uniformBuffer(encoder, mask.textureWidth, mask.textureHeight, color,
 				secondColor, colorMode, glowQuality, glowRadius, animationSpeed, glowAlpha,
 				fillAlpha, saturation, brightness);
+		// Buffer creation/growth must happen before the pass (vanilla RenderLayer.draw:73-83).
+		GpuBuffer vertices = quad(encoder);
+		RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
+				VertexFormat.DrawMode.QUADS);
+		GpuBuffer indexBuffer = indices.getIndexBuffer(6);
+		VertexFormat.IndexType indexType = indices.getIndexType();
 		try (RenderPass pass = encoder.createRenderPass(() -> "opengrim outlines",
 				main.getColorAttachmentView(), OptionalInt.empty())) {
 			pass.setPipeline(pipeline);
 			pass.setUniform("Outlines", uniforms.slice());
 			pass.bindTexture("Sampler0", mask.getColorAttachmentView(),
 					RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
-			pass.setVertexBuffer(0, quad(encoder));
-			RenderSystem.ShapeIndexBuffer indices = RenderSystem.getSequentialBuffer(
-					VertexFormat.DrawMode.QUADS);
-			pass.setIndexBuffer(indices.getIndexBuffer(4), indices.getIndexType());
-			pass.drawIndexed(0, 0, 4, 1);
+			pass.setVertexBuffer(0, vertices);
+			// QUADS indexes 4 vertices with 6 indices (drawIndexed counts indices).
+			pass.setIndexBuffer(indexBuffer, indexType);
+			pass.drawIndexed(0, 0, 6, 1);
 		}
 		return true;
 	}

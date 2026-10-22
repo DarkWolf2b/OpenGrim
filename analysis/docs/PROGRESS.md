@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-21 (Linux: module recovery queue — aggregate parity 78.9%, up from 78.1%; 24 module rows re-scored in PARITY; new shared range/item/entity-list settings, HUD cards, Chams/Outline/EffectDraw renderers and key/interaction mixins; combined build PASS; no commit/push)
+Last updated: 2026-10-22 (Linux: overlay projection + full-screen quad fixes; AutoMLG/AutoDrain bucket placement — see PARITY Divergences Wave 10; `build` PASS on JDK 21; no commit/push)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1127,3 +1127,90 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   outside the repo.
 - **Git:** no commit and no push in this wave. Public/local `main` remains
   `e79b194`; the module changes and the two ledger edits are uncommitted.
+
+## 2026-10-22 (Linux): overlay projection + full-screen quads; AutoMLG bucket path
+
+- **Reported symptoms → causes.**
+  1. 2D world overlays (Nametags, Sound ESP, Trap ESP, Firework Spots, Logout
+     Spots, Pearl Prediction) slid with the camera: their manual world→screen
+     math used `new Matrix4f().rotation(camera.getRotation())` — the
+     view→world quaternion — instead of its conjugate. The original captures
+     `R_x(pitch)·R_y(yaw+180)` (= `q⁻¹`) in its GameRenderer mixin
+     (`analysis/decompiled/bootstrap/mixin/accessors/WorldRenderEventBridgeMixin.java:90-95`)
+     and feeds it to `jI.bIw` (`payload-named-cfr/sixtwo/jI_.java:159-176`), which
+     is `P·I·q⁻¹·(pos−cam)`; the port is now identical. Cross-checked against
+     vanilla `GameRenderer.project` (`getRotation().conjugate(new Quaternionf())`).
+     The projection itself is captured live as well: `GameRendererMixin` records
+     the return of `GameRenderer#getFov(camera, tick, true)` and
+     `WorldProjection` feeds it to `getBasicProjectionMatrix` — exactly the
+     original's `method_22973(method_3196(camera, tick, true))` at the pre-hand
+     point, so sprint/water/death FOV modulation matches the world instead of
+     using the base FOV option.
+  2. Chams/Outlines showed only on one part of the screen: the composite
+     full-screen QUADS quad requested `getIndexBuffer(4)` / `drawIndexed(0,0,4,1)`.
+     `drawIndexed` counts **indices**, and a quad needs 6, so only the first
+     triangle was drawn and the rest of the screen kept the hidden-model hole
+     ("chams disappear depending on screen position"). Both now draw 6.
+  3. The ClickGUI blur/no-blur diagonal is the same index-count bug in
+     `BackdropBlur.drawPass` (both passes), with the default theme style `BLUR`.
+     Both passes now write the whole target.
+  4. Auto MLG never placed water: `BucketItem` has no `useOnBlock` override and
+     the base `Item.useOnBlock` returns `PASS`, so `interactBlock` is a silent
+     no-op; the bucket's placement lives in `BucketItem.use`, reached through
+     `interactItem`. Also fixed: the elapsed-`fallDistance` gate never opens for
+     a Threshold-sized fall (`fallDistance` is reset on the landing tick), the
+     scan could start below the surface (`pos + velocity`), creative was
+     inverted (spec: creative *skips the damage check*), offhand was
+     unreachable, and the aim was submitted silently while
+     `BucketItem.raycast`/the server packet use the real yaw/pitch. Auto Drain
+     had the same bucket-idiom bug and is fixed the same way.
+  5. **Log review (user's 21:14 run, 105 mods):** 25,398 ×
+     `InvocationTargetException` → `IllegalStateException: Close the existing
+     render pass before performing additional commands`, every one from
+     `EffectDraw.draw` (China Hat 12,695, Jump Circle 12,703 — the effect never
+     rendered). The draw called `DynamicUniforms.write`,
+     `uploadImmediateVertexBuffer` and `ShapeIndexBuffer.getIndexBuffer`
+     *inside* the open render pass; vanilla does all three before
+     `createRenderPass` (`RenderLayer.draw:73-83`). They now run before the
+     pass, and the same index-buffer hoist was applied to
+     `ChamsRenderer`/`OutlineRenderer`/`BackdropBlur`. The only other OpenGrim
+     log line is the benign `chams_liquidmetal` unused-`backgroundTexture`
+     sampler warning; the original `.glsl` declares it unused too. The 3 ERROR
+     lines are third-party resource packs; the 103 WARNs are other
+     mods/vanilla.
+  6. **Circle textures drew as black cards** (user screenshot 21:59):
+     `EffectDraw.BLEND` used standard alpha (`SRC_ALPHA,
+     ONE_MINUS_SRC_ALPHA`), but the original's `lh.aApMr` is **additive**
+     (`SourceFactor.SRC_ALPHA, DestFactor.ONE, SourceFactor.ONE,
+     DestFactor.ONE`, lh.java:227) and the recovered `circle.png` is an opaque
+     black square with a white ring (alpha 255 everywhere), so only additive
+     blending makes the black texels contribute nothing. Fixed for both circle
+     pipelines (Jump Circle and Circle ESP including the solid ring).
+- **Files:** `modules/render/{Nametags,SoundEsp,TrapEsp,FireworkSpots,LogoutSpots,PearlPrediction}.java`
+  (conjugate projection + live world-FOV capture); `render/WorldProjection.java`,
+  `mixin/GameRendererMixin.java` (capture of `GameRenderer#getFov`);
+  `modules/render/ChamsRenderer.java`,
+  `modules/render/OutlineRenderer.java`, `gui/render/BackdropBlur.java`
+  (6 indices + index-buffer hoist); `modules/render/EffectDraw.java`
+  (uniform/vertex/index setup moved before the pass; additive `lh.aApMr`
+  blend); `modules/world/AutoMlg.java`, `modules/world/AutoDrain.java`
+  (`interactItem` + real aim + predicted gate / client-success swing).
+- **Re-verified, not changed:** StorageEsp's 3D boxes and its `(0,0,75)` tracer
+  origin are byte-identical to `dq.java:1020-1030` (the mirrored vertical
+  component in the origin is the original's own quirk; the boxes are correct
+  camera-relative geometry under `translate(−cam)`); `EffectDraw`'s index count
+  was already correct (`DrawParameters.indexCount()` = 6 for a QUADS buffer) —
+  its bug was the pass-order one above.
+- **Build:** `./gradlew compileJava` on JDK 21 → BUILD SUCCESSFUL (first run
+  6m33s, then 2s warm); full `./gradlew build` → BUILD SUCCESSFUL. The remapped
+  jar is `build/libs/opengrim-0.1.0.jar` (SHA-256
+  `6253105857c85f695a1c0f027404ee5780cc580d31d3ef8feaaf6c0e2d613a60`).
+  Fresh-machine setup: `openjdk-21-jdk-headless`, `unzip`,
+  `python3-pil`, `xvfb`, `xauth`, `chmod +x gradlew`. Only pre-existing warnings
+  (`WorldRenderEvent` dep-ann; `AutoMlg.isLiquid()` / `Scaffold.isSolid()`
+  deprecations).
+- **Caveats:** the four reported symptoms are confirmed fixed by the user's
+  in-game run; the EffectDraw pass-order fix is build-verified but not yet
+  re-run in-game. AutoMLG's trigger/branch and AutoDrain's interaction call are
+  recorded in PARITY → Divergences Wave 10 (the `fM`/`fw` executors are native
+  VM bodies). All changes remain uncommitted.

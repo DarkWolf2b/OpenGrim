@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector4f;
 
 import dev.opengrim.gui.ui.ColorF;
@@ -14,6 +15,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
 import dev.opengrim.modules.utility.NameProtect;
+import dev.opengrim.render.WorldProjection;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
@@ -567,9 +569,12 @@ public class Nametags extends Module {
 		float offset = entity instanceof PlayerEntity ? 2.6f : 0.0f;
 		MinecraftClient client = MinecraftClient.getInstance();
 		Vec3d cameraPos = client.gameRenderer.getCamera().getCameraPos();
-		Matrix4f rotation = new Matrix4f().rotation(client.gameRenderer.getCamera().getRotation());
-		float fov = client.options.getFov().getValue().floatValue();
-		Matrix4f projection = client.gameRenderer.getBasicProjectionMatrix(fov);
+		// View rotation = CONJUGATE of Camera#getRotation (vanilla GameRenderer.project:844-845;
+		// jI.bIw multiplies by the captured view matrix). The plain quaternion is view->world,
+		// which mirrored the projection so tags followed the camera instead of the world.
+		Matrix4f rotation = new Matrix4f()
+				.rotation(client.gameRenderer.getCamera().getRotation().conjugate(new Quaternionf()));
+		Matrix4f projection = WorldProjection.get(client);
 		return project(new Vec3d(pos.x, pos.y + offset, pos.z), cameraPos, rotation, projection,
 				ctx.getScaledWindowWidth(), ctx.getScaledWindowHeight());
 	}

@@ -7,6 +7,7 @@ import java.util.Random;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.modules.combat.TargetLock;
+import dev.opengrim.rotation.Rotation;
 import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
@@ -18,6 +19,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -84,7 +86,12 @@ import net.minecraft.world.RaycastContext;
  *     Water = water, Lava = lava, All = water || lava.</li>
  * <li>[G] the tick reconstruction (bucket-slot switch after Auto Switch Delay,
  *     rotation submit, interact) approximates the native aQY/aQX/aRa wiring —
- *     {@code qJ.dbp} execution is VM-internal.</li>
+ *     {@code qJ.dbp} execution is VM-internal. The interact is an
+ *     {@code interactItem} (bucket fill) with the computed yaw/pitch applied to
+ *     the player around the call and restored afterwards: a bucket has no
+ *     {@code useOnBlock}, so {@code interactBlock} never fills it, and
+ *     {@code BucketItem.use} raycasts with the real rotation. Divergence note:
+ *     analysis/docs/PARITY.md.</li>
  * <li>[G] random-sample count: indy call site {@code aRi(5843,…)} is not in
  *     full-dump.jsonl; {@value #RANDOM_SAMPLES} is a high-probability guess.</li>
  * <li>[U] {@code NrVzh} lifecycle (spec:86): only the {@code contains} read is
@@ -155,11 +162,31 @@ public class AutoDrain extends Module {
 			return;
 		}
 
-		RotationManager.get().submitPosition(liquidHit.getPos(), RotationPriority.uWTdl, this);
+		// Buckets must go through interactItem: BucketItem has no useOnBlock (the
+		// base Item.useOnBlock returns PASS), so interactBlock with a bucket is a
+		// silent no-op. The bucket's own raycast reads the player's real yaw/pitch,
+		// so apply the computed aim around the use and restore it afterwards —
+		// interactItem also puts those angles in the interact packet the server
+		// re-raycasts with (ServerPlayNetworkHandler.onPlayerInteractItem).
+		Rotation rotation = Rotation.lookingAt(player.getEyePos(), liquidHit.getPos()).clamped();
+		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
 		Hand hand = player.getMainHandStack().isOf(Items.BUCKET) ? Hand.MAIN_HAND : Hand.OFF_HAND;
-		client.interactionManager.interactBlock(player, hand, liquidHit);
-		player.swingHand(hand);
-		drainedPositions.add(liquidHit.getBlockPos());
+		float yaw = player.getYaw();
+		float pitch = player.getPitch();
+		player.setYaw(rotation.getYaw());
+		player.setPitch(rotation.getPitch());
+		ActionResult result;
+		try {
+			result = client.interactionManager.interactItem(player, hand);
+		} finally {
+			player.setYaw(yaw);
+			player.setPitch(pitch);
+		}
+		if (result instanceof ActionResult.Success success
+				&& success.swingSource() == ActionResult.SwingSource.CLIENT) {
+			player.swingHand(hand);
+			drainedPositions.add(liquidHit.getBlockPos());
+		}
 	}
 
 	/**
