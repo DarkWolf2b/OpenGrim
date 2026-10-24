@@ -68,6 +68,7 @@ public class Criticals extends Module {
 	private final java.util.Queue<Packet<?>> held = new java.util.concurrent.ConcurrentLinkedQueue<>();
 	private long webLagStart = -1L;
 	private boolean flushing;
+	private boolean sendingOffsets;
 
 	public Criticals() {
 		super("criticals", "Criticals", "Makes it easier to crit", ModuleCategory.COMBAT);
@@ -144,13 +145,24 @@ public class Criticals extends Module {
 		if (client.getNetworkHandler() == null) {
 			return;
 		}
-		if ("web_lag".equals(mode.getValue())) {
-			webLagStart = System.currentTimeMillis();
-			return;
-		}
 		double x = player.getX();
 		double y = player.getY();
 		double z = player.getZ();
+		if ("web_lag".equals(mode.getValue())) {
+			if (webLagStart < 0) {
+				webLagStart = System.currentTimeMillis();
+			}
+			sendingOffsets = true;
+			try {
+				client.getNetworkHandler().sendPacket(
+						new PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.0625, z, false, false));
+				client.getNetworkHandler().sendPacket(
+						new PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false, false));
+			} finally {
+				sendingOffsets = false;
+			}
+			return;
+		}
 		if ("packet".equals(mode.getValue())) {
 			client.getNetworkHandler().sendPacket(
 					new PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.0625, z, false, false));
@@ -177,10 +189,16 @@ public class Criticals extends Module {
 
 	@Subscribe
 	public void onPacketSend(PacketSendEvent event) {
-		if (flushing || webLagStart < 0 || !"web_lag".equals(mode.getValue())) {
+		if (flushing || sendingOffsets || webLagStart < 0 || !"web_lag".equals(mode.getValue())) {
 			return;
 		}
-		held.add(event.packet());
+		Packet<?> packet = event.packet();
+		// Only hold movement and click-slot packets (class_2813 in fu.md)
+		// Never hold KeepAlive, Pong, or Attack packets to prevent disconnects or dropped hits
+		if (!(packet instanceof PlayerMoveC2SPacket) && !(packet instanceof net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket)) {
+			return;
+		}
+		held.add(packet);
 		event.setCancelled(true);
 	}
 

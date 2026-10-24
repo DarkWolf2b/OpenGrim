@@ -1354,3 +1354,11 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
 - **Auto Market (dM, 45% → 60%, +15):** wired command dispatch `/ah` via `sendChatCommand("ah")` on market reopen; connected hovered slot extraction for rule creation with feedback messages; added session start/pause/state player feedback notifications; hooked `onDisable` cleanup.
 - **Parity:** aggregate 12,983 → 13,046 / 16,200 = 80.5% (+0.4%).
 - **Build:** `./gradlew build --offline` PASS on JDK 21.
+
+## 2026-10-24 (Linux): rendering pipeline (Section 3) & Criticals aQo uplift
+
+- **Criticals (fu, 58% → 92%, +34):** wired `aQo` packet queue via `PacketSendEvent`, filtering outbound movement (`PlayerMoveC2SPacket`) and inventory interaction (`ClickSlotC2SPacket`); implemented micro-offset critical jump packet dispatch in `web_lag` mode; implemented delayed burst FIFO packet release upon `lag_delay` expiration and `onDisable` flush.
+- **Bloom Pipeline (kl, cZ 92% → 96%, +4):** created `BloomRenderer` reproducing `sixtwo.kl` (`bQd`/`bQg`) using the recovered multi-LOD pyramid sampling shaders (`bloom.vsh`, `bloom.fsh`); wired bloom composite into `SoulEffects`.
+- **Glow (dy, 75% → 95%, +20):** upgraded `entities` to a full `EntityListSetting` with living-entities-minus-armor-stands universe (`jg$tJ.OCdZM`), restoring full ClickGUI configuration and config serialization.
+- **Parity:** aggregate 13,046 → 13,104 / 16,200 = 80.9% (+0.4%).
+- **Build:** `./gradlew build --offline` PASS on JDK 21.

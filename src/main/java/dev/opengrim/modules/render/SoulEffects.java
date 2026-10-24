@@ -335,6 +335,10 @@ public class SoulEffects extends Module {
 			matrices.pop();
 		}
 
+		if (glowScale > 0.0f && BloomRenderer.available() && client.getFramebuffer() != null) {
+			BloomRenderer.composite(client.getFramebuffer(), client.getFramebuffer(), glowScale * 0.25f, glowArgb);
+		}
+
 		// abc step 3: abe (cZ.java:1427-1454) — release expired effects and
 		// their UUIDs.
 		effects.removeIf(effect -> {

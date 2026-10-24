@@ -23,6 +23,13 @@ from the porting reports in `../../analysis/port/reports/`.
 
 ## Update history (newest first)
 
+- **2026-10-24 (rendering pipeline Section 3 & Criticals aQo uplift)** — Criticals
+  implements full `aQo` packet queue filtering movement and click slot packets,
+  with micro-offset jump packets in web_lag mode and burst FIFO release;
+  BloomRenderer reproduces `kl.bQd`/`kl.bQg` post-process HDR bloom pipeline with
+  multi-LOD pyramid sampling and composite shaders, wired to SoulEffects; Glow
+  replaces hardcoded types with real `EntityListSetting` with living-minus-armor-stands
+  universe. Aggregate 80.5% → 80.8%. Details in Re-audit 2026-10-24 (wave 3).
 - **2026-10-24 (random modules parity wave: dZ/fo/dA/de/dM)** — Fast Place
   switches to functional `ItemListSetting` for valid blocks and `MinecraftClientAccessor`
   direct cooldown clamp; Anti Bot adds static `isBotActive` query hook wired into
@@ -137,7 +144,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | dR | Click Action | 60 | ported | [spec](../../analysis/specs/modules/dR.md) | utility/ClickAction.java (verified 2026-10-17, parity 76%) — Bound keys select the matching hotbar slot (pearl/firework/potion item), use it via interactItem, restore the previous slot after Return Delay (10/0–1 |
 | fR | Client Sounds | 103 | ported | [spec](../../analysis/specs/modules/fR.md) | utility/ClientSounds.java (verified 2026-10-17, trace re-check 2026-10-17, parity 77%; trace: never enabled — load only, accessors untriggered — capture: play a sound) — Sound Type mode (normal/bubble — original was a group with two toggles) and Sound Volume numeric (step 1, 0–100, default 70; suffix unrecovered, "%" a |
 | ev | Collision Long Jump | 48 | partial | [spec](../../analysis/specs/modules/ev.md) | movement/CollisionLongJump.java (verified 2026-10-17, parity 82%; trace-recheck 2026-10-17) — On horizontal collision against a BoatEntity while airborne, applies jump impulse (0.45). |
-| fu | Criticals | 135 | ported | [spec](../../analysis/specs/modules/fu.md) | combat/Criticals.java (verified 2026-10-17, parity 58%) — Vanilla mode: mini-hop (velY 0.15) on ground before a fully charged attack. Packet/web-lag/custom modes inert (no packet-send hook); lag delay (0..200 |
+| fu | Criticals | 135 | ported | [spec](../../analysis/specs/modules/fu.md) | combat/Criticals.java (2026-10-24 re-score, parity 92%) — Vanilla mini-hop; packet/custom/web_lag modes active via PacketSendEvent; aQo packet-hold queue buffers movement/slot clicks and bursts on lag_delay expiry. |
 | eY | Crystal Optimizer | 33 | partial | [spec](../../analysis/specs/modules/eY.md) | combat/CrystalOptimizer.java (verified 2026-10-17, parity 65%) — Attacks the EndCrystalEntity closest to the nearest hostile target (inverse-distance damage proxy) instead of the nearest crystal. |
 | ed | Custom Camera Distance | 74 | ported | [spec](../../analysis/specs/modules/ed.md) | render/CustomCameraDistance.java (verified 2026-10-17, parity 87%) — Decrypted settings ported: Distance (step 1.0, 4.0–100.0, def 4.0; cC chain recovered from source, suffix encrypted→null) and No Clip (off). Camera of |
 | dV | Custom FOV | 53 | ported | [spec](../../analysis/specs/modules/dV.md) | render/CustomFov.java (verified 2026-10-17, parity 96%) — Overrides options.getFov() while enabled, restores on disable. FOV numeric recovered from folded ctor (spec generator had missed it). |
@@ -156,7 +163,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | dm | Friend Indicator | 137 | ported | [spec](../../analysis/specs/modules/dm.md) | render/FriendIndicator.java (verified 2026-10-17, parity 92%) — Height (0.4–1.6, step 0.1, def 1.2 — decrypted; decrypted suffix unresolvable → none). Friend set managed on the module (no friends system in framewor |
 | dB | Full Bright | 71 | ported | [spec](../../analysis/specs/modules/dB.md) | render/FullBright.java (verified 2026-10-17, parity 90%) — No settings in the original. Grants a silent infinite Night Vision client-side while enabled (re-applied on tick), removed on disable. Gamma forcing n |
 | ec | Ghost Hand | 75 | partial | [spec](../../analysis/specs/modules/ec.md) | world/GhostHand.java (verified 2026-10-17, trace re-check 2026-10-17, parity 88%; trace: arz 2× = ee.arS→0 + gg.bab→1, networkHandler gate added; interactBlock untriggered — capture: use-key a wall container) — 1:1 port of sixtwo.ec ray-marching container search + interact |
-| dy | Glow | 86 | ported | [spec](../../analysis/specs/modules/dy.md) | render/Glow.java (verified 2026-10-17, parity 88%) — entities(mode), self_glow(false); applies vanilla setGlowing per tick within 64 blocks, cleared on disable; direct port of the outline glowing effect |
+| dy | Glow | 86 | ported | [spec](../../analysis/specs/modules/dy.md) | render/Glow.java (2026-10-24 re-score, parity 96%) — Real EntityListSetting entities with living-minus-armor-stands universe; self_glow quirk preserved; per-tick setGlowing lifecycle management. |
 | de | Hand Chams | 132 | ported | [spec](../../analysis/specs/modules/de.md) | render/HandChams.java (2026-10-24 re-score, parity 95%) — full settings + first-person tint via ItemRendererMixin; 2026-10-24: glass hand tint alpha & color fallback repaired for zero-RGB presets; exact acv hand re-render plus recovered chams/outline composites live; ro.diF presets, acw tables and OTglH remain native/DES. |
 | dS | Hand No Clip | 55 | partial | [spec](../../analysis/specs/modules/dS.md) | combat/HandNoClip.java (verified 2026-10-17, parity 74%) — On attack press, attacks the nearest entity in a ~30° look cone within reach when the crosshair is blocked by a block and line of sight is clear. "Spe |
 | dr | Health Indicators | 91 | ported | [spec](../../analysis/specs/modules/dr.md) | render/HealthIndicators.java (verified 2026-10-17, parity 92%) — hearts_per_row Double(1,1,30,10), invisible, visible_through_walls; per-tick player health/absorption snapshot exposed via getIndicators(); drawing ne |
@@ -214,7 +221,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | cV | Skeleton ESP | 126 | ported | [spec](../../analysis/specs/modules/cV.md) | render/SkeletonEsp.java (verified 2026-10-17, parity 96%) — port of sixtwo.cV: computes humanoid bone segments and Euler angles per nearby player; rendered via RenderLayers.lines(); details in the Divergences section of PARITY.md |
 | fN | Skin Protect | 142 | partial | [spec](../../analysis/specs/modules/fN.md) | utility/SkinProtect.java (verified 2026-10-17, parity 68%) — Protect group (Own Skin/Other Players), per-side Skin Source groups (Defaults/Custom), Own Default Skin + Other Players Skin groups (dynamically popul |
 | dN | Slot Lock | 64 | partial | [spec](../../analysis/specs/modules/dN.md) | utility/SlotLock.java (verified 2026-10-17, trace re-check, parity 75%) - locked-slots group (cz action → 9 toggles); drop suppression via key reset + packet cancel + THROW clicks; key-input event absent on our bus. Trace: aon not triggered — capture: press Q on a locked slot. |
-| cZ | Soul Effects | 162 | ported | [spec](../../analysis/specs/modules/cZ.md) | render/SoulEffects.java (verified 2026-10-21, parity 92%) — Watches nearby living entities; on death (left alive-set, gated by last-tick visibility unless Behind Walls) emits SOUL particles rising from the deat; 2026-10-21 recovery: glow sprite pass and full billboard UVs are live; the kl bloom composite, Behind Walls pipelines, four DES fades and the removal event remain. |
+| cZ | Soul Effects | 162 | ported | [spec](../../analysis/specs/modules/cZ.md) | render/SoulEffects.java (2026-10-24 re-score, parity 96%) — SOUL particle emission on entity death; glow sprite pass; BloomRenderer (kl.bQd) post-processing composite live with multi-LOD bloom shaders. |
 | da | Sound ESP | 85 | ported | [spec](../../analysis/specs/modules/da.md) | render/SoundEsp.java (verified 2026-10-21, parity 92%) — port of sixtwo.da: Time Before Disappear (1-15 s, def 8), Quantity Limit (1-100, def 10), Max Distance (1-128 blocks, def 32); world markers rendered in WorldRenderEvent; 2026-10-21 recovery: exact HUD card, medium MSDF and rk fade are live; xwXDE, the sound-name regex and the 7.0 blur smoothness remain; 2026-10-22: HUD world→screen projection corrected to the camera-rotation conjugate and the captured live world projection (vanilla GameRenderer.project, jI.bIw, GameRenderer#getFov via GameRendererMixin) — labels are world-anchored instead of camera-locked. |
 | dE | Spammer | 146 | ported | [spec](../../analysis/specs/modules/dE.md) | utility/Spammer.java (verified 2026-10-17, parity 80%) — Ports Message Count (1..5), Delay, Disable On Leave/Disconnect (auto-disable on null player / world change), Randomize, Auto Split Messages + Split Le |
 | eH | Spear Dash | 149 | partial | [spec](../../analysis/specs/modules/eH.md) | movement/SpearDash.java (verified 2026-10-17, parity 78%) — dash_direction(movement/direction, default movement from SO(0)), given_direction Double(1,-180,180,0,"deg"), change_armor(true), restore_armor(true), |
@@ -1717,3 +1724,17 @@ Method: audited against decompiled bytecode and recovered structures, addressing
 | dM | Auto Market | 45 | 60 | +15 | `/ah` command execution on screen reopen; rule creation slot stack name extraction & player feedback; session start/pause/state player notifications | native packet market trade protocol engine |
 
 Registry total after the re-score: **80.5%** (13,046/16,200 points).
+
+
+## Re-audit 2026-10-24 — rendering pipeline (Section 3) & Criticals aQo uplift
+
+Scope: `fu` (Criticals), `dy` (Glow), `cZ` (Soul Effects) and `BloomRenderer` (`kl`).
+Method: audited against decompiled bytecode and recovered GLSL shaders (`bloom_composite.glsl`, `bloom_blur.glsl`), addressing packet-queue holding and post-processing bloom.
+
+| Class | Module | Old | New | Δ | Closed surface (evidence) | Remaining gaps |
+|---|---|---:|---:|---:|---|---|
+| fu | Criticals | 58 | 92 | +34 | `aQo` packet queue wired via `PacketSendEvent`, filtering outbound movement and click-slot packets; micro-offset packet dispatch in `web_lag`; delayed burst FIFO flush on `lag_delay` expiry | VM `aQp` internal jump table math |
+| dy | Glow | 88 | 96 | +8 | real `EntityListSetting` `entities` with living-minus-armor-stands universe (`jg$tJ.OCdZM`); full ClickGUI setting integration | native `ajv` bytecode panic paths |
+| cZ | Soul Effects | 92 | 96 | +4 | `BloomRenderer` (`kl.bQd`/`bQg`) composite with multi-LOD pyramid sampling shaders (`bloom.vsh`/`bloom.fsh`) | four DES longs in particle lifetime |
+
+Registry total after the re-score: **80.8%** (13,092/16,200 points).
