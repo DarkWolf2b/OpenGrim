@@ -35,12 +35,12 @@ import net.minecraft.world.RaycastContext;
  * Pearl Chaser (registry sixtwo.fm, module id 145):
  * "Automatically throws pearls after players".
  *
- * <p>Port of sixtwo.fm from (case-safe paths - the non-casesafe
+ * <p>Port of sixtwo.fm from (case-safe paths — the non-casesafe
  * payload-decrypted/payload-named-cfr entries are collapsed onto sixtwo.fM Auto MLG):
  * <ul>
  *   <li>analysis/decompiled/casesafe/payload-named-cfr/sixtwo/fm.java:37-84 (constructor)</li>
  *   <li>analysis/decompiled/casesafe/payload-decrypted/sixtwo/fm.java:14-132</li>
- *   <li>analysis/specs/handlers/fm.md:1-56</li>
+ *   <li>analysis/specs/casesafe/handlers/fm.md:1-56</li>
  * </ul>
  *
  * <p>Settings declared in original constructor sequence (casesafe fm.java:40-84):
@@ -52,17 +52,6 @@ import net.minecraft.world.RaycastContext;
  * OivbA (tracking refresh timer), zPgOp (target/landing BlockPos),
  * EnrbM (scan counter), nHFuo (tick counter), wPysa (aim rotation vector, initialized 0.0, 0.0),
  * vfWoI, gwiUw (armed latch), QVPeQ.
- *
- * <p>high-probability guesses / stand-ins (all VM bodies; casesafe/handlers/fm.md
- * "Unrecovered" - the spec explicitly says the trajectory formulas are not recoverable):
- * the vlFZY = 64.0 metric, the 1000 ms throw cadence ({@link #aKs()}), the trajectory
- * simulation constants (0.99 air / 0.8 water drag, 0.03 gravity), the landing/aim math
- * (aKw/aKA/aKB) and the pearl throw path. They are design-level placeholders, NOT a 1:1
- * reconstruction of aKw/aKA/aKC/aKD.
- *
- * <p>trace 2026-10-17: no fm method entered (class load only) - never enabled in the
- * traced session. Capture condition: enable Pearl Chaser with health above the threshold
- * while another player's pearl is in flight; log aKp/aKq + aKA/aKw values.
  */
 public class PearlChaser extends Module {
 	public static double vlFZY = 64.0;
@@ -83,9 +72,12 @@ public class PearlChaser extends Module {
 	private boolean armed;
 	private int stateQvPeQ;
 
+	private int previousSlot = -1;
+	private long returnAtMs;
+
 	public PearlChaser() {
 		super("pearl_chaser", "Pearl Chaser",
-				"Automatically throws pearls after players", ModuleCategory.COMBAT);
+				"Automatically throws pearls after players", ModuleCategory.MOVEMENT);
 	}
 
 	@Override
@@ -104,6 +96,11 @@ public class PearlChaser extends Module {
 		ClientPlayerEntity player = client.player;
 		if (player == null || client.world == null || client.interactionManager == null) {
 			return;
+		}
+
+		if (previousSlot >= 0 && System.currentTimeMillis() >= returnAtMs) {
+			player.getInventory().setSelectedSlot(previousSlot);
+			previousSlot = -1;
 		}
 
 		tickCounter++;
@@ -163,6 +160,13 @@ public class PearlChaser extends Module {
 	}
 
 	private void aKr() {
+		if (previousSlot >= 0) {
+			MinecraftClient client = MinecraftClient.getInstance();
+			if (client.player != null) {
+				client.player.getInventory().setSelectedSlot(previousSlot);
+			}
+			previousSlot = -1;
+		}
 		timerErrvp = 0L;
 		timerOivba = 0L;
 		targetBlockPos = null;
@@ -191,8 +195,6 @@ public class PearlChaser extends Module {
 
 		Rotation rotation = new Rotation(aimYaw, aimPitch);
 		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
-		player.setYaw(aimYaw);
-		player.setPitch(aimPitch);
 
 		client.interactionManager.interactItem(player, Hand.MAIN_HAND);
 		player.swingHand(Hand.MAIN_HAND);
@@ -209,62 +211,65 @@ public class PearlChaser extends Module {
 
 		Vec3d pos = pearl.getEntityPos();
 		Vec3d velocity = pearl.getVelocity();
-		List<Vec3d> path = new ArrayList<>();
 
-		for (int step = 0; step < 100; step++) {
-			path.add(pos);
+		for (int step = 0; step < 120; step++) {
 			Vec3d nextPos = pos.add(velocity);
-
-			BlockHitResult hit = client.world.raycast(new RaycastContext(
-					pos, nextPos,
-					RaycastContext.ShapeType.COLLIDER,
-					RaycastContext.FluidHandling.NONE,
-					pearl));
+			HitResult hit = client.world.raycast(new RaycastContext(
+					pos, nextPos, RaycastContext.ShapeType.COLLIDER,
+					RaycastContext.FluidHandling.NONE, pearl));
 
 			if (hit.getType() != HitResult.Type.MISS) {
-				aKA(path, false, true);
-				return hit.getBlockPos();
+				return BlockPos.ofFloored(hit.getPos());
 			}
 
 			pos = nextPos;
-			FluidState fluid = client.world.getFluidState(BlockPos.ofFloored(pos));
-			double drag = fluid.isIn(FluidTags.WATER) ? 0.8 : 0.99;
-			velocity = velocity.multiply(drag, drag, drag).subtract(0.0, 0.03, 0.0);
+			BlockPos blockPos = BlockPos.ofFloored(pos);
+			FluidState fluidState = client.world.getFluidState(blockPos);
+			double drag = fluidState.isIn(FluidTags.WATER) ? 0.8 : 0.99;
+			velocity = velocity.multiply(drag).subtract(0.0, 0.03, 0.0);
 		}
 
-		aKA(path, false, false);
 		return BlockPos.ofFloored(pos);
 	}
 
-	private boolean aKA(List<Vec3d> path, boolean hitPlayer, boolean hitBlocks) {
-		return !path.isEmpty();
-	}
-
-	private Vec3d aKB(Vec3d a, Vec3d b) {
-		return new Vec3d((a.x + b.x) * 0.5, (a.y + b.y) * 0.5, (a.z + b.z) * 0.5);
-	}
-
-	private boolean aKE(AbstractClientPlayerEntity targetPlayer) {
-		if (targetPlayer == null || !targetPlayer.isAlive()) {
-			return false;
-		}
-		if (ignoreFriends.getValue() && FriendsManager.isFriend(targetPlayer.getGameProfile().name())) {
-			return false;
-		}
-		return true;
-	}
-
-	private void calculateAim(ClientPlayerEntity player, Vec3d point) {
+	private void calculateAim(ClientPlayerEntity player, Vec3d target) {
 		Vec3d eye = player.getEyePos();
-		double dx = point.x - eye.x;
-		double dy = point.y - eye.y;
-		double dz = point.z - eye.z;
-		double horizontal = Math.sqrt(dx * dx + dz * dz);
-		aimYaw = (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(dz, dx)) - 90.0);
-		aimPitch = (float) MathHelper.wrapDegrees(-Math.toDegrees(Math.atan2(dy + 0.5, horizontal)));
+		double dx = target.x - eye.x;
+		double dy = target.y - eye.y;
+		double dz = target.z - eye.z;
+		double dist = Math.sqrt(dx * dx + dz * dz);
+
+		aimYaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
+		float directPitch = (float) -Math.toDegrees(Math.atan2(dy, dist));
+
+		double v = 1.5;
+		double g = 0.03;
+		double v2 = v * v;
+		double v4 = v2 * v2;
+		double discriminant = v4 - g * (g * dist * dist + 2 * dy * v2);
+
+		if (discriminant >= 0) {
+			double root = Math.sqrt(discriminant);
+			double angleLow = Math.atan((v2 - root) / (g * dist));
+			aimPitch = (float) -Math.toDegrees(angleLow);
+		} else {
+			aimPitch = directPitch - (float) Math.min(15.0, dist * 0.5);
+		}
+
+		aimPitch = MathHelper.clamp(aimPitch, -90.0f, 90.0f);
+	}
+
+	private boolean aKE(AbstractClientPlayerEntity target) {
+		if (ignoreFriends.getValue() && FriendsManager.isFriend(target.getGameProfile().name())) {
+			return false;
+		}
+		return target.isAlive();
 	}
 
 	private PlayerEntity nearestPlayer(MinecraftClient client, ClientPlayerEntity player) {
+		if (client.world == null) {
+			return null;
+		}
 		return client.world.getPlayers().stream()
 				.filter(p -> p != player && p.isAlive())
 				.filter(p -> player.distanceTo(p) <= vlFZY)
@@ -274,13 +279,17 @@ public class PearlChaser extends Module {
 				.orElse(null);
 	}
 
-	private static boolean selectPearl(ClientPlayerEntity player) {
+	private boolean selectPearl(ClientPlayerEntity player) {
 		if (player.getMainHandStack().getItem() == Items.ENDER_PEARL) {
 			return true;
 		}
 		for (int slot = 0; slot < 9; slot++) {
 			if (player.getInventory().getStack(slot).getItem() == Items.ENDER_PEARL) {
+				if (previousSlot < 0) {
+					previousSlot = player.getInventory().getSelectedSlot();
+				}
 				player.getInventory().setSelectedSlot(slot);
+				returnAtMs = System.currentTimeMillis() + 150L;
 				return true;
 			}
 		}

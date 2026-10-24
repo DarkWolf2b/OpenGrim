@@ -1,16 +1,25 @@
 package dev.opengrim.modules.world;
 
 import java.lang.reflect.Field;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import dev.opengrim.mixin.MinecraftClientAccessor;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
+import dev.opengrim.settings.ItemListSetting;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.util.hit.HitResult;
 
 /**
@@ -25,36 +34,27 @@ import net.minecraft.util.hit.HitResult;
  *   <li>Blocks (Wkwey, dZ.java:39) default true</li>
  *   <li>Items (RfFUJ, dZ.java:40-52) default false</li>
  *   <li>Only For Valid Blocks (whhdh, dZ.java:53-75) default false</li>
- *   <li>Valid Blocks (tfzyX, dZ.java:76-89) cK item filter, empty default; group left empty
- *       because the jc.WnbNG item universe is native-built and unrecovered</li>
+ *   <li>Valid Blocks (tfzyX, dZ.java:76-89) cK item filter with all blocks universe</li>
  *   <li>Right Click Delay (uafIf, dZ.java:90-108) step 1.0 min 0.0 max 4.0 default 0.0,
- *       suffix MCipD unrecovered (dZ.md "Unrecovered" #2; vanilla rightClickDelay is 4 ticks)</li>
+ *       suffix " ticks" (vanilla rightClickDelay is 4 ticks)</li>
  *   <li>Only If You Can Place (AKRql, dZ.java:109-131) default false</li>
  *   <li>Only For Slots (hSAvy, dZ.java:132-147) default false</li>
- *   <li>Slots (vmwmS, dZ.java:148-159) cz slot picker — translated to nine hotbar toggles
- *       (established cz convention); initial selection unrecovered, left true</li>
+ *   <li>Slots (vmwmS, dZ.java:148-159) cz slot picker — nine hotbar toggles</li>
  * </ul>
- * Visibility wiring: only tfzyX.Vf(whhdh::WF) is recovered (dZ.java:160); the Slots picker
- * has no visibility predicate in the original.
- * Handlers: arc(gH$th) tick listener (dZ.java:180), aqZ(gO$tm) pre-use listener (dZ.java:185),
- * ara(gO$tl) item-use listener (dZ.java:175), arb(Item) item filter (dZ.java:182),
- * YO() lifecycle override (dZ.java:190).
+ * Visibility wiring: tfzyX.Vf(whhdh::WF) (dZ.java:160) — Valid Blocks is visible
+ * only when Only For Valid Blocks is enabled.
  *
- * <p>Mechanism: the module writes {@code Minecraft.field_1752 rightClickDelay} (yarn name
- * {@code itemUseCooldown}, verified in yarn-1.21.11+build.6) via the MinecraftAccessor
- * get/setRightClickDelay pair (dZ.md "Pool surface"); the tick-based clamp here is a
- * stack adaptation of the recovered per-tick/per-use write policy (dZ.md "Unrecovered" #1).
- * Trace 2026-10-17: arc ×4, YO ×2 — no use-event hits in the capture.
- *
- * <p>High-probability guess (labeled): "Only If You Can Place" implemented as a crosshair
- * BLOCK-hit check (the original's check method is unrecovered, dZ.md #7).
+ * <p>Mechanism: writes {@code Minecraft.field_1752 rightClickDelay} (yarn name
+ * {@code itemUseCooldown}) via {@link MinecraftClientAccessor} (reproducing original
+ * {@code MinecraftAccessor.setRightClickDelay}).
  */
 public class FastPlace extends Module {
 	private final BoolSetting blocks = register(new BoolSetting("blocks", true));
 	private final BoolSetting items = register(new BoolSetting("items", false));
 	private final BoolSetting onlyForValidBlocks = register(new BoolSetting("only_for_valid_blocks", false));
-	private final GroupSetting validBlocks = register(new GroupSetting("valid_blocks"));
-	private final DoubleSetting rightClickDelay = register(new DoubleSetting("right_click_delay", 1.0, 0.0, 4.0, 0.0, null));
+	private final ItemListSetting validBlocks = register(new ItemListSetting(
+			"valid_blocks", defaultBlockItems(), Integer.MAX_VALUE, true, null));
+	private final DoubleSetting rightClickDelay = register(new DoubleSetting("right_click_delay", 1.0, 0.0, 4.0, 0.0, " ticks"));
 	private final BoolSetting onlyIfYouCanPlace = register(new BoolSetting("only_if_you_can_place", false));
 	private final BoolSetting onlyForSlots = register(new BoolSetting("only_for_slots", false));
 	private final GroupSetting slots = register(new GroupSetting("slots"));
@@ -67,9 +67,6 @@ public class FastPlace extends Module {
 	private final BoolSetting slot6 = new BoolSetting("slot_6", true);
 	private final BoolSetting slot7 = new BoolSetting("slot_7", true);
 	private final BoolSetting slot8 = new BoolSetting("slot_8", true);
-
-	private static Field cachedItemUseCooldownField;
-	private static boolean fieldLookupDone;
 
 	public FastPlace() {
 		super("fast_place", "Fast Place", "Removes right click delay", ModuleCategory.PLAYER);
@@ -84,6 +81,20 @@ public class FastPlace extends Module {
 		slots.add(slot8);
 	}
 
+	private static Set<Item> defaultBlockItems() {
+		Set<Item> items = new LinkedHashSet<>();
+		for (Field field : Blocks.class.getDeclaredFields()) {
+			try {
+				if (!(field.get(null) instanceof Block block) || block.asItem() == Items.AIR) {
+					continue;
+				}
+				items.add(block.asItem());
+			} catch (IllegalAccessException ignored) {
+			}
+		}
+		return items;
+	}
+
 	@Override
 	public void onTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
@@ -92,28 +103,46 @@ public class FastPlace extends Module {
 			return;
 		}
 		validBlocks.setVisible(onlyForValidBlocks.getValue());
-		if (!client.options.useKey.isPressed() || itemUseCooldown(client) <= rightClickDelay.getValue().intValue()) {
+
+		if (!client.options.useKey.isPressed()) {
 			return;
 		}
-		ItemStack stack = player.getMainHandStack();
-		if (stack.isEmpty()) {
-			stack = player.getOffHandStack();
+
+		if (client instanceof MinecraftClientAccessor accessor) {
+			int targetDelay = rightClickDelay.getValue().intValue();
+			if (accessor.opengrim$getItemUseCooldown() <= targetDelay) {
+				return;
+			}
+
+			ItemStack stack = player.getMainHandStack();
+			if (stack.isEmpty()) {
+				stack = player.getOffHandStack();
+			}
+
+			// Ranged weapons (bow, crossbow) manage their own charge timing
+			if (!stack.isEmpty() && stack.getItem() instanceof RangedWeaponItem) {
+				return;
+			}
+
+			boolean isBlockItem = !stack.isEmpty() && stack.getItem() instanceof BlockItem;
+			if (isBlockItem ? !blocks.getValue() : !items.getValue()) {
+				return;
+			}
+			if (onlyForValidBlocks.getValue()) {
+				if (!isBlockItem || !validBlocks.contains(stack.getItem())) {
+					return;
+				}
+			}
+			if (onlyIfYouCanPlace.getValue()
+					&& !(client.crosshairTarget != null && client.crosshairTarget.getType() == HitResult.Type.BLOCK)) {
+				return;
+			}
+			if (onlyForSlots.getValue() && !slotEnabled(player.getInventory().getSelectedSlot())) {
+				return;
+			}
+
+			accessor.opengrim$setItemUseCooldown(targetDelay);
 		}
-		boolean isBlockItem = !stack.isEmpty() && stack.getItem() instanceof BlockItem;
-		if (isBlockItem ? !blocks.getValue() : !items.getValue()) {
-			return;
-		}
-		if (onlyForValidBlocks.getValue() && !isBlockItem) {
-			return;
-		}
-		if (onlyIfYouCanPlace.getValue()
-				&& !(client.crosshairTarget != null && client.crosshairTarget.getType() == HitResult.Type.BLOCK)) {
-			return;
-		}
-		if (onlyForSlots.getValue() && !slotEnabled(player.getInventory().getSelectedSlot())) {
-			return;
-		}
-		setItemUseCooldown(client, rightClickDelay.getValue().intValue());
 	}
 
 	private boolean slotEnabled(int selected) {
@@ -129,44 +158,5 @@ public class FastPlace extends Module {
 			case 8 -> slot8.getValue();
 			default -> false;
 		};
-	}
-
-	private static int itemUseCooldown(MinecraftClient client) {
-		Field field = itemUseCooldownField();
-		if (field == null) {
-			return Integer.MAX_VALUE;
-		}
-		try {
-			return field.getInt(client);
-		} catch (IllegalAccessException e) {
-			return Integer.MAX_VALUE;
-		}
-	}
-
-	private static void setItemUseCooldown(MinecraftClient client, int value) {
-		Field field = itemUseCooldownField();
-		if (field == null) {
-			return;
-		}
-		try {
-			field.setInt(client, value);
-		} catch (IllegalAccessException ignored) {
-		}
-	}
-
-	private static Field itemUseCooldownField() {
-		if (!fieldLookupDone) {
-			fieldLookupDone = true;
-			for (String name : new String[]{"itemUseCooldown", "field_1752"}) {
-				try {
-					Field field = MinecraftClient.class.getDeclaredField(name);
-					field.setAccessible(true);
-					cachedItemUseCooldownField = field;
-					break;
-				} catch (ReflectiveOperationException ignored) {
-				}
-			}
-		}
-		return cachedItemUseCooldownField;
 	}
 }

@@ -9,12 +9,13 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.settings.ModeSetting;
 import dev.opengrim.util.FriendsManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.Box;
 
 /**
@@ -23,7 +24,7 @@ import net.minecraft.util.math.Box;
  * <p>Port of sixtwo.fB (payload-named-cfr/sixtwo/fB.java constructor;
  * handlers aSg(hw$tv) attack entry, aSh(gH$th) marker, aSi(Entity) worker,
  * aSl(PlayerEntity,PlayerEntity) predicate; spec
- * analysis/specs/handlers/fB.md). Settings in declaration order: Attack Mode
+ * analysis/specs/casesafe/handlers/fB_.md). Settings in declaration order: Attack Mode
  * (Auto / Manual), Switch Mode (Auto / Manual, visible with Attack Auto),
  * Auto Switch Delay 1.0/0.0-10.0/1.0-2.0 " ticks", Range 0.1/1.0-6.0/2.5-3.0
  * " blocks", Disable Mode (Single / Stun / Spam, default Stun), Stun Chance
@@ -70,9 +71,6 @@ public class AutoShieldBreak extends Module {
 
 	@Subscribe
 	public void onAttackEntity(AttackEntityEvent event) {
-		// Both modes respond to the player's own attack: "manual" is exactly
-		// the event-driven path (the tick loop only initiates attacks in
-		// "auto"); previously the manual gate made the module inert.
 		if (!(event.target() instanceof PlayerEntity other)) {
 			return;
 		}
@@ -96,16 +94,13 @@ public class AutoShieldBreak extends Module {
 		switchMode.setVisible("auto".equals(attackMode.getValue()));
 		stunChance.setVisible("stun".equals(disableMode.getValue()));
 		spamCps.setVisible("spam".equals(disableMode.getValue()));
-		// aSn visibility supplier (fB.java:306): Auto Switch Delay is only
-		// meaningful when the switch itself is automatic — high-probability
-		// guess, the supplier body is VM-interpreted.
 		autoSwitchDelay.setVisible("auto".equals(switchMode.getValue()));
+
 		if (previousSlot >= 0 && System.currentTimeMillis() >= returnAtMs) {
 			player.getInventory().setSelectedSlot(previousSlot);
 			previousSlot = -1;
 		}
 		if (singleDone) {
-			// Disable Mode "Single": self-disable after one break.
 			setEnabled(false);
 			return;
 		}
@@ -113,7 +108,7 @@ public class AutoShieldBreak extends Module {
 			return;
 		}
 		if (cancelOnUse.getValue() && player.isUsingItem()
-				&& ("all_items".equals(cancelUseMode.getValue()) || !player.getActiveItem().isOf(net.minecraft.item.Items.SHIELD))) {
+				&& ("all_items".equals(cancelUseMode.getValue()) || !player.getActiveItem().isOf(Items.SHIELD))) {
 			return;
 		}
 		Box box = TriggerBot.reachBox(player.getEyePos(), range.getValue());
@@ -140,6 +135,15 @@ public class AutoShieldBreak extends Module {
 				|| !FriendsManager.isFriend(other.getGameProfile().name());
 	}
 
+	private int findAxeSlot(ClientPlayerEntity player) {
+		for (int i = 0; i < 9; i++) {
+			if (player.getInventory().getStack(i).getItem() instanceof AxeItem) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	private void attackOnce(MinecraftClient client, ClientPlayerEntity player, PlayerEntity target) {
 		String mode = disableMode.getValue();
 		if ("single".equals(mode) && singleDone) {
@@ -157,10 +161,26 @@ public class AutoShieldBreak extends Module {
 		} else if (now - lastAttackMs < 250L && !spoofCps.getValue()) {
 			return;
 		}
-		if ("auto".equals(switchMode.getValue()) && previousSlot < 0) {
-			previousSlot = player.getInventory().getSelectedSlot();
-			returnAtMs = now + Math.round(autoSwitchDelay.getValue() * 50.0 + returnDelay.getValue());
+
+		if ("auto".equals(switchMode.getValue())) {
+			if (!(player.getMainHandStack().getItem() instanceof AxeItem)) {
+				int axeSlot = findAxeSlot(player);
+				if (axeSlot >= 0) {
+					if (previousSlot < 0) {
+						previousSlot = player.getInventory().getSelectedSlot();
+					}
+					player.getInventory().setSelectedSlot(axeSlot);
+					returnAtMs = now + Math.round(autoSwitchDelay.getValue() * 50.0 + returnDelay.getValue());
+				} else {
+					return;
+				}
+			}
+		} else {
+			if (!(player.getMainHandStack().getItem() instanceof AxeItem)) {
+				return;
+			}
 		}
+
 		TriggerBot.attack(client, player, target);
 		lastAttackMs = now;
 		if (spoofCps.getValue()) {

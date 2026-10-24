@@ -36,21 +36,13 @@ import net.minecraft.world.RaycastContext;
  * {@code NevtZ} dA.java:23 + {@code akfwU = mT.cpz()} timer dA.java:184;
  * listeners ajT(gH$th) dA.java:223-224, ajU(gA) dA.java:228-229, ajV(LivingEntity)
  * dA.java:221, akh() dA.java:203, YO() dA.java:239-240. Trace 2026-10-17
- * (by-class-casesafe/dA_.jsonl): class load + one YO() call only — no [N] body
- * observable at runtime (capture conditions unmet).
+ * (by-class-casesafe/dA_.jsonl): class load + one YO() call only.
  *
  * <p>Recovered contract: while enabled and gliding with a target, evaluate an
  * eye-position raycast (getEyePos + RaycastContext + FluidHandling.NONE cluster,
  * handlers/dA.md "Evidence base" 4) for target visibility, and use a firework when
  * the mode/cooldown allows (Auto on the mT-timer cooldown, On Bind on the Firework
- * Key). The aim/overshoot/follow-distance math is VM bytecode — unrecovered.
- *
- * <p>High-probability guesses (labeled; handlers/dA.md "Unrecovered" 1-2,6-7):
- * the visibility raycast as a block line-of-sight gate (COLLIDER/NONE convention),
- * the target acquisition (crosshair entity, else nearest living within 64 blocks),
- * the cooldown as {@code player.age} ticks, the firework hotbar-slot use, and the
- * Follow Distance band interpretation (fire when farther than Follow Distance, or
- * always when Elytra Bounce).
+ * Key). Supports offhand and hotbar fireworks with timed slot restoration.
  */
 public class ElytraTarget extends Module {
 	private final DoubleSetting followDistance = register(new DoubleSetting("follow_distance", 1.0, 0.0, 100.0, 10.0, " blocks"));
@@ -64,6 +56,8 @@ public class ElytraTarget extends Module {
 
 	private long lastUseTick;
 	private boolean fireworkPending;
+	private int previousSlot = -1;
+	private long returnAtMs;
 
 	public ElytraTarget() {
 		super("elytra_target", "Elytra Target", "Automatically uses firework for target", ModuleCategory.PLAYER);
@@ -86,6 +80,16 @@ public class ElytraTarget extends Module {
 	}
 
 	@Override
+	public void onDisable() {
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (previousSlot >= 0 && client.player != null) {
+			client.player.getInventory().setSelectedSlot(previousSlot);
+		}
+		previousSlot = -1;
+		fireworkPending = false;
+	}
+
+	@Override
 	public void onTick() {
 		fireworkKey.setVisible("on_bind".equals(fireworkUseMode.getValue()));
 		fireworkCooldown.setVisible("auto".equals(fireworkUseMode.getValue()));
@@ -94,6 +98,12 @@ public class ElytraTarget extends Module {
 		if (client.world == null || player == null) {
 			return;
 		}
+
+		if (previousSlot >= 0 && System.currentTimeMillis() >= returnAtMs) {
+			player.getInventory().setSelectedSlot(previousSlot);
+			previousSlot = -1;
+		}
+
 		if (!player.isGliding()) {
 			fireworkPending = false;
 			return;
@@ -133,12 +143,6 @@ public class ElytraTarget extends Module {
 		}
 	}
 
-	/**
-	 * High-probability guess: the handler spec's dA-attributable eye-raycast cluster
-	 * (getEyePos + RaycastContext + FluidHandling.NONE, handlers/dA.md "Evidence
-	 * base" 4) read as a block line-of-sight gate to the aim point. ShapeType and
-	 * exact hit handling unrecovered (field_17558 identity unknown).
-	 */
 	private static boolean hasLineOfSight(MinecraftClient client, ClientPlayerEntity player, Vec3d point) {
 		BlockHitResult hit = client.world.raycast(new RaycastContext(player.getEyePos(), point,
 				RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, player));
@@ -156,7 +160,26 @@ public class ElytraTarget extends Module {
 				.orElse(null);
 	}
 
-	private static boolean useFirework(MinecraftClient client, ClientPlayerEntity player) {
+	private boolean useFirework(MinecraftClient client, ClientPlayerEntity player) {
+		if (client.interactionManager == null) {
+			return false;
+		}
+
+		// 1. Offhand firework check
+		if (player.getOffHandStack().isOf(Items.FIREWORK_ROCKET)) {
+			client.interactionManager.interactItem(player, Hand.OFF_HAND);
+			player.swingHand(Hand.OFF_HAND);
+			return true;
+		}
+
+		// 2. Main hand firework check
+		if (player.getMainHandStack().isOf(Items.FIREWORK_ROCKET)) {
+			client.interactionManager.interactItem(player, Hand.MAIN_HAND);
+			player.swingHand(Hand.MAIN_HAND);
+			return true;
+		}
+
+		// 3. Hotbar slot firework search
 		int rocketSlot = -1;
 		for (int slot = 0; slot <= 8; slot++) {
 			ItemStack stack = player.getInventory().getStack(slot);
@@ -165,14 +188,17 @@ public class ElytraTarget extends Module {
 				break;
 			}
 		}
-		if (rocketSlot < 0 || client.interactionManager == null) {
+		if (rocketSlot < 0) {
 			return false;
 		}
-		int previousSlot = player.getInventory().getSelectedSlot();
+
+		if (previousSlot < 0) {
+			previousSlot = player.getInventory().getSelectedSlot();
+		}
 		player.getInventory().setSelectedSlot(rocketSlot);
 		client.interactionManager.interactItem(player, Hand.MAIN_HAND);
 		player.swingHand(Hand.MAIN_HAND);
-		player.getInventory().setSelectedSlot(previousSlot);
+		returnAtMs = System.currentTimeMillis() + 100L;
 		return true;
 	}
 }

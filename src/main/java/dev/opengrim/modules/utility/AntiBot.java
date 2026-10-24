@@ -11,6 +11,7 @@ import dev.opengrim.event.Subscribe;
 import dev.opengrim.event.impl.PacketReceiveEvent;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.module.ModuleManager;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.ModeSetting;
@@ -225,6 +226,9 @@ public class AntiBot extends Module {
 		if (movementCheck.getValue() && still >= 200) {
 			return true;
 		}
+		if (velocityCheck.getValue() && player.getVelocity().lengthSquared() == 0.0 && !player.isOnGround()) {
+			return true;
+		}
 		return false;
 	}
 
@@ -241,6 +245,17 @@ public class AntiBot extends Module {
 			return true;
 		}
 		PlayerListEntry entry = client.getNetworkHandler().getPlayerListEntry(player.getUuid());
-		return entry == null || entry.getGameMode() == null;
+		return entry == null || entry.getGameMode() == null || entry.getLatency() <= 0;
+	}
+
+	/**
+	 * Static verdict query (rD.dml().aLp) used across combat and render modules.
+	 */
+	public static boolean isBotActive(PlayerEntity player) {
+		if (player == null) {
+			return false;
+		}
+		Module module = ModuleManager.get().byId("anti_bot");
+		return module instanceof AntiBot antiBot && antiBot.isBot(player);
 	}
 }

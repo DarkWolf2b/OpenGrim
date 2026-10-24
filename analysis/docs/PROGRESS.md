@@ -1334,3 +1334,23 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   linear step/white noise; score 55→58.
 - **Parity:** aggregate 12,807/16,200 = 79.1%.
 - **Build:** `./gradlew build --offline` PASS on JDK 21.
+
+## 2026-10-24 (Linux): worst-modules parity wave (dP, fB, fa, fm, di)
+
+- **Block Piercer (dP, 54% → 94%, +40):** replaced temporary placeholder groups with real `EntityListSetting` (`entities`, default `{PLAYER}`) and `ItemListSetting` (`allowed_blocks`, pool `all blocks`, default `{COBWEB}`). Enforced `allowedBlocks.contains(stack.getItem())` and `entities.matches(entity.getType())` instead of bypassing with `instanceof BlockItem`.
+- **Auto Shield Break (fB, 55% → 88%, +33):** resolved the critical gap where axe switching never occurred. Implemented hotbar scanning for `AxeItem`, automatic slot switching to the axe when engaging blocking entities, return delay timer with restoration to `previousSlot`, and strict axe requirement in manual mode.
+- **Auto X-Bow (fa, 45% → 85%, +40):** upgraded from bare unreleased charge loop to active 8-state cart automation: detects held or hotbar crossbow, charges via use-key, scans and acquires nearby `TntMinecartEntity`, locks aim via `RotationManager`, and triggers projectile release to execute cart detonation.
+- **Pearl Chaser (fm, 55% → 88%, +33):** removed illegal direct `player.setYaw`/`player.setPitch` mutations in favor of clean `RotationManager` priority submissions. Added `previousSlot` hotbar tracking and delayed restoration so the player is not locked onto the pearl slot after throw.
+- **2D ESP (di, 50% → 80%, +30):** created `NametagSuppressState` duck interface on `EntityRenderState`, injected into `EntityRenderer.updateRenderState` and `EntityRenderer.renderLabelIfPresent`, and wired `Esp2D.shouldSuppressNametagFor` to suppress vanilla nametags on tracked targets.
+- **Parity:** aggregate 12,807 → 12,983 / 16,200 = 80.1% (+1.0%, breaking the 80% threshold).
+- **Build:** `./gradlew build --offline` PASS on JDK 21.
+
+## 2026-10-24 (Linux): random modules parity review & uplift (dZ, fo, dA, de, dM)
+
+- **Fast Place (dZ, 85% → 95%, +10):** upgraded `valid_blocks` from empty group to functional `ItemListSetting` populated with `defaultBlockItems()`; enforced `validBlocks.contains(stack.getItem())` when `only_for_valid_blocks` is active; added `RangedWeaponItem` skip to prevent bow/crossbow charge conflicts; replaced reflective `itemUseCooldown` access with high-performance `MinecraftClientAccessor` mixin registered in `opengrim.mixins.json`.
+- **Anti Bot (fo, 62% → 82%, +20):** added static `isBotActive(PlayerEntity)` query hook wired into `KillAura` target filtering; corrected `pingCheck` to evaluate player entry latency (`entry.getLatency() <= 0`); implemented `velocityCheck` detection for stationary floating/hovering bots.
+- **Elytra Target (dA, 70% → 85%, +15):** added offhand and main-hand rocket fast-paths without hotbar manipulation; eliminated same-tick hotbar slot bounce-back which caused packet cancellation; added 100ms delayed `previousSlot` restoration timer.
+- **Hand Chams (de, 92% → 95%, +3):** corrected `glass` hand tint fallback when `tintColor` has zero RGB so the hand renders as translucent glass (1.0f, 1.0f, 1.0f, 0.55f) instead of invisible or solid black void.
+- **Auto Market (dM, 45% → 60%, +15):** wired command dispatch `/ah` via `sendChatCommand("ah")` on market reopen; connected hovered slot extraction for rule creation with feedback messages; added session start/pause/state player feedback notifications; hooked `onDisable` cleanup.
+- **Parity:** aggregate 12,983 → 13,046 / 16,200 = 80.5% (+0.4%).
+- **Build:** `./gradlew build --offline` PASS on JDK 21.

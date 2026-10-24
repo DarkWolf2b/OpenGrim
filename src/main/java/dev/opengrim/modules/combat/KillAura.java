@@ -15,6 +15,7 @@ import dev.opengrim.modules.world.Nuker;
 import dev.opengrim.rotation.Rotation;
 import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
+import dev.opengrim.modules.utility.AntiBot;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
@@ -357,6 +358,7 @@ public class KillAura extends Module {
 				.filter(e -> angleTo(player, e) <= halfFov)
 				.filter(e -> !(e instanceof PlayerEntity p) || !ignoreFriends.getValue()
 						|| !FriendsManager.isFriend(p.getGameProfile().name()))
+				.filter(e -> !(e instanceof PlayerEntity p) || !AntiBot.isBotActive(p))
 				.filter(e -> !ignoreNaked.getValue() || !isNaked(e))
 				.filter(e -> !ignoreWalls.getValue() || player.canSee(e))
 				.filter(e -> !ignoreInDamageTick.getValue() || !(e instanceof LivingEntity l) || l.hurtTime <= 0)

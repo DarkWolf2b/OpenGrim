@@ -27,6 +27,7 @@
 		"LimbAnimatorAccessor",
 		"LivingEntityAccessor",
 		"LivingEntityRendererMixin",
+		"MinecraftClientAccessor",
 		"ModelPartAccessor",
 		"MouseMixin",
 		"PlayerListEntryMixin",

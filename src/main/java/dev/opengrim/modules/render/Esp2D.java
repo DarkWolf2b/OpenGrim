@@ -20,6 +20,7 @@ import dev.opengrim.event.impl.PacketReceiveEvent;
 import dev.opengrim.event.impl.WorldRenderEvent;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.module.ModuleManager;
 import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.util.FriendsManager;
 
@@ -187,6 +188,20 @@ public class Esp2D extends Module {
 	/** Players currently tracked for the overlay. */
 	public List<EspTarget> getTargets() {
 		return List.copyOf(targets);
+	}
+
+	/**
+	 * Static gate evaluated during entity render state extraction and label rendering.
+	 */
+	public static boolean shouldSuppressNametagFor(Entity entity) {
+		Module module = ModuleManager.get().byId("2d_esp");
+		if (!(module instanceof Esp2D esp2d) || !esp2d.isEnabled()) {
+			return false;
+		}
+		if (!(entity instanceof AbstractClientPlayerEntity player)) {
+			return false;
+		}
+		return esp2d.shouldSuppressNametag(player);
 	}
 
 	static void drawBoxOutline(MatrixStack.Entry entry, VertexConsumer lines, Box box, int argb, float width) {

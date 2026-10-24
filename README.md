@@ -55,7 +55,7 @@ The mod jar lands in `build/libs/opengrim-0.1.0.jar`. To use it:
 
 ## Parity status
 
-**Aggregate parity: 79.1%** — the mean of all 162 per-module parity scores from
+**Aggregate parity: 80.5%** — the mean of all 162 per-module parity scores from
 the full 2026-10-17 audit, with 24 rows re-scored on 2026-10-21 and the
 2026-10-24 HUD/commands/combat wave (median 81%, range 45–100%; 45 modules at
 90% or higher). Each module is scored over its

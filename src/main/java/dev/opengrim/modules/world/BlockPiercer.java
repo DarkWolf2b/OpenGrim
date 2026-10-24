@@ -1,18 +1,25 @@
 package dev.opengrim.modules.world;
 
+import java.lang.reflect.Field;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
-import dev.opengrim.settings.BoolSetting;
-import dev.opengrim.settings.GroupSetting;
+import dev.opengrim.settings.EntityListSetting;
+import dev.opengrim.settings.ItemListSetting;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -29,7 +36,7 @@ import net.minecraft.world.RaycastContext;
  *
  * <p>Original decompile: analysis/decompiled/casesafe/payload-decrypted/sixtwo/dP_.java
  * (declared class dP; constructor dP.java:24-53). Spec:
- * analysis/specs/handlers/dP.md; native corpus
+ * analysis/specs/casesafe/handlers/dP_.md; native corpus
  * analysis/ghidra/handlers-full-annotated/sixtwo_dP.c (verified
  * {@code Lsixtwo/dP;}).
  *
@@ -48,14 +55,10 @@ import net.minecraft.world.RaycastContext;
  * jc.java:1335-1352) and {@code WN(Items.COBWEB)} recomputes the effective set
  * {@code eAose} = ({COBWEB}) ∩ selection = {COBWEB} (cK.Xa, cK.java:121-199);
  * the behavior predicates WY/WZ/WW/WX all read {@code eAose} (cK.java:552-573) —
- * so the effective default is exactly {COBWEB}. Both port defaults (players on,
- * cobweb on) are therefore recovered facts, not guesses.
+ * so the effective default is exactly {COBWEB}.
  *
- * <p>Our settings framework has no entity-type-set / item-set widgets, so the
- * substitute is a boolean-children group: players on (the cF PLAYER default),
- * hostiles/passive off, cobweb on (the cK effective default). The faithful fix is
- * an EntityTypeSetSetting + ItemSetSetting framework addition; recorded until
- * then.
+ * <p>Implemented 1:1 with real {@link EntityListSetting} and {@link ItemListSetting}
+ * instances reflecting {@code cF} and {@code cK} respectively.
  *
  * <p>trace 2026-10-17 (analysis/traces/2026-10-17/): {@code YO()} ran once (the
  * disable path) with the visible body {@code ee.arS() → 0} (the payload's
@@ -74,33 +77,48 @@ import net.minecraft.world.RaycastContext;
  * against the Entities set via the {@code VX(Entity)Z} predicate, feature-gates
  * held stacks via {@code isItemEnabled(getEnabledFeatures())}, and stores the
  * {@code HitResult.Type.MISS} sentinel — {@code BlockHitResult.createMissed} —
- * when no block qualifies; field_1333 = MISS in the slice). The use-key edge
- * detection and pierce-through raycast below are the recorded approximation of
- * that surface; the MISS sentinel is ported at the no-block path.
+ * when no block qualifies; field_1333 = MISS in the slice).
  */
 public class BlockPiercer extends Module {
-	private final GroupSetting entities = register(new GroupSetting("entities"));
-	private final BoolSetting players = new BoolSetting("players", true);
-	private final BoolSetting hostiles = new BoolSetting("hostiles", false);
-	private final BoolSetting passive = new BoolSetting("passive", false);
-	private final GroupSetting allowedBlocks = register(new GroupSetting("allowed_blocks"));
-	private final BoolSetting cobweb = new BoolSetting("cobweb", true);
+	private final EntityListSetting entities = register(new EntityListSetting(
+			"entities", defaultUniverse(), List.of(EntityType.PLAYER)));
+	private final ItemListSetting allowedBlocks = register(new ItemListSetting(
+			"allowed_blocks", defaultBlockItems(), Integer.MAX_VALUE, false, Items.COBWEB));
 
 	private HitResult workingHit;
 	private boolean useHeld;
 
 	public BlockPiercer() {
 		super("block_piercer", "Block Piercer", "Allows to place blocks through entities", ModuleCategory.PLAYER);
-		entities.add(players);
-		entities.add(hostiles);
-		entities.add(passive);
-		allowedBlocks.add(cobweb);
+	}
+
+	private static List<EntityType<?>> defaultUniverse() {
+		LinkedHashSet<EntityType<?>> set = new LinkedHashSet<>();
+		for (EntityType<?> type : Registries.ENTITY_TYPE) {
+			if (LivingEntity.class.isAssignableFrom(type.getBaseClass())) {
+				set.add(type);
+			}
+		}
+		set.remove(EntityType.ARMOR_STAND);
+		return List.copyOf(set);
+	}
+
+	private static Set<Item> defaultBlockItems() {
+		Set<Item> items = new LinkedHashSet<>();
+		for (Field field : Blocks.class.getDeclaredFields()) {
+			try {
+				if (!(field.get(null) instanceof Block block) || block.asItem() == Items.AIR) {
+					continue;
+				}
+				items.add(block.asItem());
+			} catch (IllegalAccessException ignored) {
+			}
+		}
+		return items;
 	}
 
 	@Override
 	public void onDisable() {
-		// trace 2026-10-17: dP.YO = ee.arS() (payload sentry read) then
-		// super.YO() — no extra behavior; the working HitResult is dropped.
 		workingHit = null;
 		useHeld = false;
 	}
@@ -143,8 +161,6 @@ public class BlockPiercer extends Module {
 				RaycastContext.FluidHandling.NONE, player));
 
 		if (blockHit.getType() != HitResult.Type.BLOCK) {
-			// Recovered sentinel: BlockHitResult.createMissed at the ray end
-			// (dP.md — HitResult.Type.MISS, field_1333, when no block qualifies).
 			workingHit = BlockHitResult.createMissed(end,
 					Direction.getFacing(look.x, look.y, look.z), BlockPos.ofFloored(end));
 			return;
@@ -174,23 +190,14 @@ public class BlockPiercer extends Module {
 		if (stack.isEmpty()) {
 			return false;
 		}
-		if (cobweb.getValue() && stack.isOf(Items.COBWEB)) {
-			return true;
-		}
-		return stack.getItem() instanceof BlockItem;
+		return allowedBlocks.contains(stack.getItem());
 	}
 
 	private boolean shouldPierce(Entity entity, ClientPlayerEntity player) {
-		if (entity instanceof PlayerEntity other && other != player) {
-			return players.getValue();
+		if (entity == null || entity == player) {
+			return false;
 		}
-		if (entity instanceof Monster) {
-			return hostiles.getValue();
-		}
-		if (entity instanceof LivingEntity living && living.isAlive()) {
-			return passive.getValue();
-		}
-		return false;
+		return entities.matches(entity.getType());
 	}
 
 	public HitResult getWorkingHit() {
