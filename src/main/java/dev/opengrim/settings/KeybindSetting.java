@@ -1,5 +1,6 @@
 package dev.opengrim.settings;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -57,10 +58,34 @@ public class KeybindSetting extends Setting<Integer> {
 		if (code == UNBOUND) {
 			return "NONE";
 		}
-		InputUtil.Type type = code >= 0 && code <= GLFW.GLFW_MOUSE_BUTTON_LAST
+		InputUtil.Type type = isMouseCode(code)
 				? InputUtil.Type.MOUSE
 				: InputUtil.Type.KEYSYM;
 		return type.createFromCode(code).getLocalizedText().getString();
+	}
+
+	public static boolean isMouseCode(int code) {
+		return code >= 0 && code <= GLFW.GLFW_MOUSE_BUTTON_LAST;
+	}
+
+	/**
+	 * Current held state of the bound key or mouse button. Mouse codes must use
+	 * {@code glfwGetMouseButton}: {@link InputUtil#isKeyPressed} only queries
+	 * the keyboard, so a mouse binding would silently read as released.
+	 */
+	public boolean isPressed() {
+		int key = getKey();
+		if (key == UNBOUND) {
+			return false;
+		}
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (client == null || client.getWindow() == null) {
+			return false;
+		}
+		if (isMouseCode(key)) {
+			return GLFW.glfwGetMouseButton(client.getWindow().getHandle(), key) == GLFW.GLFW_PRESS;
+		}
+		return InputUtil.isKeyPressed(client.getWindow(), key);
 	}
 
 	@Override

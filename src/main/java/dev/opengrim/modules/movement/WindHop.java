@@ -2,15 +2,16 @@ package dev.opengrim.modules.movement;
 
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.rotation.Rotation;
 import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 
@@ -100,9 +101,7 @@ public class WindHop extends Module {
 		}
 
 		// Input event detection (aCF) via Activation Key
-		int key = activationKey.getValue();
-		boolean held = key != -999 && client.getWindow() != null
-				&& InputUtil.isKeyPressed(client.getWindow(), key);
+		boolean held = activationKey.isPressed();
 		boolean pressed = held && !prevKeyHeld;
 		prevKeyHeld = held;
 
@@ -138,12 +137,28 @@ public class WindHop extends Module {
 		}
 
 		inventory.setSelectedSlot(chargeSlot);
-		// The original aims beneath the player through the oT interaction builder;
-		// submit the downward aim through the rotation manager instead of raw
-		// setPitch (REIMPL-GUIDE).
-		RotationManager.get().submitPosition(player.getEntityPos().add(0.0, -1.0, 0.0), RotationPriority.uWTdl, this);
-		client.interactionManager.interactItem(player, Hand.MAIN_HAND);
-		player.swingHand(Hand.MAIN_HAND);
+		// The original aims beneath the player through the oT interaction
+		// builder. PlayerInteractItemC2SPacket carries the real yaw/pitch, so
+		// apply the downward rotation around the use (same pattern as AutoMlg),
+		// then keep it submitted for the visual tick.
+		Rotation rotation = Rotation.lookingAt(player.getEyePos(),
+				player.getEntityPos().add(0.0, -1.0, 0.0)).clamped();
+		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
+		float yaw = player.getYaw();
+		float pitch = player.getPitch();
+		player.setYaw(rotation.getYaw());
+		player.setPitch(rotation.getPitch());
+		ActionResult result;
+		try {
+			result = client.interactionManager.interactItem(player, Hand.MAIN_HAND);
+		} finally {
+			player.setYaw(yaw);
+			player.setPitch(pitch);
+		}
+		if (result instanceof ActionResult.Success success
+				&& success.swingSource() == ActionResult.SwingSource.CLIENT) {
+			player.swingHand(Hand.MAIN_HAND);
+		}
 
 		lastThrowTime = System.currentTimeMillis();
 		armed = false;

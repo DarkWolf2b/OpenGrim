@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-24 (Linux: cD/y keybind rows replace the integer sliders; automatic prerelease workflow added; `compileJava` PASS on JDK 21; commit `a2f3e9a` pushed, pre-release `auto-build-1-1` published)
+Last updated: 2026-10-24 (Linux: cD/y keybind rows; automatic prerelease workflow; Auto Crystal/Anchor Macro/Wind Hop fixes — build PASS; commits pushed, pre-releases `auto-build-1-1`/`auto-build-2-1` published)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1239,3 +1239,37 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
 - **Landed:** commit `a2f3e9a` pushed to `origin/main` with PIA connected;
   workflow run 1 built the mod and published pre-release `auto-build-1-1`
   (the notes identify it as an automatic build).
+
+## 2026-10-24 (Linux): combat-module review — Auto Crystal / Anchor Macro / Wind Hop
+
+- **Search behavior (question, no code change):** the original does not
+  auto-focus search when typing. `bl.onCharTyped` only forwards to the widget
+  manager; its search is the separate `bc` overlay created/focused by
+  `bl.Er()` (header magnifier button and the `bl.onKeyPressed` shortcut). The
+  port's inline header field is a simplification and also requires a click.
+- **Auto Crystal (`eV`) — fatal scan bug fixed.** The old placement loop
+  required the support block *and* the block above it to be replaceable (air),
+  so it could never place on obsidian/bedrock. It now searches a natural
+  5x4x5 neighbourhood around the target's feet, requires obsidian/bedrock with
+  a vanilla-legal empty 1x1x2 space above, checks block reach, targets players
+  only (the five native predicates are `AbstractClientPlayerEntity`), excludes
+  friends/self, supports main/offhand crystals, and resets timers on dimension
+  change (`eV.java:47 DcPJe`). Native damage/CPS/predict math remains open; no
+  re-score.
+- **Anchor Macro (`eX`) — trigger and release fixed.** Added
+  `UseBlockEvent`/Fabric `UseBlockCallback` (counterpart of `gO$tm`) and wired
+  Anchor Macro to it instead of polling `useKey` (a quick click could be missed
+  between ticks). Press mode now completes the sequence after the click is
+  released; Hold mode still requires the use key. The initial `BlockHitResult`
+  is retained for placement, the macro's own interactions are ignored via the
+  non-null `step`, and `Safe Anchor Hold` now actually requires the Hold Key
+  (previously it was misused as the activation key). `Cancel On Use` cancels
+  the triggering vanilla use.
+- **Wind Hop (`eR`) — keybind and aim fixed.** The Activation Key is a real
+  `cD` keybind (default -999, must be bound; the module is not automatic).
+  Mouse codes are read with `glfwGetMouseButton` via
+  `KeybindSetting.isPressed()`. The downward rotation is now applied to the
+  real yaw/pitch around `interactItem` (the use packet carries them; a silent
+  RotationManager-only submission would throw forward) and restored after,
+  with vanilla success-swing semantics.
+- **Build:** `./gradlew build --offline` → BUILD SUCCESSFUL on JDK 21.

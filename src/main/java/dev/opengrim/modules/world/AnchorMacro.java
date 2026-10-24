@@ -3,6 +3,8 @@ package dev.opengrim.modules.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.opengrim.event.Subscribe;
+import dev.opengrim.event.impl.UseBlockEvent;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.rotation.RotationManager;
@@ -15,7 +17,6 @@ import dev.opengrim.settings.ModeSetting;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -93,10 +94,10 @@ public class AnchorMacro extends Module {
 	private final List<BlockPos> pendingAnchors = new ArrayList<>();
 	private Step step;
 	private BlockPos anchorPos;
+	private BlockHitResult startHit;
 	private int waitTicks;
 	private int switchCooldown;
 	private int originalSlot = -1;
-	private boolean prevActive;
 	private boolean detonateWaitDone;
 
 	public AnchorMacro() {
@@ -108,13 +109,11 @@ public class AnchorMacro extends Module {
 	@Override
 	public void onEnable() {
 		reset();
-		prevActive = false;
 	}
 
 	@Override
 	public void onDisable() {
 		reset();
-		prevActive = false;
 	}
 
 	public BlockPos getCurrentAnchor() {
@@ -123,6 +122,37 @@ public class AnchorMacro extends Module {
 
 	public List<BlockPos> getPendingAnchors() {
 		return pendingAnchors;
+	}
+
+	/**
+	 * Original trigger family: {@code aEO(gO$tm)} block-use and
+	 * {@code aEP(gW$tq)} item-use (handlers/eX.md). A real callback is used
+	 * instead of polling {@code useKey}, because a quick click can start and
+	 * end between two client ticks.
+	 */
+	@Subscribe
+	public void onUseBlock(UseBlockEvent event) {
+		ClientPlayerEntity player = MinecraftClient.getInstance().player;
+		if (player == null || event.player() != player) {
+			return;
+		}
+		// Ignore the macro's own interactBlock calls for place/charge/detonate.
+		if (step != null) {
+			return;
+		}
+		// Do not swallow ordinary block uses when the macro has nothing to place.
+		if (!hasHotbarItem(player, Items.RESPAWN_ANCHOR)) {
+			return;
+		}
+		if (safeAnchor.getValue() && !isSafePlacementBlock(player, event.hitResult().getBlockPos())) {
+			return;
+		}
+		step = Step.PLACE_ANCHOR;
+		startHit = event.hitResult();
+		originalSlot = player.getInventory().getSelectedSlot();
+		if (cancelOnUse.getValue()) {
+			event.setCancelled(true);
+		}
 	}
 
 	@Override
@@ -141,45 +171,22 @@ public class AnchorMacro extends Module {
 		when.setVisible(safeAnchor.getValue());
 		diagonal.setVisible(safeAnchor.getValue());
 
-		boolean active = isActive(client);
-		if (!active) {
-			prevActive = false;
-			reset();
+		if (step == null) {
 			return;
 		}
-
-		if (step == null) {
-			if ("press".equalsIgnoreCase(mode.getValue()) && prevActive) {
-				return;
-			}
-			if (!(client.crosshairTarget instanceof BlockHitResult hit)) {
-				return;
-			}
-			if (safeAnchor.getValue() && !isSafePlacementBlock(player, hit.getBlockPos())) {
-				return;
-			}
-			step = Step.PLACE_ANCHOR;
-			originalSlot = player.getInventory().getSelectedSlot();
-		}
-		prevActive = true;
 
 		if (cancelOnUse.getValue() && player.isUsingItem()) {
 			reset();
 			return;
 		}
+		// The original phase machine is event-driven, so Press continues after
+		// the triggering click is released; Hold aborts when the use key drops.
+		if ("hold".equalsIgnoreCase(mode.getValue()) && !client.options.useKey.isPressed()) {
+			reset();
+			return;
+		}
 
 		run(client, player);
-	}
-
-	private boolean isActive(MinecraftClient client) {
-		if ("hold".equalsIgnoreCase(mode.getValue())) {
-			return true;
-		}
-		int key = holdKey.getValue();
-		if (safeAnchorHold.getValue() && key != -999) {
-			return InputUtil.isKeyPressed(client.getWindow(), key);
-		}
-		return client.options.useKey.isPressed();
 	}
 
 	private boolean isSafePlacementBlock(ClientPlayerEntity player, BlockPos clickedPos) {
@@ -208,10 +215,11 @@ public class AnchorMacro extends Module {
 				if (!switchSettled()) {
 					return;
 				}
-				if (!(client.crosshairTarget instanceof BlockHitResult hit)) {
+				if (startHit == null) {
 					reset();
 					return;
 				}
+				BlockHitResult hit = startHit;
 				anchorPos = hit.getBlockPos().offset(hit.getSide()).toImmutable();
 				if (!player.getEntityWorld().getBlockState(anchorPos).isReplaceable()) {
 					reset();
@@ -249,8 +257,11 @@ public class AnchorMacro extends Module {
 				if (safeAnchor.getValue() && playerNearAnchor(player)) {
 					if (!safeAnchorHold.getValue()) {
 						reset();
+						return;
 					}
-					return;
+					if (!holdKey.isPressed()) {
+						return;
+					}
 				}
 				if (onlyForOwn.getValue() && (anchorPos == null || !pendingAnchors.contains(anchorPos))) {
 					reset();
@@ -301,6 +312,15 @@ public class AnchorMacro extends Module {
 		return false;
 	}
 
+	private boolean hasHotbarItem(ClientPlayerEntity player, Item item) {
+		for (int slot = 0; slot < 9; slot++) {
+			if (player.getInventory().getStack(slot).isOf(item)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private boolean switchSettled() {
 		if (switchCooldown > 0) {
 			switchCooldown--;
@@ -312,6 +332,7 @@ public class AnchorMacro extends Module {
 	private void reset() {
 		step = null;
 		anchorPos = null;
+		startHit = null;
 		waitTicks = 0;
 		switchCooldown = 0;
 		originalSlot = -1;

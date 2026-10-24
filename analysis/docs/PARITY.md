@@ -23,6 +23,13 @@ from the porting reports in `../../analysis/port/reports/`.
 
 ## Update history (newest first)
 
+- **2026-10-24 (combat review: eV/eX/eR)** — Auto Crystal's placement scan no
+  longer requires air support (the old check could never place on
+  obsidian/bedrock); Anchor Macro now triggers on the real block-use event and
+  completes Press sequences after mouse release; Wind Hop's Activation Key is
+  mouse-aware and the downward aim reaches the use packet. Search behavior was
+  checked, not changed: the original has a separate `bc` search overlay, not
+  type-to-focus. Details in Divergences Wave 12. No re-score.
 - **2026-10-24 (keybind rows + automatic builds)** — the `cD` keybind settings
   now render as the recovered 18-unit `y` rows instead of integer sliders:
   `KeybindSetting` + `KeybindWidget`, all 27 key-code `IntSetting` declarations
@@ -50,7 +57,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | eU | Air Anchor | 114 | partial | [spec](../../analysis/specs/modules/eU.md) | world/AirAnchor.java (verified 2026-10-17, trace re-check 2026-10-17, parity 65%; trace: aDC ×2 = eV.aEq→0 + gg.bab→1 + HyfoP.crA, YO = gg.YO + crA; aDI untriggered — capture: anchor place attempt) — When holding a respawn anchor with no block crosshair hit, synthesizes a BlockHitResult against the nearest solid neighbor of the aimed air block and |
 | ej | Air Stuck | 43 | partial | [spec](../../analysis/specs/modules/ej.md) | movement/AirStuck.java (verified 2026-10-17, parity 90%; trace-recheck 2026-10-17) — Captures position on enable, pins setPos + zero velocity + zero fall distance each tick. Direct port of "Freezes all movement". |
 | dh | Ambience | 123 | ported | [spec](../../analysis/specs/modules/dh.md) | utility/Ambience.java (verified 2026-10-21, parity 86%) — Change Time (def on) with Time Mode (Presets/Custom) and Time presets (Dawn/Morning/Day/Evening/Sunset/Night/Real Time — decrypted names) + Time Value; 2026-10-21 recovery: Fog Range is the real two-handle cA range; preset times, fade/particle bounds, billboard and fog consumer remain DES/absent. |
-| eX | Anchor Macro | 27 | ported | [spec](../../analysis/specs/modules/eX.md) | world/AnchorMacro.java (verified 2026-10-17, parity 52%) — Hold-key state machine: switch to anchor (switch_delay) → place at crosshair face (anchor_delay) → charge with glowstone dust (charge_delay) → detonat |
+| eX | Anchor Macro | 27 | ported | [spec](../../analysis/specs/modules/eX.md) | world/AnchorMacro.java (verified 2026-10-17, parity 52%) — Hold-key state machine: switch to anchor (switch_delay) → place at crosshair face (anchor_delay) → charge with glowstone dust (charge_delay) → detonat; 2026-10-24: triggers from the real block-use event (`UseBlockEvent`/`gO$tm`), Press completes after release, and Safe Anchor Hold uses the Hold Key — see Divergences Wave 12 |
 | dx | Anti Blind | 100 | ported | [spec](../../analysis/specs/modules/dx.md) | render/AntiBlind.java (verified 2026-10-17, parity 100%) — all 8 disable_* toggles (default false, per .WE(false)); blindness/darkness/nausea removed per tick via removeStatusEffect; fire/freezing/pumpkin/suff |
 | fo | Anti Bot | 12 | partial | [spec](../../analysis/specs/modules/fo.md) | utility/AntiBot.java (verified 2026-10-17, parity 62%) — Heuristic bot detection: ping (player-list entry), name charset, ticks-existed, touched-ground, on/off-ground modes, sleep, dead, swing, movement, vel |
 | en | Anti Ghost | 46 | partial | [spec](../../analysis/specs/modules/en.md) | world/AntiGhost.java (verified 2026-10-17, trace re-check 2026-10-17, parity 87%; trace: aaj 1× = sentry + mT.cpC→true + recovered enable-cooldown message "You are on cooldown wait a moment before trying again"; atp untriggered — capture: break a block) — Tracks the mining target (interactionManager.currentBreakingPos); when break finishes with progress ≥ 9 and the block state is unchanged, clears it cl |
@@ -63,7 +70,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | fh | Attribute Swap | 139 | partial | [spec](../../analysis/specs/modules/fh.md) | utility/AttributeSwap.java (verified 2026-10-17, trace re-check 2026-10-17, parity 76%; trace: aJf 3× = fg.aIW→0 + gg.bab→1 + ol.cER(Return Delay)→0, aJg untriggered — capture: attack an entity) — Swaps to hotbar slot with best attack-damage attribute (via ATTRIBUTE_MODIFIERS component) while hostiles are near; returns to target slot after retur |
 | fv | Auto Armor | 16 | partial | [spec](../../analysis/specs/modules/fv.md) | utility/AutoArmor.java (verified 2026-10-17, parity 80%) — Equips best remaining-durability piece per slot via player-screen-handler clicks; elytra-ignored and minimum-durability gates. Client/silent modes bot |
 | fn | Auto Clicker | 161 | ported | [spec](../../analysis/specs/modules/fn.md) | utility/AutoClicker.java (verified 2026-10-17, parity 55%) — timer cadence + inventory slot clicking via HandledScreenAccessor; original "Click Pattern" ring native-blocked (ring buffers kept) |
-| eV | Auto Crystal | 28 | ported | [spec](../../analysis/specs/modules/eV.md) | combat/AutoCrystal.java (verified 2026-10-17, parity 52%) — port of sixtwo.eV: full 11-setting tree incl. Stop Time (25/0-8000/1000 ticks) + Vf visibility gates; break/place via use-block packet path; divergences itemized in the Divergences section of PARITY.md |
+| eV | Auto Crystal | 28 | ported | [spec](../../analysis/specs/modules/eV.md) | combat/AutoCrystal.java (verified 2026-10-17, parity 52%) — port of sixtwo.eV: full 11-setting tree incl. Stop Time (25/0-8000/1000 ticks) + Vf visibility gates; break/place via use-block packet path; divergences itemized in the Divergences section of PARITY.md; 2026-10-24: placement now requires obsidian/bedrock + free crystal space (old air-support check could never place), players-only target scan, offhand support, dimension reset — see Wave 12 |
 | eZ | Auto Double Hand | 30 | partial | [spec](../../analysis/specs/modules/eZ.md) | combat/AutoDoubleHand.java (verified 2026-10-17, parity 75%) — Keeps the offhand stocked: on empty offhand, moves a totem from hotbar (or main inventory with totem_on_inventory) into slot 45 via two clickSlot PICK |
 | fw | Auto Drain | 14 | partial | [spec](../../analysis/specs/modules/fw.md) | world/AutoDrain.java (verified 2026-10-17, parity 88%) — Crosshair on cobweb → scans adjacent source blocks for water/lava, faces it and scoops with a bucket; auto/manual switch with tick delay. Exact; 2026-10-22: fill now goes through interactItem with the computed yaw/pitch applied around the use (buckets have no useOnBlock; BucketItem.raycast reads the real rotation), swing and NrVzh add gated on client Success — see Divergences Wave 10. |
 | fd | Auto Dripstone | 15 | partial | [spec](../../analysis/specs/modules/fd.md) | world/AutoDripstone.java (verified 2026-10-17, trace re-check 2026-10-17, parity 60%; trace: YO = gg.YO + aId = qN.dcB(this) unregister, aHU/plans untriggered — capture: player on closed trapdoor + dripstone in hotbar) — Cooldown numeric (step 1, 0–10, default 0, suffix unrecovered, " s" assumed). Finds the nearest player standing on a closed trapdoor (Properties.OPEN) |
@@ -205,7 +212,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | dC | View Model | 95 | ported | [spec](../../analysis/specs/modules/dC.md) | render/ViewModel.java (verified 2026-10-17, parity 85%) — Full decrypted settings surface (Work On Items, Scale 0..2, Main/Off/Arm position x/y/z ±3 and rotation x/y/z ±180 " deg", Work On Arm). Applying tran |
 | fG | W-Tap | 13 | ported | [spec](../../analysis/specs/modules/fG.md) | combat/WTap.java (verified 2026-10-17, parity 78%) — Detects attack via cooldown drop, releases forward (or presses sneak in SneakTap mode) between start/stop windows, restores after. NOTE: tap_delay is |
 | el | Water Speed | 134 | ported | [spec](../../analysis/specs/modules/el.md) | movement/WaterSpeed.java (verified 2026-10-17, parity 90%; trace-recheck 2026-10-17: atb 3×, water branch unentered) — Horizontal velocity ×1.25 while touching water with movement input, capped at 0.2 blocks/tick. No decrypted settings existed; values are fixed approxi |
-| eR | Wind Hop | 119 | partial | [spec](../../analysis/specs/modules/eR.md) | movement/WindHop.java (verified 2026-10-17, parity 57%) — On activation-key edge (InputUtil.isKeyPressed with GLFW-style keycode, -999 = unbound → triggers once on toggle), selects a hotbar wind charge, pitch |
+| eR | Wind Hop | 119 | partial | [spec](../../analysis/specs/modules/eR.md) | movement/WindHop.java (verified 2026-10-17, parity 57%) — On activation-key edge (`KeybindSetting.isPressed`, keyboard or mouse, -999 = unbound), selects a hotbar wind charge, pitch; 2026-10-24: Activation Key is required and mouse-aware; real yaw/pitch applied around `interactItem` for the downward throw — see Wave 12 |
 | dk | XRay | 96 | partial | [spec](../../analysis/specs/modules/dk.md) | render/XRay.java (verified 2026-10-17, parity 60%) — Water, Lava (both false, decrypted). Ore list recovered exactly from the decrypted builder (19 targets: all ore variants + ancient debris + bedrock) a |
 
 ---
@@ -1428,6 +1435,40 @@ the page grouping structural.
 - **Evidence limits:** the native `y.bV`/`y.dk` bodies are VM-hidden; the row
   geometry, height and value source are recovered, while the exact armed-state
   glyph/string (`...`) follows the port's existing compact-row style.
+
+### Wave 12 — combat-module review (eV/eX/eR, 2026-10-24)
+
+- **Auto Crystal (`eV`) placement:** the port's scan required both the support
+  and the block above it to be replaceable, so a solid obsidian/bedrock support
+  was always rejected and the module could never place. It now requires
+  obsidian/bedrock (`EndCrystalItem.useOnBlock`'s own rule) with a free 1x1x2
+  entity space above, inside `getBlockInteractionRange()`, and searches the
+  target's feet neighbourhood. Target selection uses
+  `AbstractClientPlayerEntity` (the five native predicates are players), skips
+  self/friends, and supports main/offhand crystals. The dimension reset matches
+  `DcPJe` (`WorldView#getDimension`, eV.java:47). Damage estimation, CPS spoof
+  shaping, `MuaJV`/Predict Id, Stop on Kill and Damage Tick remain native and
+  unimplemented; the placement range/order is the natural reading, not a
+  recovered constant.
+- **Anchor Macro (`eX`) trigger:** switching to `UseBlockCallback`
+  (`UseBlockEvent`) reproduces the recovered `gO$tm` block-use entry instead of
+  polling `useKey`, which could miss a click between ticks. Press mode now
+  survives the click release; Hold mode requires the use key. The event's
+  `BlockHitResult` is retained for the placement step, and the event is only
+  consumed when a respawn anchor is present in the hotbar. `Safe Anchor Hold`
+  now actually gates on `Hold Key` (the old code used it as the activation
+  key). `When`/`Diagonal` remain unread (they were already flagged in the
+  spec).
+- **Wind Hop (`eR`) input/aim:** the original is keybind-driven (Activation
+  Key, default `-999`), not automatic. Mouse bindings now use
+  `glfwGetMouseButton`; the throw aims through the real yaw/pitch around
+  `interactItem` because `PlayerInteractItemC2SPacket` carries them, then
+  restores the view (same rationale as the AutoMLG fix in Wave 10).
+- **Search (no change):** the original opens the dedicated `bc` search overlay
+  from the header magnifier/`bl.onKeyPressed` shortcut; `bl.onCharTyped` does
+  not auto-focus it. The port's inline field is therefore kept click-to-focus.
+- **Build:** `./gradlew build --offline` PASS on JDK 21. No parity re-score:
+  the native damage/target/phase bodies remain the open surface.
 
 ## Avoidable 1:1 gaps — module audit (2026-10-21)
 

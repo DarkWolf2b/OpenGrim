@@ -7,11 +7,14 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.KeybindSetting;
+import dev.opengrim.util.FriendsManager;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.dimension.DimensionType;
 
 /**
  * Auto Crystal (registry sixtwo.eV, module id 28): "Automatically places and
@@ -41,10 +45,15 @@ import net.minecraft.util.math.Vec3d;
  *
  * <p>Behaviors not recoverable from the decompile (damage model, target
  * scan order, CPS spoof shaping, kill-pause timing, predicted-id attacks)
- * are listed in analysis/PARITY-DIVERGENCES.md.
+ * are listed in analysis/docs/PARITY.md (Divergences).
  */
 public class AutoCrystal extends Module {
+	/** Natural entity-reach value; the original's range token was not recovered. */
 	private static final double REACH = 4.5;
+	/** Natural target search radius; the original's scan range was not recovered. */
+	private static final double SEARCH_RANGE = 8.0;
+	/** Horizontal/vertical support scan around the target's feet block. */
+	private static final int SUPPORT_RADIUS = 2;
 
 	private final BoolSetting activateOnKey = register(new BoolSetting("activate_on_key", false));
 	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
@@ -63,6 +72,7 @@ public class AutoCrystal extends Module {
 
 	private int placeCooldown;
 	private int breakCooldown;
+	private DimensionType lastDimension;
 
 	public AutoCrystal() {
 		super("auto_crystal", "Auto Crystal", "Automatically places and breaks crystals",
@@ -80,8 +90,14 @@ public class AutoCrystal extends Module {
 		if (player == null || client.world == null || client.interactionManager == null) {
 			return;
 		}
-		if (activateOnKey.getValue() && (activationKey.getValue() == -999
-				|| !net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), activationKey.getValue()))) {
+		// eV.java:47 DcPJe: placed-position cache and timers reset per dimension.
+		DimensionType dimension = client.world.getDimension();
+		if (!dimension.equals(lastDimension)) {
+			lastDimension = dimension;
+			placeCooldown = 0;
+			breakCooldown = 0;
+		}
+		if (activateOnKey.getValue() && !activationKey.isPressed()) {
 			return;
 		}
 		if (placeCooldown > 0) {
@@ -98,13 +114,14 @@ public class AutoCrystal extends Module {
 		if (breakCooldown > 0) {
 			return;
 		}
-		Box box = new Box(player.getEntityPos(), player.getEntityPos()).expand(REACH);
-		client.world.getEntitiesByClass(EndCrystalEntity.class, box, e -> e.isAlive())
+		Box box = player.getBoundingBox().expand(REACH);
+		client.world.getEntitiesByClass(EndCrystalEntity.class, box,
+				e -> e.isAlive() && player.squaredDistanceTo(e) <= REACH * REACH)
 				.stream()
 				.min(Comparator.comparingDouble(player::distanceTo))
 				.ifPresent(crystal -> {
 					TriggerBot.attack(client, player, crystal);
-					breakCooldown = (int) Math.ceil(breakDelay.getValue());
+					breakCooldown = Math.max(1, (int) Math.ceil(breakDelay.getValue()));
 				});
 	}
 
@@ -112,39 +129,88 @@ public class AutoCrystal extends Module {
 		if (placeCooldown > 0) {
 			return;
 		}
-		ItemStack held = player.getMainHandStack();
-		if (!held.isOf(Items.END_CRYSTAL)) {
+		Hand hand = crystalHand(player);
+		if (hand == null) {
 			return;
 		}
-		Vec3d targetPos = nearestHostilePos(client, player);
-		if (targetPos == null) {
-			return;
-		}
-		BlockPos base = BlockPos.ofFloored(targetPos.x, targetPos.y, targetPos.z);
-		for (Direction side : new Direction[] { Direction.UP, Direction.NORTH, Direction.SOUTH,
-				Direction.WEST, Direction.EAST }) {
-			BlockPos support = base.offset(side);
-			BlockPos placePos = support.up();
-			if (!client.world.getBlockState(placePos).isReplaceable()
-					|| !client.world.getBlockState(support).isReplaceable()) {
+		for (Vec3d targetPos : targetPositions(client, player)) {
+			BlockPos support = findSupport(client, player, targetPos);
+			if (support == null) {
 				continue;
 			}
-			BlockHitResult hit = new BlockHitResult(Vec3d.ofCenter(support), Direction.UP, support, false);
-			client.interactionManager.interactBlock(player, Hand.MAIN_HAND, hit);
-			player.swingHand(Hand.MAIN_HAND);
-			placeCooldown = (int) Math.ceil(placeDelay.getValue());
+			// The original sends PlayerInteractBlockC2SPacket(Hand, BlockHitResult,
+			// sequence); this is the same vanilla interaction path.
+			BlockHitResult hit = new BlockHitResult(Vec3d.ofCenter(support).add(0.0, 0.5, 0.0),
+					Direction.UP, support, false);
+			client.interactionManager.interactBlock(player, hand, hit);
+			player.swingHand(hand);
+			placeCooldown = Math.max(1, (int) Math.ceil(placeDelay.getValue()));
 			return;
 		}
 	}
 
-	private Vec3d nearestHostilePos(MinecraftClient client, ClientPlayerEntity player) {
-		return client.world.getOtherEntities(player,
-				new Box(player.getEntityPos(), player.getEntityPos()).expand(8.0),
-				e -> e.isAlive() && (e instanceof net.minecraft.entity.mob.Monster
-						|| e instanceof net.minecraft.entity.player.PlayerEntity))
+	private Hand crystalHand(ClientPlayerEntity player) {
+		if (player.getMainHandStack().isOf(Items.END_CRYSTAL)) {
+			return Hand.MAIN_HAND;
+		}
+		if (player.getOffHandStack().isOf(Items.END_CRYSTAL)) {
+			return Hand.OFF_HAND;
+		}
+		return null;
+	}
+
+	private java.util.List<Vec3d> targetPositions(MinecraftClient client, ClientPlayerEntity player) {
+		Box search = player.getBoundingBox().expand(SEARCH_RANGE);
+		return client.world.getEntitiesByClass(AbstractClientPlayerEntity.class, search,
+				e -> e != player && e.isAlive() && !e.isSpectator()
+						&& !FriendsManager.isFriend(e.getGameProfile().name()))
 				.stream()
-				.min(Comparator.comparingDouble(player::distanceTo))
+				.sorted(Comparator.comparingDouble(player::distanceTo))
 				.map(Entity::getEntityPos)
-				.orElse(null);
+				.toList();
+	}
+
+	/**
+	 * Vanilla EndCrystalItem only accepts obsidian/bedrock; the original scan
+	 * order is VM-hidden, so this searches a natural 5x4x5 neighbourhood and
+	 * takes the support closest to the target's feet.
+	 */
+	private BlockPos findSupport(MinecraftClient client, ClientPlayerEntity player, Vec3d targetPos) {
+		BlockPos feet = BlockPos.ofFloored(targetPos.x, targetPos.y, targetPos.z);
+		double reach = player.getBlockInteractionRange();
+		double reachSq = reach * reach;
+		BlockPos best = null;
+		double bestDistance = Double.MAX_VALUE;
+		for (int dy = -2; dy <= 1; dy++) {
+			for (int dx = -SUPPORT_RADIUS; dx <= SUPPORT_RADIUS; dx++) {
+				for (int dz = -SUPPORT_RADIUS; dz <= SUPPORT_RADIUS; dz++) {
+					BlockPos support = feet.add(dx, dy, dz);
+					BlockState state = client.world.getBlockState(support);
+					if (!state.isOf(Blocks.OBSIDIAN) && !state.isOf(Blocks.BEDROCK)) {
+						continue;
+					}
+					BlockPos placePos = support.up();
+					if (!client.world.isAir(placePos)) {
+						continue;
+					}
+					// Vanilla EndCrystalItem requires the 1x1x2 space above the
+					// support to be empty of entities.
+					Box space = new Box(placePos.getX(), placePos.getY(), placePos.getZ(),
+							placePos.getX() + 1.0, placePos.getY() + 2.0, placePos.getZ() + 1.0);
+					if (!client.world.getOtherEntities(null, space).isEmpty()) {
+						continue;
+					}
+					if (player.getEyePos().squaredDistanceTo(Vec3d.ofCenter(support)) > reachSq) {
+						continue;
+					}
+					double distance = support.getSquaredDistance(feet);
+					if (distance < bestDistance) {
+						bestDistance = distance;
+						best = support;
+					}
+				}
+			}
+		}
+		return best;
 	}
 }

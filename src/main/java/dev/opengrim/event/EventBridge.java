@@ -2,11 +2,13 @@ package dev.opengrim.event;
 
 import dev.opengrim.event.impl.AttackEntityEvent;
 import dev.opengrim.event.impl.AttackPressEvent;
+import dev.opengrim.event.impl.UseBlockEvent;
 import dev.opengrim.event.impl.UseItemEvent;
 import dev.opengrim.event.impl.WorldRenderEvent;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.util.ActionResult;
 
@@ -39,6 +41,11 @@ public final class EventBridge {
 
 		UseItemCallback.EVENT.register((player, world, hand) -> {
 			UseItemEvent event = EventBus.get().post(new UseItemEvent(player, world, hand));
+			return event.cancelled() ? ActionResult.FAIL : ActionResult.PASS;
+		});
+
+		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+			UseBlockEvent event = EventBus.get().post(new UseBlockEvent(player, world, hand, hitResult));
 			return event.cancelled() ? ActionResult.FAIL : ActionResult.PASS;
 		});
 	}
