@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import dev.opengrim.gui.ui.ColorF;
 import dev.opengrim.gui.ui.GuiDraw;
 import dev.opengrim.gui.ui.MsdfFont;
 import dev.opengrim.gui.ui.Theme;
@@ -75,7 +76,7 @@ public final class HudOverlay {
 		float titleW = nameFont.width(title, TEXT_SIZE);
 		float infoW = infoFont.width(info, TEXT_SIZE);
 		float watermarkW = titleW + infoW + PAD_X * 2.0f;
-		draw.themedBackground(x, y, watermarkW, WATERMARK_H, WATERMARK_H / 2.0f, 0.75f);
+		draw.fillRounded(x, y, watermarkW, WATERMARK_H, WATERMARK_H / 2.0f, panelFill(theme));
 		draw.text(nameFont, title, x + PAD_X, y + (WATERMARK_H - TEXT_SIZE) / 2.0f, TEXT_SIZE,
 				theme.accent());
 		draw.text(infoFont, info, x + PAD_X + titleW, y + (WATERMARK_H - TEXT_SIZE) / 2.0f,
@@ -98,16 +99,22 @@ public final class HudOverlay {
 			float nameW = nameFont.width(module.getName(), TEXT_SIZE) + PAD_X * 2.0f;
 			float cursor = x;
 			if (keyW > 0.0f) {
-				draw.themedBackground(cursor, rowY, keyW, ROW_H, ROW_H / 2.0f, 0.75f);
+				draw.fillRounded(cursor, rowY, keyW, ROW_H, ROW_H / 2.0f, panelFill(theme));
 				draw.text(infoFont, KeybindSetting.displayName(module.getBind()), cursor + PAD_X,
 						rowY + (ROW_H - TEXT_SIZE) / 2.0f, TEXT_SIZE, theme.text().withAlphaScale(0.7f));
 				cursor += keyW + 3.0f;
 			}
-			draw.themedBackground(cursor, rowY, nameW, ROW_H, ROW_H / 2.0f, 0.75f);
+			draw.fillRounded(cursor, rowY, nameW, ROW_H, ROW_H / 2.0f, panelFill(theme));
 			draw.text(nameFont, module.getName(), cursor + PAD_X,
 					rowY + (ROW_H - TEXT_SIZE) / 2.0f, TEXT_SIZE, theme.accent());
 			rowY += ROW_H + ROW_GAP;
 		}
+	}
+
+	private static ColorF panelFill(Theme theme) {
+		// ce's row/watermark fill is the theme background (not a bright glass
+		// border). Keep it close to opaque so it reads like the reference pills.
+		return theme.background().lerp(theme.panelColor(), 0.3f).withAlphaScale(0.9f);
 	}
 
 	private static float rowWidth(Module module, MsdfFont nameFont, MsdfFont infoFont) {
