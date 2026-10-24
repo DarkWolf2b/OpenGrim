@@ -36,6 +36,16 @@ public class ModuleManager {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T extends Module> T getModule(Class<T> clazz) {
+		for (Module m : modules) {
+			if (clazz.isInstance(m)) {
+				return (T) m;
+			}
+		}
+		return null;
+	}
+
 	public List<Module> byCategory(ModuleCategory category) {
 		List<Module> out = new ArrayList<>();
 		for (Module m : modules) {

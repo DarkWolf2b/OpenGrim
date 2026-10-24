@@ -1,15 +1,14 @@
 package dev.opengrim.modules.render;
 
-import java.lang.reflect.Field;
-
 import dev.opengrim.event.Subscribe;
 import dev.opengrim.event.impl.CameraUpdateEvent;
+import dev.opengrim.mixin.CameraAccessor;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
+import dev.opengrim.module.ModuleManager;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.BlockHitResult;
@@ -33,7 +32,7 @@ import net.minecraft.world.RaycastContext;
  * @hG)"): the camera-distance application lives in the framework shell /
  * native camera component, which reads the getters — there is no camera API
  * token anywhere in ed's own pool window (handlers/ed.md "Blockers" #1).
- * This port reuses our existing {@link CameraUpdateEvent} reflection surface
+ * This port reuses our existing {@link CameraUpdateEvent} surface
  * as that consumer channel: the application below is a <b>high-probability
  * guess</b> built on the only recovered contracts — the registry description
  * ("Changes camera distance from player") and the slider/checkbox values.
@@ -70,9 +69,6 @@ public class CustomCameraDistance extends Module {
 	private final DoubleSetting distance = register(new DoubleSetting("distance", 1.0, 4.0, 100.0, 4.0, null));
 	private final BoolSetting noClip = register(new BoolSetting("no_clip", false));
 
-	private static Field cameraPosField;
-	private static boolean cameraPosLookupDone;
-
 	public CustomCameraDistance() {
 		super("custom_camera_distance", "Custom Camera Distance", "Changes camera distance from player", ModuleCategory.PLAYER);
 	}
@@ -83,6 +79,11 @@ public class CustomCameraDistance extends Module {
 	 */
 	@Subscribe
 	private void onCameraUpdate(CameraUpdateEvent event) {
+		Freecam freecam = ModuleManager.get().getModule(Freecam.class);
+		if (freecam != null && freecam.isEnabled()) {
+			return;
+		}
+
 		MinecraftClient client = MinecraftClient.getInstance();
 		Camera camera = event.camera();
 		if (client.player == null || !camera.isThirdPerson()) {
@@ -117,49 +118,14 @@ public class CustomCameraDistance extends Module {
 			}
 		}
 		if (!current.equals(wanted)) {
-			setCameraPos(camera, wanted);
+			((CameraAccessor) camera).opengrim$callSetPos(wanted);
 		}
 	}
 
-	/**
-	 * Reflection surface for the detached camera position (Camera.pos is
-	 * private; CameraMixin exposes the Camera object but not a setter).
-	 * Production (intermediary) fallback {@code field_18712} = {@code pos}
-	 * (yarn-1.21.11+build.6.tiny: Camera).
-	 */
-	private static void setCameraPos(Camera camera, Vec3d pos) {
-		Field field = cameraPosField();
-		if (field == null) {
-			return;
-		}
-		try {
-			field.set(camera, pos);
-		} catch (IllegalAccessException ignored) {
-		}
-	}
-
-	private static Field cameraPosField() {
-		if (!cameraPosLookupDone) {
-			cameraPosLookupDone = true;
-			for (String name : new String[] { "pos", "field_18712" }) {
-				try {
-					Field field = Camera.class.getDeclaredField(name);
-					field.setAccessible(true);
-					cameraPosField = field;
-					break;
-				} catch (ReflectiveOperationException ignored) {
-				}
-			}
-		}
-		return cameraPosField;
-	}
-
-	/** "Distance" slider (ed.java arB, default 4.0 = vanilla camera distance). */
 	public double getDistance() {
 		return distance.getValue();
 	}
 
-	/** "No Clip" checkbox (ed.java arC). */
 	public boolean isNoClip() {
 		return noClip.getValue();
 	}

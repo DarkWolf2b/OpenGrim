@@ -1,5 +1,7 @@
 package dev.opengrim.mixin;
 
+import dev.opengrim.module.ModuleManager;
+import dev.opengrim.modules.render.Freecam;
 import dev.opengrim.modules.render.HandChams;
 import dev.opengrim.render.WorldProjection;
 import net.minecraft.client.render.Camera;
@@ -53,9 +55,14 @@ public class GameRendererMixin {
 		}
 	}
 
-	@Inject(method = "renderHand(FZLorg/joml/Matrix4f;)V", at = @At("HEAD"))
-	private void opengrim$beginHandChams(float tickDelta, boolean sleeping, Matrix4f matrix,
+	@Inject(method = "renderHand(FZLorg/joml/Matrix4f;)V", at = @At("HEAD"), cancellable = true)
+	private void opengrim$beginHandPass(float tickDelta, boolean sleeping, Matrix4f matrix,
 			CallbackInfo ci) {
+		Freecam freecam = ModuleManager.get().getModule(Freecam.class);
+		if (freecam != null && freecam.isEnabled() && !freecam.isRenderHand()) {
+			ci.cancel();
+			return;
+		}
 		HandChams.beginHandRender(sleeping);
 	}
 
