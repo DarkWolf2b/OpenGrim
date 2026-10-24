@@ -30,7 +30,8 @@ from the porting reports in `../../analysis/port/reports/`.
   `.github/workflows/automatic-prerelease.yml` (push to `main` → automatic
   GitHub pre-release). Parity rows keep their scores: the setting values and
   defaults are unchanged; only the widget rendering/interaction now matches
-  `y.dn() = 18`. Details in Divergences Wave 11. No commit/push.
+  `y.dn() = 18`. Details in Divergences Wave 11. Commit `a2f3e9a` is on
+  `origin/main`; workflow run 1 published pre-release `auto-build-1-1`.
 - **2026-10-21 (module recovery queue)** — 24 module rows re-scored after the
   avoidable-gap queue landed: `cW`, `dc`, `cQ`, `dv`, `db`, `dw`, `ff`, `dt`,
   `dq`, `dI`, `dh`, `fX`, `dz`, `cR`, `dl`, `dp`, `dn`, `da`, `dg`, `do`, `cZ`,

@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-24 (Linux: cD/y keybind rows replace the integer sliders; automatic prerelease workflow added; `compileJava` PASS on JDK 21; no commit/push)
+Last updated: 2026-10-24 (Linux: cD/y keybind rows replace the integer sliders; automatic prerelease workflow added; `compileJava` PASS on JDK 21; commit `a2f3e9a` pushed, pre-release `auto-build-1-1` published)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1236,4 +1236,6 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   the `build/libs` jars as a GitHub **pre-release** tagged
   `auto-build-<run>-<attempt>` with an explicit automatic-build description.
 - **Build:** `./gradlew compileJava` → BUILD SUCCESSFUL on JDK 21.
-- No commit/push.
+- **Landed:** commit `a2f3e9a` pushed to `origin/main` with PIA connected;
+  workflow run 1 built the mod and published pre-release `auto-build-1-1`
+  (the notes identify it as an automatic build).

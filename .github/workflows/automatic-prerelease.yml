@@ -4,6 +4,15 @@ on:
   push:
     branches:
       - main
+    # Only source/build changes deserve a new binary pre-release; docs-only
+    # commits should not produce an empty build.
+    paths:
+      - 'src/**'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '.github/workflows/automatic-prerelease.yml'
   workflow_dispatch:
 
 permissions:
