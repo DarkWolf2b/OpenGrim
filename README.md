@@ -55,10 +55,10 @@ The mod jar lands in `build/libs/opengrim-0.1.0.jar`. To use it:
 
 ## Parity status
 
-**Aggregate parity: 79.0%** — the mean of all 162 per-module parity scores from
-the full 2026-10-17 audit, with 24 rows re-scored on 2026-10-21 and 4 combat rows
-re-scored on 2026-10-24 (median 81%, range 45–100%; 45 modules at 90% or higher).
-Each module is scored over its
+**Aggregate parity: 79.1%** — the mean of all 162 per-module parity scores from
+the full 2026-10-17 audit, with 24 rows re-scored on 2026-10-21 and the
+2026-10-24 HUD/commands/combat wave (median 81%, range 45–100%; 45 modules at
+90% or higher). Each module is scored over its
 **recovered surface** (decompile-visible logic + recovered constants); behavior
 that lives in the original's native/VM layer is excluded from the denominator
 and itemized per module. Per-module scores, gap classifications and the
@@ -73,7 +73,7 @@ Static analysis only — the original client was **never executed** as a game, a
 3. **Native handler mapping** — a JVMTI agent logged all **6,610 native method bindings** across 446 classes (which class → which native function), and all 6,603 handlers were decompiled (0 failures).
 4. **Malware triage** — every binary layer (main DLL, exit-hook, stage2, launcher) was scanned: **no network, persistence, keylogging or injection indicators found.**
 
-**Stats:** 1,111 classes decompiled · 23,147 constants recovered · 6,610 native handlers mapped across 446 classes (6,603 decompiled, 0 failures) · 162 modules reimplemented (73 ported / 89 partial — full audit 2026-10-17; aggregate parity 79.0%, recovery re-score 2026-10-24) · 6,610/6,615 native declarations accounted for.
+**Stats:** 1,111 classes decompiled · 23,147 constants recovered · 6,610 native handlers mapped across 446 classes (6,603 decompiled, 0 failures) · 162 modules reimplemented (73 ported / 89 partial — full audit 2026-10-17; aggregate parity 79.1%, recovery re-score 2026-10-24) · 6,610/6,615 native declarations accounted for.
 
 ## Documentation
 
@@ -113,7 +113,7 @@ This repository is **self-contained** — everything needed to understand and co
 
 ## Where to continue (pushing parity higher)
 
-Aggregate parity is 79.0% ([`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)). Static analysis is exhausted — everything below it lives behind the original's native/VM layer, so the remaining work is **dynamic**:
+Aggregate parity is 79.1% ([`analysis/docs/PARITY.md`](analysis/docs/PARITY.md)). Static analysis is exhausted — everything below it lives behind the original's native/VM layer, so the remaining work is **dynamic**:
 
 1. **Runtime dumps of the native layer** — the highest-value next step. The JVMTI harness and tracer in `analysis/tools/` (sandbox setup in [`analysis/docs/HANDOFF.md`](analysis/docs/HANDOFF.md)) can be attached to the original at runtime to dump native-handler arguments, returns and state. Reconciling those dumps against the handler maps in `analysis/ghidra/` recovers behavior static decompilation cannot reach — including the 14 natively-divergent modules itemized in PARITY.md's Divergences section.
 2. **Per-module runtime traces** — extend `analysis/traces/` (the 2026-10-17 runs) with full per-module capture to recover constants and flows the static constant-pool break missed (23,147 literals were recovered statically).

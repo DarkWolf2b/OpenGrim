@@ -5,11 +5,13 @@ package dev.opengrim.settings;
  */
 public abstract class Setting<T> {
 	private final String id;
+	private final T defaultValue;
 	private T value;
 	private boolean visible = true;
 
 	protected Setting(String id, T defaultValue) {
 		this.id = id;
+		this.defaultValue = defaultValue;
 		this.value = defaultValue;
 	}
 
@@ -19,6 +21,16 @@ public abstract class Setting<T> {
 
 	public T getValue() {
 		return value;
+	}
+
+	public T getDefaultValue() {
+		return defaultValue;
+	}
+
+	/** Restore the construction-time default (used by the recovered /reset). */
+	public void reset() {
+		setValue(defaultValue);
+		setVisible(true);
 	}
 
 	public void setValue(T value) {

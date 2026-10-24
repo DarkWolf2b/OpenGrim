@@ -23,6 +23,13 @@ from the porting reports in `../../analysis/port/reports/`.
 
 ## Update history (newest first)
 
+- **2026-10-24 (HUD/commands/input)** — array list ported to the recovered
+  `ce`/`co.NV` panels + MSDF fonts, original commands recovered with the Wine
+  harness and implemented (`/vclip`, `/hclip`, `/ui`, `/reset`, `/inventory`,
+  `/fakeplayer`, `/emote`, `/marketui` gap), search now indexes settings and
+  scrolls to them, key presses no longer move the player while the GUI is open,
+  and slider drags are routed to the pressed row. `fH` 58; aggregate 79.1%.
+  Details in Divergences Wave 14.
 - **2026-10-24 (UI/input fixes + re-score)** — Liquid Glass corner smoothing
   fixed (`ii2.bjm()` semantics), Aim Assist now applies the real rotation,
   the `bh` Keybind popup is wired, the `bc` search overlay is implemented,
@@ -60,7 +67,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | Class | Module | Registry key | Status | Spec | Notes |
 |---|---|---|---|---|---|
 | di | 2D ESP | 158 | partial | [spec](../../analysis/specs/modules/di.md) | render/Esp2D.java (verified 2026-10-17, parity 50%) — Decrypted "ESP Profiles"/"Edit ESP" carried as empty editor groups (profile editor not expressible). Tracks players and exposes their; 2026-10-21 audit correction: the 64-block cap was not evidence-backed and is removed; profile registry/drawing dispatch remain open. |
-| fH | Aim Assist | 8 | ported | [spec](../../analysis/specs/modules/fH.md) | combat/AimAssist.java (2026-10-24 re-score, parity 55%) — Smooth yaw/pitch approach toward best target inside FOV cone, with jitter, prediction offset, switch/locked target retention, health/distance priority; 2026-10-24: real yaw/pitch are now applied (the original pool names `Entity.setPitch(F)`), Hold Key is mouse-aware; native target predicate/prediction/FOV render remain — see Divergences Wave 13 |
+| fH | Aim Assist | 8 | ported | [spec](../../analysis/specs/modules/fH.md) | combat/AimAssist.java (2026-10-24 re-score, parity 58%) — Smooth yaw/pitch approach toward best target inside FOV cone, with jitter, prediction offset, switch/locked target retention, health/distance priority; 2026-10-24: real yaw/pitch are now applied (the original pool names `Entity.setPitch(F)`), Hold Key is mouse-aware, and the linear step/noise were replaced by an exponential approach + 3-octave smooth value noise; native target predicate/prediction/FOV render remain — see Divergences Wave 13/14 |
 | eU | Air Anchor | 114 | partial | [spec](../../analysis/specs/modules/eU.md) | world/AirAnchor.java (verified 2026-10-17, trace re-check 2026-10-17, parity 65%; trace: aDC ×2 = eV.aEq→0 + gg.bab→1 + HyfoP.crA, YO = gg.YO + crA; aDI untriggered — capture: anchor place attempt) — When holding a respawn anchor with no block crosshair hit, synthesizes a BlockHitResult against the nearest solid neighbor of the aimed air block and |
 | ej | Air Stuck | 43 | partial | [spec](../../analysis/specs/modules/ej.md) | movement/AirStuck.java (verified 2026-10-17, parity 90%; trace-recheck 2026-10-17) — Captures position on enable, pins setPos + zero velocity + zero fall distance each tick. Direct port of "Freezes all movement". |
 | dh | Ambience | 123 | ported | [spec](../../analysis/specs/modules/dh.md) | utility/Ambience.java (verified 2026-10-21, parity 86%) — Change Time (def on) with Time Mode (Presets/Custom) and Time presets (Dawn/Morning/Day/Evening/Sunset/Night/Real Time — decrypted names) + Time Value; 2026-10-21 recovery: Fog Range is the real two-handle cA range; preset times, fade/particle bounds, billboard and fog consumer remain DES/absent. |
@@ -1515,6 +1522,39 @@ the page grouping structural.
   `eR` 57→62. Aggregate 12,784 + 20 = 12,804 / 16,200 = **79.0%**. These are
   dated confidence-weighting adjustments for the closed surfaces; the native
   bodies remain the residual.
+
+### Wave 14 — HUD/array list, commands, search settings, input (2026-10-24)
+
+- **Array list/HUD:** `HudOverlay` now ports the recovered `ce`/`co.NV`
+  layout: a 20-unit watermark panel (`ccU`) plus 13-unit row panels with a
+  2-unit gap, split into keybind and name panels when `gg.baj` shows the bind,
+  sorted by `nameWidth + keyWidth` (`ce.java:470`). It uses the original MSDF
+  sheets (`lE.WTzbi`/`lE.joxgd` → `MsdfFont`) and the themed shape/glass panel
+  fill instead of vanilla `drawText`. `gg.bai/baj` visibility flags are wired
+  to the module bind popup.
+- **Commands:** reflected the original command factories under the Wine
+  payload harness, recovering `/vclip <distance>`, `/hclip <distance>`, `/ui`,
+  `/reset`, `/marketui`, `/inventory|inv|invsee <player>`,
+  `/fakeplayer|fp spawn [name]|remove|setslot <slot> <item> [count]|use <mode>
+  [hand]|status`, and `/emote|e <id>`. Implemented the client actions using
+  the existing modules/screens; `/marketui` remains unavailable because the
+  market editor has no port surface. `/reset` disables modules, clears binds,
+  restores display defaults and resets every `Setting` to its construction
+  default (`Setting.reset`).
+- **Search overlay:** now includes setting results (id match) in addition to
+  modules; selecting a setting opens the module settings and scrolls the row
+  into view (`SettingsWindow.scrollToSetting`). Native row paint/geometry
+  remains approximate.
+- **Input:** every unhandled key press is now consumed by `ClickGuiScreen`, so
+  `Keyboard.onKey` cannot pass WASD/space to the game's `KeyBinding` while the
+  GUI is open. Settings rows route drags only to the row that consumed the
+  press, fixing the “all sliders move / top slider uncontrollable” behavior.
+- **Aim Assist smoothing:** exponential per-tick approach (speed 1 ≈ 22%/tick,
+  speed 20 ≈ 99%/tick) and 3-octave smooth value noise replace the fixed
+  linear step and per-tick white noise. Re-score 55 → 58; native target
+  predicate/prediction path/FOV render remain.
+- **Parity:** aggregate 12,804 + 3 = 12,807 / 16,200 = **79.1%**.
+- **Build:** `./gradlew build --offline` PASS on JDK 21.
 
 ## Avoidable 1:1 gaps — module audit (2026-10-21)
 

@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-24 (Linux: keybind rows; auto-prerelease workflow; combat fixes; Liquid Glass corner, Aim Assist visible aim, `bh` keybind popup, `bc` search overlay, HUD flags, GLFW key-0 fix; build PASS; parity 79.0%)
+Last updated: 2026-10-24 (Linux: original HUD/array list, recovered commands, search settings, input capture, smooth Aim Assist; build PASS; parity 79.1%)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1307,4 +1307,30 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   every prior auto-build release/tag before publishing.
 - **Parity:** `fH` 50→55, `eV` 52→58, `eX` 52→56, `eR` 57→62; aggregate
   12,804/16,200 = 79.0%.
+- **Build:** `./gradlew build --offline` PASS on JDK 21.
+
+## 2026-10-24 (Linux): original HUD/array list, commands, search settings, input capture
+
+- **HUD/array list:** rewrote `HudOverlay` from the recovered `ce`/`co.NV`
+  source: 20-unit watermark panel (`ccU`) and 13-unit row panels with a 2-unit
+  gap; optional keybind panel + name panel (`gg.baj`); sorted by
+  name+key width (`ce.java:470`); original MSDF sheets and themed shape/glass
+  panel fills. The `bh` popup toggles `gg.bai`/`gg.baj`.
+- **Commands:** used the Wine payload harness to reflect the original command
+  factories: `/vclip`, `/hclip`, `/ui`, `/reset`, `/marketui`,
+  `/inventory|inv|invsee <player>`,
+  `/fakeplayer|fp spawn [name]|remove|setslot <slot> <item> [count]|use <mode>
+  [hand]|status`, `/emote|e <id>`. Implemented the client actions with existing
+  modules/screens. `/reset` now disables modules, clears binds, restores display
+  defaults and resets every `Setting` to its construction default.
+  `/marketui` stays unavailable because there is no market editor surface.
+- **Search overlay:** setting results (recursive group children) are now
+  included; selecting a setting opens the module settings panel and scrolls the
+  row into view (`SettingsWindow.scrollToSetting`).
+- **Input:** `ClickGuiScreen` consumes every unhandled key press, so WASD/space
+  no longer reach `KeyBinding` while the GUI is open. Settings drags route only
+  to the row that consumed the press (fixes all-sliders-moving).
+- **Aim Assist:** exponential smoothing + 3-octave smooth noise replace the
+  linear step/white noise; score 55→58.
+- **Parity:** aggregate 12,807/16,200 = 79.1%.
 - **Build:** `./gradlew build --offline` PASS on JDK 21.

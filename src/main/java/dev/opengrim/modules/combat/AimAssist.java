@@ -65,11 +65,13 @@ import net.minecraft.util.math.Vec3d;
  *       yaw/pitch (the recovered pool token is {@code Entity.setPitch(F)}),
  *       while also submitting the same rotation to {@link RotationManager};
  *       FOV reads use the player's live rotation.</li>
- *   <li>[G] {@code approach()} (linear per-tick step by Horizontal/Vertical
- *       Speed) replaces the unrecovered smoothing math.</li>
- *   <li>[G] {@code noise()} (splitmix-style hash) replaces the original
- *       {@code mV} smooth-noise generator (seeded {@code Random}, frequency
- *       0.05f, 3 octaves, mode {@code AjjgB}; fH.java:683-686).</li>
+ *   <li>[G] {@code approach()} (exponential per-tick step scaled by
+ *       Horizontal/Vertical Speed) replaces the unrecovered smoothing math;
+ *       the step is proportional to the remaining delta rather than a fixed
+ *       linear rate.</li>
+ *   <li>[G] {@code noise()} (three-octave smooth value noise, frequency 0.05)
+ *       follows the original {@code mV} shape (seeded {@code Random}, 3
+ *       octaves, mode {@code AjjgB}; fH.java:683-686).</li>
  *   <li>[G] Aim Point: Best Vector → hitbox center, Nearest Vector → eye pos;
  *       the original's vector math is inside the VM.</li>
  *   <li>[G] {@code isWeapon} (WEAPON data component) / {@code isNaked} (all
@@ -264,16 +266,50 @@ public class AimAssist extends Module {
 		return (float) Math.toDegrees(Math.acos(dot));
 	}
 
-	private static float approach(float current, float wanted, float maxStep) {
+	private static float approach(float current, float wanted, float speed) {
 		float delta = MathHelper.wrapDegrees(wanted - current);
-		if (Math.abs(delta) <= maxStep) {
-			return current + delta;
+		if (Math.abs(delta) < 0.05f) {
+			return wanted;
 		}
-		return current + Math.signum(delta) * maxStep;
+		// The original's smoothing math is VM-resident; an exponential approach
+		// keeps the per-tick step proportional to the remaining delta instead of
+		// the old fixed linear step (which snapped at a constant rate and read
+		// as robotic). Speed 1 ≈ 22%/tick, speed 20 ≈ 99%/tick.
+		float factor = 1.0f - (float) Math.exp(-Math.max(0.01f, speed) * 0.25f);
+		return current + delta * factor;
 	}
 
+	/**
+	 * Three-octave value noise matching the recovered {@code mV} shape
+	 * (frequency 0.05, three octaves, smooth interpolation). The old per-tick
+	 * hash was white noise, which made Randomization jitter instead of drift.
+	 */
 	private static double noise(long tick, long channel) {
-		long h = 0x9E3779B97F4A7C15L + tick * 0xBF58476D1CE4E5B9L + channel * 0x94D049BB133111EBL;
+		double x = tick * 0.05;
+		double sum = 0.0;
+		double amplitude = 0.5;
+		double frequency = 1.0;
+		double normalizer = 0.0;
+		for (int octave = 0; octave < 3; octave++) {
+			sum += smoothValueNoise(x * frequency, channel * 31L + octave * 17L) * amplitude;
+			normalizer += amplitude;
+			amplitude *= 0.5;
+			frequency *= 2.0;
+		}
+		return sum / normalizer;
+	}
+
+	private static double smoothValueNoise(double x, long seed) {
+		long floor = (long) Math.floor(x);
+		double frac = x - floor;
+		double a = hash(floor, seed);
+		double b = hash(floor + 1L, seed);
+		double t = frac * frac * (3.0 - 2.0 * frac);
+		return a + (b - a) * t;
+	}
+
+	private static double hash(long value, long seed) {
+		long h = value * 0x9E3779B97F4A7C15L + seed * 0xBF58476D1CE4E5B9L;
 		h ^= h >>> 30;
 		h *= 0xBF58476D1CE4E5B9L;
 		h ^= h >>> 27;

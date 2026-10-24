@@ -306,6 +306,58 @@ public class SettingsWindow extends Popup {
 	}
 
 	/**
+	 * Scroll the rebuilt settings stack so a search-overlay result is visible.
+	 * The toggle and {@code bk} rows occupy the first two 18-unit rows.
+	 */
+	public void scrollToSetting(dev.opengrim.settings.Setting<?> target) {
+		if (module == null) {
+			return;
+		}
+		float offset = locateSetting(module.getSettings(), target, 0.0f);
+		if (offset >= 0.0f) {
+			rows.scroll = Math.max(0.0f, 2.0f * ModuleWidgetFactory.TOGGLE_H + offset
+					- ModuleWidgetFactory.TOGGLE_H);
+		}
+	}
+
+	private static float locateSetting(List<dev.opengrim.settings.Setting<?>> settings,
+			dev.opengrim.settings.Setting<?> target, float y) {
+		for (dev.opengrim.settings.Setting<?> setting : settings) {
+			if (setting == target) {
+				return y;
+			}
+			if (setting instanceof dev.opengrim.settings.GroupSetting group) {
+				float child = locateSetting(group.getChildren(), target, y + ModuleWidgetFactory.TOGGLE_H);
+				if (child >= 0.0f) {
+					return child;
+				}
+				y += settingHeight(setting);
+			} else {
+				y += settingHeight(setting);
+			}
+		}
+		return -1.0f;
+	}
+
+	private static float settingHeight(dev.opengrim.settings.Setting<?> setting) {
+		if (setting instanceof dev.opengrim.settings.ColorSetting) {
+			return ModuleWidgetFactory.COLOR_H;
+		}
+		if (setting instanceof dev.opengrim.settings.DoubleSetting
+				|| setting instanceof dev.opengrim.settings.RangeSetting) {
+			return ModuleWidgetFactory.SLIDER_H;
+		}
+		if (setting instanceof dev.opengrim.settings.GroupSetting group) {
+			float height = ModuleWidgetFactory.TOGGLE_H;
+			for (dev.opengrim.settings.Setting<?> child : group.getChildren()) {
+				height += settingHeight(child);
+			}
+			return height;
+		}
+		return ModuleWidgetFactory.TOGGLE_H;
+	}
+
+	/**
 	 * [G] Clamp the panel into the design viewport so it stays reachable on
 	 * small windows. The original {@code bd} has no recovered clamp (only
 	 * {@code bl.Et} clamps the window itself), so this is a port guard.
@@ -365,6 +417,7 @@ public class SettingsWindow extends Popup {
 	private static final class Rows extends Widget {
 		private final List<Widget> children = new ArrayList<>();
 		private float scroll;
+		private Widget dragChild;
 
 		void add(Widget child) {
 			children.add(child);
@@ -402,6 +455,7 @@ public class SettingsWindow extends Popup {
 			for (int i = children.size() - 1; i >= 0; i--) {
 				Widget child = children.get(i);
 				if (child.isVisible() && child.contains(mx, my) && child.onMouseDown(mx, my, button)) {
+					dragChild = child;
 					return true;
 				}
 			}
@@ -410,11 +464,11 @@ public class SettingsWindow extends Popup {
 
 		@Override
 		public boolean onMouseDrag(double mx, double my, MouseButton button, double dx, double dy) {
-			for (int i = children.size() - 1; i >= 0; i--) {
-				Widget child = children.get(i);
-				if (child.isVisible() && child.onMouseDrag(mx, my, button, dx, dy)) {
-					return true;
-				}
+			// Only the row that consumed the press may follow the drag. The old
+			// loop offered every drag to every slider, so moving one slider also
+			// rewrote the values of all other visible sliders.
+			if (dragChild != null && dragChild.isVisible()) {
+				return dragChild.onMouseDrag(mx, my, button, dx, dy);
 			}
 			return false;
 		}
@@ -422,10 +476,9 @@ public class SettingsWindow extends Popup {
 		@Override
 		public boolean onMouseUp(double mx, double my, MouseButton button) {
 			boolean consumed = false;
-			for (Widget child : children) {
-				if (child.isVisible() && child.onMouseUp(mx, my, button)) {
-					consumed = true;
-				}
+			if (dragChild != null) {
+				consumed = dragChild.onMouseUp(mx, my, button);
+				dragChild = null;
 			}
 			return consumed;
 		}

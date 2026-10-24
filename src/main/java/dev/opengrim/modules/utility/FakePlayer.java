@@ -218,6 +218,18 @@ public class FakePlayer extends Module {
 		return useHand;
 	}
 
+	/** Command hook: {@code /fakeplayer setslot}. */
+	public void setSlot(int slot, ItemStack stack) {
+		if (fake != null) {
+			fake.getInventory().setStack(slot, stack);
+		}
+	}
+
+	/** Command hook: {@code /fakeplayer spawn [name]}. */
+	public void setName(String value) {
+		name.setValue(value);
+	}
+
 	/** The active use mode (cX.java:568-570 {@code aao}). */
 	public UseMode getUseMode() {
 		return useMode;

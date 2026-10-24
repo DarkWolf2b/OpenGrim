@@ -19,6 +19,8 @@ import dev.opengrim.gui.ui.widgets.TextFieldWidget;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
+import dev.opengrim.settings.GroupSetting;
+import dev.opengrim.settings.Setting;
 import dev.opengrim.util.FriendsManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -230,10 +232,14 @@ public class ClickGuiScreen extends AnimatedScreen {
 	/** Header subtitle: the description of the last hovered module (see class doc). */
 	private String subtitle = "";
 	private final Tween pill = new Tween(150, 0.0f);
+	/** bc result row: a module and/or one of its settings. */
+	private record SearchResult(Module module, Setting<?> setting, String label, String detail) {
+	}
+
 	/** bc search overlay state (opened from the magnifier/Ctrl+F). */
 	private boolean searchOpen;
 	private int searchSelected;
-	private List<Module> searchResults = List.of();
+	private List<SearchResult> searchResults = List.of();
 	private static final int SEARCH_MAX_RESULTS = 8;
 	private static final float SEARCH_ROW_H = 18.0f;
 	private static final float SEARCH_BAR_H = 28.0f;
@@ -371,7 +377,7 @@ public class ClickGuiScreen extends AnimatedScreen {
 		refreshSearchResults();
 	}
 
-	/** bc result scan: module names/ids/descriptions, capped at the recovered array size. */
+	/** bc result scan: module names/ids/descriptions and every setting id. */
 	private void refreshSearchResults() {
 		String query = search.text().toLowerCase(Locale.ROOT).trim();
 		if (query.isEmpty()) {
@@ -379,14 +385,33 @@ public class ClickGuiScreen extends AnimatedScreen {
 			searchSelected = 0;
 			return;
 		}
-		searchResults = ModuleManager.get().getModules().stream()
-				.filter(module -> module.getName().toLowerCase(Locale.ROOT).contains(query)
-						|| module.getId().contains(query)
-						|| module.getDescription().toLowerCase(Locale.ROOT).contains(query))
-				.sorted(java.util.Comparator.comparing(module -> module.getName(), String.CASE_INSENSITIVE_ORDER))
-				.limit(SEARCH_MAX_RESULTS)
-				.toList();
+		List<SearchResult> results = new ArrayList<>();
+		for (Module module : ModuleManager.get().getModules()) {
+			if (module.getName().toLowerCase(Locale.ROOT).contains(query)
+					|| module.getId().contains(query)
+					|| module.getDescription().toLowerCase(Locale.ROOT).contains(query)) {
+				results.add(new SearchResult(module, null, module.getName(),
+						module.getCategory().name().toLowerCase(Locale.ROOT)));
+			}
+			collectSettingResults(results, module, module.getSettings(), module.getName(), query);
+		}
+		results.sort(java.util.Comparator.comparing(SearchResult::label, String.CASE_INSENSITIVE_ORDER));
+		searchResults = results.stream().limit(SEARCH_MAX_RESULTS).toList();
 		searchSelected = Math.max(0, Math.min(searchSelected, searchResults.size() - 1));
+	}
+
+	private void collectSettingResults(List<SearchResult> out, Module module, List<Setting<?>> settings,
+			String prefix, String query) {
+		for (Setting<?> setting : settings) {
+			if (setting instanceof GroupSetting group) {
+				collectSettingResults(out, module, group.getChildren(), prefix, query);
+				continue;
+			}
+			if (setting.getId().toLowerCase(Locale.ROOT).contains(query)) {
+				out.add(new SearchResult(module, setting, prefix + " > " + setting.getId(),
+						module.getCategory().name().toLowerCase(Locale.ROOT)));
+			}
+		}
 	}
 
 	private void openSearch() {
@@ -409,7 +434,8 @@ public class ClickGuiScreen extends AnimatedScreen {
 		if (searchSelected < 0 || searchSelected >= searchResults.size()) {
 			return;
 		}
-		Module module = searchResults.get(searchSelected);
+		SearchResult result = searchResults.get(searchSelected);
+		Module module = result.module();
 		page = switch (module.getCategory()) {
 			case COMBAT -> Page.COMBAT;
 			case MOVEMENT -> Page.MOVEMENT;
@@ -422,6 +448,10 @@ public class ClickGuiScreen extends AnimatedScreen {
 		scroll = index < 0 ? 0.0f : Math.max(0.0f, (index / 2) * (CARD_H + CARD_GAP));
 		subtitle = module.getDescription();
 		closeSearch();
+		if (result.setting() != null) {
+			openSettings(module);
+			settingsWindow.scrollToSetting(result.setting());
+		}
 	}
 
 	private float searchX() {
@@ -520,16 +550,15 @@ public class ClickGuiScreen extends AnimatedScreen {
 		}
 
 		for (int i = 0; i < searchResults.size(); i++) {
-			Module module = searchResults.get(i);
+			SearchResult result = searchResults.get(i);
 			float rowY = y + SEARCH_BAR_H + i * SEARCH_ROW_H;
 			if (i == searchSelected) {
 				draw.fillRounded(x + 3.0f, rowY + 1.0f, w - 6.0f, SEARCH_ROW_H - 2.0f, 3.5f,
 						theme.accent().withAlphaScale(0.25f * alpha));
 			}
-			draw.text(semibold, module.getName(), x + 7.0f, rowY + 5.0f, 7.0f,
+			draw.text(semibold, result.label(), x + 7.0f, rowY + 5.0f, 7.0f,
 					theme.text().withAlphaScale(alpha));
-			String category = module.getCategory().name().toLowerCase(Locale.ROOT);
-			draw.textRight(regular, category, x + w - 7.0f, rowY + 6.0f, 6.0f,
+			draw.textRight(regular, result.detail(), x + w - 7.0f, rowY + 6.0f, 6.0f,
 					theme.text().withAlphaScale(0.5f * alpha));
 		}
 	}
@@ -972,7 +1001,10 @@ public class ClickGuiScreen extends AnimatedScreen {
 			closeNow();
 			return true;
 		}
-		return false;
+		// Keep every other key press inside the screen. Returning false here
+		// lets Keyboard.onKey pass the press to KeyBinding.setKeyPressed, which
+		// makes WASD/space move the player while the Click GUI is open.
+		return true;
 	}
 
 	@Override

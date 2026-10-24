@@ -1,13 +1,15 @@
 package dev.opengrim.hud;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-import dev.opengrim.gui.GuiTheme;
+import dev.opengrim.gui.ui.GuiDraw;
+import dev.opengrim.gui.ui.MsdfFont;
+import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleManager;
 import dev.opengrim.settings.KeybindSetting;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -18,95 +20,105 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 
 /**
- * HUD overlay: a watermark (client name + fps + ping) and the list of enabled
- * modules, drawn top-left in scaled GUI space.
+ * Port of the original array-list HUD element {@code sixtwo.ce} plus its
+ * watermark row ({@code co.NV}, inherited by {@code ce.NV}).
  *
- * <p>Written against the observable framework
- * contract in analysis/specs/00-framework.md; no code from the original
- * client is reproduced. Drawing is world-independent (no world/player context
- * required beyond cheap client statistics) and uses only vanilla
- * {@link DrawContext#drawText} primitives verified against the Yarn
- * 1.21.11+build.6 mappings.
+ * <p>Recovered geometry:
+ * <ul>
+ *   <li>watermark row: {@code ccU(x, y, width, 20, ...)} with the
+ *       {@code lE.WTzbi} 7px text and an icon at the right;</li>
+ *   <li>rows: 13px high, gap 2, each split into a keybind panel and a name
+ *       panel ({@code ccW(..., 13, ..., ld.all(5.0f), 7.0f)}), text via
+ *       {@code lE.joxgd 7px}, sorted by {@code nameWidth + keyWidth}
+ *       ({@code ce.java:470});</li>
+ *   <li>the panel uses the current background style through
+ *       {@code lC.ccW} (Blur / Liquid Glass / Solid);</li>
+ *   <li>{@code gg.bai/baj} select whether the module appears and whether its
+ *       keybind panel is shown.</li>
+ * </ul>
  *
- * <p>Registration: this Fabric version (fabric-rendering-v1 16.2.x for
- * 1.21.11) exposes {@link HudElementRegistry}, not the older
- * {@code HudLayerRegistrationCallback}; {@link #init()} registers this
- * overlay as the last HUD layer and needs a single
- * {@code HudOverlay.init();} call in {@code OpenGrimClient.onInitializeClient}.
+ * <p>Registration uses Fabric's {@link HudElementRegistry} for 1.21.11. The
+ * original's HUD element base ({@code co}) draws in GUI pixels, so this uses
+ * the recovered MSDF font sheets and the shape pipeline directly rather than
+ * vanilla {@code drawText}.
  */
 public final class HudOverlay {
 	private static final Identifier ID = Identifier.of("opengrim", "hud_overlay");
-	private static final int LINE_SPACING = 2;
+	private static final float ROW_H = 13.0f;
+	private static final float ROW_GAP = 2.0f;
+	private static final float PAD_X = 7.0f;
+	private static final float TEXT_SIZE = 7.0f;
+	private static final float WATERMARK_H = 20.0f;
 
 	private HudOverlay() {
 	}
 
-	/**
-	 * Registers the overlay with Fabric's HUD element registry.
-	 */
 	public static void init() {
 		HudElementRegistry.addLast(ID, HudOverlay::render);
 	}
 
-	/**
-	 * Draws the watermark and enabled-module list. Safe to call from any HUD
-	 * callback (also usable directly from a mixin-based HUD hook).
-	 */
 	public static void render(DrawContext ctx, RenderTickCounter tickCounter) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.textRenderer == null) {
 			return;
 		}
+		GuiDraw draw = new GuiDraw(ctx, 0.0, 0.0, 0.0f, client.textRenderer);
+		Theme theme = Theme.get();
+		MsdfFont nameFont = MsdfFont.of(MsdfFont.MEDIUM);
+		MsdfFont infoFont = MsdfFont.regular();
 
-		int x = 4;
-		int y = 4;
-		int y2 = drawWatermark(ctx, client, x, y);
-		drawEnabledModules(ctx, x, y2);
-	}
-
-	private static int drawWatermark(DrawContext ctx, MinecraftClient client, int x, int y) {
-		TextRenderer font = client.textRenderer;
+		float x = 2.0f;
+		float y = 2.0f;
 		int ping = ping(client);
 		String info = " | " + client.getCurrentFps() + " fps" + (ping >= 0 ? " | " + ping + " ms" : "");
-		int fontHeight = font.fontHeight;
-		String text = "OpenGrim" + info;
-		ctx.fill(x - 2, y - 2, x + font.getWidth(text) + 2, y + fontHeight + 1,
-				GuiTheme.withAlpha(GuiTheme.PANEL_HEADER, 0.6f));
-		ctx.drawText(font, "OpenGrim", x, y, GuiTheme.COMBAT, true);
-		ctx.drawText(font, info, x + font.getWidth("OpenGrim"), y, GuiTheme.HUD_INFO, true);
-		return y + fontHeight + LINE_SPACING + 2;
-	}
+		String title = "OpenGrim";
+		float titleW = nameFont.width(title, TEXT_SIZE);
+		float infoW = infoFont.width(info, TEXT_SIZE);
+		float watermarkW = titleW + infoW + PAD_X * 2.0f;
+		draw.themedBackground(x, y, watermarkW, WATERMARK_H, 6.0f, 0.75f);
+		draw.text(nameFont, title, x + PAD_X, y + (WATERMARK_H - TEXT_SIZE) / 2.0f, TEXT_SIZE,
+				theme.accent());
+		draw.text(infoFont, info, x + PAD_X + titleW, y + (WATERMARK_H - TEXT_SIZE) / 2.0f,
+				TEXT_SIZE, theme.text().withAlphaScale(0.7f));
 
-	private static void drawEnabledModules(DrawContext ctx, int x, int y) {
 		List<Module> enabled = new ArrayList<>();
 		for (Module module : ModuleManager.get().getModules()) {
-			if (module.isEnabled()) {
+			if (module.isEnabled() && module.isShownInArrayList()) {
 				enabled.add(module);
 			}
 		}
-		int fontHeight = MinecraftClient.getInstance().textRenderer.fontHeight;
-		for (int i = enabled.size() - 1; i >= 0; i--) {
-			Module module = enabled.get(i);
-			if (!module.isShownInArrayList()) {
-				continue;
+		// ce.java:470 sorts ascending by name + keybind width.
+		enabled.sort(Comparator.comparingDouble(module -> rowWidth(module, nameFont, infoFont)));
+
+		float rowY = y + WATERMARK_H + 2.0f;
+		for (Module module : enabled) {
+			float keyW = module.isShowKeybindInArrayList() && module.getBind() != -999
+					? infoFont.width(KeybindSetting.displayName(module.getBind()), TEXT_SIZE) + PAD_X * 2.0f
+					: 0.0f;
+			float nameW = nameFont.width(module.getName(), TEXT_SIZE) + PAD_X * 2.0f;
+			float cursor = x;
+			if (keyW > 0.0f) {
+				draw.themedBackground(cursor, rowY, keyW, ROW_H, 6.0f, 0.75f);
+				draw.text(infoFont, KeybindSetting.displayName(module.getBind()), cursor + PAD_X,
+						rowY + (ROW_H - TEXT_SIZE) / 2.0f, TEXT_SIZE, theme.text().withAlphaScale(0.7f));
+				cursor += keyW + 3.0f;
 			}
-			int color = GuiTheme.accent(module.getCategory());
-			ctx.drawText(MinecraftClient.getInstance().textRenderer, module.getName(), x, y,
-					color, true);
-			if (module.isShowKeybindInArrayList() && module.getBind() != -999) {
-				int nameWidth = MinecraftClient.getInstance().textRenderer.getWidth(module.getName());
-				ctx.drawText(MinecraftClient.getInstance().textRenderer,
-						"  " + KeybindSetting.displayName(module.getBind()), x + nameWidth, y,
-						GuiTheme.HUD_INFO, true);
-			}
-			y += fontHeight + LINE_SPACING;
+			draw.themedBackground(cursor, rowY, nameW, ROW_H, 6.0f, 0.75f);
+			draw.text(nameFont, module.getName(), cursor + PAD_X,
+					rowY + (ROW_H - TEXT_SIZE) / 2.0f, TEXT_SIZE, theme.accent());
+			rowY += ROW_H + ROW_GAP;
 		}
 	}
 
-	/**
-	 * Latency of the local player from the player list, or -1 when unknown
-	 * (not connected / entry missing).
-	 */
+	private static float rowWidth(Module module, MsdfFont nameFont, MsdfFont infoFont) {
+		float width = nameFont.width(module.getName(), TEXT_SIZE) + PAD_X * 2.0f;
+		if (module.isShowKeybindInArrayList() && module.getBind() != -999) {
+			width += infoFont.width(KeybindSetting.displayName(module.getBind()), TEXT_SIZE)
+					+ PAD_X * 2.0f + 3.0f;
+		}
+		return width;
+	}
+
 	private static int ping(MinecraftClient client) {
 		ClientPlayNetworkHandler handler = client.getNetworkHandler();
 		if (handler == null || client.player == null) {

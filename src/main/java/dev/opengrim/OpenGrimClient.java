@@ -26,6 +26,7 @@ public class OpenGrimClient implements ClientModInitializer {
 		CONFIG.load();
 		dev.opengrim.gui.GuiManager.init();
 		dev.opengrim.hud.HudOverlay.init();
+		dev.opengrim.command.Commands.init();
 		KeybindManager.init();
 		dev.opengrim.event.EventBridge.init();
 		dev.opengrim.modules.render.ChinaHatRenderer.init();
