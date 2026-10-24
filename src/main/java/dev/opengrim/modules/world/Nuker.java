@@ -16,7 +16,7 @@ import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ItemListSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.block.Block;
@@ -132,7 +132,7 @@ public class Nuker extends Module {
 	private final DoubleSetting delay = register(new DoubleSetting("delay", 1.0, 0.0, 20.0, 0.0, " ticks"));
 	private final ModeSetting blockToMine = register(new ModeSetting("block_to_mine",
 			List.of("from_list", "selected", "all"), "from_list"));
-	private final IntSetting selectionKey = register(new IntSetting("selection_key", -999, 348, -999));
+	private final KeybindSetting selectionKey = register(new KeybindSetting("selection_key", -999));
 	private final ModeSetting miningSpeed = register(new ModeSetting("mining_speed",
 			List.of("normal", "faster", "fastest"), "normal"));
 	private final GroupSetting options = register(new GroupSetting("options"));

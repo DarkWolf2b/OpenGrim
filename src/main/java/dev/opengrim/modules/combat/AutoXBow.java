@@ -2,7 +2,7 @@ package dev.opengrim.modules.combat;
 
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.component.DataComponentTypes;
@@ -39,7 +39,7 @@ import net.minecraft.item.Items;
  * and log aGn/aGs + the aGf..aGm state steps.
  */
 public class AutoXBow extends Module {
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 
 	private int state;
 	private boolean holdingUse;

@@ -8,7 +8,7 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -70,7 +70,7 @@ public class AutoHitCrystal extends Module {
 	private final DoubleSetting placeDelay = register(new DoubleSetting("place_delay", 1.0, 0.0, 20.0, 0.0, " ticks"));
 	private final DoubleSetting switchDelay = register(new DoubleSetting("switch_delay", 1.0, 0.0, 20.0, 0.0, " ticks"));
 	private final BoolSetting spoofCps = register(new BoolSetting("spoof_cps", false));
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, 1));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", 1));
 	private final GroupSetting workWithItems = register(new GroupSetting("work_with_items"));
 	private final BoolSetting netheriteSword = new BoolSetting("netherite_sword", true);
 	private final BoolSetting diamondSword = new BoolSetting("diamond_sword", true);

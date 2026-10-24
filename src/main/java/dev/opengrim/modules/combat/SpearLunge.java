@@ -4,7 +4,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.component.DataComponentTypes;
@@ -54,7 +54,7 @@ import net.minecraft.util.math.Vec3d;
  * restart and slot restore after Return Delay.
  */
 public class SpearLunge extends Module {
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 	private final BoolSetting changeArmor = register(new BoolSetting("change_armor", false));
 	private final BoolSetting restoreArmor = register(new BoolSetting("restore_armor", false));
 	private final BoolSetting startFlyingAfterRestore = register(new BoolSetting("start_flying_after_restore", false));

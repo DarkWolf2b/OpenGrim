@@ -11,6 +11,7 @@ import dev.opengrim.gui.ui.Popup;
 import dev.opengrim.gui.ui.Rect;
 import dev.opengrim.gui.ui.Theme;
 import dev.opengrim.gui.ui.Widget;
+import dev.opengrim.gui.ui.widgets.KeybindWidget;
 import dev.opengrim.gui.ui.widgets.ToggleWidget;
 
 import java.util.ArrayList;
@@ -126,11 +127,13 @@ public class SettingsWindow extends Popup {
 		setOpen(false);
 		setVisible(false);
 		module = null;
+		cancelKeybindListening();
 		rows.children.clear();
 	}
 
 	/** Rebuild the row list and the recovered bd.dn() height. */
 	public void rebuild() {
+		cancelKeybindListening();
 		rows.children.clear();
 		contentHeight = 0.0f;
 		if (module == null) {
@@ -266,6 +269,32 @@ public class SettingsWindow extends Popup {
 				y + CLOSE_TOP + CLOSE_SIZE / 2.0f - CLOSE_HIT / 2.0f, CLOSE_HIT, CLOSE_HIT);
 	}
 
+	/** True while a keybind row is waiting for the next key or mouse button. */
+	public boolean isCapturingKeybind() {
+		return rows.listeningKeybind() != null;
+	}
+
+	/**
+	 * Route a mouse press to the armed keybind row even when the pointer is
+	 * outside the panel, so mouse buttons can be bound. Returns true when the
+	 * press belongs to the keybind capture.
+	 */
+	public boolean captureKeybindMouse(MouseButton button) {
+		KeybindWidget keybind = rows.listeningKeybind();
+		if (keybind == null) {
+			return false;
+		}
+		keybind.bindMouse(button);
+		return true;
+	}
+
+	public void cancelKeybindListening() {
+		KeybindWidget keybind = rows.listeningKeybind();
+		if (keybind != null) {
+			keybind.cancelListening();
+		}
+	}
+
 	/**
 	 * [G] Clamp the panel into the design viewport so it stays reachable on
 	 * small windows. The original {@code bd} has no recovered clamp (only
@@ -324,6 +353,15 @@ public class SettingsWindow extends Popup {
 
 		void add(Widget child) {
 			children.add(child);
+		}
+
+		KeybindWidget listeningKeybind() {
+			for (Widget child : children) {
+				if (child instanceof KeybindWidget keybind && keybind.isListening()) {
+					return keybind;
+				}
+			}
+			return null;
 		}
 
 		@Override

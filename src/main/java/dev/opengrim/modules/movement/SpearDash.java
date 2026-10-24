@@ -6,7 +6,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -51,7 +51,7 @@ import net.minecraft.util.math.Vec3d;
  * native-blocked.
  */
 public class SpearDash extends Module {
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 	private final ModeSetting dashDirection = register(new ModeSetting("dash_direction",
 			List.of("movement", "direction"), "movement"));
 	private final DoubleSetting givenDirection = register(new DoubleSetting("given_direction", 1.0, -180.0, 180.0, 0.0, " deg"));

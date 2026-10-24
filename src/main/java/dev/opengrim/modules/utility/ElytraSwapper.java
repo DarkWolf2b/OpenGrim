@@ -7,7 +7,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -52,7 +52,7 @@ import org.lwjgl.glfw.GLFW;
  * path or the asn/asm group-change rebuild callbacks.
  */
 public class ElytraSwapper extends Module {
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 	private final ModeSetting mode = register(new ModeSetting("mode",
 			List.of("legit", "normal"), "legit"));
 	private final ModeSetting inventoryMode = register(new ModeSetting("inventory_mode",

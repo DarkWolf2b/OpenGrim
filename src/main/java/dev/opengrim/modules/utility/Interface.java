@@ -10,7 +10,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
 import dev.opengrim.settings.BoolSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
@@ -56,7 +56,7 @@ import org.lwjgl.glfw.GLFW;
  * </ul>
  */
 public class Interface extends Module {
-	private final IntSetting emoteKey = register(new IntSetting("emote_key", -999, 999, 66));
+	private final KeybindSetting emoteKey = register(new KeybindSetting("emote_key", 66));
 	private final ModeSetting style = register(new ModeSetting("style",
 			List.of("liquid_glass", "blur", "solid"), "blur"));
 	private final BoolSetting editTheme = register(new BoolSetting("edit_theme", false));

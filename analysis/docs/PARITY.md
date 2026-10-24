@@ -23,6 +23,14 @@ from the porting reports in `../../analysis/port/reports/`.
 
 ## Update history (newest first)
 
+- **2026-10-24 (keybind rows + automatic builds)** — the `cD` keybind settings
+  now render as the recovered 18-unit `y` rows instead of integer sliders:
+  `KeybindSetting` + `KeybindWidget`, all 27 key-code `IntSetting` declarations
+  converted, keyboard/mouse capture in the settings popup. Added
+  `.github/workflows/automatic-prerelease.yml` (push to `main` → automatic
+  GitHub pre-release). Parity rows keep their scores: the setting values and
+  defaults are unchanged; only the widget rendering/interaction now matches
+  `y.dn() = 18`. Details in Divergences Wave 11. No commit/push.
 - **2026-10-21 (module recovery queue)** — 24 module rows re-scored after the
   avoidable-gap queue landed: `cW`, `dc`, `cQ`, `dv`, `db`, `dw`, `ff`, `dt`,
   `dq`, `dI`, `dh`, `fX`, `dz`, `cR`, `dl`, `dp`, `dn`, `da`, `dg`, `do`, `cZ`,
@@ -1391,6 +1399,34 @@ the page grouping structural.
   on client `Success`). Its tick handler is native (`aQY`/`aQX`/`aRa`,
   `analysis/specs/handlers/fw.md:62-69`), so the interaction call itself
   remains a reconstructed choice; the bucket path is vanilla API, not a guess.
+
+### Wave 11 — cD/y keybind rows (2026-10-24)
+
+- **Divergence closed:** keybind settings were rendered as the generic
+  `IntSetting` 28-unit slider (`activation_key -999` in the settings popup).
+  The original stores keybinds in `cD` (`taKVz` int, `VP()`/`VO(int)`,
+  `VN() -> jb.byM(code)`, `-999` unbound;
+  `analysis/decompiled/casesafe/payload-named-cfr/sixtwo/cD_.java:26,81-115`)
+  and renders them with the 18-unit `y` row (`y.dn()` handler `0x1907c61b0`,
+  `analysis/artifacts/gui-native/bd-settings-spec.md` row-height table).
+- **Port:** `settings/KeybindSetting.java` reproduces the `cD` value surface;
+  `gui/ui/widgets/KeybindWidget.java` is the `y` row (label + `cD.VN()` value,
+  armed `...` state, next keyboard key or mouse button binds, Escape cancels,
+  right click clears). `ModuleWidgetFactory` binds it at `TOGGLE_H` (18), not
+  `SLIDER_H` (28). All 27 key-code `IntSetting` declarations in the module tree
+  were converted; their defaults (including `AimAssist`/`TriggerBot`
+  `hold_key = 0` and `Interface` `emote_key = 66`) and JSON values are
+  unchanged.
+- **Input routing:** `ClickGuiScreen` sends mouse presses/keys/chars to an
+  armed row before search/cards (`SettingsWindow.isCapturingKeybind()` /
+  `captureKeybindMouse()`), and closing/rebuilding the panel cancels the arm.
+- **CI:** `.github/workflows/automatic-prerelease.yml` builds on every push to
+  `main` (also `workflow_dispatch`), sparse-checks out `src` + `gradle` on JDK
+  21, and publishes `build/libs` jars as a GitHub pre-release with an explicit
+  automatic-build description.
+- **Evidence limits:** the native `y.bV`/`y.dk` bodies are VM-hidden; the row
+  geometry, height and value source are recovered, while the exact armed-state
+  glyph/string (`...`) follows the port's existing compact-row style.
 
 ## Avoidable 1:1 gaps — module audit (2026-10-21)
 

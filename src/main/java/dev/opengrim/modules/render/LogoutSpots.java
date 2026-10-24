@@ -47,7 +47,7 @@ import dev.opengrim.render.WorldProjection;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 
 /**
@@ -110,7 +110,7 @@ public class LogoutSpots extends Module {
 	private final ColorSetting positionColor = register(new ColorSetting("position_color", 0xFFFFFFFF, false));
 	private final DoubleSetting height = register(new DoubleSetting("height", 0.1, 0.1, 3.0, 2.8, " blocks"));
 	private final BoolSetting background = register(new BoolSetting("background", false));
-	private final IntSetting clearSpots = register(new IntSetting("clear_spots", -999, 500, -999));
+	private final KeybindSetting clearSpots = register(new KeybindSetting("clear_spots", -999));
 
 	/** kt snapshot stand-in: UUID, name, captured logout position. */
 	public record LogoutSpot(UUID uuid, String name, Vec3d pos) {

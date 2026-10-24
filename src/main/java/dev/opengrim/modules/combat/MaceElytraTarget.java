@@ -9,7 +9,7 @@ import dev.opengrim.rotation.Rotation;
 import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -70,7 +70,7 @@ public class MaceElytraTarget extends Module {
 	private final ModeSetting fireworkUseMode = register(new ModeSetting("firework_use_mode",
 			List.of("none", "on_bind", "auto"), "auto"));
 	private final DoubleSetting fireworkCooldown = register(new DoubleSetting("firework_cooldown", 1.0, 0.0, 60.0, 10.0, " ticks"));
-	private final IntSetting fireworkKey = register(new IntSetting("firework_key", -999, 348, -999));
+	private final KeybindSetting fireworkKey = register(new KeybindSetting("firework_key", -999));
 
 	private long lastBoostMs = -1L;
 	private int climbTicks;

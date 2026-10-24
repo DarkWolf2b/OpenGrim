@@ -7,7 +7,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -57,8 +57,8 @@ import org.lwjgl.glfw.GLFW;
  * restore with a delay-stepped cursor (no overlay render, no key-synthesis path).
  */
 public class HotbarRestorer extends Module {
-	private final IntSetting saveKey = register(new IntSetting("save_key", -999, 348, -999));
-	private final IntSetting restoreKey = register(new IntSetting("restore_key", -999, 348, -999));
+	private final KeybindSetting saveKey = register(new KeybindSetting("save_key", -999));
+	private final KeybindSetting restoreKey = register(new KeybindSetting("restore_key", -999));
 	private final ModeSetting mode = register(new ModeSetting("mode", List.of("direct", "swap"), "direct"));
 	private final BoolSetting autoSave = register(new BoolSetting("auto_save", false));
 	private final DoubleSetting delay = register(new DoubleSetting("delay", 10.0, 0.0, 500.0, 0.0, " ms"));

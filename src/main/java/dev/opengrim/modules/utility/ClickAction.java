@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Item;
@@ -57,9 +57,9 @@ public class ClickAction extends Module {
 		UPeYL
 	}
 
-	private final IntSetting pearlKey = register(new IntSetting("pearl_key", -999, 348, -999));
-	private final IntSetting fireworkKey = register(new IntSetting("firework_key", -999, 348, -999));
-	private final IntSetting potionKey = register(new IntSetting("potion_key", -999, 348, -999));
+	private final KeybindSetting pearlKey = register(new KeybindSetting("pearl_key", -999));
+	private final KeybindSetting fireworkKey = register(new KeybindSetting("firework_key", -999));
+	private final KeybindSetting potionKey = register(new KeybindSetting("potion_key", -999));
 	private final DoubleSetting returnDelay = register(new DoubleSetting("return_delay", 10.0, 0.0, 1000.0, 50.0, " ms"));
 
 	/** Second element of the recovered UI(50.0, 100.0) default pair (dR_.java:86) - sampled upper bound of the restore delay. */

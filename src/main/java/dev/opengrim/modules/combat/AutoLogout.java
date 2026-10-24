@@ -5,7 +5,7 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.StringSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -66,7 +66,7 @@ public class AutoLogout extends Module {
 	private final BoolSetting invisible = register(new BoolSetting("invisible", false));
 	private final StringSetting disconnectMessage = register(new StringSetting("disconnect_message", "Disconnected"));
 	private final BoolSetting logoutOnKey = register(new BoolSetting("logout_on_key", false));
-	private final IntSetting logoutKey = register(new IntSetting("logout_key", -999, 348, -999));
+	private final KeybindSetting logoutKey = register(new KeybindSetting("logout_key", -999));
 	private final BoolSetting disableOnLogout = register(new BoolSetting("disable_on_logout", false));
 
 	public AutoLogout() {

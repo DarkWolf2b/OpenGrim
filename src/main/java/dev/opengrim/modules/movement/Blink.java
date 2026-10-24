@@ -11,7 +11,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.Packet;
@@ -56,7 +56,7 @@ public class Blink extends Module {
 	private final DoubleSetting pulsePackets = register(new DoubleSetting("pulse_packets", 1.0, 1.0, 1000.0, 17.0, null));
 	private final BoolSetting autoDisable = register(new BoolSetting("auto_disable", false));
 	private final DoubleSetting disablePackets = register(new DoubleSetting("disable_packets", 1.0, 1.0, 1000.0, 17.0, null));
-	private final IntSetting cancelKey = register(new IntSetting("cancel_key", -999, 348, -999));
+	private final KeybindSetting cancelKey = register(new KeybindSetting("cancel_key", -999));
 
 	private final Queue<Packet<?>> held = new ConcurrentLinkedQueue<>();
 	private final AtomicBoolean holding = new AtomicBoolean(false);

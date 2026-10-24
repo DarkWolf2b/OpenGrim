@@ -6,7 +6,7 @@ import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.InputUtil;
@@ -67,7 +67,7 @@ import net.minecraft.util.math.Vec3d;
  * packet sends.
  */
 public class AutoPearlCatch extends Module {
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 	private final DoubleSetting windChargeDelay = register(new DoubleSetting("wind_charge_delay", 10.0, 150.0, 500.0, 250.0, null));
 	private final BoolSetting returnSlot = register(new BoolSetting("return_slot", true));
 	private final DoubleSetting returnDelay = register(new DoubleSetting("return_delay", 10.0, 0.0, 1000.0, 50.0, null));

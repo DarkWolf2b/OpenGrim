@@ -12,7 +12,7 @@ import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.ColorSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import dev.opengrim.util.FriendsManager;
 import net.minecraft.client.MinecraftClient;
@@ -121,7 +121,7 @@ public class AimAssist extends Module {
 	private final BoolSetting whenHolding = register(new BoolSetting("when_holding", false));
 	// Default key 0: cD.VO(mA.sCBUa.cmO()) with mA.sCBUa = new mA(0)
 	// (mA.java:171, cmO() returns the enum payload, mA.java:352-354).
-	private final IntSetting holdKey = register(new IntSetting("hold_key", -999, 348, 0));
+	private final KeybindSetting holdKey = register(new KeybindSetting("hold_key", 0));
 
 	private LivingEntity locked;
 	private long tickIndex;

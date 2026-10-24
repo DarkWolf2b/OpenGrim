@@ -10,7 +10,7 @@ import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -82,7 +82,7 @@ public class AnchorMacro extends Module {
 	private final BoolSetting cancelOnUse = register(new BoolSetting("cancel_on_use", true));
 	private final BoolSetting safeAnchor = register(new BoolSetting("safe_anchor", false));
 	private final BoolSetting safeAnchorHold = register(new BoolSetting("safe_anchor_hold", false));
-	private final IntSetting holdKey = register(new IntSetting("hold_key", -999, 348, -999));
+	private final KeybindSetting holdKey = register(new KeybindSetting("hold_key", -999));
 	private final GroupSetting safeAnchorBlocks = register(new GroupSetting("safe_anchor_blocks"));
 	private final BoolSetting obsidianBlock = new BoolSetting("obsidian", true);
 	private final BoolSetting glowstoneBlock = new BoolSetting("glowstone", true);

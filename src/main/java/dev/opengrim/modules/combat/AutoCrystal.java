@@ -6,7 +6,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -47,7 +47,7 @@ public class AutoCrystal extends Module {
 	private static final double REACH = 4.5;
 
 	private final BoolSetting activateOnKey = register(new BoolSetting("activate_on_key", false));
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 	private final BoolSetting spoofCps = register(new BoolSetting("spoof_cps", false));
 	private final DoubleSetting placeDelay =
 			register(new DoubleSetting("place_delay", 1.0, 0.0, 10.0, 0.0, " ticks"));

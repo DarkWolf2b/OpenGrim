@@ -11,7 +11,7 @@ import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -77,7 +77,7 @@ public class KnockbackDisplacement extends Module {
 			List.of("always", "with_knockback_only"), "always"));
 	private final ModeSetting knockbackDirection = register(new ModeSetting("knockback_direction",
 			List.of("dynamic", "direction"), "dynamic"));
-	private final IntSetting changeAngleKey = register(new IntSetting("change_angle_key", -999, 348, -999));
+	private final KeybindSetting changeAngleKey = register(new KeybindSetting("change_angle_key", -999));
 	private final DoubleSetting angleStep = register(new DoubleSetting("angle_step", 1.0, 1.0, 180.0, 90.0, null));
 	private final DoubleSetting givenDirection = register(new DoubleSetting("given_direction", 1.0, -180.0, 180.0, 180.0, " deg"));
 	private final BoolSetting hideRotation = register(new BoolSetting("hide_rotation", false));

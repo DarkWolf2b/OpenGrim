@@ -619,6 +619,12 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	@Override
 	protected boolean onMouseClicked(double mx, double my, MouseButton button) {
+		// An armed keybind row captures the next mouse button anywhere on the
+		// screen, so mouse bindings work from the same row.
+		if (settingsWindow.isVisible() && settingsWindow.isCapturingKeybind()
+				&& settingsWindow.captureKeybindMouse(button)) {
+			return true;
+		}
 		if (settingsWindow.isVisible() && settingsWindow.contains(mx, my)) {
 			manager.mouseDown(mx, my, button);
 			return true;
@@ -738,11 +744,19 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	@Override
 	protected boolean onCharTyped(char c) {
+		if (settingsWindow.isVisible() && settingsWindow.isCapturingKeybind()) {
+			return true;
+		}
 		return search.onCharTyped(c) || manager.charTyped(c);
 	}
 
 	@Override
 	protected boolean onKeyPressed(int key, int scancode, int modifiers) {
+		// An armed keybind row owns the keyboard until it binds or cancels.
+		if (settingsWindow.isVisible() && settingsWindow.isCapturingKeybind()) {
+			settingsWindow.onKeyPressed(key, scancode, modifiers);
+			return true;
+		}
 		if (search.onKeyPressed(key, scancode, modifiers)) {
 			return true;
 		}

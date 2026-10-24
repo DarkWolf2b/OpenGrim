@@ -8,7 +8,7 @@ import dev.opengrim.mixin.HandledScreenAccessor;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -68,14 +68,14 @@ import org.lwjgl.glfw.GLFW;
  */
 public class AutoMarket extends Module {
 	/** "State Key" (dM.java:135 {@code .VO(-999)} = unbound). */
-	private final IntSetting stateKey = register(new IntSetting("state_key", -999, 348, -999));
+	private final KeybindSetting stateKey = register(new KeybindSetting("state_key", -999));
 	/**
 	 * "Add Rule Key" (dM.java:149 {@code .VO(mA.OGQHF.cmO())}): mA is the
 	 * client's key/mouse enum (MouseInputMixin maps mouse buttons through
 	 * {@code mA.cmN(button)}), and OGQHF's code field is 2 — the middle mouse
 	 * button (mA.class static init: OGQHF constructed with code {@code iconst_2}).
 	 */
-	private final IntSetting addRuleKey = register(new IntSetting("add_rule_key", -999, 348, 2));
+	private final KeybindSetting addRuleKey = register(new KeybindSetting("add_rule_key", 2));
 	/**
 	 * "Edit Market" (dM.java:162 {@code new cI(this, "Edit Market").Wx(bz::KE)}):
 	 * a {@code cI} action button opening the {@code bz} market editor. This

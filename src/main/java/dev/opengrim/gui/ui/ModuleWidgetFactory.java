@@ -7,6 +7,7 @@ import dev.opengrim.gui.ui.widgets.ActionWidget;
 import dev.opengrim.gui.ui.widgets.ContainerWidget;
 import dev.opengrim.gui.ui.widgets.EntityListWidget;
 import dev.opengrim.gui.ui.widgets.ItemListWidget;
+import dev.opengrim.gui.ui.widgets.KeybindWidget;
 import dev.opengrim.gui.ui.widgets.ModeWidget;
 import dev.opengrim.gui.ui.widgets.RangeSliderWidget;
 import dev.opengrim.gui.ui.widgets.SliderWidget;
@@ -19,6 +20,7 @@ import dev.opengrim.settings.EntityListSetting;
 import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.settings.IntSetting;
 import dev.opengrim.settings.ItemListSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import dev.opengrim.settings.RangeSetting;
 import dev.opengrim.settings.Setting;
@@ -127,6 +129,10 @@ public final class ModuleWidgetFactory {
 					slider.onChange(() -> intg.setValue(Math.round(slider.value())));
 					out.add(slider.bounds(x, 0.0f, w, SLIDER_H));
 				}
+				// cD keybind setting: the original's 18-unit keybind row
+				// (sixtwo.y, dn() = 18), not a numeric slider.
+				case KeybindSetting keybind -> out.add(
+						new KeybindWidget(keybind).bounds(x, 0.0f, w, TOGGLE_H));
 				case ModeSetting mode -> out.add(
 						new ModeWidget(mode.getId(), mode.getModes(), mode.getValue()) {
 							@Override

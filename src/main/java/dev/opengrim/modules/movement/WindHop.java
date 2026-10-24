@@ -5,7 +5,7 @@ import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.InputUtil;
@@ -43,18 +43,15 @@ import net.minecraft.util.math.Vec3d;
  * the {@code oT} block/interaction builder aimed beneath the player with a
  * {@code KeyBinding.useKey} pressed spoof.
  *
- * <p>Recorded gaps: the original {@code Activation Key} is a {@code cD}
- * keybind-setting widget — no bind widget exists in our settings yet, so an
- * {@link IntSetting} (default -999, i.e. unbound) stands in. The widget's
- * recovered shape (2026-10-18 re-verify): {@code cD} holds a key-code int
- * (field {@code taKVz}, default from its clinit; casesafe/payload-named-cfr/
+ * <p>The original {@code Activation Key} is a {@code cD} keybind setting; the
+ * port uses {@link KeybindSetting} with the same {@code -999} unbound sentinel
+ * and the {@code KeybindWidget} row. {@code cD} holds a key-code int (field
+ * {@code taKVz}, default from its clinit; casesafe/payload-named-cfr/
  * sixtwo/cD_.java:26, 31-34), {@code .VO(int)} sets it (cD_.java:89-110) and
- * {@code VN()} renders it via {@code jb.byM(code)} (cD_.java:81-82) — so
- * {@code .VO(-999)} is exactly "unbound" and the port's IntSetting(-999) is
- * 1:1 on the value; only the widget rendering differs. The input event
- * {@code aCF(gA)} has no direct bus equivalent, so the activation key is polled
- * from the tick with InputUtil instead. The cooldown threshold is stored by the
- * VM inside the {@code mT} timer — 500 ms is the recorded stand-in
+ * {@code VN()} renders it via {@code jb.byM(code)} (cD_.java:81-82). The input
+ * event {@code aCF(gA)} has no direct bus equivalent, so the activation key is
+ * polled from the tick with InputUtil instead. The cooldown threshold is stored
+ * by the VM inside the {@code mT} timer — 500 ms is the recorded stand-in
  * (high-probability guess). Aims are submitted through RotationManager (never
  * raw setYaw/setPitch).
  *
@@ -70,7 +67,7 @@ public class WindHop extends Module {
 	/** Fixed internal cooldown; the original threshold constant is VM-hidden (eR.md). */
 	private static final long COOLDOWN_MS = 500L;
 
-	private final IntSetting activationKey = register(new IntSetting("activation_key", -999, 348, -999));
+	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
 	private final BoolSetting onlyOnGround = register(new BoolSetting("only_on_ground", true));
 
 	private long lastThrowTime;

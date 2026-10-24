@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-22 (Linux: overlay projection + full-screen quad fixes; AutoMLG/AutoDrain bucket placement — see PARITY Divergences Wave 10; `build` PASS on JDK 21; no commit/push)
+Last updated: 2026-10-24 (Linux: cD/y keybind rows replace the integer sliders; automatic prerelease workflow added; `compileJava` PASS on JDK 21; no commit/push)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1214,3 +1214,26 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   re-run in-game. AutoMLG's trigger/branch and AutoDrain's interaction call are
   recorded in PARITY → Divergences Wave 10 (the `fM`/`fw` executors are native
   VM bodies). All changes remain uncommitted.
+
+## 2026-10-24 (Linux): keybind rows + automatic prerelease workflow
+
+- **Keybind settings are now real keybind rows.** New
+  `settings/KeybindSetting.java` (cD port: `taKVz` int, `VP()`/`VO(int)`,
+  `VN() -> jb.byM(code)`, `-999` unbound) and
+  `gui/ui/widgets/KeybindWidget.java` (y port: 18-unit row, label + bound key
+  name, armed `...` state, keyboard/mouse capture, Escape cancels, right click
+  clears).
+- `ModuleWidgetFactory` now binds `KeybindSetting` to the 18-unit row rather
+  than the 28-unit integer slider. All 27 key-code `IntSetting` declarations
+  across 21 modules were converted to `KeybindSetting`; defaults are unchanged
+  and existing JSON configs stay value-compatible.
+- `SettingsWindow` cancels an armed row on close/rebuild and exposes the capture
+  plumbing; `ClickGuiScreen` routes mouse presses, key presses and char input to
+  an armed row before the search field/cards, so mouse buttons and Escape work
+  from the keybind row.
+- Workflow `.github/workflows/automatic-prerelease.yml`: on push to `main` or
+  manual dispatch, sparse-checkout build with JDK 21, Gradle build, then publish
+  the `build/libs` jars as a GitHub **pre-release** tagged
+  `auto-build-<run>-<attempt>` with an explicit automatic-build description.
+- **Build:** `./gradlew compileJava` → BUILD SUCCESSFUL on JDK 21.
+- No commit/push.

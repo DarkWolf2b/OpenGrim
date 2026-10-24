@@ -17,7 +17,7 @@ import dev.opengrim.module.ModuleManager;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import dev.opengrim.settings.ModeSetting;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -130,7 +130,7 @@ public class TriggerBot extends Module {
 			List.of("all_items", "allow_shielding"), "all_items"));
 	private final DoubleSetting range = register(new DoubleSetting("range", 0.01, 1.5, 6.0, 3.0, " blocks"));
 	private final BoolSetting whenHolding = register(new BoolSetting("when_holding", false));
-	private final IntSetting holdKey = register(new IntSetting("hold_key", -999, 348, 0));
+	private final KeybindSetting holdKey = register(new KeybindSetting("hold_key", 0));
 	private final BoolSetting upperCut = register(new BoolSetting("upper_cut", false));
 
 	private long lastHitMs;

@@ -9,7 +9,7 @@ import dev.opengrim.rotation.RotationManager;
 import dev.opengrim.rotation.RotationPriority;
 import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
-import dev.opengrim.settings.IntSetting;
+import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -43,7 +43,7 @@ import net.minecraft.entity.player.PlayerEntity;
  * aIS selection + aIT predicate decisions and the aIV broadcast contents.
  */
 public class TargetLock extends Module {
-	private final IntSetting lockKeybind = register(new IntSetting("lock_keybind", -999, 348, -999));
+	private final KeybindSetting lockKeybind = register(new KeybindSetting("lock_keybind", -999));
 	private final DoubleSetting selectRange = register(new DoubleSetting("select_range", 0.1, 3.0, 10.0, 5.0, " blocks"));
 	private final BoolSetting selectThroughWalls = register(new BoolSetting("select_through_walls", false));
 
