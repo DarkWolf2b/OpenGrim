@@ -85,6 +85,10 @@ public class SliderWidget extends Widget {
 		return v < min ? min : (v > max ? max : v);
 	}
 
+	private float clamp01(float v) {
+		return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
+	}
+
 	private float stepRound(float v) {
 		if (step <= 0.0f) {
 			return v;
@@ -93,7 +97,7 @@ public class SliderWidget extends Widget {
 	}
 
 	private float fraction() {
-		return max > min ? clamp((value - min) / (max - min)) : 0.0f;
+		return max > min ? clamp01((value - min) / (max - min)) : 0.0f;
 	}
 
 	@Override
@@ -141,9 +145,9 @@ public class SliderWidget extends Widget {
 	}
 
 	protected void applyPoint(double mx) {
-		float tx = x + 4.0f;
-		float tw = Math.max(1.0f, w - 8.0f);
+		float tx = x + 7.5f;
+		float tw = Math.max(1.0f, w - 15.0f);
 		float frac = (float) ((mx - tx) / tw);
-		setValue(min + clamp(frac) * (max - min));
+		setValue(min + clamp01(frac) * (max - min));
 	}
 }

@@ -94,6 +94,10 @@ public class RangeSliderWidget extends Widget {
 		return v < min ? min : (v > max ? max : v);
 	}
 
+	private float clamp01(float v) {
+		return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
+	}
+
 	private float stepRound(float v) {
 		if (step <= 0.0f) {
 			return v;
@@ -102,7 +106,7 @@ public class RangeSliderWidget extends Widget {
 	}
 
 	private float fraction(float value) {
-		return max > min ? clamp((value - min) / (max - min)) : 0.0f;
+		return max > min ? clamp01((value - min) / (max - min)) : 0.0f;
 	}
 
 	@Override
@@ -159,7 +163,7 @@ public class RangeSliderWidget extends Widget {
 		float tx = x + 7.5f;
 		float tw = Math.max(1.0f, w - 15.0f);
 		float frac = (float) ((mx - tx) / tw);
-		float value = clamp(stepRound(min + clamp(frac) * (max - min)));
+		float value = clamp(stepRound(min + clamp01(frac) * (max - min)));
 		if (activeHandle == 0) {
 			low = Math.min(value, high);
 		} else {

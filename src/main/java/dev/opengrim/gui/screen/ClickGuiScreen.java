@@ -364,10 +364,17 @@ public class ClickGuiScreen extends AnimatedScreen {
 		}
 		String query = search.text().toLowerCase(Locale.ROOT).trim();
 		List<Card> out = new ArrayList<>();
-		for (Module module : ModuleManager.get().byCategory(page.category)) {
-			if (query.isEmpty() || module.getName().toLowerCase(Locale.ROOT).contains(query)) {
-				out.add(new Card(module.getName(), module.getDescription(), module));
+		if (!query.isEmpty()) {
+			for (Module module : ModuleManager.get().getModules()) {
+				if (module.getName().toLowerCase(Locale.ROOT).contains(query)
+						|| module.getId().toLowerCase(Locale.ROOT).contains(query)) {
+					out.add(new Card(module.getName(), module.getDescription(), module));
+				}
 			}
+			return out;
+		}
+		for (Module module : ModuleManager.get().byCategory(page.category)) {
+			out.add(new Card(module.getName(), module.getDescription(), module));
 		}
 		return out;
 	}
@@ -420,14 +427,16 @@ public class ClickGuiScreen extends AnimatedScreen {
 		refreshSearchResults();
 	}
 
-	private void closeSearch() {
+	private void dismissSearchOverlay() {
 		searchOpen = false;
 		search.blur();
-		// The original overlay owns its query; clear it so the underlying grid
-		// does not stay filtered after the overlay disappears.
-		search.clear();
 		searchResults = List.of();
 		searchSelected = 0;
+	}
+
+	private void closeSearch() {
+		dismissSearchOverlay();
+		search.clear();
 	}
 
 	private void selectSearchResult() {
@@ -443,13 +452,19 @@ public class ClickGuiScreen extends AnimatedScreen {
 			case VISUALS -> Page.VISUALS;
 			case CLIENT -> Page.CLIENT;
 		};
-		List<Module> cards = ModuleManager.get().byCategory(module.getCategory());
-		int index = cards.indexOf(module);
+		List<Card> cards = pageCards();
+		int index = -1;
+		for (int i = 0; i < cards.size(); i++) {
+			if (cards.get(i).module() == module) {
+				index = i;
+				break;
+			}
+		}
 		scroll = index < 0 ? 0.0f : Math.max(0.0f, (index / 2) * (CARD_H + CARD_GAP));
 		subtitle = module.getDescription();
-		closeSearch();
+		dismissSearchOverlay();
+		openSettings(module);
 		if (result.setting() != null) {
-			openSettings(module);
 			settingsWindow.scrollToSetting(result.setting());
 		}
 	}
@@ -785,7 +800,9 @@ public class ClickGuiScreen extends AnimatedScreen {
 	@Override
 	protected boolean onMouseClicked(double mx, double my, MouseButton button) {
 		if (searchOpen) {
-			return onSearchClicked(mx, my, button);
+			if (onSearchClicked(mx, my, button)) {
+				return true;
+			}
 		}
 		// An armed keybind row captures the next mouse button anywhere on the
 		// screen, so mouse bindings work from the same row.
@@ -805,7 +822,11 @@ public class ClickGuiScreen extends AnimatedScreen {
 			bindPopup.close();
 		}
 		if (searchIconHit(mx, my)) {
-			openSearch();
+			if (searchOpen) {
+				closeSearch();
+			} else {
+				openSearch();
+			}
 			return true;
 		}
 		if ((button == MouseButton.LEFT || button == MouseButton.RIGHT) && my >= windowY
@@ -871,8 +892,8 @@ public class ClickGuiScreen extends AnimatedScreen {
 			}
 			return true;
 		}
-		closeSearch();
-		return true;
+		dismissSearchOverlay();
+		return false;
 	}
 
 	private void selectPage(Page next) {

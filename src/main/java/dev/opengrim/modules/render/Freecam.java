@@ -66,7 +66,10 @@ public class Freecam extends Module {
 	public void onTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
-		if (player == null || freecamPos == null) {
+		if (player == null || freecamPos == null || client.world == null) {
+			if (isEnabled()) {
+				setEnabled(false);
+			}
 			return;
 		}
 		if (disableOnDamage.getValue() && player.hurtTime > 0) {
@@ -101,7 +104,7 @@ public class Freecam extends Module {
 		Vec3d pos = prevFreecamPos != null
 				? prevFreecamPos.lerp(freecamPos, event.tickProgress())
 				: freecamPos;
-		((CameraAccessor) camera).opengrim$callSetPos(pos);
+		((CameraAccessor) camera).opengrim$callSetPos(pos.x, pos.y, pos.z);
 		((CameraAccessor) camera).opengrim$callSetRotation(freecamYaw, freecamPitch);
 		((CameraAccessor) camera).opengrim$setThirdPerson(true);
 	}
@@ -141,8 +144,10 @@ public class Freecam extends Module {
 		double perTick = speedVal * 0.25;
 
 		float yaw = MathHelper.RADIANS_PER_DEGREE * freecamYaw;
-		double dx = -MathHelper.sin(yaw) * forward + MathHelper.cos(yaw) * strafe;
-		double dz = MathHelper.cos(yaw) * forward + MathHelper.sin(yaw) * strafe;
+		// Correct coordinate signs for Minecraft (+X East, -X West, +Z South, -Z North):
+		// When yaw = 0 (facing South +Z), forward moves +Z, right strafe moves -X (West).
+		double dx = -MathHelper.sin(yaw) * forward - MathHelper.cos(yaw) * strafe;
+		double dz = MathHelper.cos(yaw) * forward - MathHelper.sin(yaw) * strafe;
 
 		double horizontalDist = Math.hypot(dx, dz);
 		if (horizontalDist > 1.0e-5) {
