@@ -19,6 +19,8 @@ public abstract class Module {
 	private final List<Setting<?>> settings = new ArrayList<>();
 	private boolean enabled;
 	private int bind = -999;
+	private boolean showInArrayList = true;
+	private boolean showKeybindInArrayList;
 
 	protected Module(String id, String name, String description, ModuleCategory category) {
 		this.id = id;
@@ -80,6 +82,24 @@ public abstract class Module {
 
 	public void setBind(int bind) {
 		this.bind = bind;
+	}
+
+	/** gg.bai: whether the array list renders this module. */
+	public boolean isShownInArrayList() {
+		return showInArrayList;
+	}
+
+	public void setShownInArrayList(boolean shown) {
+		this.showInArrayList = shown;
+	}
+
+	/** gg.baj: whether the array list appends the module bind. */
+	public boolean isShowKeybindInArrayList() {
+		return showKeybindInArrayList;
+	}
+
+	public void setShowKeybindInArrayList(boolean show) {
+		this.showKeybindInArrayList = show;
 	}
 
 	/**

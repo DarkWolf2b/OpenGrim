@@ -111,9 +111,7 @@ public class SpearDash extends Module {
 		returnDelay.setVisible(returnBack.getValue());
 
 		// Input event detection (axt) via Activation Key
-		int key = activationKey.getValue();
-		boolean keyHeld = key != -999 && client.getWindow() != null
-				&& InputUtil.isKeyPressed(client.getWindow(), key);
+		boolean keyHeld = activationKey.isPressed();
 		boolean keyPressed = keyHeld && !prevKeyHeld;
 		prevKeyHeld = keyHeld;
 

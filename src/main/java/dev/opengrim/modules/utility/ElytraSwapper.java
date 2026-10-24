@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Hand;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * Elytra Swapper (registry sixtwo.ef, module id 67): "Swaps chestplate with
@@ -97,7 +96,7 @@ public class ElytraSwapper extends Module {
 		if (player.isSubmergedInWater() || player.isTouchingWater()) {
 			return;
 		}
-		boolean pressed = keyDown(client.getWindow().getHandle(), activationKey.getValue());
+		boolean pressed = activationKey.isPressed();
 		if (pressed && !keyDown) {
 			keyDown = true;
 			requestSwap(client, player);
@@ -149,10 +148,6 @@ public class ElytraSwapper extends Module {
 			swapTimer = System.currentTimeMillis();
 			pendingFirework = swapFirework.getValue() && player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA);
 		}
-	}
-
-	private static boolean keyDown(long handle, int code) {
-		return code >= 0 && GLFW.glfwGetKey(handle, code) == GLFW.GLFW_PRESS;
 	}
 
 	private static Optional<Hand> handForFirework(ClientPlayerEntity player) {

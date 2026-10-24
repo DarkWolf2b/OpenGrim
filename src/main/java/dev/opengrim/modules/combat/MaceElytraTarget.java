@@ -90,9 +90,7 @@ public class MaceElytraTarget extends Module {
 		}
 		fireworkKey.setVisible("on_bind".equals(fireworkUseMode.getValue())); // eQ.java:252
 		fireworkCooldown.setVisible("auto".equals(fireworkUseMode.getValue())); // eQ.java:253
-		int key = fireworkKey.getValue();
-		boolean held = key != -999 && client.currentScreen == null
-				&& net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key);
+		boolean held = client.currentScreen == null && fireworkKey.isPressed();
 		boolean pressed = held && !prevBind;
 		prevBind = held;
 		if (!player.isGliding()) {

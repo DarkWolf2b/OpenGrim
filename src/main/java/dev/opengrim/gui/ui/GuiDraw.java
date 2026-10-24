@@ -354,7 +354,8 @@ public final class GuiDraw {
 		}
 		ctx.state.addSimpleElement(new BackdropGuiElementRenderState(
 				GuiGlassPipelines.glass(), setup, new Matrix3x2f(ctx.getMatrices()),
-				x, y, w, h, radius, 0.75f, 0.0f, opacity, tint.argb(), cornerSmoothness,
+				x, y, w, h, radius, 0.75f, 0.0f, opacity, tint.argb(),
+				Math.max(0.0f, Math.min(1.0f, cornerSmoothness)),
 				ctx.scissorStack.peekLast()));
 		return true;
 	}

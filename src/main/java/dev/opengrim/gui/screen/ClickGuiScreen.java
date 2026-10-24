@@ -217,6 +217,7 @@ public class ClickGuiScreen extends AnimatedScreen {
 	private final Manager manager = new Manager();
 	private final TextFieldWidget search;
 	private final SettingsWindow settingsWindow;
+	private final ModuleBindPopup bindPopup = new ModuleBindPopup();
 
 	private Page page = Page.COMBAT;
 	private float windowX;
@@ -229,16 +230,32 @@ public class ClickGuiScreen extends AnimatedScreen {
 	/** Header subtitle: the description of the last hovered module (see class doc). */
 	private String subtitle = "";
 	private final Tween pill = new Tween(150, 0.0f);
+	/** bc search overlay state (opened from the magnifier/Ctrl+F). */
+	private boolean searchOpen;
+	private int searchSelected;
+	private List<Module> searchResults = List.of();
+	private static final int SEARCH_MAX_RESULTS = 8;
+	private static final float SEARCH_ROW_H = 18.0f;
+	private static final float SEARCH_BAR_H = 28.0f;
 
 	public ClickGuiScreen() {
 		super(Text.literal(CLIENT_TITLE));
-		search = new TextFieldWidget("");
+		search = new TextFieldWidget("Search");
 		search.bare(true);
 		search.onChange(this::onSearchChanged);
 		settingsWindow = new SettingsWindow();
 		settingsWindow.setVisible(false);
+		settingsWindow.setKeybindRowAction(this::openBindPopup);
 		manager.add(settingsWindow);
+		manager.add(bindPopup);
 		centre();
+	}
+
+	private void openBindPopup(Module module, float x, float y) {
+		float px = Math.max(0.0f, Math.min(x + 20.0f, designWindowWidth() - 110.0f));
+		float py = Math.max(0.0f, Math.min(y, designWindowHeight() - 80.0f));
+		bindPopup.openFor(module, px, py);
+		manager.raise(bindPopup);
 	}
 
 	/** bl.java:100-103 — centered on the screen at construction. */
@@ -351,6 +368,77 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	private void onSearchChanged(String query) {
 		scroll = 0.0f;
+		refreshSearchResults();
+	}
+
+	/** bc result scan: module names/ids/descriptions, capped at the recovered array size. */
+	private void refreshSearchResults() {
+		String query = search.text().toLowerCase(Locale.ROOT).trim();
+		if (query.isEmpty()) {
+			searchResults = List.of();
+			searchSelected = 0;
+			return;
+		}
+		searchResults = ModuleManager.get().getModules().stream()
+				.filter(module -> module.getName().toLowerCase(Locale.ROOT).contains(query)
+						|| module.getId().contains(query)
+						|| module.getDescription().toLowerCase(Locale.ROOT).contains(query))
+				.sorted(java.util.Comparator.comparing(module -> module.getName(), String.CASE_INSENSITIVE_ORDER))
+				.limit(SEARCH_MAX_RESULTS)
+				.toList();
+		searchSelected = Math.max(0, Math.min(searchSelected, searchResults.size() - 1));
+	}
+
+	private void openSearch() {
+		searchOpen = true;
+		search.focus();
+		refreshSearchResults();
+	}
+
+	private void closeSearch() {
+		searchOpen = false;
+		search.blur();
+		// The original overlay owns its query; clear it so the underlying grid
+		// does not stay filtered after the overlay disappears.
+		search.clear();
+		searchResults = List.of();
+		searchSelected = 0;
+	}
+
+	private void selectSearchResult() {
+		if (searchSelected < 0 || searchSelected >= searchResults.size()) {
+			return;
+		}
+		Module module = searchResults.get(searchSelected);
+		page = switch (module.getCategory()) {
+			case COMBAT -> Page.COMBAT;
+			case MOVEMENT -> Page.MOVEMENT;
+			case PLAYER -> Page.PLAYER;
+			case VISUALS -> Page.VISUALS;
+			case CLIENT -> Page.CLIENT;
+		};
+		List<Module> cards = ModuleManager.get().byCategory(module.getCategory());
+		int index = cards.indexOf(module);
+		scroll = index < 0 ? 0.0f : Math.max(0.0f, (index / 2) * (CARD_H + CARD_GAP));
+		subtitle = module.getDescription();
+		closeSearch();
+	}
+
+	private float searchX() {
+		return windowX + (WINDOW_W - searchWidth()) / 2.0f;
+	}
+
+	private float searchY() {
+		// bc ctor: y = window.y - padding * 2 (padding 5).
+		return windowY - 10.0f;
+	}
+
+	private float searchWidth() {
+		return WINDOW_W / 2.25f;
+	}
+
+	private float searchHeight() {
+		return SEARCH_BAR_H + searchResults.size() * SEARCH_ROW_H;
 	}
 
 	// ------------------------------------------------------------------
@@ -363,6 +451,9 @@ public class ClickGuiScreen extends AnimatedScreen {
 		MsdfFont semibold = MsdfFont.of(MsdfFont.SEMIBOLD);
 		MsdfFont medium = MsdfFont.of(MsdfFont.MEDIUM);
 		MsdfFont regular = MsdfFont.regular();
+		if (!settingsWindow.isVisible() && bindPopup.isVisible()) {
+			bindPopup.close();
+		}
 		float t = Math.min(1.0f, openTween.current());
 		float alpha = Math.min(1.0f, t);
 
@@ -371,8 +462,13 @@ public class ClickGuiScreen extends AnimatedScreen {
 		// Solid keeps the opaque themed fill.
 		boolean blurred;
 		if (theme.backgroundStyle() == Theme.BackgroundStyle.LIQUID_GLASS) {
+			// lC.ccW's glass branch passes ii2.bjm() (theme PanelProps.bhk,
+			// recovered default 0.0) as the corner smoothing. It is a 0..1
+			// smoothing value, not the shape shader's squircle exponent; passing
+			// the 5.0 exponent here turned the window into a square-cornered
+			// fill that stepped outside the rounded border.
 			blurred = draw.glassBackdrop(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
-					5.0f, theme.glassFill(), alpha);
+					0.0f, theme.glassFill(), alpha);
 		} else if (theme.backgroundStyle() == Theme.BackgroundStyle.BLUR) {
 			blurred = draw.blurredBackdrop(windowX, windowY, WINDOW_W, WINDOW_H, WINDOW_RADIUS,
 					theme.background(), styleOpacity(), alpha);
@@ -391,6 +487,51 @@ public class ClickGuiScreen extends AnimatedScreen {
 		drawHeader(draw, theme, semibold, regular, alpha);
 		drawContent(draw, theme, semibold, regular, alpha);
 		manager.render(draw);
+		if (searchOpen) {
+			drawSearchOverlay(draw, theme, semibold, regular, alpha);
+		}
+	}
+
+	/**
+	 * Port of the {@code bc} search overlay: a centered bar above the window
+	 * (width {@code window / 2.25}, height {@code lineHeight*2 + 10}) that
+	 * expands into a result list. The original searches modules and settings;
+	 * the port searches module names/ids/descriptions and navigates to the
+	 * result's category page.
+	 */
+	private void drawSearchOverlay(GuiDraw draw, Theme theme, MsdfFont semibold, MsdfFont regular,
+			float alpha) {
+		float x = searchX();
+		float y = searchY();
+		float w = searchWidth();
+		float h = searchHeight();
+		ColorF panel = theme.panelColor().withAlphaScale(alpha);
+		draw.fillRounded(x, y, w, h, 6.0f, panel);
+		draw.strokeRounded(x, y, w, h, 6.0f, theme.text().withAlphaScale(0.08f * alpha));
+
+		String text = search.text();
+		String shown = text.isEmpty() ? "Search" : text;
+		ColorF textColor = text.isEmpty() ? theme.text().withAlphaScale(0.4f * alpha) : theme.text().withAlphaScale(alpha);
+		draw.text(regular, shown, x + 7.0f, y + (SEARCH_BAR_H - 8.0f) / 2.0f, 8.0f, textColor);
+		if (search.isFocused() && (System.currentTimeMillis() / 500) % 2 == 0) {
+			float caret = x + 7.0f + draw.textWidth(regular, text, 8.0f);
+			draw.fillRect(caret, y + (SEARCH_BAR_H - 8.0f) / 2.0f, 1.0f, 8.0f,
+					theme.accent().withAlphaScale(alpha));
+		}
+
+		for (int i = 0; i < searchResults.size(); i++) {
+			Module module = searchResults.get(i);
+			float rowY = y + SEARCH_BAR_H + i * SEARCH_ROW_H;
+			if (i == searchSelected) {
+				draw.fillRounded(x + 3.0f, rowY + 1.0f, w - 6.0f, SEARCH_ROW_H - 2.0f, 3.5f,
+						theme.accent().withAlphaScale(0.25f * alpha));
+			}
+			draw.text(semibold, module.getName(), x + 7.0f, rowY + 5.0f, 7.0f,
+					theme.text().withAlphaScale(alpha));
+			String category = module.getCategory().name().toLowerCase(Locale.ROOT);
+			draw.textRight(regular, category, x + w - 7.0f, rowY + 6.0f, 6.0f,
+					theme.text().withAlphaScale(0.5f * alpha));
+		}
 	}
 
 	/** fX background-style opacity (0.2 / 0.75 / 0.85). */
@@ -494,15 +635,10 @@ public class ClickGuiScreen extends AnimatedScreen {
 		}
 
 		// Search: the recovered zoom button (20x20, trace az at hw - 27, icon
-		// 13.125 inset 3.4375) plus the port's bare inline field (G).
+		// 13.125 inset 3.4375) opens the bc overlay.
 		float buttonX = hx + hw - HEADER_BUTTON_RIGHT;
-		search.at(buttonX - 130.0f, hy + 4.0f).size(120.0f, HEADER_H - 8.0f);
-		if (search.isFocused() || !search.text().isEmpty()) {
-			draw.text(regular, search.text(), search.x(), baselineTop(regular, SUBTITLE_SIZE, hy + 16.3f),
-					SUBTITLE_SIZE, text);
-		}
 		drawIcon(draw, ICON_ZOOM, buttonX + HEADER_BUTTON_INSET, hy + 4.0f + HEADER_BUTTON_INSET,
-				HEADER_ICON_SIZE, 24.0f, search.isFocused() ? text : muted);
+				HEADER_ICON_SIZE, 24.0f, searchOpen ? text : muted);
 	}
 
 	private void drawContent(GuiDraw draw, Theme theme, MsdfFont semibold, MsdfFont regular, float alpha) {
@@ -619,6 +755,9 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	@Override
 	protected boolean onMouseClicked(double mx, double my, MouseButton button) {
+		if (searchOpen) {
+			return onSearchClicked(mx, my, button);
+		}
 		// An armed keybind row captures the next mouse button anywhere on the
 		// screen, so mouse bindings work from the same row.
 		if (settingsWindow.isVisible() && settingsWindow.isCapturingKeybind()
@@ -629,8 +768,15 @@ public class ClickGuiScreen extends AnimatedScreen {
 			manager.mouseDown(mx, my, button);
 			return true;
 		}
-		if (search.contains(mx, my) || searchIconHit(mx, my)) {
-			search.onMouseDown(mx, my, button);
+		if (bindPopup.isVisible()) {
+			if (bindPopup.contains(mx, my)) {
+				manager.mouseDown(mx, my, button);
+				return true;
+			}
+			bindPopup.close();
+		}
+		if (searchIconHit(mx, my)) {
+			openSearch();
 			return true;
 		}
 		if ((button == MouseButton.LEFT || button == MouseButton.RIGHT) && my >= windowY
@@ -680,6 +826,26 @@ public class ClickGuiScreen extends AnimatedScreen {
 				&& my < buttonY + HEADER_BUTTON_W;
 	}
 
+	private boolean onSearchClicked(double mx, double my, MouseButton button) {
+		float x = searchX();
+		float y = searchY();
+		float w = searchWidth();
+		if (mx >= x && mx < x + w && my >= y && my < y + searchHeight()) {
+			if (my >= y + SEARCH_BAR_H) {
+				int index = (int) ((my - (y + SEARCH_BAR_H)) / SEARCH_ROW_H);
+				if (index >= 0 && index < searchResults.size()) {
+					searchSelected = index;
+					selectSearchResult();
+				}
+			} else {
+				search.onMouseDown(mx, my, button);
+			}
+			return true;
+		}
+		closeSearch();
+		return true;
+	}
+
 	private void selectPage(Page next) {
 		if (page != next) {
 			page = next;
@@ -693,6 +859,7 @@ public class ClickGuiScreen extends AnimatedScreen {
 		// created at the window's right edge + 10.0f, aligned with the window
 		// top (bl.Ey() = the bl window rect). Re-targeting the same card keeps
 		// the panel (bd.Cg(true)); other cards' panels are hidden.
+		bindPopup.close();
 		settingsWindow.openFor(module, windowX + WINDOW_W + 10.0f, windowY);
 		// [G] port guard: keep the panel reachable on design viewports narrower
 		// than window + panel + 10 (the original clamps the window only, bl.Et).
@@ -732,6 +899,9 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	@Override
 	protected boolean onMouseScrolled(double mx, double my, double amount) {
+		if (searchOpen) {
+			return true;
+		}
 		if (settingsWindow.isVisible() && settingsWindow.onScroll(mx, my, amount)) {
 			return true;
 		}
@@ -744,10 +914,17 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	@Override
 	protected boolean onCharTyped(char c) {
+		if (searchOpen) {
+			search.onCharTyped(c);
+			return true;
+		}
+		if (bindPopup.isVisible() && bindPopup.isListening()) {
+			return true;
+		}
 		if (settingsWindow.isVisible() && settingsWindow.isCapturingKeybind()) {
 			return true;
 		}
-		return search.onCharTyped(c) || manager.charTyped(c);
+		return manager.charTyped(c);
 	}
 
 	@Override
@@ -757,14 +934,41 @@ public class ClickGuiScreen extends AnimatedScreen {
 			settingsWindow.onKeyPressed(key, scancode, modifiers);
 			return true;
 		}
-		if (search.onKeyPressed(key, scancode, modifiers)) {
+		if (bindPopup.isVisible() && bindPopup.onKeyPressed(key, scancode, modifiers)) {
+			return true;
+		}
+		if (searchOpen) {
+			if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE) {
+				closeSearch();
+				return true;
+			}
+			if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER
+					|| key == org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER) {
+				selectSearchResult();
+				return true;
+			}
+			if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_UP && !searchResults.isEmpty()) {
+				searchSelected = (searchSelected - 1 + searchResults.size()) % searchResults.size();
+				return true;
+			}
+			if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN && !searchResults.isEmpty()) {
+				searchSelected = (searchSelected + 1) % searchResults.size();
+				return true;
+			}
+			search.onKeyPressed(key, scancode, modifiers);
+			return true;
+		}
+		// bl.onKeyPressed opens the bc search overlay on the Ctrl-modified key.
+		if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_F
+				&& (modifiers & org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL) != 0) {
+			openSearch();
 			return true;
 		}
 		if (manager.keyPressed(key, scancode, modifiers)) {
 			return true;
 		}
 		// RSHIFT closes the GUI (fX bind 344; GuiManager also closes).
-		if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT_SHIFT && !search.isFocused()) {
+		if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT_SHIFT) {
 			closeNow();
 			return true;
 		}
@@ -775,6 +979,8 @@ public class ClickGuiScreen extends AnimatedScreen {
 	public void removed() {
 		// Save on GUI close (framework contract: config write on close).
 		new ConfigManager().save();
+		closeSearch();
+		bindPopup.close();
 		super.removed();
 	}
 

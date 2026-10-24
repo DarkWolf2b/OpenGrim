@@ -63,7 +63,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="auto-build-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
+          tag="auto-build"
+          # Keep exactly one automatic pre-release: remove every prior
+          # auto-build release (and its tag) before publishing the new jar.
+          previous=$(gh release list --limit 100 --json tagName \
+            --jq '.[].tagName' | grep '^auto-build' || true)
+          for old in $previous; do
+            gh release delete "$old" --yes --cleanup-tag || true
+          done
           notes=$(cat <<EOF
           > **Automatic build — not a stable release.**
 
@@ -74,6 +81,6 @@ jobs:
           )
           gh release create "$tag" dist/*.jar \
             --target "$GITHUB_SHA" \
-            --title "Automatic build ${GITHUB_RUN_NUMBER}" \
+            --title "Automatic build" \
             --notes "$notes" \
             --prerelease

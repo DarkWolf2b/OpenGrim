@@ -301,9 +301,7 @@ public class Nuker extends Module {
 			selectionKeyDown = false;
 			return;
 		}
-		int code = selectionKey.getValue();
-		boolean down = code >= 0 && code <= 348
-				&& InputUtil.isKeyPressed(client.getWindow(), code);
+		boolean down = selectionKey.isPressed();
 		if (down && !selectionKeyDown) {
 			if (client.crosshairTarget instanceof BlockHitResult hit
 					&& hit.getType() == HitResult.Type.BLOCK) {

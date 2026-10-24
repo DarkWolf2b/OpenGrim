@@ -13,7 +13,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * Auto Market (registry sixtwo.dM, module id 26): "Automatically buys and sells
@@ -126,9 +125,8 @@ public class AutoMarket extends Module {
 			addRuleDown = false;
 			return;
 		}
-		long handle = client.getWindow().getHandle();
-		boolean state = pressed(handle, stateKey.getValue());
-		boolean addRule = pressed(handle, addRuleKey.getValue());
+		boolean state = stateKey.isPressed();
+		boolean addRule = addRuleKey.isPressed();
 		if (addRule && !addRuleDown) {
 			onKeyPress(client, addRuleKey.getValue());
 		}
@@ -273,22 +271,6 @@ public class AutoMarket extends Module {
 	/** Whether the engine is running (dM.java:1397-1399 {@code aoa}). */
 	public boolean isRunning() {
 		return running;
-	}
-
-	/**
-	 * Key/button state for a setting code: the original's {@code gA} event
-	 * carries keyboard codes and mouse buttons 0-6 ({@code mA} maps the buttons
-	 * for MouseInputMixin); mouse codes are checked first since they overlap
-	 * the unused GLFW key codes.
-	 */
-	private static boolean pressed(long handle, int code) {
-		if (code < 0) {
-			return false;
-		}
-		if (code <= 6 && GLFW.glfwGetMouseButton(handle, code) == GLFW.GLFW_PRESS) {
-			return true;
-		}
-		return GLFW.glfwGetKey(handle, code) == GLFW.GLFW_PRESS;
 	}
 
 	/** The original's {@code gg.bab()} in-game gate. */

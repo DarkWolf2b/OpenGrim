@@ -15,7 +15,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * Hotbar Restorer (registry sixtwo.dO, module id 141): "Restores hotbar to saved state".
@@ -100,9 +99,8 @@ public class HotbarRestorer extends Module {
 			return;
 		}
 
-		long handle = client.getWindow().getHandle();
-		boolean saveDown = isKeyDown(handle, saveKey.getValue());
-		boolean restoreDown = isKeyDown(handle, restoreKey.getValue());
+		boolean saveDown = saveKey.isPressed();
+		boolean restoreDown = restoreKey.isPressed();
 
 		if (saveDown && !saveKeyDown) {
 			save(player);
@@ -208,9 +206,5 @@ public class HotbarRestorer extends Module {
 			return true;
 		}
 		return ItemStack.areItemsAndComponentsEqual(a, b);
-	}
-
-	private static boolean isKeyDown(long handle, int code) {
-		return code >= 0 && GLFW.glfwGetKey(handle, code) == GLFW.GLFW_PRESS;
 	}
 }

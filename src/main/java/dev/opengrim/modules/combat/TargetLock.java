@@ -64,9 +64,7 @@ public class TargetLock extends Module {
 			keyWasHeld = false;
 			return;
 		}
-		int key = lockKeybind.getValue();
-		boolean held = key != -999 && client.currentScreen == null
-				&& net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key);
+		boolean held = client.currentScreen == null && lockKeybind.isPressed();
 		boolean pressed = held && !keyWasHeld;
 		keyWasHeld = held;
 		if (lockedTarget != null && (!lockedTarget.isAlive() || lockedTarget.isRemoved()

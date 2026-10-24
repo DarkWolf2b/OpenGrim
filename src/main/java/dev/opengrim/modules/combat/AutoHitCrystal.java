@@ -16,7 +16,6 @@ import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.Box;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * Auto Hit Crystal (registry sixtwo.eW, module id 29): "Automatically pops crystals".
@@ -115,7 +114,7 @@ public class AutoHitCrystal extends Module {
 		if (player == null || client.world == null || client.interactionManager == null) {
 			return;
 		}
-		if (!isKeyDown(client.getWindow().getHandle(), activationKey.getValue())) {
+		if (!activationKey.isPressed()) {
 			return;
 		}
 		if (!isWorkItemSelected(player)) {
@@ -180,21 +179,10 @@ public class AutoHitCrystal extends Module {
 	}
 
 	/**
-	 * [G] Activation Key hold gate (cD key code; code ≤
-	 * {@code GLFW_MOUSE_BUTTON_LAST} is a mouse button — ClickAction.java:155-163
-	 * convention). The default 1 is the second mouse button; the exact original
-	 * gate form (hold vs edge) is VM-hidden.
+	 * [G] Activation Key hold gate (cD key code; {@link KeybindSetting#isPressed()}
+	 * handles mouse codes). The default 1 is the second mouse button; the exact
+	 * original gate form (hold vs edge) is VM-hidden.
 	 */
-	private static boolean isKeyDown(long handle, int code) {
-		if (code < 0) {
-			return false;
-		}
-		if (code <= GLFW.GLFW_MOUSE_BUTTON_LAST) {
-			return GLFW.glfwGetMouseButton(handle, code) == GLFW.GLFW_PRESS;
-		}
-		return GLFW.glfwGetKey(handle, code) == GLFW.GLFW_PRESS;
-	}
-
 	private void restore(ClientPlayerEntity player) {
 		if (switchBackToSlot.getValue() && previousSlot >= 0) {
 			player.getInventory().setSelectedSlot(previousSlot);

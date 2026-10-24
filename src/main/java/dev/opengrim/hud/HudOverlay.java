@@ -6,6 +6,7 @@ import java.util.List;
 import dev.opengrim.gui.GuiTheme;
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleManager;
+import dev.opengrim.settings.KeybindSetting;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -86,8 +87,18 @@ public final class HudOverlay {
 		int fontHeight = MinecraftClient.getInstance().textRenderer.fontHeight;
 		for (int i = enabled.size() - 1; i >= 0; i--) {
 			Module module = enabled.get(i);
+			if (!module.isShownInArrayList()) {
+				continue;
+			}
+			int color = GuiTheme.accent(module.getCategory());
 			ctx.drawText(MinecraftClient.getInstance().textRenderer, module.getName(), x, y,
-					GuiTheme.accent(module.getCategory()), true);
+					color, true);
+			if (module.isShowKeybindInArrayList() && module.getBind() != -999) {
+				int nameWidth = MinecraftClient.getInstance().textRenderer.getWidth(module.getName());
+				ctx.drawText(MinecraftClient.getInstance().textRenderer,
+						"  " + KeybindSetting.displayName(module.getBind()), x + nameWidth, y,
+						GuiTheme.HUD_INFO, true);
+			}
 			y += fontHeight + LINE_SPACING;
 		}
 	}

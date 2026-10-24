@@ -115,8 +115,7 @@ public class ElytraTarget extends Module {
 		}
 		RotationManager.get().submitPosition(aim, RotationPriority.uWTdl, this);
 		if ("on_bind".equals(fireworkUseMode.getValue())) {
-			int key = fireworkKey.getValue();
-			if (key == -999 || !net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key)) {
+			if (!fireworkKey.isPressed()) {
 				return;
 			}
 		} else {

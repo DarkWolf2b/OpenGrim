@@ -6,7 +6,8 @@
  * branch). Per-window attributes:
  *   UV0 = size (width, height)
  *   UV1/UV2 = radius TL/BL/TR/BR fixed-point 8.8 (same as gui_shape)
- *   Position.z = cornerSmoothness (squircle exponent)
+ *   Position.z = cornerSmoothness (0..1 corner smoothing, shape.glsl-style
+ *                squircle exponent only for gui_shape)
  *   Color = tintColor
  *   Normal.z = window opacity
  */

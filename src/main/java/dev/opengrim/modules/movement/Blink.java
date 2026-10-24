@@ -107,8 +107,7 @@ public class Blink extends Module {
 		if (player == null) {
 			return;
 		}
-		int key = cancelKey.getValue();
-		if (key != -999 && net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key)) {
+		if (cancelKey.isPressed()) {
 			player.setPosition(captureA.x, captureA.y, captureA.z);
 			player.setYaw(captureYaw);
 			player.setSprinting(captureSprinting);

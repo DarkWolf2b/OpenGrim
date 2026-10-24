@@ -171,13 +171,18 @@ final class ChamsRenderer {
 				continue;
 			}
 			try {
-				RenderPipeline pipeline = RenderPipelines.register(RenderPipeline.builder()
+				RenderPipeline.Builder builder = RenderPipeline.builder()
 						.withLocation(Identifier.of("opengrim",
 								"pipeline/" + FRAGMENT_SHADERS[i]))
 						.withVertexShader(VERTEX_SHADER)
 						.withFragmentShader(fragment)
-						.withSampler("maskTexture")
-						.withSampler("backgroundTexture")
+						.withSampler("maskTexture");
+				// chams_liquidmetal does not sample backgroundTexture; declaring
+				// the sampler for it makes the shader loader warn every launch.
+				if (usesBackground(i)) {
+					builder.withSampler("backgroundTexture");
+				}
+				RenderPipeline pipeline = RenderPipelines.register(builder
 						.withUniform("Chams", UniformType.UNIFORM_BUFFER)
 						.withVertexFormat(VertexFormats.POSITION, VertexFormat.DrawMode.QUADS)
 						.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
@@ -206,6 +211,11 @@ final class ChamsRenderer {
 			}
 		}
 		return -1;
+	}
+
+	/** Glass, Water and Chrome sample backgroundTexture; Liquid Metal does not. */
+	private static boolean usesBackground(int index) {
+		return index >= 0 && index < 3;
 	}
 
 	/**
@@ -324,8 +334,10 @@ final class ChamsRenderer {
 			pass.setUniform("Chams", uniforms.slice());
 			pass.bindTexture("maskTexture", maskTarget.getColorAttachmentView(),
 					RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
-			pass.bindTexture("backgroundTexture", backgroundTarget.getColorAttachmentView(),
-					RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
+			if (usesBackground(selected)) {
+				pass.bindTexture("backgroundTexture", backgroundTarget.getColorAttachmentView(),
+						RenderSystem.getSamplerCache().get(FilterMode.LINEAR));
+			}
 			pass.setVertexBuffer(0, quad);
 			// A QUADS shape of 4 vertices is indexed with 6 indices; drawIndexed counts
 			// indices (RenderPassImpl -> drawBoundObjectWithRenderPass count). 4 drew a

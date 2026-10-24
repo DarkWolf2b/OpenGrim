@@ -99,6 +99,16 @@ public class SettingsWindow extends Popup {
 	private Module module;
 	private final Rows rows = new Rows();
 	private float contentHeight;
+	private KeybindRowAction keybindRowAction;
+
+	/** Callback for the {@code bk} "Keybind" row ({@code bh} popup). */
+	public interface KeybindRowAction {
+		void open(Module module, float x, float y);
+	}
+
+	public void setKeybindRowAction(KeybindRowAction action) {
+		this.keybindRowAction = action;
+	}
 
 	public SettingsWindow() {
 		super(0.0f, 0.0f, PANEL_W, BASE_H + BOTTOM_PAD);
@@ -149,7 +159,7 @@ public class SettingsWindow extends Popup {
 			}
 		}.onChange(module::toggle).size(PANEL_W, ModuleWidgetFactory.TOGGLE_H));
 		// bd ctor: second child = module row (bk); bV draws it after the toggle.
-		rows.add(new ModuleRow(module).size(PANEL_W, ModuleWidgetFactory.TOGGLE_H));
+		rows.add(new ModuleRow(module, keybindRowAction).size(PANEL_W, ModuleWidgetFactory.TOGGLE_H));
 		ModuleWidgetFactory.populateRows(rows.children, module.getSettings(), PANEL_W);
 		for (Widget child : rows.children) {
 			contentHeight += child.height() > 0.0f ? child.height() : ModuleWidgetFactory.TOGGLE_H;
@@ -319,9 +329,11 @@ public class SettingsWindow extends Popup {
 	 */
 	private static final class ModuleRow extends Widget {
 		private final Module module;
+		private final KeybindRowAction action;
 
-		ModuleRow(Module module) {
+		ModuleRow(Module module, KeybindRowAction action) {
 			this.module = module;
+			this.action = action;
 		}
 
 		@Override
@@ -337,7 +349,10 @@ public class SettingsWindow extends Popup {
 
 		@Override
 		public boolean onMouseDown(double mx, double my, MouseButton button) {
-			// bk.dk opens the bh editor popup (out of this slice).
+			// bk.dk opens the bh keybind popup at the row position.
+			if (button == MouseButton.LEFT && contains(mx, my) && action != null) {
+				action.open(module, x, y);
+			}
 			return contains(mx, my);
 		}
 	}

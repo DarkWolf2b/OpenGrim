@@ -58,9 +58,7 @@ public class AutoXBow extends Module {
 	public void onTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
-		int key = activationKey.getValue();
-		if (player == null || client.currentScreen != null || key < 0
-				|| !net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key)) {
+		if (player == null || client.currentScreen != null || !activationKey.isPressed()) {
 			release(client);
 			state = 0;
 			return;

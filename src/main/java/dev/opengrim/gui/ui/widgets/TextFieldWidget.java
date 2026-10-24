@@ -38,6 +38,17 @@ public class TextFieldWidget extends Widget {
 		return focused;
 	}
 
+	/** Explicit focus (search overlay open). */
+	public void focus() {
+		focused = true;
+		cursor = text.length();
+	}
+
+	/** Explicit unfocus (search overlay close). */
+	public void blur() {
+		focused = false;
+	}
+
 	public TextFieldWidget onChange(Consumer<String> onChange) {
 		this.onChange = onChange;
 		return this;

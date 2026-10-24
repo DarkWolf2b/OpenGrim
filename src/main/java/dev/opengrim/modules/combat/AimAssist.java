@@ -61,10 +61,10 @@ import net.minecraft.util.math.Vec3d;
  * for the unrecovered VM bodies; none of it is byte-verified:
  * <ul>
  *   <li>[G] Aiming runs in {@link #onTick} (no tick handler exists in the
- *       original — all three handlers are render-side) and submits through
- *       {@link RotationManager} at {@link RotationPriority#uWTdl}, per the
- *       framework rotation policy; FOV reads use
- *       {@link RotationManager#effectiveRotation()}.</li>
+ *       original — all three handlers are render-side) and updates the real
+ *       yaw/pitch (the recovered pool token is {@code Entity.setPitch(F)}),
+ *       while also submitting the same rotation to {@link RotationManager};
+ *       FOV reads use the player's live rotation.</li>
  *   <li>[G] {@code approach()} (linear per-tick step by Horizontal/Vertical
  *       Speed) replaces the unrecovered smoothing math.</li>
  *   <li>[G] {@code noise()} (splitmix-style hash) replaces the original
@@ -168,9 +168,7 @@ public class AimAssist extends Module {
 		if (!aimWhileOnTarget.getValue() && client.targetedEntity != null) {
 			return;
 		}
-		int key = holdKey.getValue();
-		if (whenHolding.getValue() && (key == -999
-				|| !net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key))) {
+		if (whenHolding.getValue() && !holdKey.isPressed()) {
 			return;
 		}
 		LivingEntity current = locked != null && locked.isAlive() ? locked : findTarget(client, player);
@@ -189,13 +187,17 @@ public class AimAssist extends Module {
 		}
 		tickIndex++;
 		Rotation wanted = Rotation.lookingAt(player.getEyePos(), point).clamped();
-		Rotation current_rot = RotationManager.get().effectiveRotation();
+		// fH's recovered pool names Entity.setPitch(F); the original updates
+		// the real rotation (the old silent RotationManager-only submit left
+		// the camera untouched, so the module appeared to do nothing).
 		float yaw = horizontal.getValue()
-				? approach(current_rot.getYaw(), wanted.getYaw(), horizontalSpeed.getValue().floatValue())
-				: current_rot.getYaw();
+				? approach(player.getYaw(), wanted.getYaw(), horizontalSpeed.getValue().floatValue())
+				: player.getYaw();
 		float pitch = vertical.getValue()
-				? approach(current_rot.getPitch(), wanted.getPitch(), verticalSpeed.getValue().floatValue())
-				: current_rot.getPitch();
+				? approach(player.getPitch(), wanted.getPitch(), verticalSpeed.getValue().floatValue())
+				: player.getPitch();
+		player.setYaw(yaw);
+		player.setPitch(pitch);
 		RotationManager.get().submitRotation(Rotation.fromAngles(yaw, pitch), RotationPriority.uWTdl, this);
 	}
 

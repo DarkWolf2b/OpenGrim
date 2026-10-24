@@ -184,7 +184,7 @@ public class LogoutSpots extends Module {
 
 		// ahw(gA) stand-in: key event surface is unavailable, so the Clear
 		// Spots key is polled (dp.java:801-846 clears FlxVs + JTVMZ).
-		if (clearSpots.getValue() != -999 && InputUtil.isKeyPressed(client.getWindow(), clearSpots.getValue())) {
+		if (clearSpots.isPressed()) {
 			clearSpots();
 		}
 

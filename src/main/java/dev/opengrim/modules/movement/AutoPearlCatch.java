@@ -122,8 +122,7 @@ public class AutoPearlCatch extends Module {
 			return;
 		}
 		returnDelay.setVisible(returnSlot.getValue());
-		int key = activationKey.getValue();
-		armed = key != -999 && InputUtil.isKeyPressed(client.getWindow(), key);
+		armed = activationKey.isPressed();
 		if (!armed) {
 			return;
 		}

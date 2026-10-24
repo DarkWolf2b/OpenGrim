@@ -99,9 +99,7 @@ public class SpearLunge extends Module {
 		// DvcwW.Vf(this.erPcw::WF) / xSSxj.Vf(this.lQVHc::WF) (eG.java:202-206).
 		restoreArmor.setVisible(changeArmor.getValue());
 		returnDelay.setVisible(returnBack.getValue());
-		int key = activationKey.getValue();
-		boolean manual = key != -999 && client.currentScreen == null
-				&& net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(), key);
+		boolean manual = client.currentScreen == null && activationKey.isPressed();
 		boolean holdingSpear = isSpear(player.getMainHandStack());
 		if (lunging) {
 			if (System.currentTimeMillis() - lungeAtMs >= Math.round(returnDelay.getValue())) {

@@ -86,10 +86,7 @@ public class AutoLogout extends Module {
 		if (player == null || client.world == null) {
 			return;
 		}
-		if (logoutOnKey.getValue() && logoutKey.getValue() != -999
-				&& client.currentScreen == null
-				&& net.minecraft.client.util.InputUtil.isKeyPressed(client.getWindow(),
-						logoutKey.getValue())) {
+		if (logoutOnKey.getValue() && client.currentScreen == null && logoutKey.isPressed()) {
 			disconnect(client);
 			return;
 		}

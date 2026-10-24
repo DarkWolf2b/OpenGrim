@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-24 (Linux: cD/y keybind rows; automatic prerelease workflow; Auto Crystal/Anchor Macro/Wind Hop fixes — build PASS; commits pushed, pre-releases `auto-build-1-1`/`auto-build-2-1` published)
+Last updated: 2026-10-24 (Linux: keybind rows; auto-prerelease workflow; combat fixes; Liquid Glass corner, Aim Assist visible aim, `bh` keybind popup, `bc` search overlay, HUD flags, GLFW key-0 fix; build PASS; parity 79.0%)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1273,3 +1273,38 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
   RotationManager-only submission would throw forward) and restored after,
   with vanilla success-swing semantics.
 - **Build:** `./gradlew build --offline` → BUILD SUCCESSFUL on JDK 21.
+
+## 2026-10-24 (Linux): Liquid Glass corner, Aim Assist, keybind popup, search overlay, HUD
+
+- **Liquid Glass corner:** the window glass call passed the shape shader's
+  squircle exponent (5.0) as `gui_glass`'s 0..1 `cornerSmoothness`; the
+  recovered `ii2.bjm()` value is 0.0. The glass now uses 0.0 (clamped in
+  `GuiDraw.glassBackdrop`), removing the square fill that stepped outside the
+  rounded border.
+- **Aim Assist (`fH`):** the module only submitted a silent RotationManager
+  rotation, so the camera never moved. `Entity.setPitch(F)` is the original's
+  recovered pool token; the port now updates the real yaw/pitch and still
+  submits the same rotation. `Hold Key` is mouse-aware. Default Target is
+  players, so testing against a mob (or with no second player) still produces
+  no aim.
+- **Keybind row/popup:** `ModuleBindPopup` ports the `bh` 110x80 frame: current
+  module bind, ArrayList visibility, Show Keybind, and click-to-capture bind.
+  `Module` carries the `gg.bai`/`gg.baj` flags; `KeybindManager.setBind`
+  updates the vanilla KeyBinding at runtime. The previously inert `bk` row now
+  opens this popup.
+- **Search overlay:** replaced the inline header field with a `bc`-shaped
+  overlay (width `WINDOW_W/2.25`, height `lineHeight*2+10`, centered above the
+  window, magnifier/Ctrl+F, module/result list, arrows/Enter, page navigation).
+  Settings search and the native result-row paint remain open.
+- **HUD/array list:** `HudOverlay` honors the recovered `gg.bai`/`gg.baj`
+  display flags and can append the module bind; the watermark+list layout
+  matches the reference frame.
+- **Logs:** `65539: Invalid key 0` is GLFW `GLFW_INVALID_ENUM` from polling a
+  default mouse bind (0) with `glfwGetKey`; all keybind-setting polls now use
+  `KeybindSetting.isPressed()` (mouse first). `chams_liquidmetal` no longer
+  declares the unused `backgroundTexture` sampler.
+- **Workflow:** keeps exactly one automatic pre-release (`auto-build`), deleting
+  every prior auto-build release/tag before publishing.
+- **Parity:** `fH` 50→55, `eV` 52→58, `eX` 52→56, `eR` 57→62; aggregate
+  12,804/16,200 = 79.0%.
+- **Build:** `./gradlew build --offline` PASS on JDK 21.

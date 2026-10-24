@@ -9,8 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.lwjgl.glfw.GLFW;
-
 import dev.opengrim.module.Module;
 import dev.opengrim.module.ModuleCategory;
 import dev.opengrim.module.ModuleManager;
@@ -62,8 +60,8 @@ import dev.opengrim.rotation.RotationManager;
  * dY_.md:43-46), the crit-environment check {@code iX.bxM} (iX.java:482-582)
  * including the cobweb scan {@code jg.bBs} (jg.java:1189-1258), and the
  * mouse-button Hold Key poll (cD setting over the mA mouse enum, mA.java:171;
- * glfwGetKey never reports mouse codes — same helper convention as
- * ClickAction.java:155-163).
+ * {@link KeybindSetting#isPressed()} uses {@code glfwGetMouseButton} for
+ * mouse codes — same helper convention as ClickAction.java:155-163).
  *
  * <p>Labeled stand-ins (aST's decision body is VM-resident — spec fF_.md
  * "Unrecovered"; the gate order is part of the reconstruction, the aST pool
@@ -169,8 +167,7 @@ public class TriggerBot extends Module {
 						|| !player.getActiveItem().isOf(net.minecraft.item.Items.SHIELD))) {
 			return;
 		}
-		int key = holdKey.getValue();
-		if (whenHolding.getValue() && (key == -999 || !keyDown(client.getWindow().getHandle(), key))) {
+		if (whenHolding.getValue() && !holdKey.isPressed()) {
 			return;
 		}
 		if ("custom_slots".equals(itemsToUse.getValue()) && !inSlots(player)) {
@@ -408,20 +405,9 @@ public class TriggerBot extends Module {
 
 	/**
 	 * Mouse-button-aware poll for the Hold Key setting: cD wraps the mA mouse
-	 * enum (mA.java:171-177), so codes 0..6 are mouse buttons and must be read
-	 * with glfwGetMouseButton (glfwGetKey never reports them — same helper
-	 * convention as ClickAction.java:155-163).
+	 * enum (mA.java:171-177), so codes 0..6 are mouse buttons and are read by
+	 * {@link KeybindSetting#isPressed()}.
 	 */
-	private static boolean keyDown(long handle, int code) {
-		if (code < 0) {
-			return false;
-		}
-		if (code <= GLFW.GLFW_MOUSE_BUTTON_LAST) {
-			return GLFW.glfwGetMouseButton(handle, code) == GLFW.GLFW_PRESS;
-		}
-		return GLFW.glfwGetKey(handle, code) == GLFW.GLFW_PRESS;
-	}
-
 	public static void attack(MinecraftClient client, ClientPlayerEntity player, Entity target) {
 		client.interactionManager.attackEntity(player, target);
 		player.swingHand(Hand.MAIN_HAND);

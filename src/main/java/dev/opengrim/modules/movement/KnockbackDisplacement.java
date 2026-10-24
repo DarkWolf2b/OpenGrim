@@ -137,8 +137,7 @@ public class KnockbackDisplacement extends Module {
 
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.getWindow() != null) {
-			int key = changeAngleKey.getValue();
-			boolean held = key != -999 && InputUtil.isKeyPressed(client.getWindow(), key);
+			boolean held = changeAngleKey.isPressed();
 			if (held && !prevChangeAngleKeyPressed) {
 				float step = angleStep.getValue().floatValue();
 				workingAngle = MathHelper.wrapDegrees(workingAngle + step);
