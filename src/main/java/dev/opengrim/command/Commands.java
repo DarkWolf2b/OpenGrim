@@ -70,8 +70,13 @@ public final class Commands {
 				return 1;
 			}));
 			dispatcher.register(ClientCommandManager.literal("marketui").executes(context -> {
-				context.getSource().sendError(Text.literal("OpenGrim: the market UI is not ported yet."));
-				return 0;
+				Module market = ModuleManager.get().byId("auto_market");
+				if (market == null) {
+					context.getSource().sendError(Text.literal("OpenGrim: Auto Market is not registered."));
+					return 0;
+				}
+				GuiManager.openFor(market);
+				return 1;
 			}));
 			for (String alias : new String[] {"inventory", "inv", "invsee"}) {
 				dispatcher.register(inventory(alias));
@@ -112,7 +117,7 @@ public final class Commands {
 						.executes(context -> {
 							ClientPlayerEntity player = context.getSource().getPlayer();
 							double distance = DoubleArgumentType.getDouble(context, "distance");
-							player.setPosition(player.getX(), player.getY() + distance, player.getZ());
+							player.requestTeleport(player.getX(), player.getY() + distance, player.getZ());
 							return 1;
 						}));
 	}
@@ -126,7 +131,7 @@ public final class Commands {
 							double radians = Math.toRadians(player.getYaw());
 							double dx = -Math.sin(radians) * distance;
 							double dz = Math.cos(radians) * distance;
-							player.setPosition(player.getX() + dx, player.getY(), player.getZ() + dz);
+							player.requestTeleport(player.getX() + dx, player.getY(), player.getZ() + dz);
 							return 1;
 						}));
 	}

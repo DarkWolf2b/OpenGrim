@@ -373,8 +373,9 @@ public final class GuiDraw {
 			ColorF glass = style.glassFill();
 			ColorF bg = style.background();
 			float blend = style.backgroundStyle() == Theme.BackgroundStyle.LIQUID_GLASS ? 0.3f : 0.5f;
+			// lC.ccW's panel fill has no border pass; the old stroke here was
+			// the source of the bright outline around every HUD row.
 			fillRounded(x, y, w, h, radius, bg.withAlphaScale(alpha).lerp(glass.withAlphaScale(alpha), blend * 0.5f));
-			strokeRounded(x, y, w, h, radius, style.glassBorder().withAlphaScale(alpha));
 		}
 	}
 

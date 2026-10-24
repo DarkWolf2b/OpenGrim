@@ -75,7 +75,7 @@ public final class HudOverlay {
 		float titleW = nameFont.width(title, TEXT_SIZE);
 		float infoW = infoFont.width(info, TEXT_SIZE);
 		float watermarkW = titleW + infoW + PAD_X * 2.0f;
-		draw.themedBackground(x, y, watermarkW, WATERMARK_H, 6.0f, 0.75f);
+		draw.themedBackground(x, y, watermarkW, WATERMARK_H, WATERMARK_H / 2.0f, 0.75f);
 		draw.text(nameFont, title, x + PAD_X, y + (WATERMARK_H - TEXT_SIZE) / 2.0f, TEXT_SIZE,
 				theme.accent());
 		draw.text(infoFont, info, x + PAD_X + titleW, y + (WATERMARK_H - TEXT_SIZE) / 2.0f,
@@ -98,12 +98,12 @@ public final class HudOverlay {
 			float nameW = nameFont.width(module.getName(), TEXT_SIZE) + PAD_X * 2.0f;
 			float cursor = x;
 			if (keyW > 0.0f) {
-				draw.themedBackground(cursor, rowY, keyW, ROW_H, 6.0f, 0.75f);
+				draw.themedBackground(cursor, rowY, keyW, ROW_H, ROW_H / 2.0f, 0.75f);
 				draw.text(infoFont, KeybindSetting.displayName(module.getBind()), cursor + PAD_X,
 						rowY + (ROW_H - TEXT_SIZE) / 2.0f, TEXT_SIZE, theme.text().withAlphaScale(0.7f));
 				cursor += keyW + 3.0f;
 			}
-			draw.themedBackground(cursor, rowY, nameW, ROW_H, 6.0f, 0.75f);
+			draw.themedBackground(cursor, rowY, nameW, ROW_H, ROW_H / 2.0f, 0.75f);
 			draw.text(nameFont, module.getName(), cursor + PAD_X,
 					rowY + (ROW_H - TEXT_SIZE) / 2.0f, TEXT_SIZE, theme.accent());
 			rowY += ROW_H + ROW_GAP;

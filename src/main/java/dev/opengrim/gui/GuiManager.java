@@ -49,6 +49,7 @@ public final class GuiManager {
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (isGuiOpen()) {
 			client.setScreen(null);
+			KeyBinding.unpressAll();
 		} else if (client.currentScreen == null) {
 			open();
 		}
@@ -61,8 +62,23 @@ public final class GuiManager {
 	public static void open() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.currentScreen == null) {
+			// Opening the Click GUI must not keep a held movement key alive;
+			// vanilla only clears key states on release events.
+			KeyBinding.unpressAll();
 			new ClickGuiScreen().openNow(client);
 		}
+	}
+
+	/** Opens the Click GUI with one module's settings panel expanded. */
+	public static void openFor(dev.opengrim.module.Module module) {
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (client.currentScreen != null || module == null) {
+			return;
+		}
+		KeyBinding.unpressAll();
+		ClickGuiScreen screen = new ClickGuiScreen();
+		screen.openNow(client);
+		screen.openModuleSettings(module);
 	}
 
 	/**

@@ -897,6 +897,22 @@ public class ClickGuiScreen extends AnimatedScreen {
 		manager.add(settingsWindow);
 	}
 
+	/** Command/UI hook: open a module's settings panel on an already-open screen. */
+	public void openModuleSettings(Module module) {
+		selectPage(pageFor(module.getCategory()));
+		openSettings(module);
+	}
+
+	private static Page pageFor(ModuleCategory category) {
+		return switch (category) {
+			case COMBAT -> Page.COMBAT;
+			case MOVEMENT -> Page.MOVEMENT;
+			case PLAYER -> Page.PLAYER;
+			case VISUALS -> Page.VISUALS;
+			case CLIENT -> Page.CLIENT;
+		};
+	}
+
 	@Override
 	protected boolean onMouseReleased(double mx, double my, MouseButton button) {
 		boolean consumed = manager.mouseUp(mx, my, button);
@@ -991,6 +1007,10 @@ public class ClickGuiScreen extends AnimatedScreen {
 		if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_F
 				&& (modifiers & org.lwjgl.glfw.GLFW.GLFW_MOD_CONTROL) != 0) {
 			openSearch();
+			return true;
+		}
+		if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE) {
+			closeNow();
 			return true;
 		}
 		if (manager.keyPressed(key, scancode, modifiers)) {
