@@ -226,7 +226,15 @@ public class AntiBot extends Module {
 		if (movementCheck.getValue() && still >= 200) {
 			return true;
 		}
-		if (velocityCheck.getValue() && player.getVelocity().lengthSquared() == 0.0 && !player.isOnGround()) {
+		// "Velocity Check" is the stricter companion of Movement Check (fo.md:64-65).
+		// The native predicate is VM-internal; use the stationary-airborne reading
+		// but exclude states in which a real player legitimately has no velocity
+		// while not being on the ground (water/lava, ladders, gliding, vehicles).
+		if (velocityCheck.getValue() && movementCheck.getValue() && still >= 40
+				&& player.getVelocity().lengthSquared() == 0.0
+				&& !player.isOnGround()
+				&& !player.isTouchingWater() && !player.isInLava()
+				&& !player.isClimbing() && !player.isGliding() && !player.hasVehicle()) {
 			return true;
 		}
 		return false;
@@ -245,7 +253,10 @@ public class AntiBot extends Module {
 			return true;
 		}
 		PlayerListEntry entry = client.getNetworkHandler().getPlayerListEntry(player.getUuid());
-		return entry == null || entry.getGameMode() == null || entry.getLatency() <= 0;
+		// fo.md:37 — aLu is UUID -> PlayerListEntry -> GameMode. Latency is not
+		// part of the recovered contract and is 0 on LAN/proxies, so it is not
+		// used as a bot signal.
+		return entry == null || entry.getGameMode() == null;
 	}
 
 	/**

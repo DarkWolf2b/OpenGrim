@@ -2,12 +2,14 @@ package dev.opengrim.rotation;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.function.Supplier;
 
 import dev.opengrim.event.EventBus;
 import dev.opengrim.event.Subscribe;
 import dev.opengrim.event.impl.PacketSendEvent;
 import dev.opengrim.module.Module;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.Vec3d;
 
@@ -41,6 +43,14 @@ import net.minecraft.util.math.Vec3d;
  *       {@code dbO(gL.tj)} (qL.java:90-91): while a silent rotation is pending,
  *       {@code PlayerMoveC2SPacket} look fields are replaced so the server sees
  *       the silent rotation and the view stays untouched.
+ *   <li>Interact-packet rewrite: {@code PlayerInteractItemC2SPacket} also carries
+ *       a yaw/pitch pair (the server copies it onto the player before the use).
+ *       The original {@code dbO(gL.tj)} receives every outbound packet, so the
+ *       silent rotation is applied there too; without it a pearl/crossbow use
+ *       travels along the player's visual view even though the movement packets
+ *       are silently rotated. See {@link #applyForAction} for the client-side
+ *       raycast case (buckets/blocks) where the vanilla use logic reads the real
+ *       rotation before the packet is built.
  * </ul>
  *
  * <p>Framework wiring note (allowed deviation): the original is driven by the
@@ -118,6 +128,39 @@ public class RotationManager {
 			return;
 		}
 		submitRotation(Rotation.lookingAt(client.player.getEyePos(), target).clamped(), priority, owner);
+	}
+
+	/**
+	 * Applies a rotation to the player's real yaw/pitch for the duration of
+	 * {@code action} and restores the previous rotation afterwards.
+	 *
+	 * <p>Vanilla client-side use logic (notably {@code BucketItem.raycast} and
+	 * block placement) reads the player's real rotation <em>before</em> the
+	 * outgoing packet is built. The send-path rewrite below can therefore not
+	 * help those actions: the client must see the aim while it computes the use.
+	 * Centralising the temporary apply/restore here keeps module code free of
+	 * direct {@code setYaw}/{@code setPitch} calls (the qL apply step,
+	 * {@code dbK}, is the original owner of this responsibility).
+	 *
+	 * <p>The caller still submits the same rotation with
+	 * {@link #submitRotation} so the visual tick and the movement-packet rewrite
+	 * stay silent.
+	 */
+	public <T> T applyForAction(Rotation rotation, Supplier<T> action) {
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (rotation == null || client.player == null || action == null) {
+			return action == null ? null : action.get();
+		}
+		float yaw = client.player.getYaw();
+		float pitch = client.player.getPitch();
+		client.player.setYaw(rotation.getYaw());
+		client.player.setPitch(rotation.getPitch());
+		try {
+			return action.get();
+		} finally {
+			client.player.setYaw(yaw);
+			client.player.setPitch(pitch);
+		}
 	}
 
 	/**
@@ -213,15 +256,23 @@ public class RotationManager {
 		if (!silentActive || pending == null) {
 			return;
 		}
-		if (!(event.packet() instanceof PlayerMoveC2SPacket move) || !move.changesLook()) {
-			return;
-		}
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.player == null) {
 			return;
 		}
 		float yaw = pending.getYaw();
 		float pitch = pending.getPitch();
+		// The use packet carries its own yaw/pitch; the server copies them onto
+		// the player before running the item use, so the silent rotation must be
+		// written here as well (qL.dbO receives every outbound packet).
+		if (event.packet() instanceof PlayerInteractItemC2SPacket interact) {
+			event.setPacket(new PlayerInteractItemC2SPacket(
+					interact.getHand(), interact.getSequence(), yaw, pitch));
+			return;
+		}
+		if (!(event.packet() instanceof PlayerMoveC2SPacket move) || !move.changesLook()) {
+			return;
+		}
 		if (move instanceof PlayerMoveC2SPacket.Full) {
 			Vec3d pos = client.player.getEntityPos();
 			event.setPacket(new PlayerMoveC2SPacket.Full(

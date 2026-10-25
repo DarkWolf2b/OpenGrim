@@ -1,6 +1,5 @@
 package dev.opengrim.modules.render;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -111,7 +110,7 @@ public class Glow extends Module {
 	}
 
 	public Set<EntityType<?>> getEntityTypes() {
-		return entities.getValue();
+		return Set.copyOf(entities.getValue());
 	}
 
 	public void addEntityType(EntityType<?> type) {

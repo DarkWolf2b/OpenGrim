@@ -11,10 +11,12 @@ import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
 import dev.opengrim.settings.ModeSetting;
+import dev.opengrim.settings.RangeSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.world.World;
 
 /**
  * Criticals (registry sixtwo.fu): "Makes it easier to crit".
@@ -28,17 +30,21 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
  * Ground N (true,false,false,false,false), Full N (true,true,false,false,false),
  * Offset N 0.01/-1.0-1.0/0.0,0.0625,0.04535,0.0,0.0 " blocks".
  *
- * <p>Web Lag (high-probability guess): the original holds outbound packets in
- * the {@code ConcurrentLinkedQueue} via its gL$tj packet listener and releases
- * them after "Lag Delay"; which packets are held and the release order are not
- * recoverable (spec "Unrecovered / uncertain" §6). This rebuild holds all
- * outbound packets while a Web-Lag window opened by an attack is pending and
- * re-sends them in FIFO order once Lag Delay elapses.
+ * <p>Web Lag (documented natural reading): the original holds outbound packets
+ * in the {@code ConcurrentLinkedQueue} via its gL$tj listener and releases them
+ * after "Lag Delay"; the exact target set is not recoverable (spec
+ * "Unrecovered / uncertain" §6). This rebuild holds only movement packets —
+ * holding `ClickSlotC2SPacket` across the 100–150 ms window can desync the
+ * screen handler, and the spec does not establish whether `class_2813` is the
+ * filter or an emitted packet. The queue is dropped on world/connection change
+ * and flushed on disable. `Lag Delay` is the recovered `cA` two-handle range
+ * (0–2000, step 5, default 100–150 ms; `cA.UN()` uniform draw per hold).
  */
 public class Criticals extends Module {
 	private final ModeSetting mode = register(new ModeSetting("mode",
 			List.of("vanilla", "custom", "packet", "web_lag"), "vanilla"));
-	private final DoubleSetting lagDelay = register(new DoubleSetting("lag_delay", 5.0, 0.0, 2000.0, 100.0, " ms"));
+	private final RangeSetting lagDelay = register(new RangeSetting(
+			"lag_delay", 5.0, 0.0, 2000.0, 100.0, 150.0, " ms"));
 	private final GroupSetting packet1 = register(new GroupSetting("packet_1"));
 	private final BoolSetting sendPacket1 = register(new BoolSetting("send_packet_1", true));
 	private final BoolSetting ground1 = register(new BoolSetting("ground_1", true));
@@ -67,8 +73,10 @@ public class Criticals extends Module {
 
 	private final java.util.Queue<Packet<?>> held = new java.util.concurrent.ConcurrentLinkedQueue<>();
 	private long webLagStart = -1L;
+	private long webLagDuration;
 	private boolean flushing;
 	private boolean sendingOffsets;
+	private World lastWorld;
 
 	public Criticals() {
 		super("criticals", "Criticals", "Makes it easier to crit", ModuleCategory.COMBAT);
@@ -104,8 +112,22 @@ public class Criticals extends Module {
 		packet4.setVisible(custom);
 		packet5.setVisible(custom);
 		MinecraftClient client = MinecraftClient.getInstance();
+		if (client.getNetworkHandler() == null || client.world == null) {
+			// Never replay a queue into a new connection/world.
+			held.clear();
+			webLagStart = -1L;
+			lastWorld = null;
+			return;
+		}
+		if (client.world != lastWorld) {
+			held.clear();
+			webLagStart = -1L;
+			lastWorld = client.world;
+		}
 		ClientPlayerEntity player = client.player;
 		if (player == null) {
+			held.clear();
+			webLagStart = -1L;
 			return;
 		}
 		if (webLagStart >= 0 && !"web_lag".equals(mode.getValue())) {
@@ -113,7 +135,7 @@ public class Criticals extends Module {
 			flush(client);
 		}
 		if ("web_lag".equals(mode.getValue())) {
-			if (webLagStart >= 0 && System.currentTimeMillis() - webLagStart >= Math.round(lagDelay.getValue())) {
+			if (webLagStart >= 0 && System.currentTimeMillis() - webLagStart >= webLagDuration) {
 				flush(client);
 			}
 			return;
@@ -151,6 +173,8 @@ public class Criticals extends Module {
 		if ("web_lag".equals(mode.getValue())) {
 			if (webLagStart < 0) {
 				webLagStart = System.currentTimeMillis();
+				// cA.UN(): uniform draw over the two Lag Delay handles.
+				webLagDuration = Math.max(0L, Math.round(lagDelay.randomValue()));
 			}
 			sendingOffsets = true;
 			try {
@@ -193,9 +217,12 @@ public class Criticals extends Module {
 			return;
 		}
 		Packet<?> packet = event.packet();
-		// Only hold movement and click-slot packets (class_2813 in fu.md)
-		// Never hold KeepAlive, Pong, or Attack packets to prevent disconnects or dropped hits
-		if (!(packet instanceof PlayerMoveC2SPacket) && !(packet instanceof net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket)) {
+		// Only movement packets are held. fu.md:70-72 proves a ClickSlot class
+		// token in fu's slice but not whether it is the filter or an emitted
+		// packet; holding inventory clicks across a 100-150 ms window can
+		// desync the screen handler, so the safer natural reading is recorded
+		// as a divergence in PARITY.md.
+		if (!(packet instanceof PlayerMoveC2SPacket)) {
 			return;
 		}
 		held.add(packet);
@@ -209,6 +236,7 @@ public class Criticals extends Module {
 
 	private void flush(MinecraftClient client) {
 		webLagStart = -1L;
+		webLagDuration = 0L;
 		if (client.getNetworkHandler() == null) {
 			held.clear();
 			return;

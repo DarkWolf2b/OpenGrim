@@ -9,6 +9,7 @@ import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import dev.opengrim.settings.GroupSetting;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -47,9 +48,13 @@ import net.minecraft.world.World;
  * ground scan and the gv phase split. The placement mechanism is decided by the held item:
  * buckets go through {@code interactItem} (a water bucket has no {@code useOnBlock} - calling
  * {@code interactBlock} with it is a silent no-op in vanilla), blocks through
- * {@code interactBlock}. Both aim through {@code Rotation}, and the real yaw/pitch are set
- * around the bucket use because {@code BucketItem.raycast} reads them directly; the silent
- * rotation alone never reaches the raycast. Divergence notes: analysis/docs/PARITY.md.
+ * {@code interactBlock}. Both aim through {@code Rotation}; the bucket use goes through
+ * {@link RotationManager#applyForAction} because {@code BucketItem.raycast} reads the real
+ * yaw/pitch before the packet is built. Placement runs in the pre-motion phase
+ * ({@code START_CLIENT_TICK}, a stand-in for {@code aVq}), projects the landing column over
+ * the remaining fall, and latches one bucket use per fall with an existing-water guard so a
+ * second use cannot pick the MLG water back up. Divergence notes:
+ * analysis/docs/PARITY.md Wave 15.
  *
  * <p>trace 2026-10-17: aVp (pre-rotation) and aVq (tick) ran 1x each during the tour
  * window; no fall occurred, so no placement path executed. Capture condition: fall more
@@ -66,6 +71,10 @@ public class AutoMlg extends Module {
 	private final BoolSetting hayBale = new BoolSetting("hay_bale", false);
 	private final BoolSetting cherry = new BoolSetting("cherry", false);
 
+	/** Latch: one placement per fall; a second bucket use would pick the water back up. */
+	private boolean placedThisFall;
+	private World lastWorld;
+
 	public AutoMlg() {
 		super("auto_mlg", "Auto MLG", "Places block underneath to avoid fall damage", ModuleCategory.COMBAT);
 		mode.add(bucket);
@@ -76,12 +85,23 @@ public class AutoMlg extends Module {
 		mode.add(cherry);
 	}
 
+	/**
+	 * Pre-motion phase (fM_.md:60-76 {@code aVp(gv)} / {@code aVq(gH$th)}).
+	 * Running at START_CLIENT_TICK instead of END_CLIENT_TICK gives the bucket
+	 * placement one full tick before the fall is applied — the END tick was
+	 * one tick too late for water (server processes the use after the player
+	 * has already landed).
+	 */
 	@Override
-	public void onTick() {
+	public void onPreTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
 		if (player == null || client.world == null || client.interactionManager == null) {
 			return;
+		}
+		if (client.world != lastWorld) {
+			placedThisFall = false;
+			lastWorld = client.world;
 		}
 		// Only while actually falling: the prediction below would otherwise fire while
 		// jumping upward over a ledge (fallDistance 0 + the height already gained). In a
@@ -89,20 +109,25 @@ public class AutoMlg extends Module {
 		// damage to predict there either.
 		if (player.isOnGround() || player.isTouchingWater() || player.isInLava()
 				|| player.isClimbing() || player.getVelocity().y >= 0.0) {
+			placedThisFall = false;
+			return;
+		}
+		if (placedThisFall) {
+			// While the MLG placement is pending, a held right-click would let
+			// vanilla use the same bucket again and pick the water back up.
+			client.options.useKey.setPressed(false);
 			return;
 		}
 
-		World world = player.getEntityWorld();
+		World world = client.world;
 		Vec3d pos = player.getEntityPos();
-		// Anchor Player keeps the target column directly under the player; otherwise the
-		// landing column is projected with the horizontal velocity. The vertical component
-		// is deliberately not projected: starting the scan at feetY + vy skips the surface
-		// on fast falls and returns a block below the real landing block.
-		Vec3d targetCol = anchorPlayer.getValue()
-				? pos
-				: new Vec3d(pos.x + player.getVelocity().x, pos.y, pos.z + player.getVelocity().z);
-
-		BlockPos ground = findGroundBelow(world, targetCol.x, targetCol.y, targetCol.z);
+		// Anchor Player keeps the target column directly under the player;
+		// otherwise project the horizontal velocity over the remaining fall
+		// time (fM_.md:74). A one-tick projection lands on the wrong block
+		// whenever the fall spans a block boundary.
+		BlockPos ground = anchorPlayer.getValue()
+				? findGroundBelow(world, pos.x, pos.y, pos.z)
+				: findProjectedGround(world, player, pos);
 		if (ground == null) {
 			return;
 		}
@@ -146,29 +171,36 @@ public class AutoMlg extends Module {
 		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
 
 		ActionResult result;
+		Hand useHand = hand;
 		if (stack.getItem() instanceof BucketItem) {
+			// One bucket use per fall. A second use raycasts the water that was
+			// just placed and picks it back up, removing the MLG water right
+			// before the fall (the reported death). Latch before the call so a
+			// second tick cannot repeat the use, and drop a held use key so
+			// vanilla's own doItemUse cannot repeat it either.
+			placedThisFall = true;
+			client.options.useKey.setPressed(false);
 			// InteractItem is the only path that runs BucketItem.use -> raycast -> placeFluid.
 			// The raycast reads the player's real rotation, so apply and restore it around
-			// the use (cf. mk.java:405-424, which does the same around an item use).
-			float yaw = player.getYaw();
-			float pitch = player.getPitch();
-			player.setYaw(rotation.getYaw());
-			player.setPitch(rotation.getPitch());
-			try {
-				result = client.interactionManager.interactItem(player, hand);
-			} finally {
-				player.setYaw(yaw);
-				player.setPitch(pitch);
-			}
+			// the use via the rotation manager (cf. mk.java:405-424).
+			result = RotationManager.get().applyForAction(rotation,
+					() -> client.interactionManager.interactItem(player, useHand));
 		} else {
 			BlockHitResult hit = new BlockHitResult(groundCenter, Direction.UP, ground, false);
 			result = client.interactionManager.interactBlock(player, hand, hit);
 		}
 		// Vanilla swings only for a successful client-side use (MinecraftClient.doItemUse).
-		if (result instanceof ActionResult.Success success
-				&& success.swingSource() == ActionResult.SwingSource.CLIENT) {
-			player.swingHand(hand);
+		if (result instanceof ActionResult.Success success) {
+			placedThisFall = true;
+			if (success.swingSource() == ActionResult.SwingSource.CLIENT) {
+				player.swingHand(hand);
+			}
 		}
+	}
+
+	@Override
+	protected void onDisable() {
+		placedThisFall = false;
 	}
 
 	private int findMlgSlot(ClientPlayerEntity player, World world, BlockPos ground) {
@@ -183,6 +215,11 @@ public class AutoMlg extends Module {
 
 	private boolean matches(ItemStack stack, World world, BlockPos ground) {
 		if (bucket.getValue() && stack.isOf(Items.WATER_BUCKET)) {
+			// Water already in the landing cell: using the bucket again would
+			// raycast the source and pick it back up, removing the MLG water.
+			if (world.getBlockState(ground.up()).isOf(Blocks.WATER)) {
+				return false;
+			}
 			Box check = new Box(ground.up());
 			boolean entityHurtByWater = false;
 			for (Entity e : world.getOtherEntities(null, check)) {
@@ -208,6 +245,26 @@ public class AutoMlg extends Module {
 			return true;
 		}
 		return cherry.getValue() && (stack.isOf(Items.SWEET_BERRIES) || stack.isOf(Items.CHERRY_LEAVES));
+	}
+
+	/**
+	 * Projects the horizontal velocity over the estimated remaining fall time,
+	 * then returns the first solid block in that landing column. Falls back to
+	 * the column under the player when the projected column has no ground.
+	 */
+	private static BlockPos findProjectedGround(World world, ClientPlayerEntity player, Vec3d pos) {
+		BlockPos under = findGroundBelow(world, pos.x, pos.y, pos.z);
+		if (under == null) {
+			Vec3d velocity = player.getVelocity();
+			return findGroundBelow(world, pos.x + velocity.x, pos.y, pos.z + velocity.z);
+		}
+		double remaining = Math.max(0.0, pos.y - (under.getY() + 1.0));
+		double fallSpeed = Math.max(0.08, -player.getVelocity().y);
+		int ticks = Math.min(40, Math.max(1, (int) Math.ceil(remaining / fallSpeed)));
+		Vec3d velocity = player.getVelocity();
+		BlockPos projected = findGroundBelow(world,
+				pos.x + velocity.x * ticks, pos.y, pos.z + velocity.z * ticks);
+		return projected != null ? projected : under;
 	}
 
 	private static BlockPos findGroundBelow(World world, double x, double feetY, double z) {

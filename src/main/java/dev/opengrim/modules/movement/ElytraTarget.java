@@ -56,8 +56,6 @@ public class ElytraTarget extends Module {
 
 	private long lastUseTick;
 	private boolean fireworkPending;
-	private int previousSlot = -1;
-	private long returnAtMs;
 
 	public ElytraTarget() {
 		super("elytra_target", "Elytra Target", "Automatically uses firework for target", ModuleCategory.PLAYER);
@@ -81,11 +79,6 @@ public class ElytraTarget extends Module {
 
 	@Override
 	public void onDisable() {
-		MinecraftClient client = MinecraftClient.getInstance();
-		if (previousSlot >= 0 && client.player != null) {
-			client.player.getInventory().setSelectedSlot(previousSlot);
-		}
-		previousSlot = -1;
 		fireworkPending = false;
 	}
 
@@ -97,11 +90,6 @@ public class ElytraTarget extends Module {
 		ClientPlayerEntity player = client.player;
 		if (client.world == null || player == null) {
 			return;
-		}
-
-		if (previousSlot >= 0 && System.currentTimeMillis() >= returnAtMs) {
-			player.getInventory().setSelectedSlot(previousSlot);
-			previousSlot = -1;
 		}
 
 		if (!player.isGliding()) {
@@ -192,13 +180,14 @@ public class ElytraTarget extends Module {
 			return false;
 		}
 
-		if (previousSlot < 0) {
-			previousSlot = player.getInventory().getSelectedSlot();
-		}
+		int previousSlot = player.getInventory().getSelectedSlot();
 		player.getInventory().setSelectedSlot(rocketSlot);
-		client.interactionManager.interactItem(player, Hand.MAIN_HAND);
-		player.swingHand(Hand.MAIN_HAND);
-		returnAtMs = System.currentTimeMillis() + 100L;
+		try {
+			client.interactionManager.interactItem(player, Hand.MAIN_HAND);
+			player.swingHand(Hand.MAIN_HAND);
+		} finally {
+			player.getInventory().setSelectedSlot(previousSlot);
+		}
 		return true;
 	}
 }

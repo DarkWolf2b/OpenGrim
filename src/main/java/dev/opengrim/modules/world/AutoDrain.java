@@ -171,17 +171,10 @@ public class AutoDrain extends Module {
 		Rotation rotation = Rotation.lookingAt(player.getEyePos(), liquidHit.getPos()).clamped();
 		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
 		Hand hand = player.getMainHandStack().isOf(Items.BUCKET) ? Hand.MAIN_HAND : Hand.OFF_HAND;
-		float yaw = player.getYaw();
-		float pitch = player.getPitch();
-		player.setYaw(rotation.getYaw());
-		player.setPitch(rotation.getPitch());
-		ActionResult result;
-		try {
-			result = client.interactionManager.interactItem(player, hand);
-		} finally {
-			player.setYaw(yaw);
-			player.setPitch(pitch);
-		}
+		// The bucket raycast reads the real rotation; apply/restore through the
+		// rotation manager instead of open-coding setYaw/setPitch.
+		ActionResult result = RotationManager.get().applyForAction(rotation,
+				() -> client.interactionManager.interactItem(player, hand));
 		if (result instanceof ActionResult.Success success
 				&& success.swingSource() == ActionResult.SwingSource.CLIENT) {
 			player.swingHand(hand);

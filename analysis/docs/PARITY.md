@@ -23,6 +23,15 @@ from the porting reports in `../../analysis/port/reports/`.
 
 ## Update history (newest first)
 
+- **2026-10-25 (review fixes: movement, Auto MLG, bloom, rotation packets)** —
+  Freecam rotation interpolation + blocks/s speed; Flight velocity basis and
+  ability packet; Auto MLG pre-motion tick, one-use bucket latch and existing-water
+  guard; RotationManager rewrites `PlayerInteractItemC2SPacket` and exposes
+  `applyForAction`; Criticals uses the recovered 100–150 ms range and no longer
+  holds ClickSlot; `kl` bloom reimplemented from the raw class (capture, blur,
+  composite, ping-pong); Auto Market/Anti Bot/Hand Chams/Elytra rollbacks; GUI
+  search icon/scroll fixes. Aggregate 80.8% unchanged pending runtime
+  verification. Details in Re-audit 2026-10-25 and Divergences Wave 15.
 - **2026-10-24 (rendering pipeline Section 3 & Criticals aQo uplift)** — Criticals
   implements full `aQo` packet queue filtering movement and click slot packets,
   with micro-offset jump packets in web_lag mode and burst FIFO release;
@@ -90,14 +99,14 @@ from the porting reports in `../../analysis/port/reports/`.
 
 | Class | Module | Registry key | Status | Spec | Notes |
 |---|---|---|---|---|---|
-| di | 2D ESP | 158 | partial | [spec](../../analysis/specs/modules/di.md) | render/Esp2D.java (2026-10-24 re-score, parity 80%) — nametag suppression wired into EntityRendererMixin; profile registry/screen projection open. |
+| di | 2D ESP | 158 | partial | [spec](../../analysis/specs/modules/di.md) | render/Esp2D.java (2026-10-24 re-score, parity 80%; 2026-10-25 review note) — nametag suppression wired into EntityRendererMixin; the 80% is disproportionate to the surviving profile registry/screen-space profile renderer, which are still open. |
 | fH | Aim Assist | 8 | ported | [spec](../../analysis/specs/modules/fH.md) | combat/AimAssist.java (2026-10-24 re-score, parity 58%) — Smooth yaw/pitch approach toward best target inside FOV cone, with jitter, prediction offset, switch/locked target retention, health/distance priority; 2026-10-24: real yaw/pitch are now applied (the original pool names `Entity.setPitch(F)`), Hold Key is mouse-aware, and the linear step/noise were replaced by an exponential approach + 3-octave smooth value noise; native target predicate/prediction/FOV render remain — see Divergences Wave 13/14 |
 | eU | Air Anchor | 114 | partial | [spec](../../analysis/specs/modules/eU.md) | world/AirAnchor.java (verified 2026-10-17, trace re-check 2026-10-17, parity 65%; trace: aDC ×2 = eV.aEq→0 + gg.bab→1 + HyfoP.crA, YO = gg.YO + crA; aDI untriggered — capture: anchor place attempt) — When holding a respawn anchor with no block crosshair hit, synthesizes a BlockHitResult against the nearest solid neighbor of the aimed air block and |
 | ej | Air Stuck | 43 | partial | [spec](../../analysis/specs/modules/ej.md) | movement/AirStuck.java (verified 2026-10-17, parity 90%; trace-recheck 2026-10-17) — Captures position on enable, pins setPos + zero velocity + zero fall distance each tick. Direct port of "Freezes all movement". |
 | dh | Ambience | 123 | ported | [spec](../../analysis/specs/modules/dh.md) | utility/Ambience.java (verified 2026-10-21, parity 86%) — Change Time (def on) with Time Mode (Presets/Custom) and Time presets (Dawn/Morning/Day/Evening/Sunset/Night/Real Time — decrypted names) + Time Value; 2026-10-21 recovery: Fog Range is the real two-handle cA range; preset times, fade/particle bounds, billboard and fog consumer remain DES/absent. |
 | eX | Anchor Macro | 27 | ported | [spec](../../analysis/specs/modules/eX.md) | world/AnchorMacro.java (2026-10-24 re-score, parity 56%) — Hold-key state machine: switch to anchor (switch_delay) → place at crosshair face (anchor_delay) → charge with glowstone dust (charge_delay) → detonat; 2026-10-24: triggers from the real block-use event (`UseBlockEvent`/`gO$tm`), Press completes after release, and Safe Anchor Hold uses the Hold Key — see Divergences Wave 12/13 |
 | dx | Anti Blind | 100 | ported | [spec](../../analysis/specs/modules/dx.md) | render/AntiBlind.java (verified 2026-10-17, parity 100%) — all 8 disable_* toggles (default false, per .WE(false)); blindness/darkness/nausea removed per tick via removeStatusEffect; fire/freezing/pumpkin/suff |
-| fo | Anti Bot | 12 | partial | [spec](../../analysis/specs/modules/fo.md) | utility/AntiBot.java (2026-10-24 re-score, parity 82%) — Heuristic bot detection: latency <= 0 ping check, velocity hovering check, ground/swing/movement checks, static isBotActive query wired to KillAura; native predicate calibration remains. |
+| fo | Anti Bot | 12 | partial | [spec](../../analysis/specs/modules/fo.md) | utility/AntiBot.java (2026-10-24 re-score, parity 82%; 2026-10-25 review fix) — latency ≤ 0 predicate removed (not in the recovered aLu contract and false-positive on LAN/proxies); velocity check restricted to stationary airborne targets outside water/lava/ladders/gliding/vehicles and gated by Movement Check; ground/swing/movement checks and static isBotActive hook remain; native predicate calibration open. |
 | en | Anti Ghost | 46 | partial | [spec](../../analysis/specs/modules/en.md) | world/AntiGhost.java (verified 2026-10-17, trace re-check 2026-10-17, parity 87%; trace: aaj 1× = sentry + mT.cpC→true + recovered enable-cooldown message "You are on cooldown wait a moment before trying again"; atp untriggered — capture: break a block) — Tracks the mining target (interactionManager.currentBreakingPos); when break finishes with progress ≥ 9 and the block state is unchanged, clears it cl |
 | dY | Anti Invisible | 54 | partial | [spec](../../analysis/specs/modules/dY.md) | render/AntiInvisible.java (verified 2026-10-17, parity 60%) — Clears the client-side invisibility flag every tick for filtered entities; server re-sync is re-cleared. Original "Entities" was a cF list → mode filt |
 | dG | Anti Trap | 61 | ported | [spec](../../analysis/specs/modules/dG.md) | render/AntiTrap.java (verified 2026-10-17, parity 68%) — Hides trap-clutter entities client-side (setInvisible(true) re-applied each tick, previous visibility restored on disable) for paintings, armor stands |
@@ -119,8 +128,8 @@ from the porting reports in `../../analysis/port/reports/`.
 | fz | Auto Jump Reset | 23 | partial | [spec](../../analysis/specs/modules/fz.md) | movement/AutoJumpReset.java (verified 2026-10-17, parity 80%) — Jumps (velY 0.42) on the hurt tick to cut knockback; fire-cancel and only-from-players gates, percent chance. Chance chain recovered from decrypted so |
 | dK | Auto Lever Replace | 130 | partial | [spec](../../analysis/specs/modules/dK.md) | world/AutoLeverReplace.java (verified 2026-10-17, trace re-check 2026-10-17, parity 65%; trace: YO 1× = gg.YO only, ana/anc/anb untriggered — capture: tick + block update + render with a lever target) — Breaks levers adjacent to a trapdoor (auto_trap) or cobweb (auto_web) within reach; 5-tick cooldown between breaks. Defaults of the cw toggles were no |
 | fI | Auto Logout | 2 | partial | [spec](../../analysis/specs/modules/fI.md) | combat/AutoLogout.java (verified 2026-10-17, parity 75%) — 12 (distance 1.0/1–100/16 "blocks", group logout_from {pearls, snowballs, arrows, fish_rods, potions}, ignore_friends, invisible, logout_on_key, logou |
-| dM | Auto Market | 26 | partial | [spec](../../analysis/specs/modules/dM.md) | utility/AutoMarket.java (2026-10-24 re-score, parity 60%) — /ah command dispatch on reopen, slot hover extraction for rule creation, session start/pause/state feedback; native packet buy/sell engine open. |
-| fM | Auto MLG | 21 | partial | [spec](../../analysis/specs/modules/fM.md) | world/AutoMlg.java (verified 2026-10-17, parity 74%) — Threshold numeric recovered from decompiled ctor (step 0.1, 3–15, default 4, " blocks" assumed suffix); Anchor Player toggle; Mode group with Bucket/Slime/Honey/Cobweb/HayBale/Cherry (all false); 2026-10-22: placement path rebuilt — bucket→interactItem with the real aim applied around the use, block→interactBlock; predicted fall gate (fallDistance + height remaining; creative skips it); scan from the feet column; offhand/hotbar selection — see Divergences Wave 10. |
+| dM | Auto Market | 26 | partial | [spec](../../analysis/specs/modules/dM.md) | utility/AutoMarket.java (2026-10-24 re-score, parity 60%; 2026-10-25 review fix) — invented `/ah` dispatch, chat feedback and empty OpenScreen branch removed; recovered key dispatcher, enable/disable reset and hovered-slot validation kept; native market engine, config store, notifications and bz editor remain open. |
+| fM | Auto MLG | 21 | partial | [spec](../../analysis/specs/modules/fM.md) | world/AutoMlg.java (verified 2026-10-17, parity 74%; 2026-10-25 review fix) — Threshold/Anchor Player/Mode tree unchanged; placement now runs in the pre-motion phase (START_CLIENT_TICK) instead of END_CLIENT_TICK, projects the horizontal velocity over the remaining fall, uses `RotationManager.applyForAction` for the bucket raycast, and latches one bucket use per fall with an existing-water guard so a second use cannot pick the MLG water back up; exact fM damage/landing math remains unrecovered. |
 | eO | Auto Pearl Catch | 118 | partial | [spec](../../analysis/specs/modules/eO.md) | movement/AutoPearlCatch.java (verified 2026-10-17, parity 71%) — While falling, throws a hotbar wind charge downward (interactItem + pitch 75), returns to the pearl/original slot after return_delay (builder recovere |
 | fl | Auto Potion | 127 | partial | [spec](../../analysis/specs/modules/fl.md) | combat/AutoPotion.java (verified 2026-10-17, parity 64%) — Throws hotbar splash potion below health threshold; per-effect gates (instant health / regeneration / strength / fire resistance), no-effect guard via |
 | fB | Auto Shield Break | 3 | ported | [spec](../../analysis/specs/modules/fB.md) | combat/AutoShieldBreak.java (2026-10-24 re-score, parity 88%) — hotbar axe search, auto-switch and return delay restoration implemented; manual mode axe requirement enforced. |
@@ -129,7 +138,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | fx | Auto Totem | 31 | ported | [spec](../../analysis/specs/modules/fx.md) | combat/AutoTotem.java (verified 2026-10-17, parity 58%) — Swaps totem into off-hand (screen-handler slot 45) when health % below threshold; hotbar-source option, random pick, return-original-slot dance, swap |
 | eJ | Auto Trap | 11 | partial | [spec](../../analysis/specs/modules/eJ.md) | world/AutoTrap.java (verified 2026-10-17, parity 68%) — Places obsidian (or any held BlockItem when alternative_block) around the nearest player/Monster target at feet/head (double_place); synthetic BlockHi |
 | eK | Auto Web | 10 | ported | [spec](../../analysis/specs/modules/eK.md) | world/AutoWeb.java (verified 2026-10-17, parity 85%) — Same synthetic-hit placement with Items.COBWEB; placement_options group (surround / upper_surround / prediction_ticks), optional velocity-based positi |
-| fa | Auto X-Bow | 164 | partial | [spec](../../analysis/specs/modules/fa.md) | combat/AutoXBow.java (2026-10-24 re-score, parity 85%) — 8-state machine, held/hotbar crossbow charging, RotationManager TNT minecart aim and shot detonation implemented. |
+| fa | Auto X-Bow | 164 | partial | [spec](../../analysis/specs/modules/fa.md) | combat/AutoXBow.java (2026-10-24 re-score, parity 85%; 2026-10-25 review fix) — 8-state machine now drives the tick (0 acquire → 1 charge → 2 cart → 3 aim → 4 fire → 5 cooldown → 6 re-arm → 7 no target); aim is applied around the interact use, and the hotbar slot is restored on release/disable. The evidenced TNT-minecart/rail/flint-and-steel plan builders (`aGn/aGo/aGp`, `fa$sL`) remain unported; ledger status is capped pending that work. |
 | fp | Backtrack | 9 | partial | [spec](../../analysis/specs/modules/fp.md) | combat/Backtrack.java (verified 2026-10-17, parity 60%) — Maintains per-player rewind trails pruned to the latency window; delayedPosition(UUID) exposed. Real packet delay needs a network mixin the framework |
 | ey | Blink | 45 | partial | [spec](../../analysis/specs/modules/ey.md) | movement/Blink.java (verified 2026-10-17, parity 90%) — Records withheld motion queue; auto-disable after 30 s; velocity-spike disable; pulse clears queue. Actual packet suppression needs a network mixin (j |
 | dd | Block ESP | 82 | ported | [spec](../../analysis/specs/modules/dd.md) | render/BlockEsp.java (verified 2026-10-17, parity 85%) — Filled, Tracers, Range (1–128 blocks, def 100), Tracers Width (1–3, def 1) — decrypted values. Scans blocks vs an editable highlight set (original cK |
@@ -144,27 +153,27 @@ from the porting reports in `../../analysis/port/reports/`.
 | dR | Click Action | 60 | ported | [spec](../../analysis/specs/modules/dR.md) | utility/ClickAction.java (verified 2026-10-17, parity 76%) — Bound keys select the matching hotbar slot (pearl/firework/potion item), use it via interactItem, restore the previous slot after Return Delay (10/0–1 |
 | fR | Client Sounds | 103 | ported | [spec](../../analysis/specs/modules/fR.md) | utility/ClientSounds.java (verified 2026-10-17, trace re-check 2026-10-17, parity 77%; trace: never enabled — load only, accessors untriggered — capture: play a sound) — Sound Type mode (normal/bubble — original was a group with two toggles) and Sound Volume numeric (step 1, 0–100, default 70; suffix unrecovered, "%" a |
 | ev | Collision Long Jump | 48 | partial | [spec](../../analysis/specs/modules/ev.md) | movement/CollisionLongJump.java (verified 2026-10-17, parity 82%; trace-recheck 2026-10-17) — On horizontal collision against a BoatEntity while airborne, applies jump impulse (0.45). |
-| fu | Criticals | 135 | ported | [spec](../../analysis/specs/modules/fu.md) | combat/Criticals.java (2026-10-24 re-score, parity 92%) — Vanilla mini-hop; packet/custom/web_lag modes active via PacketSendEvent; aQo packet-hold queue buffers movement/slot clicks and bursts on lag_delay expiry. |
+| fu | Criticals | 135 | partial | [spec](../../analysis/specs/modules/fu.md) | combat/Criticals.java (2026-10-24 re-score, parity 92%; 2026-10-25 review fix) — Vanilla mini-hop; packet/custom/web_lag modes; web_lag now uses the recovered `cA` two-handle 100–150 ms range, holds only movement packets, resets on world/connection change, and flushes on disable. `class_2813` (ClickSlot) is not held because the spec leaves its filter/emit role unresolved; `aQp` profile math remains. |
 | eY | Crystal Optimizer | 33 | partial | [spec](../../analysis/specs/modules/eY.md) | combat/CrystalOptimizer.java (verified 2026-10-17, parity 65%) — Attacks the EndCrystalEntity closest to the nearest hostile target (inverse-distance damage proxy) instead of the nearest crystal. |
 | ed | Custom Camera Distance | 74 | ported | [spec](../../analysis/specs/modules/ed.md) | render/CustomCameraDistance.java (verified 2026-10-17, parity 87%) — Decrypted settings ported: Distance (step 1.0, 4.0–100.0, def 4.0; cC chain recovered from source, suffix encrypted→null) and No Clip (off). Camera of |
 | dV | Custom FOV | 53 | ported | [spec](../../analysis/specs/modules/dV.md) | render/CustomFov.java (verified 2026-10-17, parity 96%) — Overrides options.getFov() while enabled, restores on disable. FOV numeric recovered from folded ctor (spec generator had missed it). |
 | fO | Discord Activity | 104 | partial | [spec](../../analysis/specs/modules/fO.md) | utility/DiscordActivity.java (verified 2026-10-17, trace re-check, parity 80%) - no RPC transport; activity summary exposed via summary(). Trace: YO → qq.cXK() (scheduler stop) + qn state queries (no gg.YO chain); disable now clears the published status; boot-trace aaj → aWj → qq.cXG. |
 | eM | Double Tap | 121 | partial | [spec](../../analysis/specs/casesafe/modules/eM_.md) | combat/DoubleTap.java (verified 2026-10-17, parity 88%) — structure verified against true eM (boolean XOnBS phase + mT.cpz timer + aAY(hw$tv) HIGH / aAZ(gH$th) listeners); behavior bodies native, combo heuristic documented |
 | ef | Elytra Swapper | 67 | partial | [spec](../../analysis/specs/modules/ef.md) | utility/ElytraSwapper.java (verified 2026-10-17, parity 78%) — Activation Key (-999..348, def -999, key-code int), Mode (legit/normal), Inventory Mode (client/silent), Auto Open Inventory (on), Swap Delay (5, 0–50 |
-| dA | Elytra Target | 59 | partial | [spec](../../analysis/specs/modules/dA.md) | movement/ElytraTarget.java (2026-10-24 re-score, parity 85%) — While gliding, boosts with firework rocket: offhand/mainhand direct support, hotbar slot switch with delayed slot restoration; native trajectory math remains. |
+| dA | Elytra Target | 59 | partial | [spec](../../analysis/specs/modules/dA.md) | movement/ElytraTarget.java (2026-10-24 re-score, parity 85%; 2026-10-25 review fix) — While gliding, boosts with firework rocket: offhand/mainhand direct support, hotbar switch restored in a `finally` immediately after the use (the 100 ms delay was not evidenced), native trajectory math remains. |
 | ds | Entity ESP | 80 | ported | [spec](../../analysis/specs/modules/ds.md) | render/EntityEsp.java (verified 2026-10-17, parity 93%) — entities(mode), filled, mode(model/hitbox from ct SO(1) group); 4 color settings omitted (cG); target set exposed via getTargets() |
 | ff | Fake Lag | 18 | partial | [spec](../../analysis/specs/modules/ff.md) | movement/FakeLag.java (verified 2026-10-21, parity 94%) — Mode group (Normal default-on, Lag Range), Packet Interval (step 5, 0–2000, default 100, " ms" — recovered), Lag Range Distance (step 0.1, 1–6, defaul; 2026-10-21 recovery: two-handle RangeSetting/RangeSliderWidget and the attack-post mixin are wired; the kx indicator, of.ahXwo order and gM disconnect clear remain. |
 | cX | Fake Player | 72 | ported | [spec](../../analysis/specs/modules/cX.md) | utility/FakePlayer.java (verified 2026-10-17, parity 90%) — Spawns OtherClientPlayerEntity(ClientWorld, GameProfile(random UUID, name)) (ctor call verified from the original's call sites), copies position/yaw/p |
 | eD | Fast Bridge | 50 | partial | [spec](../../analysis/specs/modules/eD.md) | movement/FastBridge.java (verified 2026-10-17, parity 75%) — only_when_holding_block, only_when_looking_at_block, only_when_moving_backwards (all false); forces the sneak input (via Input.setPlayerInput) the tic |
 | dZ | Fast Place | 62 | ported | [spec](../../analysis/specs/modules/dZ.md) | world/FastPlace.java (2026-10-24 re-score, parity 95%) — Clamps MinecraftClient.itemUseCooldown to rightClickDelay via MinecraftClientAccessor; ItemListSetting validBlocks populated with all blocks; ranged weapon skip; native per-use event remains. |
 | dn | Firework Spots | 98 | ported | [spec](../../analysis/specs/modules/dn.md) | render/FireworkSpots.java (verified 2026-10-21, parity 93%) — Time Before Disappear (1–15 s, def 8), Quantity Limit (1–100, def 10) — decrypted values. Tracks FireworkRocketEntitys; on removal records the last po; 2026-10-21 recovery: exact HUD firework card, item icon and rk fade are live; jYWIl/ZOVgw/AhEPk DES values and the 3.0 blur smoothness remain; 2026-10-22: HUD world→screen projection corrected to the camera-rotation conjugate and the captured live world projection (vanilla GameRenderer.project, jI.bIw, GameRenderer#getFov via GameRendererMixin) — markers are world-anchored instead of camera-locked. |
-| eB | Flight | 44 | partial | [spec](../../analysis/specs/modules/eB.md) | movement/Flight.java (verified 2026-10-17, parity 70%) — anti_kick(false), vertical_speed_match(false), off_time Double(1,1,20,1,"ticks"), delay Double(1,1,200,20,"ticks"), speed Double(0.01,0.01,3,0.05), mo |
-| dW | Freecam | 76 | ported | [spec](../../analysis/specs/modules/dW.md) | render/Freecam.java (verified 2026-10-24, parity 95%) — Detached camera via CameraAccessor setPos/setRotation/thirdPerson; real player movement suppressed via KeyboardInputMixin; mouse look routed via MouseMixin (rotate setting controls player look); render_hand wired via GameRendererMixin; position lerping via tickProgress. |
+| eB | Flight | 44 | partial | [spec](../../analysis/specs/modules/eB.md) | movement/Flight.java (verified 2026-10-17, parity 70%; 2026-10-25 review fix) — anti_kick(false), vertical_speed_match(false), off_time Double(1,1,20,1,"ticks"), delay Double(1,1,200,20,"ticks"), speed Double(0.01,0.01,3,0.05), mode abilities/velocity; velocity basis Z sign corrected (forward is +Z at yaw 0), abilities mode sends `PlayerAbilitiesC2SPacket` on enable/tick/disable; anti-kick math remains a labeled guess. |
+| dW | Freecam | 76 | partial | [spec](../../analysis/specs/modules/dW.md) | render/Freecam.java (verified 2026-10-24, parity 95%; 2026-10-25 review fix) — Detached camera via CameraAccessor setPos/setRotation/thirdPerson; real player movement suppressed via KeyboardInputMixin; mouse look routed via MouseMixin; render_hand via GameRendererMixin; position **and yaw/pitch** lerp via tickProgress (`aqx/aqw`), speed restored to blocks/second (`/20`, no sprint/diagonal multiplier). Perspective is handled through the camera flag rather than forcing the option; the `kr` spoof-player panel remains unported, hence `partial`. |
 | dm | Friend Indicator | 137 | ported | [spec](../../analysis/specs/modules/dm.md) | render/FriendIndicator.java (verified 2026-10-17, parity 92%) — Height (0.4–1.6, step 0.1, def 1.2 — decrypted; decrypted suffix unresolvable → none). Friend set managed on the module (no friends system in framewor |
 | dB | Full Bright | 71 | ported | [spec](../../analysis/specs/modules/dB.md) | render/FullBright.java (verified 2026-10-17, parity 90%) — No settings in the original. Grants a silent infinite Night Vision client-side while enabled (re-applied on tick), removed on disable. Gamma forcing n |
 | ec | Ghost Hand | 75 | partial | [spec](../../analysis/specs/modules/ec.md) | world/GhostHand.java (verified 2026-10-17, trace re-check 2026-10-17, parity 88%; trace: arz 2× = ee.arS→0 + gg.bab→1, networkHandler gate added; interactBlock untriggered — capture: use-key a wall container) — 1:1 port of sixtwo.ec ray-marching container search + interact |
 | dy | Glow | 86 | ported | [spec](../../analysis/specs/modules/dy.md) | render/Glow.java (2026-10-24 re-score, parity 96%) — Real EntityListSetting entities with living-minus-armor-stands universe; self_glow quirk preserved; per-tick setGlowing lifecycle management. |
-| de | Hand Chams | 132 | ported | [spec](../../analysis/specs/modules/de.md) | render/HandChams.java (2026-10-24 re-score, parity 95%) — full settings + first-person tint via ItemRendererMixin; 2026-10-24: glass hand tint alpha & color fallback repaired for zero-RGB presets; exact acv hand re-render plus recovered chams/outline composites live; ro.diF presets, acw tables and OTglH remain native/DES. |
+| de | Hand Chams | 132 | ported | [spec](../../analysis/specs/modules/de.md) | render/HandChams.java (2026-10-24 re-score, parity 95%; 2026-10-25 review fix) — full settings + first-person tint via ItemRendererMixin; the zero-RGB → white fallback was reverted so an explicitly black glass tint stays black at the recovered 0.55 alpha; exact acv hand re-render and recovered chams/outline composites live; ro.diF presets, acw tables and OTglH remain native/DES. |
 | dS | Hand No Clip | 55 | partial | [spec](../../analysis/specs/modules/dS.md) | combat/HandNoClip.java (verified 2026-10-17, parity 74%) — On attack press, attacks the nearest entity in a ~30° look cone within reach when the crosshair is blocked by a block and line of sight is clear. "Spe |
 | dr | Health Indicators | 91 | ported | [spec](../../analysis/specs/modules/dr.md) | render/HealthIndicators.java (verified 2026-10-17, parity 92%) — hearts_per_row Double(1,1,30,10), invisible, visible_through_walls; per-tick player health/absorption snapshot exposed via getIndicators(); drawing ne |
 | em | High Jump | 167 | partial | [spec](../../analysis/specs/modules/em.md) | movement/HighJump.java (verified 2026-10-17, parity 85%) — Mode (vanilla/grim_shulker, default grim_shulker — .SY() marker), Jump Height (0.01, 1.0–3.0, 1.6, Vanilla), Vertical Boost (0.01, 0.1–3.0, 1.91, Grim |
@@ -205,7 +214,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | dl | Outlines | 131 | ported | [spec](../../analysis/specs/modules/dl.md) | render/Outlines.java (verified 2026-10-21, parity 92%) — Entities list seeded with the original default (End Crystal) as editable set; Color Mode group Zero/One/Two/Three (decrypted); Animation Speed (0–3, d; 2026-10-21 recovery: world mask + outlines.glsl composite now render, so the module is no longer inert (supersedes the no-consumer note above); uniform binding is inferred, glowThinOutline is hard-coded 1, the cF picker remains a plain set, and the default selected set is {PLAYER} (END_CRYSTAL is only in the universe; the old row's End Crystal default was a misread); 2026-10-22: composite quad now draws 6 indices (was 4), fixing the same diagonal half-screen hole. |
 | eE | Parkour | 52 | partial | [spec](../../analysis/specs/modules/eE.md) | movement/Parkour.java (verified 2026-10-17, parity 66%) — only_if_w_pressed(false), edge_distance Double(0.001,0.001,0.1,0.001); presses the jump input when the position one tick ahead (plus tolerance) is air |
 | cR | Particles | 125 | ported | [spec](../../analysis/specs/modules/cR.md) | render/Particles.java (verified 2026-10-21, parity 93%) — Full decoded settings surface (Particles/Physics/Add on groups, Stars/Snowflakes/Ghost/Hearts/Diamonds/Thunders/Moons/Clouds, Fly/Drop drift, Idle/Mov; 2026-10-21 recovery: eight sprites + glow pass and the exact billboard are live; mo mapping, glow key, burst/lifetime/fade constants and the AFTER_ENTITIES phase remain. |
-| fm | Pearl Chaser | 145 | partial | [spec](../../analysis/specs/modules/fm.md) | movement/PearlChaser.java (2026-10-24 re-score, parity 88%) — RotationManager silent aim used, previousSlot hotbar tracking and delayed restoration implemented. |
+| fm | Pearl Chaser | 145 | partial | [spec](../../analysis/specs/modules/fm.md) | movement/PearlChaser.java (2026-10-24 re-score, parity 88%; 2026-10-25 review fix) — category restored to **Combat** (fm.java:39 `gh.xwjCw`); the computed aim is applied around `interactItem` via `RotationManager.applyForAction` (the interact packet carries the real yaw/pitch, so the previous submission-only path threw the pearl along the view), then restored; previousSlot restore kept. Native trajectory/throw gates remain. |
 | dg | Pearl Prediction | 93 | ported | [spec](../../analysis/specs/modules/dg.md) | render/PearlPrediction.java (verified 2026-10-21, parity 92%) — Show Time Left (false, decrypted). Simulates every live EnderPearlEntity with thrown-projectile physics (0.99 drag, 0.03 gravity/tick) to a solid-bloc; 2026-10-21 recovery: mh/me simulator, both termination kinds and the HUD card/pearl icon are live; cky max steps, NkcQX format and fade constants remain DES; 2026-10-22: HUD world→screen projection corrected to the camera-rotation conjugate and the captured live world projection (vanilla GameRenderer.project, jI.bIw, GameRenderer#getFov via GameRendererMixin) — labels are world-anchored instead of camera-locked. |
 | cT | Pop Chams | 129 | ported | [spec](../../analysis/specs/modules/cT.md) | render/PopChams.java (verified 2026-10-17, parity 95%) — Totem-pop detection from other players' health snapshots (prev ≤1.5 → rising); highlight ring of TOTEM_OF_UNDYING (simple) / ENCHANT (textured) partic |
 | fA | Potion Refill | 7 | partial | [spec](../../analysis/specs/modules/fA.md) | combat/PotionRefill.java (verified 2026-10-17, parity 78%) — Detects consumed potion stacks in hotbar, swaps a replacement from main inventory after delay via clickSlot(SWAP). hover interpreted as "only refill s |
@@ -221,7 +230,7 @@ from the porting reports in `../../analysis/port/reports/`.
 | cV | Skeleton ESP | 126 | ported | [spec](../../analysis/specs/modules/cV.md) | render/SkeletonEsp.java (verified 2026-10-17, parity 96%) — port of sixtwo.cV: computes humanoid bone segments and Euler angles per nearby player; rendered via RenderLayers.lines(); details in the Divergences section of PARITY.md |
 | fN | Skin Protect | 142 | partial | [spec](../../analysis/specs/modules/fN.md) | utility/SkinProtect.java (verified 2026-10-17, parity 68%) — Protect group (Own Skin/Other Players), per-side Skin Source groups (Defaults/Custom), Own Default Skin + Other Players Skin groups (dynamically popul |
 | dN | Slot Lock | 64 | partial | [spec](../../analysis/specs/modules/dN.md) | utility/SlotLock.java (verified 2026-10-17, trace re-check, parity 75%) - locked-slots group (cz action → 9 toggles); drop suppression via key reset + packet cancel + THROW clicks; key-input event absent on our bus. Trace: aon not triggered — capture: press Q on a locked slot. |
-| cZ | Soul Effects | 162 | ported | [spec](../../analysis/specs/modules/cZ.md) | render/SoulEffects.java (2026-10-24 re-score, parity 96%) — SOUL particle emission on entity death; glow sprite pass; BloomRenderer (kl.bQd) post-processing composite live with multi-LOD bloom shaders. |
+| cZ | Soul Effects | 162 | partial | [spec](../../analysis/specs/modules/cZ.md) | render/SoulEffects.java (2026-10-24 re-score, parity 96%; 2026-10-25 review fix) — SOUL particle emission on entity death; glow sprites go into the `kl.bQa` effect target; `BloomRenderer` now runs the recovered `bQf` blur/encode and `bQg` composite as two passes with ping-pong buffers at END_MAIN, additive over the main framebuffer and with Glow Radius unscaled. Remaining: the two custom Behind Walls `kR` particle pipelines (the bloom mask now uses a depth-tested variant when Behind Walls is off); status lowered to `partial` until those are ported. |
 | da | Sound ESP | 85 | ported | [spec](../../analysis/specs/modules/da.md) | render/SoundEsp.java (verified 2026-10-21, parity 92%) — port of sixtwo.da: Time Before Disappear (1-15 s, def 8), Quantity Limit (1-100, def 10), Max Distance (1-128 blocks, def 32); world markers rendered in WorldRenderEvent; 2026-10-21 recovery: exact HUD card, medium MSDF and rk fade are live; xwXDE, the sound-name regex and the 7.0 blur smoothness remain; 2026-10-22: HUD world→screen projection corrected to the camera-rotation conjugate and the captured live world projection (vanilla GameRenderer.project, jI.bIw, GameRenderer#getFov via GameRendererMixin) — labels are world-anchored instead of camera-locked. |
 | dE | Spammer | 146 | ported | [spec](../../analysis/specs/modules/dE.md) | utility/Spammer.java (verified 2026-10-17, parity 80%) — Ports Message Count (1..5), Delay, Disable On Leave/Disconnect (auto-disable on null player / world change), Randomize, Auto Split Messages + Split Le |
 | eH | Spear Dash | 149 | partial | [spec](../../analysis/specs/modules/eH.md) | movement/SpearDash.java (verified 2026-10-17, parity 78%) — dash_direction(movement/direction, default movement from SO(0)), given_direction Double(1,-180,180,0,"deg"), change_armor(true), restore_armor(true), |
@@ -293,7 +302,7 @@ Totals: **W 22 · N 14 · V 2 · R 4**. Note staleness: 14 fully stale,
 | fl | Auto Potion | W | accurate | wire activation=Look gate (currently inert) |
 | fB | Auto Shield Break | W | partial | ✅ fixed this session (manual mode + single self-disable) |
 | eS | Auto Stun Slam | W | accurate | wire change_armor + AttackEntityEvent trigger (attackKey poll) |
-| fa | Auto X-Bow | N | accurate | port native cart plan builders + 8-state machine (fa$sK/sL) |
+| fa | Auto X-Bow | N | partial | ✅ 2026-10-25: state machine read/advanced, aim applied around the use, hotbar slot restored — remaining: native cart plan builders `aGn/aGo/aGp`/`fa$sL` and the rail/TNT/flint sequence |
 | fp | Backtrack | W | stale | wire delay_knockback/knock_delay (knockMs computed, unused) |
 | ey | Blink | N | stale | runtime-verify queue/pulse/auto-disable semantics |
 | dP | Block Piercer | W | accurate | wire allowed_blocks filter (cobweb toggle meaningless) |
@@ -301,10 +310,10 @@ Totals: **W 22 · N 14 · V 2 · R 4**. Note staleness: 14 fully stale,
 | fc | Cart Refill | V | partial | recover delay default + suffix; hover semantics |
 | dv | Chams | R | accurate | implement 4 shader passes (glass/water/chrome/liquid-metal) |
 | cS | China Hat | R | stale | port textured hat shell model (jo.bEt/ky.bSd) |
-| fu | Criticals | W | partial | feed web_lag packet-hold queue via `PacketSendEvent` |
+| fu | Criticals | W | partial | ✅ 2026-10-25: web_lag queue + RangeSetting 100–150 ms + lifecycle reset; remaining: recover `aQo` target set and `aQp` math; `class_2813` role unresolved |
 | eY | Crystal Optimizer | N | partial | recover native aFI crystal-step/gate behavior |
 | ed | Custom Camera Distance | W | accurate | apply distance/no_clip in the camera handler (subscribed, empty) |
-| dW | Freecam | W | ported | ✅ fixed: applied pos/rot/thirdPerson via CameraAccessor, dropped swallowed reflection; wired render_hand in GameRendererMixin; suppressed player movement input and routed mouse look |
+| dW | Freecam | W | partial | ✅ 2026-10-25: pos/rot and yaw/pitch lerp, blocks/s speed, movement-input suppression, mouse look, render_hand; remaining: `kr` spoof player, exact `aqv` math, perspective decision |
 | dm | Friend Indicator | R | stale | billboard primitive + recovered color instead of box outline |
 | dS | Hand No Clip | W | stale | ✅ fixed this session (Blocks defaults + membership gate) |
 | fq | Hitbox | W | stale | wire only_for_slots/invisible/visible gates; verify box color/width |
@@ -315,7 +324,7 @@ Totals: **W 22 · N 14 · V 2 · R 4**. Note staleness: 14 fully stale,
 | fE | No Miss | N | stale | recover native aSO slot picker to wire specified_slots |
 | dX | No Miss Delay | W | partial | accessor mixin for missTime (kill reflection); verify delay value |
 | fQ | No Protocol Disconnect | W | stale | extend `ClientConnectionMixin` transport guard (decode exceptions) |
-| fm | Pearl Chaser | N | stale | recover native aKA/aKC/aKD/aKE path evaluation/throw gates |
+| fm | Pearl Chaser | N | partial | ✅ 2026-10-25: category Combat, interact-packet aim applied/restored; remaining: native aKA/aKC/aKD/aKE trajectory/throw gates |
 | cT | Pop Chams | R | stale | restore Simple flat-color pass distinct from Textured (skin) pass |
 | fj | Projectile Aim Bot | W | partial | subscribe `WorldRenderEvent` for prediction; gravity-compensated aim |
 | fN | SkinProtect | W | partial | ✅ fixed this session (`SkinTexturesResolveEvent` wiring) |
@@ -1580,6 +1589,62 @@ the page grouping structural.
 - **Parity:** aggregate 12,804 + 3 = 12,807 / 16,200 = **79.1%**.
 - **Build:** `./gradlew build --offline` PASS on JDK 21.
 
+### Wave 15 — review fixes (2026-10-25)
+
+- **RotationManager / interact packets:** the original `qL.dbO(gL.tj)` receives every
+  outbound packet; the port previously rewrote only `PlayerMoveC2SPacket`, so
+  item uses (pearls, crossbows, buckets) travelled along the visual view. The
+  manager now rewrites `PlayerInteractItemC2SPacket` and exposes
+  `applyForAction(rotation, …)` for client-side raycasts that read the real
+  rotation before the packet is built. Skill and AGENTS were corrected
+  accordingly. Remaining: exact `dbK` apply-step timing.
+- **Freecam:** Speed is treated as blocks/second (`/20`), sprint/diagonal speed
+  multipliers are removed, diagonal input is normalised, and yaw/pitch are
+  interpolated across the render tick (`aqx(float) -> ov`). The option
+  perspective is not forced; the camera `thirdPerson` flag is used instead, and
+  the `kr` spoof-player panel is still missing (`dW.md:86-90,130-135`).
+- **Flight:** velocity-mode forward Z had the wrong sign (`-cos(yaw)`), moving
+  backwards at yaw 0/180; corrected to `+cos(yaw)`. Abilities mode now sends
+  `PlayerAbilitiesC2SPacket` on enable/tick/disable. Anti-kick math remains a
+  labeled guess (`eB_.md`).
+- **Auto MLG:** placement moved from END_CLIENT_TICK to START_CLIENT_TICK
+  (pre-motion), the landing column is projected over the remaining fall instead
+  of one tick, and bucket mode latches one use per fall with an existing-water
+  guard plus use-key suppression. This fixes the reported “placed water then
+  picked it back up” death; exact fM damage/landing math remains unrecovered.
+- **Soul Effects / `kl`:** BloomRenderer is now the recovered two-pass pipeline:
+  `bQa` capture (cleared effect target + depth), `bQf` blur/encode using
+  `bloom_blur.fsh` and the 0.25f temporal constant, `bQg` composite using
+  `bloom_composite.fsh`, Glow Radius unscaled, additive at END_MAIN, ping-pong
+  buffers. `bloom.fsh` (the previous scene-as-pyramid composite) was removed.
+  The glow mask uses a depth-tested variant when Behind Walls is off. Remaining:
+  the custom Behind Walls `kR` particle pipelines; `kl.java` is absent only
+  because of the `kl`/`kL` collision — the raw `kl.class` is the source used here.
+- **Criticals:** `Lag Delay` is a `RangeSetting` 0–2000 step 5, default
+  100–150 ms (`cA.UI(100,150)`); web_lag holds only movement packets (the
+  `class_2813` ClickSlot role is unresolved and holding it risks inventory
+  desync), drops the queue on world/connection change, and flushes on disable.
+  `aQp` profile math remains native.
+- **Auto X-Bow:** state is now read and advanced (8 states), the aim is applied
+  around the interact, and the hotbar slot is restored. The evidenced rail /
+  TNT-minecart / flint-and-steel plan builders are still a crossbow stand-in;
+  score/status remain capped.
+- **Pearl Chaser:** category restored to Combat; the computed aim is applied
+  around `interactItem` and restored, fixing the submission-only regression.
+- **Auto Market:** removed the invented `/ah` chat command, chat notifications
+  and empty S2C branch; the native engine/config/editor remain absent.
+- **Anti Bot:** removed the latency ≤ 0 predicate (not in `aLu`); velocity check
+  restricted to stationary airborne targets outside water/lava/ladders/gliding/
+  vehicles.
+- **Hand Chams:** reverted the zero-RGB → white glass fallback; black remains a
+  valid tint.
+- **Elytra Target:** hotbar restore is immediate in a `finally` (the 100 ms delay
+  was not evidenced).
+- **ClickGUI:** grid filtering is page-scoped again, the search icon is handled
+  before the overlay dismiss (toggle now works), outside clicks are consumed as a
+  modal dismissal, and a setting-only result clears the grid filter before
+  scrolling to the module card.
+
 ## Avoidable 1:1 gaps — module audit (2026-10-21)
 
 Scope: modules whose original class is **fully Java** (no behavior natives in the
@@ -1738,3 +1803,36 @@ Method: audited against decompiled bytecode and recovered GLSL shaders (`bloom_c
 | cZ | Soul Effects | 92 | 96 | +4 | `BloomRenderer` (`kl.bQd`/`bQg`) composite with multi-LOD pyramid sampling shaders (`bloom.vsh`/`bloom.fsh`) | four DES longs in particle lifetime |
 
 Registry total after the re-score: **80.8%** (13,092/16,200 points).
+
+
+## Re-audit 2026-10-25 — review fixes (runtime-pending)
+
+Scope: the modules touched by the review: `fu`, `dW`, `fa`, `fm`, `cZ`,
+`dM`, `fo`, `de`, `dA`, `eB`, `fM`, `di`, plus the rotation manager and ClickGUI.
+Method: code review against the handler/module specs plus a clean
+`./gradlew clean build --offline` (JDK 21). Scores are unchanged until an
+in-game smoke pass confirms the shader/aim/movement paths; statuses are
+corrected where the behavior is still an explicit stand-in.
+
+| Class | Module | Change | Remaining gap |
+|---|---|---|---|
+| fu | Criticals | 100–150 ms `RangeSetting`; movement-only hold; world/connection reset | `aQo` target set, `aQp` math, ClickSlot role |
+| dW | Freecam | yaw/pitch lerp, blocks/s speed, no sprint multiplier | `kr` spoof player, exact `aqv`, perspective choice |
+| fa | Auto X-Bow | state machine read/advanced, aim applied around use, slot restore | rail/TNT/flint plan builders, `fa$sK` transition table |
+| fm | Pearl Chaser | Combat category; interact-packet aim applied/restored | native trajectory/throw gates |
+| cZ | Soul Effects | full `kl` two-pass bloom with effect-layer mask, END_MAIN additive, Behind Walls depth-tested mask | Behind Walls custom `kR` particle pipelines |
+| dM | Auto Market | invented `/ah`/chat/empty branch removed | native engine/config/notifications/editor |
+| fo | Anti Bot | latency predicate removed; velocity check constrained | native per-check buckets/predicates |
+| de | Hand Chams | zero-RGB fallback reverted | native shader passes unchanged |
+| dA | Elytra Target | immediate slot restore | VM trajectory/aim math |
+| eB | Flight | velocity Z sign fixed; ability packet sent | anti-kick timing/math, `.aZS` flag |
+| fM | Auto MLG | pre-motion tick, landing projection, one-use latch/existing-water guard | exact native damage/placement math |
+| di | 2D ESP | nametag gate only (unchanged) | profile registry + screen-space renderer |
+| — | RotationManager | interact-packet rewrite + `applyForAction` | `dbK` apply timing/smoothing |
+| — | ClickGUI | page-scoped grid, icon toggle, setting-result fallback | none in the search path |
+
+**Build:** `./gradlew clean build --offline` PASS on JDK 21 (one pre-existing
+`WorldRenderEvent` deprecation warning). Aggregate remains **80.8%**
+(13,092/16,200) pending runtime verification; the registry row count changes
+from 75/87 to 72/90 ported/partial because `fu`, `dW`, and `cZ` are now
+correctly marked `partial`.

@@ -52,6 +52,14 @@ import net.minecraft.world.RaycastContext;
  * OivbA (tracking refresh timer), zPgOp (target/landing BlockPos),
  * EnrbM (scan counter), nHFuo (tick counter), wPysa (aim rotation vector, initialized 0.0, 0.0),
  * vfWoI, gwiUw (armed latch), QVPeQ.
+ *
+ * <p>Category is Combat (fm.java:39 {@code gh.xwjCw}). The computed aim is
+ * submitted to {@link RotationManager} and applied around {@code interactItem}
+ * with {@link RotationManager#applyForAction} (the use packet carries the real
+ * yaw/pitch; submission alone threw along the visual view), then restored.
+ * The ballistic trajectory/landing simulation is a labeled stand-in: the
+ * native aKA/aKC/aKD/aKE bodies and the exact throw gate remain unrecovered
+ * (PARITY.md Wave 15).
  */
 public class PearlChaser extends Module {
 	public static double vlFZY = 64.0;
@@ -77,7 +85,7 @@ public class PearlChaser extends Module {
 
 	public PearlChaser() {
 		super("pearl_chaser", "Pearl Chaser",
-				"Automatically throws pearls after players", ModuleCategory.MOVEMENT);
+				"Automatically throws pearls after players", ModuleCategory.COMBAT);
 	}
 
 	@Override
@@ -195,8 +203,11 @@ public class PearlChaser extends Module {
 
 		Rotation rotation = new Rotation(aimYaw, aimPitch);
 		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
-
-		client.interactionManager.interactItem(player, Hand.MAIN_HAND);
+		// The use packet carries its own yaw/pitch (and vanilla's client-side
+		// use path reads the real rotation), so apply the aim around the use;
+		// RotationManager restores the visual rotation in a finally block.
+		RotationManager.get().applyForAction(rotation,
+				() -> client.interactionManager.interactItem(player, Hand.MAIN_HAND));
 		player.swingHand(Hand.MAIN_HAND);
 
 		timerErrvp = System.currentTimeMillis();
@@ -260,10 +271,13 @@ public class PearlChaser extends Module {
 	}
 
 	private boolean aKE(AbstractClientPlayerEntity target) {
+		if (target == null || !target.isAlive()) {
+			return false;
+		}
 		if (ignoreFriends.getValue() && FriendsManager.isFriend(target.getGameProfile().name())) {
 			return false;
 		}
-		return target.isAlive();
+		return true;
 	}
 
 	private PlayerEntity nearestPlayer(MinecraftClient client, ClientPlayerEntity player) {

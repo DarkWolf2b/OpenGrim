@@ -69,6 +69,18 @@ public class AutoShieldBreak extends Module {
 		singleDone = false;
 	}
 
+	@Override
+	protected void onDisable() {
+		// The restore timer is tick-driven; disabling the module must not leave
+		// the player stuck on the axe slot.
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (previousSlot >= 0 && client.player != null) {
+			client.player.getInventory().setSelectedSlot(previousSlot);
+		}
+		previousSlot = -1;
+		returnAtMs = 0L;
+	}
+
 	@Subscribe
 	public void onAttackEntity(AttackEntityEvent event) {
 		if (!(event.target() instanceof PlayerEntity other)) {

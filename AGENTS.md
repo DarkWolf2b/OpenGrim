@@ -28,7 +28,7 @@
      ```
 
 3. **Subsystem Fidelity & Central Managers:**
-   - Never bypass client subsystems. For example, rotation-modifying / silent-aim modules **must** submit angles through `dev.opengrim.rotation.RotationManager` (`qL` port), never calling `player.setYaw()` or `player.setPitch()` directly.
+   - Never bypass client subsystems. For example, **silent** rotation modules **must** submit angles through `dev.opengrim.rotation.RotationManager` (`qL` port) and leave the visual view untouched; do not call `player.setYaw()`/`player.setPitch()` for silent aim. Direct real/visual rotation changes are reserved for modules whose recovered behavior changes the view (e.g. Aim Assist, capture/restore paths) and must be documented. The manager rewrites both movement look packets and `PlayerInteractItemC2SPacket`; when the *client-side* action itself reads the real rotation before the packet is built (`BucketItem.raycast`, block placement/raycasts, synthetic hits), use `RotationManager#applyForAction(rotation, action)` — it applies the rotation temporarily and restores it in a `finally`. Do not open-code the set/restore pair in module code.
    - Settings must use real builder parameters (min, max, step, default, suffix) recovered from decrypted literal dumps rather than educated guesses.
 
 4. **Privacy, Paths, and Identity Integrity (`privacy.md`):**
@@ -256,7 +256,7 @@ Before completing any task or PR:
 - [ ] Preserved 1:1 parity with original bytecode logic, branching, and quirks.
 - [ ] Applied recovered constants from `analysis/decrypted/full-dump.jsonl` (or `payload-decrypted/`).
 - [ ] Documented all original class/method/line citations in class Javadoc.
-- [ ] Routed silent aim / rotations through `dev.opengrim.rotation.RotationManager`.
+- [ ] Routed silent aim / rotations through `dev.opengrim.rotation.RotationManager`; used `applyForAction` (not raw `setYaw`/`setPitch`) for client-side raycast/use actions.
 - [ ] Cross-referenced native logic using Ghidra stitched handlers and REA tools where applicable.
 - [ ] Logged any genuine native divergences in `analysis/docs/PARITY.md` ("Divergences" section).
 - [ ] Appended task summary and parity updates to `analysis/docs/PROGRESS.md`.

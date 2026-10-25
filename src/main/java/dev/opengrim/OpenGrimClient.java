@@ -31,6 +31,9 @@ public class OpenGrimClient implements ClientModInitializer {
 		dev.opengrim.event.EventBridge.init();
 		dev.opengrim.modules.render.ChinaHatRenderer.init();
 		dev.opengrim.rotation.RotationManager.get().init();
+		// Pre-motion phase: the original's gH$th/gv listeners fire before the
+		// player's tick. Auto MLG needs this for water-bucket timing.
+		ClientTickEvents.START_CLIENT_TICK.register(client -> ModuleManager.get().preTick());
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			ModuleManager.get().tick();
 			// Rotation-manager tick advance (cf. sixtwo.qL#dbN/dbK, qL.java:62-67):

@@ -364,19 +364,26 @@ public class ClickGuiScreen extends AnimatedScreen {
 		}
 		String query = search.text().toLowerCase(Locale.ROOT).trim();
 		List<Card> out = new ArrayList<>();
-		if (!query.isEmpty()) {
-			for (Module module : ModuleManager.get().getModules()) {
-				if (module.getName().toLowerCase(Locale.ROOT).contains(query)
-						|| module.getId().toLowerCase(Locale.ROOT).contains(query)) {
-					out.add(new Card(module.getName(), module.getDescription(), module));
-				}
-			}
-			return out;
-		}
 		for (Module module : ModuleManager.get().byCategory(page.category)) {
-			out.add(new Card(module.getName(), module.getDescription(), module));
+			// The grid is the current page's filtered view; the overlay above it
+			// searches the whole module list. Keeping the grid page-scoped makes
+			// the page tab and the card index used for scrolling agree.
+			if (query.isEmpty()
+					|| module.getName().toLowerCase(Locale.ROOT).contains(query)
+					|| module.getId().toLowerCase(Locale.ROOT).contains(query)) {
+				out.add(new Card(module.getName(), module.getDescription(), module));
+			}
 		}
 		return out;
+	}
+
+	private static int cardIndex(List<Card> cards, Module module) {
+		for (int i = 0; i < cards.size(); i++) {
+			if (cards.get(i).module() == module) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private void onSearchChanged(String query) {
@@ -453,12 +460,14 @@ public class ClickGuiScreen extends AnimatedScreen {
 			case CLIENT -> Page.CLIENT;
 		};
 		List<Card> cards = pageCards();
-		int index = -1;
-		for (int i = 0; i < cards.size(); i++) {
-			if (cards.get(i).module() == module) {
-				index = i;
-				break;
-			}
+		int index = cardIndex(cards, module);
+		if (index < 0) {
+			// Setting-only match: the module card is not in the page's filtered
+			// grid. Drop the grid filter so the card exists, then scroll to it.
+			search.clear();
+			onSearchChanged("");
+			cards = pageCards();
+			index = cardIndex(cards, module);
 		}
 		scroll = index < 0 ? 0.0f : Math.max(0.0f, (index / 2) * (CARD_H + CARD_GAP));
 		subtitle = module.getDescription();
@@ -799,6 +808,17 @@ public class ClickGuiScreen extends AnimatedScreen {
 
 	@Override
 	protected boolean onMouseClicked(double mx, double my, MouseButton button) {
+		// The icon must win over the overlay's outside-click dismiss: otherwise
+		// the dismiss closes the overlay and the icon handler immediately opens
+		// it again, making the toggle-to-close branch unreachable.
+		if (searchIconHit(mx, my)) {
+			if (searchOpen) {
+				closeSearch();
+			} else {
+				openSearch();
+			}
+			return true;
+		}
 		if (searchOpen) {
 			if (onSearchClicked(mx, my, button)) {
 				return true;
@@ -820,14 +840,6 @@ public class ClickGuiScreen extends AnimatedScreen {
 				return true;
 			}
 			bindPopup.close();
-		}
-		if (searchIconHit(mx, my)) {
-			if (searchOpen) {
-				closeSearch();
-			} else {
-				openSearch();
-			}
-			return true;
 		}
 		if ((button == MouseButton.LEFT || button == MouseButton.RIGHT) && my >= windowY
 				&& my < windowY + WINDOW_H && mx >= windowX && mx < windowX + WINDOW_W) {
@@ -892,8 +904,10 @@ public class ClickGuiScreen extends AnimatedScreen {
 			}
 			return true;
 		}
+		// Modal dismissal: consume the outside click instead of also toggling
+		// the module card/settings row underneath the overlay.
 		dismissSearchOverlay();
-		return false;
+		return true;
 	}
 
 	private void selectPage(Page next) {

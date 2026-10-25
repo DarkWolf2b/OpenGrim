@@ -73,6 +73,7 @@ public class Flight extends Module {
 	private boolean prevAllowFlight;
 	private boolean prevFlying;
 	private boolean abilitiesSaved;
+	private String lastMode;
 	private long tickCounter;
 
 	public Flight() {
@@ -86,6 +87,7 @@ public class Flight extends Module {
 		phaseA = 0;
 		phaseB = 0;
 		groundBaseline = Double.MAX_VALUE;
+		lastMode = mode.getValue();
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;
 		if (player != null && "abilities".equals(mode.getValue())) {
 			prevAllowFlight = player.getAbilities().allowFlying;
@@ -93,6 +95,9 @@ public class Flight extends Module {
 			abilitiesSaved = true;
 			player.getAbilities().allowFlying = true;
 			player.getAbilities().flying = true;
+			// Abilities mode toggles the vanilla ability flags, and the server
+			// only accepts them after PlayerAbilitiesC2SPacket (eB_.md:48).
+			player.sendAbilitiesUpdate();
 		}
 	}
 
@@ -103,6 +108,7 @@ public class Flight extends Module {
 			player.getAbilities().allowFlying = prevAllowFlight;
 			player.getAbilities().flying = prevFlying;
 			abilitiesSaved = false;
+			player.sendAbilitiesUpdate();
 		}
 		flyingLatch = false;
 		groundBaseline = Double.MAX_VALUE;
@@ -120,9 +126,27 @@ public class Flight extends Module {
 		if (groundBaseline == Double.MAX_VALUE) {
 			groundBaseline = player.getY();
 		}
+		if (!mode.getValue().equals(lastMode)) {
+			if ("abilities".equals(lastMode) && abilitiesSaved) {
+				player.getAbilities().allowFlying = prevAllowFlight;
+				player.getAbilities().flying = prevFlying;
+				player.sendAbilitiesUpdate();
+				abilitiesSaved = false;
+			}
+			lastMode = mode.getValue();
+		}
 		if ("abilities".equals(mode.getValue())) {
+			if (!abilitiesSaved) {
+				prevAllowFlight = player.getAbilities().allowFlying;
+				prevFlying = player.getAbilities().flying;
+				abilitiesSaved = true;
+			}
+			boolean changed = !player.getAbilities().allowFlying || !player.getAbilities().flying;
 			player.getAbilities().allowFlying = true;
 			player.getAbilities().flying = true;
+			if (changed) {
+				player.sendAbilitiesUpdate();
+			}
 		} else {
 			applyVelocityFlight(player);
 		}
@@ -177,8 +201,10 @@ public class Flight extends Module {
 		double vx = 0.0;
 		double vz = 0.0;
 		if (mag > 0.0) {
+			// Minecraft yaw 0 = south (+Z), 90 = west (-X):
+			// forward = (-sin, cos), left = (cos, sin).
 			vx = (-Math.sin(yawRad) * forward + Math.cos(yawRad) * strafe) / mag * v;
-			vz = (-Math.cos(yawRad) * forward - Math.sin(yawRad) * strafe) / mag * v;
+			vz = (Math.cos(yawRad) * forward + Math.sin(yawRad) * strafe) / mag * v;
 		}
 		double vy = 0.0;
 		if (input.jump()) {

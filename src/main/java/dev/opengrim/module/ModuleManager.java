@@ -56,6 +56,19 @@ public class ModuleManager {
 		return out;
 	}
 
+	/**
+	 * Pre-motion phase: runs at START_CLIENT_TICK, before the player/world
+	 * tick. Stands in for the original {@code gH$th}/{@code gv} listeners
+	 * (see {@link Module#onPreTick()}).
+	 */
+	public void preTick() {
+		for (Module m : modules) {
+			if (m.isEnabled()) {
+				m.onPreTick();
+			}
+		}
+	}
+
 	/** Called once per client tick: ticks enabled modules. Binds live in KeybindManager. */
 	public void tick() {
 		for (Module m : modules) {

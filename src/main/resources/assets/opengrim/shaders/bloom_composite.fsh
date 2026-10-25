@@ -1,16 +1,21 @@
 #version 150
 
+/*
+ * Recovered sixtwo.kl composite pass (analysis/artifacts/original-shaders/
+ * bloom_composite.glsl). The original pipeline is kR.xfXqe with the
+ * jL.wxgUS uniform block: Sampler0 is the effect layer, Sampler1 the encoded
+ * bloom pyramid. The pass is additive over the main framebuffer.
+ */
+
 in vec2 texCoord;
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
 
 layout(std140) uniform Bloom {
-    vec4 glowColor;      // rgb, w=unused
-    vec4 params;         // x=bloomStrength, y=lodCount, zw=unused
+    vec3 glowColor;
+    float bloomStrength;
 };
-
-#define bloomStrength params.x
 
 out vec4 fragColor;
 
@@ -83,7 +88,7 @@ void main() {
     const float SHAPE_PIVOT = 0.4;
     bloomLum = SHAPE_PIVOT * pow(max(bloomLum, 1e-6) / SHAPE_PIVOT, 0.3);
 
-    vec3 outerHalo = glowColor.rgb * bloomLum * 1.2;
+    vec3 outerHalo = glowColor * bloomLum * 1.2;
     vec3 outCol = outerHalo + srcSample.rgb;
     float vis = max(max(max(outerHalo.r, outerHalo.g), outerHalo.b),
                     max(max(srcSample.r, srcSample.g), srcSample.b));

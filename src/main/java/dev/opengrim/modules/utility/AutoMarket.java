@@ -12,16 +12,14 @@ import dev.opengrim.settings.KeybindSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
 
 /**
  * Auto Market (registry sixtwo.dM, module id 26): "Automatically buys and sells
  * items on market".
  *
- * <p>1:1 reconstruction of sixtwo.dM shell and command dispatch.
- * Specs: analysis/specs/casesafe/modules/dM_.md and
+ * <p>Partial shell port of sixtwo.dM. Specs:
+ * analysis/specs/casesafe/modules/dM_.md and
  * analysis/specs/casesafe/handlers/dM_.md (evidence: dM.java:122-174
  * constructor with the three settings and the engine subsystem list
  * {@code OgFsa = List.of(nB, nC, nD, nA, nE)}, dM.java:378-411 any(gM) =
@@ -36,6 +34,11 @@ import net.minecraft.text.Text;
  *   <li>"Add Rule Key" (default 2, middle mouse button) — adds hovered item rule</li>
  *   <li>"Edit Market" — group placeholder for market editor</li>
  * </ul>
+ *
+ * <p>Not ported: the native market engine ({@code nO/nR/nP/nM/nB..nE}), the
+ * config store, the notification system ({@code cN.XJ/XQ}), the market editor
+ * ({@code bz}) and the configurable market-open command ({@code jd.bAn(iy.bon())}).
+ * Closing the container is kept; no chat command is invented in its place.
  */
 public class AutoMarket extends Module {
 	/** "State Key" (dM.java:135 {@code .VO(-999)} = unbound). */
@@ -113,25 +116,28 @@ public class AutoMarket extends Module {
 		startSession();
 	}
 
+	/**
+	 * anA (gL$tk): the original continues into the five-step rule chain after
+	 * this guard. The native engine is absent, so only the running gate is
+	 * translated; the packet is otherwise not consumed.
+	 */
 	@Subscribe
 	public void onPacketReceive(PacketReceiveEvent event) {
 		if (!running) {
 			return;
 		}
-		if (event.packet() instanceof OpenScreenS2CPacket) {
-			// Market container screen opened
-		}
 	}
 
+	/**
+	 * anK (dM.java:858-1009): validate the hovered slot before building the
+	 * recovered {@code nf/nc/ng} item filter and opening the {@code bz} editor.
+	 * The filter/editor classes are absent, so the validation chain is kept and
+	 * no rule/feedback is fabricated.
+	 */
 	private void addRuleFromHovered(HandledScreen<?> screen) {
 		Slot hovered = ((HandledScreenAccessor) screen).opengrim$getFocusedSlot();
 		if (hovered == null || !hovered.hasStack() || hovered.getStack().isEmpty()) {
 			return;
-		}
-		MinecraftClient client = MinecraftClient.getInstance();
-		if (client.player != null) {
-			client.player.sendMessage(Text.literal(
-					"§a[Auto Market]§r Added rule for: " + hovered.getStack().getName().getString()), false);
 		}
 	}
 
@@ -139,9 +145,6 @@ public class AutoMarket extends Module {
 		MinecraftClient client = MinecraftClient.getInstance();
 		resetEngine();
 		running = true;
-		if (client.player != null) {
-			client.player.sendMessage(Text.literal("§a[Auto Market]§r Session started."), false);
-		}
 		if (!(client.currentScreen instanceof HandledScreen)) {
 			reopenMarket();
 		}
@@ -152,10 +155,6 @@ public class AutoMarket extends Module {
 			return;
 		}
 		running = false;
-		MinecraftClient client = MinecraftClient.getInstance();
-		if (client.player != null) {
-			client.player.sendMessage(Text.literal("§c[Auto Market]§r Session paused."), false);
-		}
 		resetEngine();
 	}
 
@@ -168,14 +167,12 @@ public class AutoMarket extends Module {
 
 	private void reopenMarket() {
 		MinecraftClient client = MinecraftClient.getInstance();
-		if (client.player != null) {
-			if (client.currentScreen != null) {
-				client.player.closeHandledScreen();
-			}
-			if (client.getNetworkHandler() != null) {
-				client.getNetworkHandler().sendChatCommand("ah");
-			}
+		if (client.player != null && client.currentScreen != null) {
+			client.player.closeHandledScreen();
 		}
+		// dM.java:1550-1590 also runs nO.cyH(true) (native engine) and the
+		// configurable runMarketOpenCommand (jd.bAn(iy.bon())). Neither surface
+		// exists in the rebuild; no hard-coded /ah is substituted.
 		resetEngine();
 	}
 

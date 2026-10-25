@@ -273,12 +273,10 @@ public class HandChams extends Module {
 				event.set(red(argb), green(argb), blue(argb), 1.0f);
 			}
 			case "glass" -> {
+				// Do not special-case zero RGB: black is a valid tint and the
+				// translucent 0.55 alpha is the recovered glass approximation.
 				int argb = tintColor.getValue();
-				if ((argb & 0x00FFFFFF) == 0) {
-					event.set(1.0f, 1.0f, 1.0f, 0.55f);
-				} else {
-					event.set(red(argb), green(argb), blue(argb), 0.55f);
-				}
+				event.set(red(argb), green(argb), blue(argb), 0.55f);
 			}
 			case "water" -> {
 				int argb = waterColor.getValue();

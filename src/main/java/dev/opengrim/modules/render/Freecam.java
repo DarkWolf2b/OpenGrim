@@ -9,7 +9,6 @@ import dev.opengrim.settings.BoolSetting;
 import dev.opengrim.settings.DoubleSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.Perspective;
 import net.minecraft.client.render.Camera;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -25,11 +24,19 @@ import net.minecraft.util.math.Vec3d;
  *
  * <p>Freecam detaches the camera from the player entity, allowing the user
  * to fly around and inspect the surroundings while the real player remains
- * stationary in place. The player's perspective is preserved without forcing
- * third-person back in client options; instead, the detached camera position
- * and rotation are applied directly to {@link Camera} via {@link CameraAccessor},
- * and thirdPerson is flagged on the camera so the player entity is rendered
- * in the world.
+ * stationary in place. The detached camera position and rotation are applied
+ * directly to {@link Camera} via {@link CameraAccessor}; `thirdPerson` is
+ * flagged on the camera so the player entity is rendered in the world.
+ *
+ * <p>Natural readings for the VM-protected parts (dW.md:101-103,130-135): the
+ * Speed slider is treated as blocks/second (divided by 20 per tick), diagonal
+ * input is normalised so it does not outrun cardinal movement, and the camera
+ * rotation is interpolated across the render tick (`aqx(float) -> ov`, the
+ * original's lerped camera rotation). The original saves a Perspective and
+ * carries a THIRD_PERSON_FRONT token; whether it forces a perspective or only
+ * saves/restores is unrecovered, so this port leaves the option untouched and
+ * uses the camera flag instead. The {@code kr} spoof-player panel is still
+ * missing (dW.md:86-90,110) and is recorded as a divergence.
  */
 public class Freecam extends Module {
 	private final DoubleSetting speed = register(new DoubleSetting("speed", 0.1, 1.0, 10.0, 3.0, null));
@@ -37,11 +44,12 @@ public class Freecam extends Module {
 	private final BoolSetting disableOnDamage = register(new BoolSetting("disable_on_damage", false));
 	private final BoolSetting renderHand = register(new BoolSetting("render_hand", false));
 
-	private Perspective savedPerspective;
 	private Vec3d freecamPos;
 	private Vec3d prevFreecamPos;
 	private float freecamYaw;
 	private float freecamPitch;
+	private float prevFreecamYaw;
+	private float prevFreecamPitch;
 
 	public Freecam() {
 		super("freecam", "Freecam", "Detaches camera allowing free movement", ModuleCategory.PLAYER);
@@ -55,11 +63,12 @@ public class Freecam extends Module {
 			setEnabled(false);
 			return;
 		}
-		savedPerspective = client.options.getPerspective();
 		freecamPos = client.player.getEyePos();
 		prevFreecamPos = freecamPos;
 		freecamYaw = client.player.getYaw();
 		freecamPitch = client.player.getPitch();
+		prevFreecamYaw = freecamYaw;
+		prevFreecamPitch = freecamPitch;
 	}
 
 	@Override
@@ -77,6 +86,8 @@ public class Freecam extends Module {
 			return;
 		}
 		prevFreecamPos = freecamPos;
+		prevFreecamYaw = freecamYaw;
+		prevFreecamPitch = freecamPitch;
 		if (client.currentScreen == null) {
 			freecamPos = freecamPos.add(moveDelta());
 		}
@@ -101,21 +112,24 @@ public class Freecam extends Module {
 			return;
 		}
 		Camera camera = event.camera();
+		float progress = event.tickProgress();
 		Vec3d pos = prevFreecamPos != null
-				? prevFreecamPos.lerp(freecamPos, event.tickProgress())
+				? prevFreecamPos.lerp(freecamPos, progress)
 				: freecamPos;
+		float yaw = lerpAngle(prevFreecamYaw, freecamYaw, progress);
+		float pitch = MathHelper.lerp(progress, prevFreecamPitch, freecamPitch);
 		((CameraAccessor) camera).opengrim$callSetPos(pos.x, pos.y, pos.z);
-		((CameraAccessor) camera).opengrim$callSetRotation(freecamYaw, freecamPitch);
+		((CameraAccessor) camera).opengrim$callSetRotation(yaw, pitch);
 		((CameraAccessor) camera).opengrim$setThirdPerson(true);
+	}
+
+	/** Shortest-path angular interpolation (equivalent to the original's ov lerp). */
+	private static float lerpAngle(float start, float end, float delta) {
+		return start + MathHelper.wrapDegrees(end - start) * delta;
 	}
 
 	@Override
 	protected void onDisable() {
-		MinecraftClient client = MinecraftClient.getInstance();
-		if (savedPerspective != null && client.options != null) {
-			client.options.setPerspective(savedPerspective);
-			savedPerspective = null;
-		}
 		freecamPos = null;
 		prevFreecamPos = null;
 	}
@@ -137,11 +151,8 @@ public class Freecam extends Module {
 			return Vec3d.ZERO;
 		}
 
-		double speedVal = speed.getValue();
-		if (client.options.sprintKey.isPressed()) {
-			speedVal *= 1.5;
-		}
-		double perTick = speedVal * 0.25;
+		// Speed is blocks/second; the camera moves once per client tick.
+		double perTick = speed.getValue() / 20.0;
 
 		float yaw = MathHelper.RADIANS_PER_DEGREE * freecamYaw;
 		// Correct coordinate signs for Minecraft (+X East, -X West, +Z South, -Z North):

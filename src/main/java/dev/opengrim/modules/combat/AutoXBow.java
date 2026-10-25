@@ -32,7 +32,12 @@ import net.minecraft.util.math.Vec3d;
  *
  * <p>Cart contraption automation: detects held or hotbar crossbow, charges it via use-key,
  * locks aim to the target TNT minecart via {@link RotationManager}, and releases/fires the
- * charged projectile to execute the cart detonation.
+ * charged projectile to execute the cart detonation. The 8 states now drive the tick
+ * (0 acquire → 1 charge → 2 cart → 3 aim → 4 fire → 5 cooldown → 6 re-arm → 7 no target)
+ * and the hotbar slot is restored on release/disable. The evidenced
+ * TNT-minecart/rail/flint-and-steel plan builders (`aGn/aGo/aGp`, `fa$sL`) and the
+ * `fa$sK` transition table are still missing; this is a crossbow stand-in, not a
+ * complete `fa` port (PARITY.md Wave 15).
  */
 public class AutoXBow extends Module {
 	private final KeybindSetting activationKey = register(new KeybindSetting("activation_key", -999));
@@ -40,6 +45,10 @@ public class AutoXBow extends Module {
 	private int state;
 	private boolean holdingUse;
 	private long lastShotTime;
+	private Hand activeHand;
+	private TntMinecartEntity targetCart;
+	private Rotation aimRotation;
+	private int previousSlot = -1;
 
 	public AutoXBow() {
 		super("auto_x_bow", "Auto X-Bow", "Automatically performs crossbow cart", ModuleCategory.COMBAT);
@@ -50,76 +59,153 @@ public class AutoXBow extends Module {
 		state = 0;
 		holdingUse = false;
 		lastShotTime = 0L;
+		activeHand = null;
+		targetCart = null;
+		aimRotation = null;
+		previousSlot = -1;
 	}
 
 	@Override
 	public void onTick() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
-		if (player == null || client.world == null || client.currentScreen != null || !activationKey.isPressed()) {
+		if (player == null || client.world == null || client.currentScreen != null
+				|| !activationKey.isPressed()) {
+			release(client);
+			restoreSlot(client);
+			state = 0;
+			return;
+		}
+		// The player can switch/drop the crossbow while the state machine is
+		// active; re-acquire instead of using whatever occupies the hand.
+		if (activeHand != null && !player.getStackInHand(activeHand).isOf(Items.CROSSBOW)) {
 			release(client);
 			state = 0;
 			return;
 		}
 
-		Hand hand = findCrossbowHand(player);
-		if (hand == null) {
-			int slot = findCrossbowHotbarSlot(player);
-			if (slot >= 0) {
-				player.getInventory().setSelectedSlot(slot);
-				hand = Hand.MAIN_HAND;
-			} else {
+		switch (state) {
+			case 0 -> acquireCrossbow(client, player);
+			case 1 -> chargeCrossbow(client, player);
+			case 2 -> acquireCart(client, player);
+			case 3 -> aimAtCart(player, client);
+			case 4 -> fire(client, player);
+			case 5 -> cooldown();
+			case 6 -> rearm(client, player);
+			default -> {
+				// wglWG: no usable target/crossbow; keep polling from the scan state.
 				release(client);
 				state = 0;
+			}
+		}
+	}
+
+	/** YbJTa (0): locate the crossbow in the hands or hotbar. */
+	private void acquireCrossbow(MinecraftClient client, ClientPlayerEntity player) {
+		activeHand = findCrossbowHand(player);
+		if (activeHand == null) {
+			int slot = findCrossbowHotbarSlot(player);
+			if (slot < 0) {
+				release(client);
+				restoreSlot(client);
+				state = 7;
 				return;
 			}
-		}
-
-		ItemStack stack = player.getStackInHand(hand);
-		boolean charged = isCharged(stack);
-		TntMinecartEntity targetCart = findTargetCart(client, player);
-
-		if (!charged) {
-			state = 1; // RWBsV: Charging
-			if (!player.isUsingItem()) {
-				client.options.useKey.setPressed(true);
-				holdingUse = true;
+			if (previousSlot < 0) {
+				previousSlot = player.getInventory().getSelectedSlot();
 			}
+			player.getInventory().setSelectedSlot(slot);
+			activeHand = Hand.MAIN_HAND;
+		}
+		state = 1;
+	}
+
+	/** RWBsV (1): hold use until the crossbow reports a charged projectile. */
+	private void chargeCrossbow(MinecraftClient client, ClientPlayerEntity player) {
+		if (activeHand == null) {
+			state = 0;
 			return;
 		}
-
-		// Charged state
-		if (holdingUse || player.isUsingItem()) {
-			client.options.useKey.setPressed(false);
-			holdingUse = false;
-		}
-		state = 2; // MAgEy: Charged and ready
-
-		if (targetCart != null) {
-			state = 3; // oBiuY: Target acquired
-			Vec3d cartCenter = targetCart.getBoundingBox().getCenter();
-			Vec3d eye = player.getEyePos();
-			double dx = cartCenter.x - eye.x;
-			double dy = cartCenter.y - eye.y;
-			double dz = cartCenter.z - eye.z;
-			double dist = Math.sqrt(dx * dx + dz * dz);
-			float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
-			float pitch = (float) -Math.toDegrees(Math.atan2(dy, dist));
-
-			state = 4; // dzJyB: Aiming
-			RotationManager.get().submitRotation(new Rotation(yaw, pitch), RotationPriority.uWTdl, this);
-
-			long now = System.currentTimeMillis();
-			if (now - lastShotTime >= 250L) {
-				state = 5; // hECYg: Firing
-				client.interactionManager.interactItem(player, hand);
-				player.swingHand(hand);
-				lastShotTime = now;
-				state = 6; // tKIGa: Shot completed
+		ItemStack stack = player.getStackInHand(activeHand);
+		if (isCharged(stack)) {
+			if (holdingUse || player.isUsingItem()) {
+				client.options.useKey.setPressed(false);
+				holdingUse = false;
 			}
-		} else {
-			state = 7; // wglWG: Waiting for cart target
+			state = 2;
+			return;
 		}
+		if (!player.isUsingItem()) {
+			client.options.useKey.setPressed(true);
+			holdingUse = true;
+		}
+	}
+
+	/** MAgEy (2): acquire a live TNT minecart. */
+	private void acquireCart(MinecraftClient client, ClientPlayerEntity player) {
+		targetCart = findTargetCart(client, player);
+		state = targetCart == null ? 7 : 3;
+	}
+
+	/** oBiuY (3): compute and submit the aim. */
+	private void aimAtCart(ClientPlayerEntity player, MinecraftClient client) {
+		if (targetCart == null || !targetCart.isAlive() || activeHand == null) {
+			state = 2;
+			return;
+		}
+		Vec3d cartCenter = targetCart.getBoundingBox().getCenter();
+		Vec3d eye = player.getEyePos();
+		double dx = cartCenter.x - eye.x;
+		double dy = cartCenter.y - eye.y;
+		double dz = cartCenter.z - eye.z;
+		double dist = Math.sqrt(dx * dx + dz * dz);
+		float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
+		float pitch = (float) -Math.toDegrees(Math.atan2(dy, dist));
+		aimRotation = new Rotation(yaw, pitch);
+		RotationManager.get().submitRotation(aimRotation, RotationPriority.uWTdl, this);
+		state = 4;
+	}
+
+	/** dzJyB (4): release the charged shot. */
+	private void fire(MinecraftClient client, ClientPlayerEntity player) {
+		if (activeHand == null || client.interactionManager == null) {
+			state = 0;
+			return;
+		}
+		long now = System.currentTimeMillis();
+		if (now - lastShotTime < 250L) {
+			state = 5;
+			return;
+		}
+		if (aimRotation != null) {
+			// The use packet carries its own yaw/pitch; apply our own aim around
+			// the use so the server sees the cart direction (rawPending could be
+			// another module's higher-priority rotation).
+			RotationManager.get().applyForAction(aimRotation,
+					() -> client.interactionManager.interactItem(player, activeHand));
+		} else {
+			client.interactionManager.interactItem(player, activeHand);
+		}
+		player.swingHand(activeHand);
+		lastShotTime = now;
+		state = 5;
+	}
+
+	/** hECYg (5): rate-limit the next shot. */
+	private void cooldown() {
+		if (System.currentTimeMillis() - lastShotTime >= 250L) {
+			state = 6;
+		}
+	}
+
+	/** tKIGa (6): charged crossbow is empty again; loop back to charging. */
+	private void rearm(MinecraftClient client, ClientPlayerEntity player) {
+		if (activeHand == null) {
+			state = 0;
+			return;
+		}
+		ItemStack stack = player.getStackInHand(activeHand);
+		state = isCharged(stack) ? 2 : 1;
 	}
 
 	private static Hand findCrossbowHand(ClientPlayerEntity player) {
@@ -157,9 +243,21 @@ public class AutoXBow extends Module {
 		}
 	}
 
+	private void restoreSlot(MinecraftClient client) {
+		if (previousSlot >= 0 && client.player != null) {
+			client.player.getInventory().setSelectedSlot(previousSlot);
+		}
+		previousSlot = -1;
+		activeHand = null;
+		targetCart = null;
+		aimRotation = null;
+	}
+
 	@Override
 	public void onDisable() {
-		release(MinecraftClient.getInstance());
+		MinecraftClient client = MinecraftClient.getInstance();
+		release(client);
+		restoreSlot(client);
 		state = 0;
 	}
 

@@ -3,7 +3,7 @@
 Goal: 1:1 rebuild of Grim 4.4 (Fabric 1.21.11) with full module parity.
 Method: static analysis only — nothing from the binary bundle is ever executed.
 
-Last updated: 2026-10-24 (Linux: original HUD/array list, recovered commands, search settings, input capture, smooth Aim Assist; build PASS; parity 79.1%)
+Last updated: 2026-10-25 (Linux: review fixes — rotation/interact packets, Freecam/Flight movement, Auto MLG bucket latch, `kl` two-pass bloom, GUI search, ledger corrections; build PASS; parity 80.8%)
 
 ## Environment
 - [x] REA 6.3.0 installed, Cursor MCP registered (`~/.cursor/mcp.json`, pinned to local Node 26.8.1 at `~/.local/opt/node-v26.8.1-linux-x64`), verified healthy (139/139 tools)
@@ -1362,3 +1362,20 @@ driver). Report: `analysis/port/reports/audit-2026-10-17/trace-recheck-utility-b
 - **Glow (dy, 75% → 95%, +20):** upgraded `entities` to a full `EntityListSetting` with living-entities-minus-armor-stands universe (`jg$tJ.OCdZM`), restoring full ClickGUI configuration and config serialization.
 - **Parity:** aggregate 13,046 → 13,104 / 16,200 = 80.9% (+0.4%).
 - **Build:** `./gradlew build --offline` PASS on JDK 21.
+
+## 2026-10-25 (Linux): review fixes — movement, Auto MLG, bloom, rotation packets
+
+- **RotationManager:** outgoing `PlayerInteractItemC2SPacket` is now rewritten with the pending silent rotation (the server copies that yaw/pitch onto the player before the use), and `applyForAction(rotation, …)` applies/restores the real rotation for client-side raycasts. The port-module skill and `AGENTS.md` were corrected: submit through the manager, use `applyForAction` for bucket/block raycasts instead of open-coded `setYaw/setPitch`.
+- **Freecam (dW):** yaw/pitch are interpolated across the render tick (`aqx(float) -> ov`), Speed is blocks/second (`/20`) with sprint/diagonal speed multipliers removed, and diagonal input is normalised. Perspective is handled via the camera `thirdPerson` flag; the `kr` spoof-player panel remains unported.
+- **Flight (eB):** velocity-mode forward Z sign corrected (`+cos(yaw)`; it previously moved backwards at yaw 0/180); abilities mode now sends `PlayerAbilitiesC2SPacket` on enable/tick/disable.
+- **Auto MLG (fM):** placement runs in the pre-motion phase (START_CLIENT_TICK), the landing column is projected over the remaining fall, bucket mode latches one use per fall with an existing-water guard and drops the held use key. This fixes the reported “placed water then took it back” death; exact native damage/landing math remains.
+- **Soul Effects (cZ) / kl:** replaced the scene-as-pyramid composite with the recovered two-pass pipeline: `bQa` capture (cleared effect target + depth), `bQf` blur/encode (`bloom_blur.fsh`, 0.25f temporal constant), `bQg` composite (`bloom_composite.fsh`) with Glow Radius unscaled, ping-pong buffers, additive at END_MAIN; the glow mask is depth-tested against the copied main depth when Behind Walls is off. Removed the old `bloom.fsh`.
+- **Criticals (fu):** `Lag Delay` is a `RangeSetting` 0–2000/step 5/default 100–150 ms; web_lag holds only movement packets, drops on world/connection change, flushes on disable. `class_2813` remains unresolved and is no longer held.
+- **Auto X-Bow (fa):** the 8-state machine is read and advanced, the aim is applied around the interact, and the hotbar slot is restored; the rail/TNT/flint plan builders remain missing.
+- **Pearl Chaser (fm):** Combat category restored; aim applied around `interactItem` and restored (submission-only threw along the visual view).
+- **Auto Market (dM):** removed invented `/ah`/chat feedback and the empty S2C branch; **Anti Bot (fo):** removed the latency ≤ 0 predicate and constrained the velocity check; **Hand Chams (de):** reverted zero-RGB → white fallback; **Elytra Target (dA):** immediate slot restore.
+- **ClickGUI:** page-scoped grid filtering restored, search icon toggle fixed, outside clicks consumed as modal dismissal, setting-only results clear the grid filter before scrolling.
+- **Docs:** `PARITY.md` Wave 15 + Re-audit 2026-10-25; `fu`, `dW`, `cZ` statuses corrected to `partial`; `README.md` aggregate corrected to 80.8%.
+- **Build:** `./gradlew clean build --offline` PASS on JDK 21 (one pre-existing `WorldRenderEvent` deprecation warning).
+
+- **Ledger correction:** the 2026-10-24 rendering-pipeline entry above recorded 13,104/80.9% (Glow 75→95, +20); PARITY.md, the module table and the commit record 13,092/80.8% (Glow 88→96, +8). The 13,092/80.8% figure is authoritative.

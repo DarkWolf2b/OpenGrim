@@ -22,7 +22,7 @@ Translate the original's decompiled code **1:1**. Change ONLY what is needed to 
 - Events + mixin hook: `src/main/java/dev/opengrim/modules/movement/AntiWeb.java`
 - `dev.opengrim.module.Module` — register settings in ctor, `onTick` override, EventBus `@Subscribe`, `isEnabled()`.
 - Settings: `DoubleSetting(id, step, min, max, default, suffix)` · `ModeSetting(id, List.of(...), default)` · `BoolSetting(id, default)`.
-- Rotation manager: `dev.opengrim.rotation.RotationManager` (queue, `dbC`/`dbX` readouts, `dbH`/`dbI` submits, send-path look rewrite). Silent-aim modules must submit through it, never `setYaw`/`setPitch` directly — note the port in javadoc.
+- Rotation manager: `dev.opengrim.rotation.RotationManager` (queue, `dbC`/`dbX` readouts, `dbH`/`dbI` submits, send-path rewrite of movement **and** `PlayerInteractItemC2SPacket`). **Silent** rotations must submit through it and leave the visual view untouched; do not call `player.setYaw`/`setPitch` for silent aim. Direct real/visual rotation changes are reserved for modules whose recovered behavior changes the view (Aim Assist, capture/restore paths) and must be documented. When a **client-side** action reads the real rotation before its packet is built (`BucketItem.raycast`, block placement/raycasts, synthetic hits), wrap that action in `RotationManager#applyForAction(rotation, …)`: it applies the rotation temporarily and restores it in a `finally`. Do not open-code the pair in each module.
 
 ## After porting
 

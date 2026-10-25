@@ -144,17 +144,8 @@ public class WindHop extends Module {
 		Rotation rotation = Rotation.lookingAt(player.getEyePos(),
 				player.getEntityPos().add(0.0, -1.0, 0.0)).clamped();
 		RotationManager.get().submitRotation(rotation, RotationPriority.uWTdl, this);
-		float yaw = player.getYaw();
-		float pitch = player.getPitch();
-		player.setYaw(rotation.getYaw());
-		player.setPitch(rotation.getPitch());
-		ActionResult result;
-		try {
-			result = client.interactionManager.interactItem(player, Hand.MAIN_HAND);
-		} finally {
-			player.setYaw(yaw);
-			player.setPitch(pitch);
-		}
+		ActionResult result = RotationManager.get().applyForAction(rotation,
+				() -> client.interactionManager.interactItem(player, Hand.MAIN_HAND));
 		if (result instanceof ActionResult.Success success
 				&& success.swingSource() == ActionResult.SwingSource.CLIENT) {
 			player.swingHand(Hand.MAIN_HAND);

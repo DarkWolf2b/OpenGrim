@@ -65,7 +65,9 @@ final class EffectDraw {
 			SourceFactor.ONE, DestFactor.ONE);
 
 	private static boolean attempted;
+	private static boolean depthAvailable;
 	private static RenderPipeline textured;
+	private static RenderPipeline texturedDepth;
 	private static RenderPipeline solid;
 
 	private EffectDraw() {
@@ -107,6 +109,21 @@ final class EffectDraw {
 					.withDepthWrite(true)
 					.withCull(false)
 					.build());
+			// Depth-tested variant for the bloom glow mask when Behind Walls is
+			// off: the mask target carries a copy of the main depth buffer.
+			texturedDepth = RenderPipelines.register(RenderPipeline
+					.builder(RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET)
+					.withLocation(Identifier.of("opengrim", "pipeline/circle_textured_depth"))
+					.withVertexShader(TEXTURED_SHADER)
+					.withFragmentShader(TEXTURED_SHADER)
+					.withSampler("Sampler0")
+					.withBlend(BLEND)
+					.withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT,
+							VertexFormat.DrawMode.QUADS)
+					.withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
+					.withDepthWrite(false)
+					.withCull(false)
+					.build());
 			solid = RenderPipelines.register(RenderPipeline
 					.builder(RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET)
 					.withLocation(Identifier.of("opengrim", "pipeline/circle_solid"))
@@ -120,11 +137,17 @@ final class EffectDraw {
 					.withCull(false)
 					.build());
 			CompiledRenderPipeline compiledTextured = RenderSystem.getDevice().precompilePipeline(textured);
+			CompiledRenderPipeline compiledTexturedDepth = RenderSystem.getDevice()
+					.precompilePipeline(texturedDepth);
 			CompiledRenderPipeline compiledSolid = RenderSystem.getDevice().precompilePipeline(solid);
 			if (compiledTextured == null || !compiledTextured.isValid()
 					|| compiledSolid == null || !compiledSolid.isValid()) {
 				LOGGER.warn("circle pipelines failed validation");
 				return false;
+			}
+			depthAvailable = compiledTexturedDepth != null && compiledTexturedDepth.isValid();
+			if (!depthAvailable) {
+				LOGGER.warn("circle depth pipeline unavailable; bloom mask falls back to no depth");
 			}
 			return true;
 		} catch (Throwable throwable) {
@@ -146,6 +169,26 @@ final class EffectDraw {
 			return;
 		}
 		draw(textured, buffer, abstractTexture.getGlTextureView(), abstractTexture.getSampler());
+	}
+
+	/**
+	 * Textured billboard draw into an offscreen target (the kl bloom effect
+	 * layer). Uses the same recovered textured pipeline as the main draw; the
+	 * target has no depth attachment, matching the additive glow mask.
+	 */
+	static void drawTexturedTo(Framebuffer target, BuiltBuffer buffer, Identifier texture, boolean depthTest) {
+		if (!initialize() || target == null || texture == null) {
+			buffer.close();
+			return;
+		}
+		AbstractTexture abstractTexture = MinecraftClient.getInstance()
+				.getTextureManager().getTexture(texture);
+		if (abstractTexture == null) {
+			buffer.close();
+			return;
+		}
+		drawTo(depthTest && depthAvailable ? texturedDepth : textured, target, buffer,
+				abstractTexture.getGlTextureView(), abstractTexture.getSampler());
 	}
 
 	/** Generic immediate draw with an already-built pipeline (china hat). */
@@ -172,8 +215,12 @@ final class EffectDraw {
 	private static void draw(RenderPipeline pipeline, BuiltBuffer buffer, GpuTextureView texture,
 			net.minecraft.client.gl.GpuSampler sampler) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		Framebuffer main = client.getFramebuffer();
-		if (main == null || main.getColorAttachmentView() == null) {
+		drawTo(pipeline, client.getFramebuffer(), buffer, texture, sampler);
+	}
+
+	private static void drawTo(RenderPipeline pipeline, Framebuffer target, BuiltBuffer buffer,
+			GpuTextureView texture, net.minecraft.client.gl.GpuSampler sampler) {
+		if (target == null || target.getColorAttachmentView() == null) {
 			buffer.close();
 			return;
 		}
@@ -195,9 +242,13 @@ final class EffectDraw {
 					parameters.mode());
 			GpuBuffer indexBuffer = indices.getIndexBuffer(parameters.indexCount());
 			VertexFormat.IndexType indexType = indices.getIndexType();
-			try (RenderPass pass = encoder.createRenderPass(() -> "opengrim circles",
-					main.getColorAttachmentView(), OptionalInt.empty(),
-					main.getDepthAttachmentView(), OptionalDouble.empty())) {
+			RenderPass pass = target.getDepthAttachmentView() != null
+					? encoder.createRenderPass(() -> "opengrim circles",
+							target.getColorAttachmentView(), OptionalInt.empty(),
+							target.getDepthAttachmentView(), OptionalDouble.empty())
+					: encoder.createRenderPass(() -> "opengrim circles",
+							target.getColorAttachmentView(), OptionalInt.empty());
+			try (pass) {
 				pass.setPipeline(pipeline);
 				RenderSystem.bindDefaultUniforms(pass);
 				pass.setUniform("DynamicTransforms", dynamicTransforms);

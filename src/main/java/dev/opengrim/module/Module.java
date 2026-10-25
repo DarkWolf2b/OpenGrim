@@ -118,6 +118,15 @@ public abstract class Module {
 	protected void onDisable() {
 	}
 
+	/**
+	 * Called at the start of the client tick, before the player/world tick.
+	 * Stand-in for the original pre-motion phases ({@code gH$th}/{@code gv});
+	 * timing-sensitive modules (Auto MLG) override this instead of
+	 * {@link #onTick()} so the action is sent before this tick's movement.
+	 */
+	public void onPreTick() {
+	}
+
 	/** Called every client tick while enabled. */
 	public void onTick() {
 	}

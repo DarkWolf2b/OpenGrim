@@ -8,16 +8,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.mojang.blaze3d.vertex.VertexFormat;
+
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelTransform;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BuiltBuffer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.util.BufferAllocator;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -89,18 +96,16 @@ import dev.opengrim.settings.DoubleSetting;
  * ({@code clg} ml.java:186-250, {@code clj} ml.java:256-310, {@code cli}
  * ml.java:349-354, {@code clh} ml.java:151-184).
  *
- * <p>Framework wiring: the original's pre-render capture/composite chain
- * ({@code kl.bQa}/{@code bQb}/{@code bQd}, {@code lF.cfH}, the custom
- * {@code kR} pipelines and the {@code jL.uHvyh} uniform) has no rebuild
- * counterpart. The quads are drawn in {@link WorldRenderEvent} AFTER_ENTITIES
- * through {@code RenderLayers.entityTranslucent} with the recovered
- * {@code glow} sprite (soft radial disc, matching the procedural
- * {@code soul_particle.glsl} shape); the glow composite is the same sprite at
- * the Glow Radius/halo size and Glow color. The original's two custom
- * {@code kR} pipelines (Behind Walls variants) and the {@code kl.bQd}
- * framebuffer composite are not wired: their uniform/blend mapping is the
- * audit's unrecovered remainder, and the bloom shaders are screen-space post
- * effects with no world-render hook.
+ * <p>Framework wiring: the particle quads are drawn in {@link WorldRenderEvent}
+ * AFTER_ENTITIES through {@code RenderLayers.entityTranslucent} with the
+ * recovered {@code glow} sprite (soft radial disc, matching the procedural
+ * {@code soul_particle.glsl} shape). The glow sprites go into the
+ * {@code kl.bQa} effect target, {@link BloomRenderer} runs the recovered
+ * {@code bQf} blur and {@code bQg} composite at END_MAIN, and the composite is
+ * additive over the main framebuffer. The original's two custom {@code kR}
+ * particle pipelines (Behind Walls variants) are still approximated by the
+ * vanilla translucent layer; the bloom uniform mapping and the two-pass
+ * pipeline are no longer stand-ins.
  *
  * <p>[G] high-probability guess: the four DES longs of {@code cZ$su#dob}
  * (bsm "doi", ids 32204/543) and {@code ml#clj} (bsm "clo", ids 11388/21204)
@@ -152,6 +157,10 @@ public class SoulEffects extends Module {
 
 	/** TIWnG (cZ.java:112). */
 	private final List<SoulEffect> effects = new CopyOnWriteArrayList<>();
+	private final BloomRenderer.State bloomState = BloomRenderer.createState();
+	private boolean bloomPending;
+	private float pendingGlowScale;
+	private int pendingGlowColor;
 	/** eWrHR (cZ.java:113). */
 	private final Set<UUID> processedEntities = ConcurrentHashMap.newKeySet();
 
@@ -271,11 +280,30 @@ public class SoulEffects extends Module {
 	 */
 	@Subscribe
 	public void onWorldRender(WorldRenderEvent event) {
-		if (event.phase() != WorldRenderEvent.Phase.AFTER_ENTITIES || effects.isEmpty()) {
+		if (event.phase() == WorldRenderEvent.Phase.END_MAIN) {
+			// The original composites after the effect layer has been drawn.
+			// Deferring to END_MAIN keeps the additive halo above all world
+			// geometry (the old AFTER_ENTITIES call ran mid-frame).
+			if (bloomPending) {
+				bloomPending = false;
+				MinecraftClient client = MinecraftClient.getInstance();
+				if (client.getFramebuffer() != null) {
+					BloomRenderer.composite(bloomState, client.getFramebuffer(),
+							pendingGlowScale, pendingGlowColor);
+				}
+			}
+			return;
+		}
+		if (event.phase() != WorldRenderEvent.Phase.AFTER_ENTITIES) {
+			return;
+		}
+		if (effects.isEmpty()) {
+			bloomPending = false;
 			return;
 		}
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (client.player == null || client.world == null) {
+			bloomPending = false;
 			return;
 		}
 
@@ -301,6 +329,33 @@ public class SoulEffects extends Module {
 		float glowScale = glowRadius.getValue().floatValue();
 		int glowArgb = glow.getValue();
 
+		// kl.bQa: only the glow sprites go into the effect layer; the bloom
+		// composite adds that layer back additively. Drawing the whole scene
+		// into the bloom source (the old implementation) produced a full-screen
+		// halo and sampled the scene as if it were the encoded pyramid.
+		Framebuffer glowMask = null;
+		BufferAllocator maskAllocator = null;
+		BufferBuilder maskBuilder = null;
+		int glowQuads = 0;
+		if (glowScale > 0.0f && BloomRenderer.available() && client.getFramebuffer() != null) {
+			for (SoulEffect effect : effects) {
+				for (SoulParticle particle : effect.particles) {
+					if (particle.alpha() >= 0.005f) {
+						glowQuads++;
+					}
+				}
+			}
+			if (glowQuads > 0) {
+				glowMask = BloomRenderer.capture(bloomState, client.getFramebuffer(), true);
+				if (glowMask != null) {
+					maskAllocator = new BufferAllocator(
+							glowQuads * 4 * VertexFormats.POSITION_COLOR_TEXTURE_LIGHT.getVertexSize());
+					maskBuilder = new BufferBuilder(maskAllocator, VertexFormat.DrawMode.QUADS,
+							VertexFormats.POSITION_COLOR_TEXTURE_LIGHT);
+				}
+			}
+		}
+
 		matrices.push();
 		try {
 			matrices.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
@@ -320,11 +375,17 @@ public class SoulEffects extends Module {
 						drawQuad(matrices.peek(), quads, -half, -half, half, half,
 								withAlpha(particle.color, 255.0f * alpha));
 						if (glowScale > 0.0f) {
-							// [G] kl.bQd glow composite: larger glow-sprite quad in the
-							// Glow color at a fraction of the particle alpha.
+							// kl.bQd glow sprite: larger glow quad in the Glow
+							// color at a fraction of the particle alpha.
 							float glowHalf = half * (1.0f + glowScale * 2.0f);
-							drawQuad(matrices.peek(), quads, -glowHalf, -glowHalf, glowHalf, glowHalf,
-									withAlpha(glowArgb, 255.0f * alpha * GLOW_ALPHA));
+							int glowColor = withAlpha(glowArgb, 255.0f * alpha * GLOW_ALPHA);
+							if (maskBuilder != null) {
+								drawMaskQuad(matrices.peek(), maskBuilder, -glowHalf, -glowHalf,
+										glowHalf, glowHalf, glowColor);
+							} else {
+								drawQuad(matrices.peek(), quads, -glowHalf, -glowHalf,
+										glowHalf, glowHalf, glowColor);
+							}
 						}
 					} finally {
 						matrices.pop();
@@ -335,8 +396,15 @@ public class SoulEffects extends Module {
 			matrices.pop();
 		}
 
-		if (glowScale > 0.0f && BloomRenderer.available() && client.getFramebuffer() != null) {
-			BloomRenderer.composite(client.getFramebuffer(), client.getFramebuffer(), glowScale * 0.25f, glowArgb);
+		if (maskBuilder != null) {
+			BuiltBuffer built = maskBuilder.endNullable();
+			if (built != null) {
+				EffectDraw.drawTexturedTo(glowMask, built, glowTexture, !behindWalls.getValue());
+				bloomPending = true;
+				pendingGlowScale = glowScale;
+				pendingGlowColor = glowArgb;
+			}
+			maskAllocator.close();
 		}
 
 		// abc step 3: abe (cZ.java:1427-1454) — release expired effects and
@@ -355,6 +423,8 @@ public class SoulEffects extends Module {
 	protected void onDisable() {
 		effects.clear();
 		processedEntities.clear();
+		bloomPending = false;
+		BloomRenderer.reset(bloomState);
 	}
 
 	private static void drawQuad(MatrixStack.Entry entry, VertexConsumer vc,
@@ -372,6 +442,23 @@ public class SoulEffects extends Module {
 				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
 		vc.vertex(entry, minX, maxY, 0.0f).color(r, g, b, a).texture(0.0f, 0.0f)
 				.overlay(OverlayTexture.DEFAULT_UV).light(0xF000F0).normal(entry, 0.0f, 0.0f, 1.0f);
+	}
+
+	/**
+	 * Glow-mask vertex (POSITION_COLOR_TEXTURE_LIGHT, no overlay/normal): the
+	 * {@code circle_textured} pipeline used by {@link EffectDraw#drawTexturedTo}
+	 * only consumes position, colour and UV0.
+	 */
+	private static void drawMaskQuad(MatrixStack.Entry entry, VertexConsumer vc,
+			float minX, float minY, float maxX, float maxY, int argb) {
+		float a = ((argb >>> 24) & 0xFF) / 255.0f;
+		float r = ((argb >> 16) & 0xFF) / 255.0f;
+		float g = ((argb >> 8) & 0xFF) / 255.0f;
+		float b = (argb & 0xFF) / 255.0f;
+		vc.vertex(entry, minX, minY, 0.0f).color(r, g, b, a).texture(0.0f, 1.0f).light(0xF000F0);
+		vc.vertex(entry, maxX, minY, 0.0f).color(r, g, b, a).texture(1.0f, 1.0f).light(0xF000F0);
+		vc.vertex(entry, maxX, maxY, 0.0f).color(r, g, b, a).texture(1.0f, 0.0f).light(0xF000F0);
+		vc.vertex(entry, minX, maxY, 0.0f).color(r, g, b, a).texture(0.0f, 0.0f).light(0xF000F0);
 	}
 
 	/** mG#coa(alpha).coh(): the particle color with the alpha replaced. */
